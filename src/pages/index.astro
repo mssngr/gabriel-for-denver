@@ -25,7 +25,7 @@ import Default from "../layouts/default.astro";
             >the community we've always wanted,</strong
           > or it can be a playground for corporate interests.
         </p>
-        <a class="btn btn-primary mt-8" href="/get-involved">Get involved</a>
+        <a class="btn btn-primary mt-8" href="/#get-involved">Get involved</a>
       </div>
       <img
         src="/assets/lake2.jpg"
@@ -94,13 +94,28 @@ import Default from "../layouts/default.astro";
     >
       <h1 class="text-center">Get involved</h1>
       <div class="mt-16 flex flex-wrap items-center justify-center gap-16">
-        <form class="w-xs flex flex-col items-end text-black!">
-          <Input name="name" label="Name" placeholder="Jane Doe" />
-          <Input name="email" label="Email" placeholder="jane.doe@gmail.com" />
+        <form
+          class="w-xs flex flex-col items-end text-black!"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+        >
+          <input
+            type="hidden"
+            name="access_key"
+            value="a5af05ef-33e3-424d-b4bd-2f900039335b"
+          />
+          <Input name="name" label="Name" placeholder="Jane Doe" required />
+          <Input
+            name="email"
+            label="Email"
+            placeholder="jane.doe@gmail.com"
+            required
+          />
           <Textarea
             name="message"
             label="Message"
             placeholder="So, I wanted to ask..."
+            required
           />
           <button type="submit" class="btn btn-accent mt-4">Send</button>
         </form>

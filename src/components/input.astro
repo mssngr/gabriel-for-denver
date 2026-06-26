@@ -1,7 +1,7 @@
 ---
 import Fieldset from "./fieldset.astro";
 
-const { name, label, placeholder, type = "text" } = Astro.props;
+const { name, label, placeholder, type = "text", required } = Astro.props;
 ---
 
 <Fieldset label={label}
@@ -10,5 +10,6 @@ const { name, label, placeholder, type = "text" } = Astro.props;
     type={type}
     class="input w-full text-base"
     placeholder={placeholder}
+    required={required}
   /></Fieldset
 >
