@@ -1,0 +1,9 @@
+---
+const { label, info } = Astro.props;
+---
+
+<fieldset class="fieldset w-full">
+  <legend class="fieldset-legend text-white text-lg">{label}</legend>
+  <slot />
+  {info && <p class="label">{info}</p>}
+</fieldset>

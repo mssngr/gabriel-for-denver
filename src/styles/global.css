@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: light --default;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-base: #fff;
+  --color-primary: #1900a8;
+  --color-secondary: #0646f5;
+  --color-accent: #ffc800;
+}
+
+@theme inline {
+  --font-sans: var(--font-league-spartan);
+  --font-league-spartan: var(--font-league-spartan);
+  --font-edu-sa-hand: var(--font-edu-sa-hand);
+}
+
+@utility btn {
+  @apply rounded-2xl text-2xl p-6 font-semibold;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  background: radial-gradient(circle at 50% 10%, #e0e0e0, #81a3ff);
+}
+
+h1 {
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.875rem;
+  line-height: 1;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.5rem;
+  line-height: 1.333333;
+}
+
+small {
+  font-size: 1rem;
+  line-height: 1.5;
+}

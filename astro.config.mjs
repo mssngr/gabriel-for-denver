@@ -1,5 +1,23 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig, fontProviders } from 'astro/config'
 
 // https://astro.build/config
-export default defineConfig({});
+export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'League Spartan',
+      cssVariable: '--font-league-spartan',
+      weights: ['300', '400', '600', '700'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Edu SA Hand',
+      cssVariable: '--font-edu-sa-hand',
+    },
+  ],
+})

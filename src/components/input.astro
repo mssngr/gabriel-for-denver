@@ -1,0 +1,14 @@
+---
+import Fieldset from "./fieldset.astro";
+
+const { name, label, placeholder, type = "text" } = Astro.props;
+---
+
+<Fieldset label={label}
+  ><input
+    name={name}
+    type={type}
+    class="input w-full text-base"
+    placeholder={placeholder}
+  /></Fieldset
+>
