@@ -1,9 +1,9 @@
 ---
-const { description, Icon, title } = Astro.props;
+const { Icon, title } = Astro.props;
 ---
 
 <div class="w-2xs text-center flex flex-col items-center">
   {Icon && <Icon class="size-20 mb-6" />}
   <h2>{title}</h2>
-  <p class="text-lg! font-light">{description}</p>
+  <p class="text-lg! font-light"><slot /></p>
 </div>

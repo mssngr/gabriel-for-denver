@@ -37,63 +37,82 @@ import Default from "../layouts/default.astro";
       id="issues"
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center">What will I tackle?</h1>
-      <div class="mt-16 flex flex-wrap gap-16 justify-center">
-        <Issue
-          Icon={MapPinHouse}
-          title="Housing Crisis"
-          description="Companies from California and China buying up neighborhood homes only to flip them/charge exorbitant rents or building giant, luxury apartment high-rises benefits no one but California and China. Solving the Denver housing crisis starts with Denver ownership."
-        />
-        <Issue
-          Icon={Coins}
-          title="Affordability"
-          description="Average rent in Denver increased by 45% over the past 10 years. Gas increased by 50%. Food by 44%. Have your wages kept up? Workers' rights are repeatedly curtailed, while corporations get hall passes. Denver must be a city for all, not the 1%."
-        />
-        <Issue
-          Icon={HouseHeart}
-          title="Homelessness"
-          description="Since my early twenties, I've worked with our neighbors experiencing homelessness. It's time to set aside the misconceptions and unjustified fears. Housing-first policies work. Let's put a roof over every Denverite's head."
-        />
-        <Issue
-          Icon={BusFront}
-          title="Safe Transportation"
-          description="As someone who rode trains, buses, and bikes as my only mode of transportation for years, it's critical for me that Denver's transit is consistent, secure, and affordable for those of us not behind a driver's wheel."
-        />
-        <Issue
-          Icon={DatabaseZap}
-          title="Big Tech"
-          description="Big tech will not save us. They're not even trying to save us. They're trying to make money off of us. The sooner we realize this, the sooner we can push back against their schemes to use Denver as a foothold for surveillance, data centers, and cheap labor."
-        />
-        <Issue
-          Icon={Siren}
-          title="ICE Overreach"
-          description="Any organization illegally barging into people's homes, disappearing them based on their accent and skin color, and shooting them in the street should be opposed by any person of conscience. Denver should stand up against these human rights violations."
-        />
+      <h1 class="text-center mb-16!">What will I tackle?</h1>
+      <div class="flex flex-wrap gap-16 justify-center">
+        <Issue Icon={MapPinHouse} title="Housing Crisis"
+          >Companies from California and China buying up neighborhood homes only
+          to flip them/charge exorbitant rents or building giant, luxury
+          apartment high-rises benefits no one but California and China. Solving
+          the Denver housing crisis starts with Denver ownership.</Issue
+        >
+        <Issue Icon={Coins} title="Affordability"
+          >Average rent in Denver increased by 45% over the past 10 years. Gas
+          increased by 100%. Food by 44%. Have your wages kept up? Workers'
+          rights are repeatedly curtailed, while corporations get hall passes.
+          Denver must be a city for all, not the 1%.</Issue
+        >
+        <Issue Icon={HouseHeart} title="Homelessness"
+          >Since my early twenties, I've worked with our neighbors experiencing
+          homelessness. It's time to set aside the misconceptions and
+          unjustified fears. Housing-first policies work. Let's put a roof over
+          every Denverite's head.</Issue
+        >
+        <Issue Icon={BusFront} title="Safe Transportation"
+          >As someone who rode trains, buses, and bikes as my only mode of
+          transportation for years, it's critical for me that Denver's transit
+          is consistent, secure, and affordable for those of us not behind a
+          driver's wheel.</Issue
+        >
+        <Issue Icon={DatabaseZap} title="Big Tech"
+          >Big tech will not save us. They're not even trying to save us.
+          They're trying to make money off of us. The sooner we realize this,
+          the sooner we can push back against their schemes to use Denver as a
+          foothold for surveillance, data centers, and cheap labor.</Issue
+        >
+        <Issue Icon={Siren} title="ICE Overreach"
+          >Any organization illegally barging into people's homes, disappearing
+          them based on their accent and skin color, and shooting them in the
+          street should be opposed by any person of conscience. Denver should
+          stand up against these human rights violations.</Issue
+        >
       </div>
     </section>
     <section id="why-me">
       <h1 class="text-center mb-16!">Why me?</h1>
       <div class="flex flex-col items-center gap-16">
-        <Blurb
-          title="I'm a community organizer."
-          description="I've been the head cook for a charity kitchen, started a mutual aid and political action group, served on the board of a non-profit providing food security to those in need during COVID, organized concerts, advocated for local filmmaking, spoke at local meetups across the state, and am the Lay Leader at Cameron Church on Pearl Street. Serving on City Council will be the culmination of my endeavours, and the best way I can continue to advocate for you."
-        />
-        <Blurb
-          title="I'm a jack of all trades. Literally."
-          description="From managing a fast food chain, to working in finance, to cleaning restaurants overnight, to making local TV commercials, to electrician work, to driving schoolbuses, to working in tech, it sometimes feels like there's not a job I haven't done, yet. Who better to represent you than someone who's been in the trenches with you?"
-        />
-        <Blurb
-          title="I'm no stranger to poverty."
-          description="I grew up on a rural farm. We ate what we grew. We went to clothing swaps. We patched those same clothes when they wore holes. And Wendy's was fine dining to us. I wouldn't trade that childhood for anything. Since growing up, I've experienced the thick and the thin, from living out of my car and eating ice to feel full to owning my own home. Your city leadership should know what it's like to be on both sides of the poverty line."
-        />
+        <Blurb title="I'm a community organizer."
+          >I've been the head cook for a charity kitchen, started a mutual aid
+          and political action group, served on the board of a non-profit
+          providing food security to those in need during COVID, organized
+          concerts, advocated for local filmmaking, spoke at local meetups
+          across the state, and am the Lay Leader at Cameron Church on Pearl
+          Street. Serving on City Council will be the culmination of my
+          endeavours, and the best way I can continue to advocate for you.</Blurb
+        >
+        <Blurb title="I'm a jack of all trades. Literally."
+          >From managing a fast food chain, to working in finance, to cleaning
+          restaurants overnight, to making local TV commercials, to electrician
+          work, to driving schoolbuses, to working in tech, it sometimes feels
+          like there's not a job I haven't done, yet. Who better to represent
+          you than someone who's been in the trenches with you?</Blurb
+        >
+        <Blurb title="I'm no stranger to poverty."
+          >I grew up on a rural farm. We ate what we grew. We went to clothing
+          swaps. We patched those same clothes when they wore holes. And Wendy's
+          was fine dining to us. I wouldn't trade that childhood for anything.
+          Since growing up, I've experienced the thick and the thin, from living
+          out of my car and eating ice to feel full to owning my own home. Your
+          city leadership should know what it's like to be on both sides of the
+          poverty line.</Blurb
+        >
       </div>
     </section>
     <section
       id="get-involved"
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center">Get involved</h1>
-      <div class="mt-16 flex flex-wrap items-center justify-center gap-16">
+      <h1 class="text-center mb-16!">Get involved</h1>
+      <div class="flex flex-wrap items-center justify-center gap-16">
         <form
           class="w-xs flex flex-col items-end text-black!"
           action="https://api.web3forms.com/submit"
@@ -120,10 +139,11 @@ import Default from "../layouts/default.astro";
           />
           <button type="submit" class="btn btn-accent mt-4">Send</button>
         </form>
-        <Blurb
-          title="Start the conversation."
-          description="Send me a message. I'll respond. Personally. If you have more questions about my plans, who I am, or how you can help, don't leave yourself guessing. Just ask!"
-        />
+        <Blurb title="Start the conversation."
+          >Send me a message. I'll respond. Personally. If you have more
+          questions about my plans, who I am, or how you can help, don't leave
+          yourself guessing. Just ask!</Blurb
+        >
       </div>
     </section>
   </main>
