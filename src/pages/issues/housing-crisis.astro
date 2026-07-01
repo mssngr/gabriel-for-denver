@@ -1,0 +1,92 @@
+---
+import { CircleAlert, CircleCheck } from "@lucide/astro";
+import housingCrisis from "../../assets/housing-crisis.svg";
+import Blurb from "../../components/blurb.astro";
+import Footer from "../../components/footer.astro";
+import Default from "../../layouts/default.astro";
+---
+
+<Default>
+  <main class="h-full px-8 md:px-16 pt-8 md:pt-16 pb-32 flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>Housing Crisis</h1>
+        <p>
+          Housing is a <strong>human right, not a commodity,</strong> as enshrined
+          by Eleanor Roosevelt and the United Nations. Adequate and affordable housing
+          should not be something only accessible by the wealthy.
+        </p>
+      </div>
+      <img
+        src={housingCrisis.src}
+        alt="Drawing of houses"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">The Rent is Too Damn High</h1>
+      <p class="max-w-md mx-auto mb-16">
+        In the past 10 years, average rent shot up by 45%, but the median
+        household income in Denver only rose by 28%. Meaning, <strong
+          >rent increased at almost twice the rate as income.</strong
+        > This <em>is</em> a crisis.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >Companies from California and China are buying up neighborhood homes
+          only to flip or rent them at exorbitant rates. They're also building
+          giant, luxury apartment high-rises that don't benefit the average
+          Denverite.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          >Solving the Denver housing crisis starts with Denver ownership of
+          homes:<ul class="mt-2">
+            <li>• Ban companies from buying single family homes.</li>
+            <li>
+              • Stabilize rent for single family homes already owned by
+              companies.
+            </li>
+            <li>
+              • Require out-of-state companies to build affordable apartment
+              housing.
+            </li>
+            <li>
+              • Stabilize rent for apartments already owned by out-of-state
+              companies.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">Inclusionary Zoning</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Policies that require a percentage of new housing to be <strong
+          >affordable</strong
+        > for people with low to moderate incomes.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >Upwards of 77% of Denver's residential areas' prohibit the most
+          affordable types of homes. Apartments, condos and townhomes are widely
+          forbidden. Exclusionary zoning has racist origins.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Change Denver zoning laws to allow multi-use housing in at least
+              50% of all residential areas.
+            </li>
+            <li>
+              • Required 30% percent of all new housing built to be affordable
+              housing
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Default>

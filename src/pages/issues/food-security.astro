@@ -1,0 +1,76 @@
+---
+import { CircleAlert, CircleCheck } from "@lucide/astro";
+import foodSecurity from "../../assets/food-security.svg";
+import Blurb from "../../components/blurb.astro";
+import Footer from "../../components/footer.astro";
+import Default from "../../layouts/default.astro";
+---
+
+<Default>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>Food Security</h1>
+        <p>
+          1 in 6 people you meet in Denver have eaten less or skipped a meal
+          this year because they didn't have enough money for food. Most of them
+          did so multiple times throughout the year.<br /><br />Why? The cost of
+          food for the average Denverite is $1,000 every month. At minimum wage,
+          that's <strong>nearly half of your take home pay.</strong>
+        </p>
+        <!-- <a class="btn btn-primary mt-8" href="#get-involved">Get Involved</a> -->
+      </div>
+      <img
+        src={foodSecurity.src}
+        alt="A food container full of money"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Food is medicine.</h1>
+      <p class="max-w-md mx-auto mb-16">
+        2 out of 3 Denverites say that healthy food at grocery stores is just
+        too expensive. <strong
+          >Eating healthy shouldn't be a practice reserved for the wealthy.</strong
+        > If the food we eat is killing us, the system doesn't work.
+      </p>
+      <div class="flex flex-col gap-16">
+        <div class="flex gap-8 justify-center">
+          <Blurb title="Problem" Icon={CircleAlert}
+            >The first corner cut on food is often its healthiness. Meanwhile,
+            Denver has nearly 20,000 acres of parkland, almost none of it
+            producing a single ounce of food for our 750,000 residents.</Blurb
+          >
+          <Blurb title="Solution" Icon={CircleCheck}
+            ><ul class="mt-2">
+              <li>
+                • Prioritize fruit-bearing trees and bushes over all other kinds
+                in Denver parks to create natural food forests around our city.
+              </li>
+              <li>
+                • Plant raised and in-ground gardens throughout much of the
+                acreage of our city parks.
+              </li>
+              <li>
+                • Shift park employment to focus on gardners, farmers, and
+                horticulturists.
+              </li>
+              <li>
+                • Funnel the harvests of these gardens and food forests to
+                discounted mobile produce markets that visit communities facing
+                the most food insecurity.
+              </li>
+              <li>
+                • Produce that doesn't meet quality standards is given away for
+                free.
+              </li>
+            </ul></Blurb
+          >
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Default>

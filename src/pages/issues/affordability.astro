@@ -1,0 +1,126 @@
+---
+import { CircleAlert, CircleCheck } from "@lucide/astro";
+import affordability from "../../assets/affordability.svg";
+import Blurb from "../../components/blurb.astro";
+import Footer from "../../components/footer.astro";
+import Input from "../../components/input.astro";
+import Textarea from "../../components/textarea.astro";
+import Default from "../../layouts/default.astro";
+---
+
+<Default>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1></h1>
+        <p>
+          “Anyone who has ever struggled with poverty knows how extremely <strong
+            >expensive</strong
+          > it is to be poor.” – James Baldwin<br /><br />We are slipping back
+          into a stratified class system: the wealthy vs. the struggling. We all
+          know there is enough money, food, clothing, and housing for everyone.
+          Why, then, should everyday families struggle to get those very things?
+        </p>
+      </div>
+      <img
+        src={affordability.src}
+        alt="Drawing of houses"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Publicly Owned Utilities</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Electricity, gas, the internet... these are requirements of modern live.
+        They are utilities. They are not commodities to be bartered with.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem:" Icon={CircleAlert}
+          >Companies like Xcel and Xfinity use deceptive practices and pricing
+          models to dupe their customers out of hard-earned money.</Blurb
+        >
+        <Blurb title="Solution:" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Create a Denver Energy company to be a public alternative to
+              private energy companies.
+            </li>
+            <li>
+              • Create a Denver Broadband company to provide reduced cost
+              internet to all residents.
+            </li>
+            <li>
+              • Bake in programs in both of these public utility companies to
+              provide reduced cost services to low income families.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">Reliable Transit</h1>
+      <p class="max-w-md mx-auto mb-16">
+        One of the great benefits of living in a large city is the ability to
+        utilize transit and forego the need of a car. <strong
+          >It costs the average American $11,577 to own a vehicle.</strong
+        > But, having personally relied on RTD, I've been let down, late to work,
+        and even stranded.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >RTD has become inconsistent and costly to use as your main source of
+          transportation. Many have given up on it. Access to reliable public
+          transit, however, is a vital factor for financial mobility.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          >Work with the RTD Board of Directors to:<ul class="mt-2">
+            <li>
+              • Bring back the F line, which had thousands of transiters riding
+              it every day.
+            </li>
+            <li>
+              • Introduce free fares for the elderly and LiVE program members.
+            </li>
+            <li>
+              • Shore up inconsistencies in train and bus pickup and dropoff
+              times.
+            </li>
+            <li>
+              • Implement an easy method for commuters to report drivers who
+              pass them by, are late, or never show up.
+            </li>
+          </ul>
+        </Blurb>
+      </div>
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Junk Fees</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Colorado's new law prohibiting deceptive pricing went into effect this
+        January. That's great news, except it doesn't ban or reduce those junk
+        fees. It just makes them visible.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem:" Icon={CircleAlert}
+          >Companies charge exorbitant fees for a myriad of things that are <em
+            >not</em
+          > the product or service you are paying for.</Blurb
+        >
+        <Blurb title="Solution:" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>• Ban ancillary fees for products and services in Denver.</li>
+            <li>
+              • Require companies to include any extras they want to charge in
+              the original price for the product or service.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Default>
