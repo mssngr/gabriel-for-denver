@@ -22,13 +22,47 @@ import Default from "../../layouts/default.astro";
       </div>
       <img
         src={affordability.src}
-        alt="Drawing of houses"
+        alt="Drawing of trap with money as the bait"
         class="w-full max-w-md"
       />
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
+      <h1 class="text-center mb-16!">Child Care</h1>
+      <p class="max-w-md mx-auto mb-16">
+        The "free market" has not provided us with adequate child care. The cost
+        of having an infant in daycare in Denver is, on average, <strong
+          >$1,500 a month.</strong
+        >
+        {" "}Another rent. It has become one of the most expensive metros to
+        raise a child in the US.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >Study after study has shown that children who attend Pre-K have
+          better outcomes than those who don't, even later in life. However, the
+          cost is often prohibitive, leading families to keep little ones at
+          home.<br /><br />Colorado offers 15 hours of free Pre-K, starting at 4
+          years old. This is nice, but isn't enough to allow caretakers to
+          return to the workforce. It also has a smaller impact on childrens'
+          outcomes.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          >Washington DC implemented universal Pre-K for the whole city,
+          starting at 3 years old. It's been wildly successful and has enticed
+          families to stay in the city.<ul class="mt-2">
+            <li>
+              • Create a Denver Public Schools universal Pre-K program to
+              augment Colorado's existing one.
+            </li>
+            <li>• Expand free hours from 15 to 35 per week.</li>
+            <li>• Start children at 3 years old, instead of 4.</li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section>
       <h1 class="text-center mb-16!">Publicly Owned Utilities</h1>
       <p class="max-w-md mx-auto mb-16">
         Electricity, gas, the internet... these are requirements of modern life.
@@ -53,11 +87,17 @@ import Default from "../../layouts/default.astro";
               • Bake in programs in both of these public utility companies to
               provide reduced cost services to low income families.
             </li>
+            <li>
+              • Introduce energy tariffs for large-load customers like data
+              centers.
+            </li>
           </ul></Blurb
         >
       </div>
     </section>
-    <section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
       <h1 class="text-center mb-16!">Reliable Transit</h1>
       <p class="max-w-md mx-auto mb-16">
         One of the great benefits of living in a large city is the ability to
@@ -79,11 +119,12 @@ import Default from "../../layouts/default.astro";
               it every day.
             </li>
             <li>
-              • Introduce free fares for the elderly and LiVE program members.
+              • Introduce free fares for the elderly and LiVE (low-income)
+              program members.
             </li>
             <li>
               • Shore up inconsistencies in train and bus pickup and dropoff
-              times.
+              times, as this can cost people their jobs.
             </li>
             <li>
               • Implement an easy method for commuters to report drivers who
@@ -92,11 +133,7 @@ import Default from "../../layouts/default.astro";
           </ul>
         </Blurb>
       </div>
-    </section>
-    <section
-      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
-    >
-      <h1 class="text-center mb-16!">Junk Fees</h1>
+      <!-- <h1 class="text-center mb-16!">Junk Fees</h1>
       <p class="max-w-md mx-auto mb-16">
         Colorado's new law prohibiting deceptive pricing went into effect this
         January. That's great news, except it doesn't ban or reduce those junk
@@ -117,7 +154,7 @@ import Default from "../../layouts/default.astro";
             </li>
           </ul></Blurb
         >
-      </div>
+      </div> -->
     </section>
   </main>
   <Footer />
