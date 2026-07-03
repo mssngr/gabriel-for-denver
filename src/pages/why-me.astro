@@ -1,0 +1,106 @@
+---
+import Footer from "../components/footer.astro";
+import MyBackground from "../components/my-background.astro";
+import Default from "../layouts/default.astro";
+---
+
+<Default>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>Why me?</h1>
+        <p>
+          I'll get straight to the point. I'm a husband and father in an
+          interracial, blended family. I've lived under the poverty line and
+          also in the disappearing "middle class". <strong
+            >I am one of those terrible, bleeding-heart liberals with a
+            progressive agenda.</strong
+          > 😉 And, what sets me apart is, I have clear and specific legislation in
+          mind for my term as City Councillor.
+        </p>
+      </div>
+      <img
+        src="/assets/vest.jpg"
+        alt="Photo of Gabriel"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">My Plan</h1>
+      <p class="max-w-md mx-auto mb-16">
+        I believe candidates should be defined, first, by who they are and,
+        secondly, by what they will do. I have been clear from the beginning: I
+        plan to hit the ground running, writing and championing legislation for
+        several key issues.
+      </p>
+      <h2 class="text-center underline">Social Justice</h2>
+      <p class="max-w-xl mx-auto">
+        Affordability doesn't mean much if it isn't evenly applied. First, and
+        foremost, we need to address inequalities in our great city. I plan to
+        bring legislation on:
+        <ul class="mt-2 mb-16 max-w-md mx-auto">
+          <li>• A citizen-ran body to investigate Denver Police misconduct</li>
+          <li>• Expansion of the STAR program</li>
+          <li>• Alternative sentencing for non-violent offenses</li>
+          <li>• Alternatives to fees for civil and traffic citations</li>
+          <li>• Banning unhoused encampment sweeps</li>
+          <li>• Banning warrantless AI surveillance of all Denver drivers</li>
+          <li>• Banning new data centers built in Denver</li>
+        </ul>
+      </p>
+      <h2 class="text-center underline">Affordability</h2>
+      <p class="max-w-xl mx-auto">
+        It's easy to dream about a better future when rent is paid, food is in
+        the fridge, and your car has gas in the tank. If we want to live in the
+        city of our dreams, we have to be able to afford it. I will bring
+        legislation for:
+        <ul class="mt-2 mb-16 max-w-md mx-auto">
+          <li>• Expanded universal Pre-K</li>
+          <li>• Publicly owned utilities</li>
+          <li>• Banning companies from buying single-family homes</li>
+          <li>• A tax on vacant rental units</li>
+          <li>• Expanded multi-unit residential zoning</li>
+          <li>• Food forests and gardens in all of our parks</li>
+          <li>• Improvement of RTD reliability</li>
+          <li>
+            • A requirement of out-of-state companies moving in to hire a
+            portion of their workforce from locals
+          </li>
+        </ul>
+      </p>
+      <p class="text-center">
+        You can read more about my plans <a href="/issues" class="link">here.</a
+        >
+      </p>
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">My Background</h1>
+      <MyBackground />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Endorsements</h1>
+      <p class="max-w-xl mx-auto">
+        <span class="font-medium"
+          >“What a liberal snowflake, sore loser.”
+        </span><span class="font-light"> – Someone on Facebook</span>
+        <br /><br />
+        <span class="font-medium">“Will that be all, ma'am?” </span><span
+          class="font-light"
+        >
+          – At the drive-thru</span
+        >
+        <br /><br />
+        <span class="font-medium"
+          >“Please I really think you need to read the Bible again... You seem
+          to have a lot of hate in your heart. Please get right with God. I
+          worry about you.”
+        </span><span class="font-light"> – My well-meaning Aunt</span>
+      </p>
+    </section>
+  </main>
+  <Footer />
+</Default>

@@ -1,5 +1,5 @@
 ---
-import { CircleAlert, CircleCheck } from "@lucide/astro";
+import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import bigTech from "../../assets/big-tech.svg";
 import Blurb from "../../components/blurb.astro";
 import Footer from "../../components/footer.astro";
@@ -10,6 +10,11 @@ import Default from "../../layouts/default.astro";
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
+        <a
+          href="/issues#what-will-i-tackle"
+          class="link inline-flex items-center mb-8"
+          ><ArrowLeft class="size-4" />Back to Issues</a
+        >
         <h1>Big Tech</h1>
         <p>
           From surveillance that monitors our daily habits, data centers that
