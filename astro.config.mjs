@@ -20,4 +20,8 @@ export default defineConfig({
       cssVariable: '--font-edu-sa-hand',
     },
   ],
+  i18n: {
+    locales: ['es', 'en'],
+    defaultLocale: 'en',
+  },
 })

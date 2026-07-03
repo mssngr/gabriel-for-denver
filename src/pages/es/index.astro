@@ -1,0 +1,87 @@
+---
+import Blurb from "../../components/blurb.astro";
+import Footer from "../../components/footer-espanol.astro";
+import Input from "../../components/input.astro";
+import MyBackground from "../../components/my-background-espanol.astro";
+import Textarea from "../../components/textarea.astro";
+import WhatWillITackle from "../../components/what-will-i-tackle-espanol.astro";
+import Espanol from "../../layouts/espanol.astro";
+---
+
+<Espanol>
+  <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="w-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>Estoy corriendo para el Concejo Municipal de Denver en general</h1>
+        <p>
+          Porque Denver puede ser <strong
+            >la comunidad que siempre hemos querido,</strong
+          > o puede ser un patio de recreo para los intereses corporativos.
+        </p>
+        <a class="btn btn-primary mt-8" href="/es#involucrate">Involúcrate</a>
+      </div>
+      <img
+        src="/assets/lake2.jpg"
+        alt="Foto de Gabriel"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <WhatWillITackle />
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">¿Por qué yo?</h1>
+      <MyBackground />
+      <p class="mx-auto mt-16 text-center">
+        Lea más sobre mí <a href="/es/why-me" class="link">aquí.</a>
+      </p>
+    </section>
+    <section
+      id="involucrate"
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Involúcrate</h1>
+      <div class="flex flex-wrap items-center justify-center gap-16">
+        <form
+          class="w-xs flex flex-col items-end text-black!"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+        >
+          <input
+            type="hidden"
+            name="access_key"
+            value="a5af05ef-33e3-424d-b4bd-2f900039335b"
+          />
+          <Input
+            name="name"
+            label="Nombre"
+            placeholder="Juana Pérez"
+            required
+          />
+          <Input
+            type="email"
+            name="email"
+            label="Correo electrónico"
+            placeholder="juana.perez@gmail.com"
+            required
+          />
+          <Textarea
+            name="message"
+            label="Mensaje"
+            placeholder="Entonces, quería preguntar..."
+            required
+          />
+          <button type="submit" class="btn btn-accent mt-4">Enviar</button>
+        </form>
+        <Blurb title="Inicia la conversación."
+          >Envíame un mensaje. Responderé. Personalmente. Si tienes más
+          preguntas sobre mis planes, quién soy, o cómo puedes ayudar, no te
+          quedes con la duda. ¡Solo pregunta!</Blurb
+        >
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Espanol>

@@ -1,0 +1,38 @@
+---
+import city from "../../../assets/city.svg";
+import Footer from "../../../components/footer-espanol.astro";
+import WhatWillITackle from "../../../components/what-will-i-tackle-espanol.astro";
+import Espanol from "../../../layouts/espanol.astro";
+---
+
+<Espanol>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>Retos que enfrenta Denver</h1>
+        <p>
+          Me encanta vivir en Denver. Es la única ciudad que verdaderamente
+          podría llamar hogar. Pero con la administración Trump apuntando contra
+          ella, el costo de vida por las nubes, la situación de personas sin
+          hogar aumentando rápidamente, la Policía de Denver evadiendo la
+          rendición de cuentas y las corporaciones tratando de aprovecharse de
+          nosotros, <strong>nuestro hogar está en peligro.</strong><br /><br
+          />Estoy cansado de esperar a que los políticos hagan lo correcto. Creo
+          en aportar soluciones en lugar de quejas. Aquí están las mías.
+        </p>
+      </div>
+      <img
+        src={city.src}
+        alt="Un recipiente de comida lleno de dinero"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      id="retos"
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <WhatWillITackle />
+    </section>
+  </main>
+  <Footer />
+</Espanol>

@@ -1,0 +1,135 @@
+---
+import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
+import injustice from "../../../assets/injustice.svg";
+import Blurb from "../../../components/blurb.astro";
+import Footer from "../../../components/footer-espanol.astro";
+import Espanol from "../../../layouts/espanol.astro";
+---
+
+<Espanol>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <a href="/es/issues#retos" class="link inline-flex items-center mb-8"
+          ><ArrowLeft class="size-4" />Volver a los Retos</a
+        >
+        <h1>Injusticia Criminal</h1>
+        <p>
+          La Policía de Denver lanzó en secreto un programa de 'Dron como Primer
+          Respondedor' sin aprobación de la ciudad, amplió el uso de táseres
+          para permitir su uso contra personas no agresivas, permitió que la
+          mala conducta fuera manejada de manera informal por un supervisor, y
+          redujo las sanciones por mala conducta a simples capacitaciones en el
+          aula. <strong>Todo en el lapso de 1 año.</strong><br /><br />Estamos
+          en curso de colisión entre las fuerzas del orden y nuestros derechos
+          humanos cotidianos. Al igual que nuestras leyes, las fuerzas del orden
+          deben ser del pueblo y para el pueblo. No en contra del pueblo.
+        </p>
+      </div>
+      <img
+        src={injustice.src}
+        alt="Un dibujo de una cabeza en una jaula"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Rendición de Cuentas</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Que la policía investigue a la policía es como si tú mismo auditaras tus
+        propios impuestos. No funciona. La Policía de Denver necesita rendir
+        cuentas ante terceros externos.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problema" Icon={CircleAlert}
+          >La mala conducta policial es manejada de manera informal por un
+          supervisor. Se utilizan capacitaciones en el aula en lugar de
+          suspensiones o amonestaciones.</Blurb
+        >
+        <Blurb title="Solución" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Activar un organismo investigador dirigido por ciudadanos cuando
+              un oficial de policía sea acusado de mala conducta.
+            </li>
+            <li>
+              • El organismo dirigido por ciudadanos determina entonces la
+              sanción para el oficial, si se le encuentra culpable, desde
+              capacitaciones en el aula hasta la destitución.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">
+        Encarcelamiento por Delitos No Violentos
+      </h1>
+      <p class="max-w-md mx-auto mb-16">
+        La actividad policial tiene raíces y conexiones con los cazadores de
+        esclavos del Sur de la anteguerra. <strong
+          >El encarcelamiento por delitos no violentos existe, hoy en día, como
+          una cadena</strong
+        > para alimentar a las prisiones con fines de lucro con personas indeseables
+        para obtener mano de obra barata y extorsión.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problema" Icon={CircleAlert}
+          >La mayoría de las personas en la cárcel están allí por delitos no
+          violentos, incluyendo infracciones de tráfico, desorden público,
+          cargos por drogas, daños a la propiedad y episodios de salud mental.</Blurb
+        >
+        <Blurb title="Solución" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Ampliar el programa STAR (Respuesta Asistida por Equipo de
+              Apoyo) en Denver a un programa de 24 horas.
+            </li>
+            <li>
+              • Cambiar la respuesta predeterminada del Operador del 911 al
+              envío de STAR, escalando a una respuesta policial tradicional solo
+              si se prevé violencia.
+            </li>
+            <li>
+              • Reducir las sanciones predeterminadas para muchos delitos no
+              violentos a citaciones en lugar de tiempo en prisión.
+            </li>
+            <li>
+              • Ampliar el uso del arresto domiciliario, la libertad laboral, la
+              rehabilitación y el tratamiento, y la libertad condicional como
+              alternativas a la cárcel para reincidentes.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Multas, Cargos y Tribulaciones</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Las multas y cargos monetarios suelen imponerse precisamente a las
+        poblaciones que menos pueden pagarlos. También influyen en las
+        motivaciones de las fuerzas del orden y pueden desviarlas de su objetivo
+        principal: la seguridad pública.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problema" Icon={CircleAlert}
+          >Las sanciones para muchos delitos menores son monetarias,
+          pervirtiendo el propósito de la justicia restaurativa al empujar al
+          infractor aún más hacia la desesperación.</Blurb
+        >
+        <Blurb title="Solución" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Cambiar las sanciones predeterminadas para muchos delitos
+              menores a servicio comunitario y capacitaciones obligatorias.
+            </li>
+          </ul>
+        </Blurb>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Espanol>

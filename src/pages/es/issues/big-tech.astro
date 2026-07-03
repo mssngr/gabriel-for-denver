@@ -1,0 +1,110 @@
+---
+import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
+import bigTech from "../../../assets/big-tech.svg";
+import Blurb from "../../../components/blurb.astro";
+import Footer from "../../../components/footer.astro";
+import Default from "../../../layouts/default.astro";
+---
+
+<Default>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <a href="/es/issues#retos" class="link inline-flex items-center mb-8"
+          ><ArrowLeft class="size-4" />Volver a los Retos</a
+        >
+        <h1>Gran Tecnología</h1>
+        <p>
+          Desde la vigilancia que monitorea nuestros hábitos diarios, los
+          centros de datos que secan nuestros lagos y ríos, y la promesa vacía
+          de empleos que terminan siendo ocupados por solicitantes de fuera del
+          estado, la gran tecnología ha traído tanto daño a Denver como
+          inversión económica. <strong>Ya es suficiente.</strong>
+        </p>
+      </div>
+      <img
+        src={bigTech.src}
+        alt="Dibujo de una persona siendo absorbida por dispositivos"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Surveillance</h1>
+      <p class="max-w-md mx-auto mb-16">
+        AI-powered surveillance is turning Denver into a digital police state.
+        One officer told a Denver woman,{" "}
+        <b
+          >"You can’t get a breath of fresh air in or out of that place without
+          us knowing."</b
+        >
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >Warrantless surveillance of all drivers by automatic license plate
+          readers throughout Denver is unconstitutional.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Ban automatic license plate readers from tracking every single
+              Denver driver's license plate.
+            </li>
+            <li>
+              • Require warrants to allow Denver police officers to track a
+              single license plate through these readers.
+            </li>
+            <li>
+              • Require Axon or other providers we work with to update their
+              code to only save license plates that have warrants in their
+              database.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">Data Centers</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Denver is home to <strong>58 data centers.</strong> The ecological impacts
+        are many, including the massive amounts of fossil fuels burnt to power them,
+        the heat islands they create around them, and the millions of liters of water
+        they consume to cool down.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >Approximately 97% of Colorado is under drought restrictions,
+          currently. Yet, we only have a 1 year moratorium on new data centers
+          that ends in 6 months.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          >Pass a ban on new data centers in Denver until technologies exist to
+          offset the ecological impacts.</Blurb
+        >
+      </div>
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">The Promise of Jobs</h1>
+      <p class="max-w-md mx-auto mb-16">
+        Big tech companies always come into cities promising jobs, but often
+        those jobs are filled by <strong>out-of-state applicants</strong> if they
+        are created, at all.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problem" Icon={CircleAlert}
+          >About 1 in 25 Denverites you meet are unemployed, yet companies bring
+          their own workforce with them, not benefiting existing Denver
+          residents.</Blurb
+        >
+        <Blurb title="Solution" Icon={CircleCheck}
+          >Require out of state companies that move into Denver to hire a
+          portion of their workforce from locals.</Blurb
+        >
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Default>

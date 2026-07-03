@@ -1,0 +1,43 @@
+---
+import { ArrowRight } from "@lucide/astro";
+import logo from "../assets/full-logo.svg";
+---
+
+<div
+  class="w-full h-40 md:h-48 p-4 md:px-16 md:py-8 flex items-start md:items-center justify-between"
+>
+  <a class="h-full" href="/es"><img class="h-full" src={logo.src} /></a>
+  <div>
+    <ul
+      class="ml-6 menu menu-horizontal px-1 text-lg md:text-2xl font-semibold"
+    >
+      <li>
+        <details>
+          <summary class="md:text-2xl">Retos de Denver</summary>
+          <ul class="bg-base-100 rounded-t-none p-2 z-10">
+            <li>
+              <a href="/es/issues/affordability">Asequibilidad</a>
+            </li>
+            <li><a href="/es/issues/housing-crisis">Crisis de Vivienda</a></li>
+            <li>
+              <a href="/es/issues/criminal-injustice">Injusticia Penal</a>
+            </li>
+            <li>
+              <a href="/es/issues/food-security">Seguridad Alimentaria</a>
+            </li>
+            <li><a href="/es/issues/homelessness">Personas sin Hogar</a></li>
+            <li><a href="/es/issues/big-tech">Grandes Tecnológicas</a></li>
+            <li>
+              <a href="/es/issues" class="inline-flex items-center"
+                >Ver Todos <ArrowRight class="size-4" /></a
+              >
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li><a class="md:text-2xl" href="/es/why-me">¿Por qué yo?</a></li>
+      <li><a class="md:text-2xl" href="/es#involucrate">Involúcrate</a></li>
+    </ul>
+  </div>
+  <a href="/" class="link mt-4 md:mt-0">Inglés</a>
+</div>

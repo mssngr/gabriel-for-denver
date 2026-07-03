@@ -1,0 +1,145 @@
+---
+import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
+import homelessness from "../../../assets/homelessness.svg";
+import Blurb from "../../../components/blurb.astro";
+import Footer from "../../../components/footer-espanol.astro";
+import Input from "../../../components/input.astro";
+import Textarea from "../../../components/textarea.astro";
+import Espanol from "../../../layouts/espanol.astro";
+---
+
+<Espanol>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <a href="/es/issues#retos" class="link inline-flex items-center mb-8"
+          ><ArrowLeft class="size-4" />Volver a los Retos</a
+        >
+        <h1>Personas sin Hogar</h1>
+        <p>
+          Desde mis veintitantos años, he trabajado con nuestros vecinos que
+          enfrentan la situación de no tener hogar. Es hora de dejar de lado los
+          conceptos erróneos y los miedos injustificados. <strong
+            >El número de personas sin hogar en Denver casi se ha duplicado
+            desde 2019.</strong
+          > Pongamos un techo sobre la cabeza de cada habitante de Denver.
+        </p>
+        <a class="btn btn-primary mt-8" href="#participa">Participa</a>
+      </div>
+      <img
+        src={homelessness.src}
+        alt="Dibujo de una mujer sola"
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Vivienda Primero</h1>
+      <p class="max-w-md mx-auto mb-16">
+        <strong>Las políticas de vivienda primero funcionan.</strong> Es decir, las
+        personas sin hogar no necesitan resolver todos sus problemas antes de poder
+        acceder a una vivienda.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problema" Icon={CircleAlert}
+          >27,000 unidades de alquiler están vacías en nuestra ciudad mientras
+          10,000 de nuestros vecinos siguen sin hogar.</Blurb
+        >
+        <Blurb title="Solución" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Establecer un impuesto sobre las unidades de alquiler que
+              permanezcan vacías en Denver.
+            </li>
+            <li>
+              • Los ingresos de este impuesto se destinan directamente a
+              proporcionar vivienda gratuita.
+            </li>
+            <li>
+              • Exigir un porcentaje fijo de viviendas de bajos ingresos en
+              Denver.
+            </li>
+            <li>
+              • Aumentar el número de refugios en Denver y reducir sus
+              requisitos.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section>
+      <h1 class="text-center mb-16!">Fin a los Desalojos</h1>
+      <p class="max-w-md mx-auto mb-16">
+        "Un estudio del Journal of Urban Health encontró que los desalojos de
+        campamentos de personas sin hogar en Denver no tuvieron ningún efecto en
+        la reducción de la delincuencia.
+      </p>
+      <div class="flex gap-8 justify-center">
+        <Blurb title="Problema" Icon={CircleAlert}
+          >Nuestros vecinos sin hogar enfrentan conceptos erróneos
+          discriminatorios y desalojos inhumanos por parte de la ciudad. Estos
+          desalojos no resuelven ningún problema. Solo los crean.</Blurb
+        >
+        <Blurb title="Solución" Icon={CircleCheck}
+          ><ul class="mt-2">
+            <li>
+              • Prohibir los desalojos de campamentos de personas sin hogar en
+              Denver.
+            </li>
+            <li>
+              • Centrar los esfuerzos en proporcionar vivienda y servicios a
+              quienes viven en campamentos.
+            </li>
+          </ul></Blurb
+        >
+      </div>
+    </section>
+    <section
+      id="participa"
+      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Participa</h1>
+      <div class="flex flex-wrap items-center justify-center gap-16">
+        <form
+          class="w-xs flex flex-col items-end text-black!"
+          action="https://api.web3forms.com/submit"
+          method="POST"
+        >
+          <input
+            type="hidden"
+            name="access_key"
+            value="a5af05ef-33e3-424d-b4bd-2f900039335b"
+          />
+          <Input
+            name="name"
+            label="Nombre"
+            placeholder="Juana Pérez"
+            required
+          />
+          <Input
+            type="email"
+            name="email"
+            label="Correo electrónico"
+            placeholder="juana.perez@gmail.com"
+            required
+          />
+          <Textarea
+            name="message"
+            label="Mensaje"
+            placeholder="¡Apúntame!"
+            required
+          />
+          <button type="submit" class="btn btn-accent mt-4">Enviar</button>
+        </form>
+        <Blurb title="Kits for the Unhoused"
+          >Estamos preparando kits de supervivencia para personas sin hogar en
+          la Iglesia Cameron el 12 de julio a las 11am. ¡Únete a nosotros para
+          mejorar la vida de nuestros vecinos sin hogar que vemos todos los
+          días! Envíame un mensaje y te responderé con los detalles.</Blurb
+        >
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Espanol>
