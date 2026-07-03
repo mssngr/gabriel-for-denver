@@ -2,11 +2,11 @@
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import bigTech from "../../../assets/big-tech.svg";
 import Blurb from "../../../components/blurb.astro";
-import Footer from "../../../components/footer.astro";
-import Default from "../../../layouts/default.astro";
+import Footer from "../../../components/footer-espanol.astro";
+import Espanol from "../../../layouts/espanol.astro";
 ---
 
-<Default>
+<Espanol>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
@@ -31,80 +31,84 @@ import Default from "../../../layouts/default.astro";
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center mb-16!">Surveillance</h1>
+      <h1 class="text-center mb-16!">Vigilancia</h1>
       <p class="max-w-md mx-auto mb-16">
-        AI-powered surveillance is turning Denver into a digital police state.
-        One officer told a Denver woman,{" "}
+        La vigilancia impulsada por inteligencia artificial está convirtiendo a
+        Denver en un estado policial digital. Un oficial le dijo a una mujer de
+        Denver,{" "}
         <b
-          >"You can’t get a breath of fresh air in or out of that place without
-          us knowing."</b
+          >"No puedes tomar ni una bocanada de aire fresco dentro o fuera de ese
+          lugar sin que lo sepamos."</b
         >
       </p>
       <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
-          >Warrantless surveillance of all drivers by automatic license plate
-          readers throughout Denver is unconstitutional.</Blurb
+        <Blurb title="Problema" Icon={CircleAlert}
+          >La vigilancia de IA sin orden judicial de los movimientos diarios de
+          los conductores mediante lectores automáticos de placas en todo Denver
+          es inconstitucional.</Blurb
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Blurb title="Solución" Icon={CircleCheck}
           ><ul class="mt-2">
             <li>
-              • Ban automatic license plate readers from tracking every single
-              Denver driver's license plate.
+              • Prohibir que los lectores automáticos de placas rastreen los
+              movimientos de cada conductor en Denver.
             </li>
             <li>
-              • Require warrants to allow Denver police officers to track a
-              single license plate through these readers.
+              • Exigir órdenes judiciales para permitir que los oficiales de la
+              Policía de Denver rastreen a los conductores a través de estos
+              lectores.
             </li>
             <li>
-              • Require Axon or other providers we work with to update their
-              code to only save license plates that have warrants in their
-              database.
+              • Exigir a Axon u otros proveedores con los que trabajamos que
+              actualicen su software para guardar únicamente los movimientos de
+              las placas que tengan órdenes judiciales en su base de datos.
             </li>
           </ul></Blurb
         >
       </div>
     </section>
     <section>
-      <h1 class="text-center mb-16!">Data Centers</h1>
+      <h1 class="text-center mb-16!">Centros de Datos</h1>
       <p class="max-w-md mx-auto mb-16">
-        Denver is home to <strong>58 data centers.</strong> The ecological impacts
-        are many, including the massive amounts of fossil fuels burnt to power them,
-        the heat islands they create around them, and the millions of liters of water
-        they consume to cool down.
+        Denver alberga <strong>58 centros de datos.</strong> Los impactos ecológicos
+        son muchos, incluyendo las enormes cantidades de combustibles fósiles quemados
+        para alimentarlos, las islas de calor que crean a su alrededor y los millones
+        de litros de agua que consumen para enfriarse.
       </p>
       <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
-          >Approximately 97% of Colorado is under drought restrictions,
-          currently. Yet, we only have a 1 year moratorium on new data centers
-          that ends in 6 months.</Blurb
+        <Blurb title="Problema" Icon={CircleAlert}
+          >Aproximadamente el 97% de Colorado está actualmente bajo
+          restricciones por sequía. Sin embargo, solo tenemos una moratoria de 1
+          año sobre nuevos centros de datos que termina en 6 meses.</Blurb
         >
-        <Blurb title="Solution" Icon={CircleCheck}
-          >Pass a ban on new data centers in Denver until technologies exist to
-          offset the ecological impacts.</Blurb
+        <Blurb title="Solución" Icon={CircleCheck}
+          >Aprobar una prohibición sobre nuevos centros de datos en Denver hasta
+          que existan tecnologías para compensar los impactos ecológicos.</Blurb
         >
       </div>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center mb-16!">The Promise of Jobs</h1>
+      <h1 class="text-center mb-16!">La Promesa de Empleos</h1>
       <p class="max-w-md mx-auto mb-16">
-        Big tech companies always come into cities promising jobs, but often
-        those jobs are filled by <strong>out-of-state applicants</strong> if they
-        are created, at all.
+        Las grandes empresas tecnológicas siempre llegan a las ciudades
+        prometiendo empleos, pero a menudo esos empleos son ocupados por <strong
+          >solicitantes de fuera del estado</strong
+        > si es que se crean.
       </p>
       <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
-          >About 1 in 25 Denverites you meet are unemployed, yet companies bring
-          their own workforce with them, not benefiting existing Denver
-          residents.</Blurb
+        <Blurb title="Problema" Icon={CircleAlert}
+          >Aproximadamente 1 de cada 25 habitantes de Denver que conoces está
+          desempleado, sin embargo las empresas traen su propia fuerza laboral
+          consigo, sin beneficiar a los residentes existentes de Denver.</Blurb
         >
-        <Blurb title="Solution" Icon={CircleCheck}
-          >Require out of state companies that move into Denver to hire a
-          portion of their workforce from locals.</Blurb
+        <Blurb title="Solución" Icon={CircleCheck}
+          >Exigir a las empresas foráneas que se instalen en Denver que
+          contraten a una parte de su personal de entre los locales.</Blurb
         >
       </div>
     </section>
   </main>
   <Footer />
-</Default>
+</Espanol>
