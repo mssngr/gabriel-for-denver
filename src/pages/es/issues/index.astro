@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import city from "../../../assets/city.svg";
 import Footer from "../../../components/footer-espanol.astro";
 import WhatWillITackle from "../../../components/what-will-i-tackle-espanol.astro";
@@ -21,8 +22,8 @@ import Espanol from "../../../layouts/espanol.astro";
           en aportar soluciones en lugar de quejas. Aquí están las mías.
         </p>
       </div>
-      <img
-        src={city.src}
+      <Image
+        src={city}
         alt="Un recipiente de comida lleno de dinero"
         class="w-full max-w-md"
       />

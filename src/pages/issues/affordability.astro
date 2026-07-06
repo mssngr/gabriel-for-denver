@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import affordability from "../../assets/affordability.svg";
 import Blurb from "../../components/blurb.astro";
@@ -25,8 +26,8 @@ import Default from "../../layouts/default.astro";
           Why, then, should everyday families struggle to get those very things?
         </p>
       </div>
-      <img
-        src={affordability.src}
+      <Image
+        src={affordability}
         alt="Drawing of trap with money as the bait"
         class="w-full max-w-md"
       />

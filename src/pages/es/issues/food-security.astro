@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import foodSecurity from "../../../assets/food-security.svg";
 import Blurb from "../../../components/blurb.astro";
@@ -24,8 +25,8 @@ import Espanol from "../../../layouts/espanol.astro";
           >
         </p>
       </div>
-      <img
-        src={foodSecurity.src}
+      <Image
+        src={foodSecurity}
         alt="Un recipiente de comida lleno de dinero"
         class="w-full max-w-md"
       />

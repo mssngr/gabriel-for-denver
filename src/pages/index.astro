@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import lake from "../assets/lake.jpg";
 import Blurb from "../components/blurb.astro";
 import Footer from "../components/footer.astro";
 import Input from "../components/input.astro";
@@ -12,7 +14,7 @@ import Default from "../layouts/default.astro";
   <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="w-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>I'm running for Denver City Council At Large</h1>
+        <h1>I'm running for Denver City Council At Large B</h1>
         <p>
           Because Denver can be <strong
             >the community we've always wanted,</strong
@@ -20,11 +22,7 @@ import Default from "../layouts/default.astro";
         </p>
         <a class="btn btn-primary mt-8" href="/#get-involved">Get involved</a>
       </div>
-      <img
-        src="/assets/lake2.jpg"
-        alt="Photo of Gabriel"
-        class="w-full max-w-md"
-      />
+      <Image src={lake} alt="Photo of Gabriel" class="w-full max-w-md" />
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"

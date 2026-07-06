@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import injustice from "../../assets/injustice.svg";
 import Blurb from "../../components/blurb.astro";
@@ -28,8 +29,8 @@ import Default from "../../layouts/default.astro";
           be by the people and for the people. Not against the people.
         </p>
       </div>
-      <img
-        src={injustice.src}
+      <Image
+        src={injustice}
         alt="A drawing of a head in a cage"
         class="w-full max-w-md"
       />

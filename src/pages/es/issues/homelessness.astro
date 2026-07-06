@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import homelessness from "../../../assets/homelessness.svg";
 import Blurb from "../../../components/blurb.astro";
@@ -26,8 +27,8 @@ import Espanol from "../../../layouts/espanol.astro";
         </p>
         <a class="btn btn-primary mt-8" href="#participa">Participa</a>
       </div>
-      <img
-        src={homelessness.src}
+      <Image
+        src={homelessness}
         alt="Dibujo de una mujer sola"
         class="w-full max-w-md"
       />

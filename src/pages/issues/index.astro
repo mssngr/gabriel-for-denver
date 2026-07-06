@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import city from "../../assets/city.svg";
 import Footer from "../../components/footer.astro";
 import WhatWillITackle from "../../components/what-will-i-tackle.astro";
@@ -20,8 +21,8 @@ import Default from "../../layouts/default.astro";
           believe in bringing solutions instead of complaints. Here are mine.
         </p>
       </div>
-      <img
-        src={city.src}
+      <Image
+        src={city}
         alt="A food container full of money"
         class="w-full max-w-md"
       />

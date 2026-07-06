@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import bigTech from "../../../assets/big-tech.svg";
 import Blurb from "../../../components/blurb.astro";
@@ -22,8 +23,8 @@ import Espanol from "../../../layouts/espanol.astro";
           inversión económica. <strong>Ya es suficiente.</strong>
         </p>
       </div>
-      <img
-        src={bigTech.src}
+      <Image
+        src={bigTech}
         alt="Dibujo de una persona siendo absorbida por dispositivos"
         class="w-full max-w-md"
       />

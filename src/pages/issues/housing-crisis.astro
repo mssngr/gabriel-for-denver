@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import housingCrisis from "../../assets/housing-crisis.svg";
 import Blurb from "../../components/blurb.astro";
@@ -22,8 +23,8 @@ import Default from "../../layouts/default.astro";
           should not be something only accessible by the wealthy.
         </p>
       </div>
-      <img
-        src={housingCrisis.src}
+      <Image
+        src={housingCrisis}
         alt="Drawing of houses"
         class="w-full max-w-md"
       />

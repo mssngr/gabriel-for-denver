@@ -1,12 +1,32 @@
 ---
-import { ArrowRight } from "@lucide/astro";
-import logo from "../assets/full-logo.svg";
+import { Image } from "astro:assets";
+import {
+  Apple,
+  ArrowRight,
+  Coins,
+  DatabaseZap,
+  HouseHeart,
+  MapPinHouse,
+  Siren,
+} from "@lucide/astro";
+import logoDesktop from "../assets/gfd-banner.svg";
+import logoMobile from "../assets/gfd-mobile-banner.svg";
 ---
 
 <div
-  class="w-full h-40 md:h-48 p-4 md:px-16 md:py-8 flex items-start md:items-center justify-between"
+  class="w-full h-40 md:h-56 p-4 md:px-16 md:py-8 flex items-center justify-between"
 >
-  <a class="h-full" href="/es"><img class="h-full" src={logo.src} /></a>
+  <a class="w-32 h-32 md:w-fit md:h-44 shrink-0" href="/"
+    ><Image
+      class="md:hidden"
+      src={logoMobile}
+      alt="Logo that reads 'Gabriel for Denver'"
+    /><Image
+      class="max-md:hidden w-fit h-full"
+      src={logoDesktop}
+      alt="Logo that reads 'Gabriel for Denver'"
+    /></a
+  >
   <div>
     <ul
       class="ml-6 menu menu-horizontal px-1 text-lg md:text-2xl font-semibold"
@@ -16,17 +36,30 @@ import logo from "../assets/full-logo.svg";
           <summary class="md:text-2xl">Retos de Denver</summary>
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
-              <a href="/es/issues/affordability">Asequibilidad</a>
-            </li>
-            <li><a href="/es/issues/housing-crisis">Crisis de Vivienda</a></li>
-            <li>
-              <a href="/es/issues/criminal-injustice">Injusticia Penal</a>
+              <a href="/es/issues/affordability"><Coins />Asequibilidad</a>
             </li>
             <li>
-              <a href="/es/issues/food-security">Seguridad Alimentaria</a>
+              <a href="/es/issues/housing-crisis"
+                ><MapPinHouse />Crisis de Vivienda</a>
             </li>
-            <li><a href="/es/issues/homelessness">Personas sin Hogar</a></li>
-            <li><a href="/es/issues/big-tech">Grandes Tecnológicas</a></li>
+            <li>
+              <a href="/es/issues/criminal-injustice"
+                ><Siren />Injusticia Penal</a
+              >
+            </li>
+            <li>
+              <a href="/es/issues/food-security"
+                ><Apple />Seguridad Alimentaria</a
+              >
+            </li>
+            <li>
+              <a href="/es/issues/homelessness"
+                ><HouseHeart />Personas sin Hogar</a>
+            </li>
+            <li>
+              <a href="/es/issues/big-tech"
+                ><DatabaseZap />Grandes Tecnológicas</a>
+            </li>
             <li>
               <a href="/es/issues" class="inline-flex items-center"
                 >Ver Todos <ArrowRight class="size-4" /></a
@@ -39,5 +72,5 @@ import logo from "../assets/full-logo.svg";
       <li><a class="md:text-2xl" href="/es#involucrate">Involúcrate</a></li>
     </ul>
   </div>
-  <a href="/" class="link mt-4 md:mt-0">Inglés</a>
+  <a href="/" class="link mt-4 md:mt-0">English</a>
 </div>

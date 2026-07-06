@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import injustice from "../../../assets/injustice.svg";
 import Blurb from "../../../components/blurb.astro";
@@ -26,8 +27,8 @@ import Espanol from "../../../layouts/espanol.astro";
           deben ser del pueblo y para el pueblo. No en contra del pueblo.
         </p>
       </div>
-      <img
-        src={injustice.src}
+      <Image
+        src={injustice}
         alt="Un dibujo de una cabeza en una jaula"
         class="w-full max-w-md"
       />
