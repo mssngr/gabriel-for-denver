@@ -43,6 +43,7 @@ collections:
   - label: Issues
     name: issues
     folder: site/issues
+    extension: yml
     create: true
     fields:
       - { label: Title, name: title, widget: string }
