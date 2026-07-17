@@ -1,0 +1,52 @@
+backend:
+  name: github
+  repo: mssngr/gabriel-for-denver
+  branch: main
+media_folder: "src/assets/images"
+public_folder: "src/assets/images"
+site_url: https://gabrielfordenver.com
+collections:
+  - label: Pages
+    name: pages
+    files:
+      - label: "Home"
+        name: "home"
+        file: "site/pages/home.yml"
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo, name: photo, widget: image }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
+      - label: "Issues"
+        name: "issues"
+        file: "site/pages/issues.yml"
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo, name: photo, widget: image }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
+  - label: Issues
+    name: issues
+    folder: site/issues
+    create: true
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Title (Spanish), name: title_es, widget: string }
+      - { label: Content, name: content, widget: richtext }
+      - { label: Content (Spanish), name: content_es, widget: richtext }
+      - { label: Link, name: link, widget: string }
+      - { label: Lucide Icon, name: lucideIcon, widget: string }
