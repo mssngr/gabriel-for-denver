@@ -2,6 +2,7 @@ backend:
   name: github
   repo: mssngr/gabriel-for-denver
   branch: main
+  site_domain: cc88fea9-7fed-4590-ab0f-3312ac9f028c
 media_folder: "src/assets/images"
 public_folder: "src/assets/images"
 site_url: https://gabrielfordenver.com
