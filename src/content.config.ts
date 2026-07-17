@@ -1,8 +1,12 @@
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 
-const sections = defineCollection({
-  loader: glob({ pattern: '**/*.yml', base: './site/content' }),
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './site/pages' }),
 })
 
-export const collections = { sections }
+const issues = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './site/issues' }),
+})
+
+export const collections = { pages, issues }

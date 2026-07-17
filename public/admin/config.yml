@@ -9,9 +9,9 @@ collections:
   - label: Pages
     name: pages
     files:
-      - label: "Home"
-        name: "home"
-        file: "site/pages/home.yml"
+      - label: Home
+        name: home
+        file: site/pages/home.yml
         fields:
           - { label: Heading, name: heading, widget: string }
           - { label: Heading (Spanish), name: heading_es, widget: string }
@@ -24,9 +24,9 @@ collections:
               name: photoAltText_es,
               widget: string,
             }
-      - label: "Issues"
-        name: "issues"
-        file: "site/pages/issues.yml"
+      - label: Issues
+        name: issues
+        file: site/pages/issues.yml
         fields:
           - { label: Heading, name: heading, widget: string }
           - { label: Heading (Spanish), name: heading_es, widget: string }

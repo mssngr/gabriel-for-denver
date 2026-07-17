@@ -11,15 +11,15 @@ import Textarea from "../components/textarea.astro";
 import WhatWillITackle from "../components/what-will-i-tackle.astro";
 import Default from "../layouts/default.astro";
 
-const intro = await getEntry("sections", "intro");
-const content = marked.parse(intro.data?.content);
+const page = await getEntry("pages", "home");
+const content = marked.parse(page.data?.content);
 ---
 
 <Default>
   <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="w-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>{intro.data?.heading}</h1>
+        <h1>{page.data?.heading}</h1>
         <p><Fragment set:html={content} /></p>
         <a class="btn btn-primary mt-8" href="/#get-involved">Get involved</a>
       </div>
