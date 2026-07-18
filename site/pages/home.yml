@@ -1,2 +1,9 @@
 heading: I'm running for Denver City Council At Large B
-content: Because Denver can be **the community we've always wanted,** or it can be a playground for corporate interests.
+heading_es: Estoy corriendo para el Concejo Municipal de Denver en General B
+content: Because Denver can be **the community we've always wanted,** or it can
+  be a playground for corporate interests.
+content_es: Porque Denver puede ser **la comunidad que siempre hemos
+  querido,** o puede ser un patio de recreo para los intereses corporativos.
+photo: src/assets/images/gabriel-with-city.jpg
+photoAltText: Photo of Gabriel standing in front of Denver
+photoAltText_es: Foto de Gabriel de pie frente a Denver
