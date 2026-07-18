@@ -23,38 +23,40 @@
   @apply rounded-2xl text-2xl p-6 font-semibold;
 }
 
-html,
-body {
-  margin: 0;
-  width: 100%;
-  min-height: 100%;
-  background: radial-gradient(circle at 50% 10%, #edf2ff, #81a3ff);
-}
+@layer base {
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+    background: radial-gradient(circle at 50% 10%, #edf2ff, #81a3ff);
+  }
 
-h1 {
-  font-size: 3rem;
-  line-height: 1;
-  font-weight: 700;
-  margin-bottom: 1rem;
-}
+  h1 {
+    font-size: 3rem;
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
 
-h2 {
-  font-size: 1.875rem;
-  line-height: 1;
-  font-weight: 600;
-  margin-bottom: 1rem;
-}
+  h2 {
+    font-size: 1.875rem;
+    line-height: 1;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
 
-p {
-  font-size: 1.5rem;
-  line-height: 1.333333;
-}
+  p {
+    font-size: 1.5rem;
+    line-height: 1.333333;
+  }
 
-small {
-  font-size: 1rem;
-  line-height: 1.5;
-}
+  small {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 
-li {
-  font-size: 1.125rem;
+  li {
+    font-size: 1.125rem;
+  }
 }

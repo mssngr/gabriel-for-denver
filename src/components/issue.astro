@@ -5,5 +5,5 @@ const { Icon, title } = Astro.props;
 <div class="w-2xs text-center flex flex-col items-center">
   {Icon && <Icon class="size-20 mb-6" />}
   <h2>{title}</h2>
-  <p><slot /></p>
+  <div class="[&_p]:font-light"><slot /></div>
 </div>

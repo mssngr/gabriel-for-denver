@@ -18,9 +18,12 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
         <Issue Icon={Icon} title={issue.data.title_es}>
           <Fragment set:html={content} />
           <br />
-          <br />
-          <a class="link font-medium" href={`es/issues/${issue.data.slug}`}>
-            Read More
+          <a
+            class="link font-medium text-2xl"
+            href={`/es/issues/${issue.data.slug}`}
+          >
+            Leer Más
+            <icons.ArrowRight class="size-6 inline-block align-middle ml-2" />
           </a>
         </Issue>
       );

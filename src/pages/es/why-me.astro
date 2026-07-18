@@ -1,8 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import meAndMicala from "../../assets/me-and-micala.jpg";
-import Footer from "../../components/footer-espanol.astro";
-import MyBackground from "../../components/my-background-espanol.astro";
+import Endorsements from "../../components/endorsements-es.astro";
+import Footer from "../../components/footer-es.astro";
+import MyBackground from "../../components/my-background-es.astro";
 import Espanol from "../../layouts/espanol.astro";
 ---
 
@@ -94,24 +95,7 @@ import Espanol from "../../layouts/espanol.astro";
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center mb-16!">Respaldos</h1>
-      <p class="max-w-xl mx-auto">
-        <span class="font-medium"
-          >“Qué liberal sensiblero y mal perdedor.”
-        </span><span class="font-light"> – Alguien en Facebook</span>
-        <br /><br />
-        <span class="font-medium">“¿Será todo, señora?” </span><span
-          class="font-light"
-        >
-          – En el autoservicio</span
-        >
-        <br /><br />
-        <span class="font-medium"
-          >“Por favor, realmente creo que necesitas volver a leer la Biblia...
-          Pareces tener mucho odio en tu corazón. Por favor, reconcíliate con
-          Dios. Me preocupas.”
-        </span><span class="font-light"> – Mi bienintencionada tía</span>
-      </p>
+      <Endorsements />
     </section>
   </main>
   <Footer />
