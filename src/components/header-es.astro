@@ -9,14 +9,17 @@ import {
   MapPinHouse,
   Siren,
 } from "@lucide/astro";
+import { Astro } from "astro";
 import logoDesktop from "../assets/gfd-banner.svg";
 import logoMobile from "../assets/gfd-mobile-banner.svg";
+
+const currentPath = Astro.url.pathname;
 ---
 
 <div
   class="w-full h-40 md:h-56 p-4 md:px-16 md:py-8 flex items-center justify-between"
 >
-  <a class="w-32 h-32 md:w-fit md:h-44 shrink-0" href="/"
+  <a class="w-32 h-32 md:w-fit md:h-44 shrink-0" href="/es"
     ><Image
       class="md:hidden"
       src={logoMobile}
@@ -33,32 +36,52 @@ import logoMobile from "../assets/gfd-mobile-banner.svg";
     >
       <li>
         <details>
-          <summary class="md:text-2xl">Retos de Denver</summary>
+          <summary
+            class={`md:text-2xl ${currentPath.includes("/issues/") ? "text-primary font-black" : ""}`}
+            >Retos de Denver</summary
+          >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
-              <a href="/es/issues/affordability"><Coins />Asequibilidad</a>
+              <a
+                href="/es/issues/affordability"
+                class={`${currentPath === "/es/issues/affordability" ? "text-primary font-black" : ""}`}
+                ><Coins />Asequibilidad</a
+              >
             </li>
             <li>
-              <a href="/es/issues/housing-crisis"
-                ><MapPinHouse />Crisis de Vivienda</a>
+              <a
+                href="/es/issues/housing-crisis"
+                class={`${currentPath === "/es/issues/housing-crisis" ? "text-primary font-black" : ""}`}
+                ><MapPinHouse />Crisis de Vivienda</a
+              >
             </li>
             <li>
-              <a href="/es/issues/criminal-injustice"
+              <a
+                href="/es/issues/criminal-injustice"
+                class={`${currentPath === "/es/issues/criminal-injustice" ? "text-primary font-black" : ""}`}
                 ><Siren />Injusticia Penal</a
               >
             </li>
             <li>
-              <a href="/es/issues/food-security"
+              <a
+                href="/es/issues/food-security"
+                class={`${currentPath === "/es/issues/food-security" ? "text-primary font-black" : ""}`}
                 ><Apple />Seguridad Alimentaria</a
               >
             </li>
             <li>
-              <a href="/es/issues/homelessness"
-                ><HouseHeart />Personas sin Hogar</a>
+              <a
+                href="/es/issues/homelessness"
+                class={`${currentPath === "/es/issues/homelessness" ? "text-primary font-black" : ""}`}
+                ><HouseHeart />Personas sin Hogar</a
+              >
             </li>
             <li>
-              <a href="/es/issues/big-tech"
-                ><DatabaseZap />Grandes Tecnológicas</a>
+              <a
+                href="/es/issues/big-tech"
+                class={`${currentPath === "/es/issues/big-tech" ? "text-primary font-black" : ""}`}
+                ><DatabaseZap />Grandes Tecnológicas</a
+              >
             </li>
             <li>
               <a href="/es/issues" class="inline-flex items-center"
@@ -68,7 +91,12 @@ import logoMobile from "../assets/gfd-mobile-banner.svg";
           </ul>
         </details>
       </li>
-      <li><a class="md:text-2xl" href="/es/why-me">¿Por qué yo?</a></li>
+      <li>
+        <a
+          class={`md:text-2xl ${currentPath === "/es/why-me" ? "text-primary font-black" : ""}`}
+          href="/es/why-me">¿Por qué yo?</a
+        >
+      </li>
       <li><a class="md:text-2xl" href="/es#involucrate">Involúcrate</a></li>
     </ul>
   </div>

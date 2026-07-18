@@ -9,8 +9,11 @@ import {
   MapPinHouse,
   Siren,
 } from "@lucide/astro";
+import { Astro } from "astro";
 import logoDesktop from "../assets/gfd-banner.svg";
 import logoMobile from "../assets/gfd-mobile-banner.svg";
+
+const currentPath = Astro.url.pathname;
 ---
 
 <div
@@ -33,23 +36,52 @@ import logoMobile from "../assets/gfd-mobile-banner.svg";
     >
       <li>
         <details>
-          <summary class="md:text-2xl">Issues Denver faces</summary>
+          <summary
+            class={`md:text-2xl ${currentPath.includes("/issues/") ? "text-primary font-black" : ""}`}
+            >Issues Denver faces</summary
+          >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
-              <a href="/issues/affordability"><Coins />Affordability</a>
+              <a
+                href="/issues/affordability"
+                class={`${currentPath === "/issues/affordability" ? "text-primary font-black" : ""}`}
+                ><Coins />Affordability</a
+              >
             </li>
             <li>
-              <a href="/issues/housing-crisis"><MapPinHouse />Housing Crisis</a>
+              <a
+                href="/issues/housing-crisis"
+                class={`${currentPath === "/issues/housing-crisis" ? "text-primary font-black" : ""}`}
+                ><MapPinHouse />Housing Crisis</a
+              >
             </li>
             <li>
-              <a href="/issues/criminal-injustice"
-                ><Siren />Criminal Injustice</a>
+              <a
+                href="/issues/criminal-injustice"
+                class={`${currentPath === "/issues/criminal-injustice" ? "text-primary font-black" : ""}`}
+                ><Siren />Criminal Injustice</a
+              >
             </li>
-            <li><a href="/issues/food-security"><Apple />Food Security</a></li>
             <li>
-              <a href="/issues/homelessness"><HouseHeart />Homelessness</a>
+              <a
+                href="/issues/food-security"
+                class={`${currentPath === "/issues/food-security" ? "text-primary font-black" : ""}`}
+                ><Apple />Food Security</a
+              >
             </li>
-            <li><a href="/issues/big-tech"><DatabaseZap />Big Tech</a></li>
+            <li>
+              <a
+                href="/issues/homelessness"
+                class={`${currentPath === "/issues/homelessness" ? "text-primary font-black" : ""}`}
+                ><HouseHeart />Homelessness</a
+              >
+            </li>
+            <li>
+              <a
+                href="/issues/big-tech"
+                class={`${currentPath === "/issues/big-tech" ? "text-primary font-black" : ""}`}
+                ><DatabaseZap />Big Tech</a>
+            </li>
             <li>
               <a href="/issues" class="inline-flex items-center"
                 >See All <ArrowRight class="size-4" /></a
@@ -58,7 +90,12 @@ import logoMobile from "../assets/gfd-mobile-banner.svg";
           </ul>
         </details>
       </li>
-      <li><a class="md:text-2xl" href="/why-me">Why me?</a></li>
+      <li>
+        <a
+          class={`md:text-2xl ${currentPath === "/why-me" ? "text-primary font-black" : ""}`}
+          href="/why-me">Why me?</a
+        >
+      </li>
       <li>
         <a class="md:text-2xl" href="/#get-involved">Get involved</a>
       </li>
