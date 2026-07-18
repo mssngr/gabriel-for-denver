@@ -1,13 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import {
-  Apple,
-  Coins,
-  DatabaseZap,
-  HouseHeart,
-  MapPinHouse,
-  Siren,
-} from "@lucide/astro";
+import * as icons from "@lucide/astro";
 import Issue from "./issue.astro";
 
 const allIssues = await getCollection("issues");
@@ -15,6 +8,23 @@ const allIssues = await getCollection("issues");
 
 <h1 class="text-center mb-16!">What will I tackle?</h1>
 <div class="flex flex-wrap gap-16 justify-center">
+  <!-- {
+    allIssues.map((issue) => {
+      const Icon = icons[issue.data.icon];
+      return (
+        <Issue Icon={Icon} title={issue.data.title}>
+          {issue.data.content}
+          <>
+            <br />
+            <br />
+          </>
+          <a class="link font-medium" href={`/issues/${issue.slug}`}>
+            Read More
+          </a>
+        </Issue>
+      );
+    })
+  } -->
   <Issue Icon={Coins} title="Affordability"
     >Average rent in Denver increased by 45% over the past 10 years. Gas
     increased by 100%. Food by 44%. Have your wages kept up? Workers' rights are
