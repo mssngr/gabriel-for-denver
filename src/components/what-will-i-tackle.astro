@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import {
   Apple,
   Coins,
@@ -8,6 +9,8 @@ import {
   Siren,
 } from "@lucide/astro";
 import Issue from "./issue.astro";
+
+const allIssues = await getCollection("issues");
 ---
 
 <h1 class="text-center mb-16!">What will I tackle?</h1>

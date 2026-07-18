@@ -52,3 +52,4 @@ collections:
       - { label: Content (Spanish), name: content_es, widget: richtext }
       - { label: Link, name: link, widget: string }
       - { label: Lucide Icon, name: lucideIcon, widget: string }
+      - { label: Order, name: order, widget: number }
