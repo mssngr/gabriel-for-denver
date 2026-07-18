@@ -1,29 +1,25 @@
 ---
 import { Image } from "astro:assets";
+import { getEntry, render } from "astro:content";
+import { marked } from "marked";
 import city from "../../../assets/city.svg";
 import WhatWillITackle from "../../../components/what-will-i-tackle-es.astro";
 import Espanol from "../../../layouts/espanol.astro";
+
+const page = await getEntry("pages", "issues");
+const content = marked.parse(page.data?.content_es);
 ---
 
 <Espanol>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>Retos que enfrenta Denver</h1>
-        <p>
-          Me encanta vivir en Denver. Es la única ciudad que verdaderamente
-          podría llamar hogar. Pero con la administración Trump apuntando contra
-          ella, el costo de vida por las nubes, la situación de personas sin
-          hogar aumentando rápidamente, la Policía de Denver evadiendo la
-          rendición de cuentas y las corporaciones tratando de aprovecharse de
-          nosotros, <strong>nuestro hogar está en peligro.</strong><br /><br
-          />Estoy cansado de esperar a que los políticos hagan lo correcto. Creo
-          en aportar soluciones en lugar de quejas. Aquí están las mías.
-        </p>
+        <h1>page.data.heading_es</h1>
+        <Fragment set:html={content} />
       </div>
       <Image
         src={city}
-        alt="Un recipiente de comida lleno de dinero"
+        alt={page.data.photoAltText_es}
         class="w-full max-w-md"
       />
     </section>

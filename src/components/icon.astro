@@ -1,0 +1,8 @@
+---
+import * as icons from "@lucide/astro";
+
+const props = Astro.props;
+const Icon = icons[props.name];
+---
+
+<Icon {...props} />

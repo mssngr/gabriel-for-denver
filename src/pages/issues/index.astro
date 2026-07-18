@@ -1,30 +1,23 @@
 ---
 import { Image } from "astro:assets";
+import { getEntry, render } from "astro:content";
+import { marked } from "marked";
 import city from "../../assets/city.svg";
 import WhatWillITackle from "../../components/what-will-i-tackle.astro";
 import Default from "../../layouts/default.astro";
+
+const page = await getEntry("pages", "issues");
+const content = marked.parse(page.data?.content);
 ---
 
 <Default>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>Issues Denver faces</h1>
-        <p>
-          I love living in Denver. It is the only city I truly think I could
-          call home. But with the Trump administration targeting it, the cost of
-          living going through the roof, homelessness rapidly rising, Denver
-          Police avoiding accountability, and corporations trying to take
-          advantage of us, <strong>our home is in danger.</strong><br /><br
-          />I'm tired of waiting for politicians to do the right thing. I
-          believe in bringing solutions instead of complaints. Here are mine.
-        </p>
+        <h1>{page.data.heading}</h1>
+        <Fragment set:html={content} />
       </div>
-      <Image
-        src={city}
-        alt="A food container full of money"
-        class="w-full max-w-md"
-      />
+      <Image src={city} alt={page.data.photoAltText} class="w-full max-w-md" />
     </section>
     <section
       id="what-will-i-tackle"

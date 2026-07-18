@@ -22,20 +22,18 @@ auth:
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 site_url: https://gabrielfordenver.com
 media_folder: "src/assets/images"
-public_folder: "src/assets/images"
 collections:
   - label: Pages
     name: pages
     files:
       - label: Home
         name: home
-        file: site/pages/home.yml
+        file: src/content/pages/home.yml
         fields:
           - { label: Heading, name: heading, widget: string }
           - { label: Heading (Spanish), name: heading_es, widget: string }
           - { label: Content, name: content, widget: richtext }
           - { label: Content (Spanish), name: content_es, widget: richtext }
-          - { label: Photo, name: photo, widget: image }
           - { label: Photo Alt Text, name: photoAltText, widget: string }
           - {
               label: Photo Alt Text (Spanish),
@@ -44,13 +42,12 @@ collections:
             }
       - label: Issues
         name: issues
-        file: site/pages/issues.yml
+        file: src/content/pages/issues.yml
         fields:
           - { label: Heading, name: heading, widget: string }
           - { label: Heading (Spanish), name: heading_es, widget: string }
           - { label: Content, name: content, widget: richtext }
           - { label: Content (Spanish), name: content_es, widget: richtext }
-          - { label: Photo, name: photo, widget: image }
           - { label: Photo Alt Text, name: photoAltText, widget: string }
           - {
               label: Photo Alt Text (Spanish),
@@ -59,7 +56,7 @@ collections:
             }
   - label: Issues
     name: issues
-    folder: site/issues
+    folder: src/content/issues
     extension: yml
     create: true
     fields:

@@ -15,7 +15,7 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
       const Icon = icons[issue.data.icon];
       const content = marked.parse(issue.data.content_es);
       return (
-        <Issue Icon={Icon} title={issue.data.title_es}>
+        <Issue icon={issue.data.lucideIcon} title={issue.data.title_es}>
           <Fragment set:html={content} />
           <br />
           <a

@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import * as icons from "@lucide/astro";
+import { ArrowRight } from "@lucide/astro";
 import { marked } from "marked";
 import Issue from "./issue.astro";
 
@@ -12,10 +12,9 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
 <div class="flex flex-wrap gap-16 justify-center">
   {
     sortedIssues.map((issue) => {
-      const Icon = icons[issue.data.icon];
       const content = marked.parse(issue.data.content);
       return (
-        <Issue Icon={Icon} title={issue.data.title}>
+        <Issue icon={issue.data.lucideIcon} title={issue.data.title}>
           <Fragment set:html={content} />
           <br />
           <a
@@ -23,7 +22,7 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
             href={`/issues/${issue.data.slug}`}
           >
             Read More
-            <icons.ArrowRight class="size-6 inline-block align-middle ml-2" />
+            <ArrowRight class="size-6 inline-block align-middle ml-2" />
           </a>
         </Issue>
       );
