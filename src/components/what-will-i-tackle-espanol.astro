@@ -1,73 +1,29 @@
 ---
-import {
-  Apple,
-  Coins,
-  DatabaseZap,
-  HouseHeart,
-  MapPinHouse,
-  Siren,
-} from "@lucide/astro";
+import { getCollection } from "astro:content";
+import * as icons from "@lucide/astro";
+import { marked } from "marked";
 import Issue from "./issue.astro";
+
+const allIssues = await getCollection("issues");
+const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <h1 class="text-center mb-16!">¿Qué voy a enfrentar?</h1>
 <div class="flex flex-wrap gap-16 justify-center">
-  <Issue Icon={Coins} title="Asequibilidad"
-    >El alquiler promedio en Denver aumentó un 45% en los últimos 10 años. La
-    gasolina aumentó un 100%. Los alimentos un 44%. ¿Sus salarios han seguido el
-    ritmo? Los derechos de los trabajadores son repetidamente recortados,
-    mientras que las corporaciones reciben pase libre. Denver debe ser una
-    ciudad para todos, no para el 1%.<br /><br /><a
-      class="link font-medium"
-      href="/es/issues/affordability">Leer Más</a
-    ></Issue
-  >
-  <Issue Icon={MapPinHouse} title="Crisis de Vivienda"
-    >Las empresas de California y China que compran casas en los vecindarios
-    solo para darles vuelta, cobrar rentas exorbitantes o construir grandes
-    torres de apartamentos de lujo no benefician a nadie más que a California y
-    China. Resolver la crisis de vivienda de Denver comienza con la propiedad de
-    Denver.<br /><br /><a
-      class="link font-medium"
-      href="/es/issues/housing-crisis">Leer Más</a
-    ></Issue
-  >
-  <Issue Icon={Siren} title="Injusticia Criminal"
-    >La mayoría de las personas terminan en la cárcel por delitos menores y no
-    violentos, lo que lleva a una cadena intencional de personas vulnerables que
-    son canalizadas hacia sistemas penitenciarios con fines de lucro que
-    implementan la esclavitud moderna en Colorado. Estos sistemas racistas y
-    capacitistas deben ser eludidos.<br /><br /><a
-      class="link font-medium"
-      href="/es/issues/criminal-injustice">Leer Más</a
-    ></Issue
-  >
-  <Issue Icon={Apple} title="Seguridad Alimentaria"
-    >Como alguien que se saltó comidas porque no podía costear comida, comiendo
-    hielo para sentirme lleno, sé de primera mano lo importante que es la
-    seguridad alimentaria para la salud y el bienestar mental. Merecemos
-    alimentos saludables para todos los habitantes de Denver.<br /><br /><a
-      class="link font-medium"
-      href="/es/issues/food-security">Leer Más</a
-    >
-  </Issue>
-  <Issue Icon={HouseHeart} title="Personas sin Hogar"
-    >Desde mis veintitantos años, he trabajado con nuestros vecinos que
-    enfrentan la situación de no tener hogar. Es hora de dejar de lado los
-    conceptos erróneos y los miedos injustificados. Las políticas que priorizan
-    la vivienda funcionan. Pongamos un techo sobre la cabeza de cada habitante
-    de Denver.<br /><br /><a
-      class="link font-medium"
-      href="/es/issues/homelessness">Leer Más</a
-    ></Issue
-  >
-  <Issue Icon={DatabaseZap} title="Gran Tecnología"
-    >La gran tecnología no nos salvará. Ni siquiera está *intentando* salvarnos.
-    Está tratando de ganar dinero a nuestra costa. Cuanto antes nos demos cuenta
-    de esto, más pronto podremos resistir sus esquemas para usar Denver como
-    punto de apoyo para la vigilancia, los centros de datos y la mano de obra
-    barata.<br /><br /><a class="link font-medium" href="/es/issues/big-tech"
-      >Leer Más</a
-    ></Issue
-  >
+  {
+    sortedIssues.map((issue) => {
+      const Icon = icons[issue.data.icon];
+      const content = marked.parse(issue.data.content_es);
+      return (
+        <Issue Icon={Icon} title={issue.data.title_es}>
+          <Fragment set:html={content} />
+          <br />
+          <br />
+          <a class="link font-medium" href={`es/issues/${issue.data.slug}`}>
+            Read More
+          </a>
+        </Issue>
+      );
+    })
+  }
 </div>

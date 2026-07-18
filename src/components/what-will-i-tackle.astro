@@ -1,80 +1,32 @@
 ---
 import { getCollection } from "astro:content";
 import * as icons from "@lucide/astro";
+import { marked } from "marked";
 import Issue from "./issue.astro";
 
 const allIssues = await getCollection("issues");
+const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <h1 class="text-center mb-16!">What will I tackle?</h1>
 <div class="flex flex-wrap gap-16 justify-center">
-  <!-- {
-    allIssues.map((issue) => {
+  {
+    sortedIssues.map((issue) => {
       const Icon = icons[issue.data.icon];
+      const content = marked.parse(issue.data.content);
       return (
         <Issue Icon={Icon} title={issue.data.title}>
-          {issue.data.content}
-          <>
-            <br />
-            <br />
-          </>
-          <a class="link font-medium" href={`/issues/${issue.slug}`}>
+          <Fragment set:html={content} />
+          <br />
+          <a
+            class="link font-medium text-2xl"
+            href={`/issues/${issue.data.slug}`}
+          >
             Read More
+            <icons.ArrowRight class="size-6 inline-block align-middle ml-2" />
           </a>
         </Issue>
       );
     })
-  } -->
-  <Issue Icon={Coins} title="Affordability"
-    >Average rent in Denver increased by 45% over the past 10 years. Gas
-    increased by 100%. Food by 44%. Have your wages kept up? Workers' rights are
-    repeatedly curtailed, while corporations get hall passes. Denver must be a
-    city for all, not the 1%.<br /><br /><a
-      class="link font-medium"
-      href="/issues/affordability">Read More</a
-    ></Issue
-  >
-  <Issue Icon={MapPinHouse} title="Housing Crisis"
-    >Companies from California and China buying up neighborhood homes only to
-    flip them/charge exorbitant rents or building giant, luxury apartment
-    high-rises benefits no one but California and China. Solving the Denver
-    housing crisis starts with Denver ownership.<br /><br /><a
-      class="link font-medium"
-      href="/issues/housing-crisis">Read More</a
-    ></Issue
-  >
-  <Issue Icon={Siren} title="Criminal Injustice"
-    >Most people end up in jail for low-level, non-violent crimes, leading to an
-    intentional pipeline of vulnerable people being funneled to for-profit
-    prison systems that implement modern day slavery in Colorado. These racist
-    and ableist systems must be circumvented.<br /><br /><a
-      class="link font-medium"
-      href="/issues/criminal-injustice">Read More</a
-    ></Issue
-  >
-  <Issue Icon={Apple} title="Food Security"
-    >As someone who skipped meals because I couldn't afford food, eating ice to
-    feel full, I know firsthand how important food security is to health and
-    mental well-being. We deserve healthy food for all Denverites.<br /><br /><a
-      class="link font-medium"
-      href="/issues/food-security">Read More</a
-    >
-  </Issue>
-  <Issue Icon={HouseHeart} title="Homelessness"
-    >Since my early twenties, I've worked with our neighbors experiencing
-    homelessness. It's time to set aside the misconceptions and unjustified
-    fears. Housing-first policies work. Let's put a roof over every Denverite's
-    head.<br /><br /><a class="link font-medium" href="/issues/homelessness"
-      >Read More</a
-    ></Issue
-  >
-  <Issue Icon={DatabaseZap} title="Big Tech"
-    >Big tech will not save us. They're not even <em>trying</em> to save us. They're
-    trying to make money off of us. The sooner we realize this, the sooner we can
-    push back against their schemes to use Denver as a foothold for surveillance,
-    data centers, and cheap labor.<br /><br /><a
-      class="link font-medium"
-      href="/issues/big-tech">Read More</a
-    ></Issue
-  >
+  }
 </div>
