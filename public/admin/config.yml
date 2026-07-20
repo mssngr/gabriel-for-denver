@@ -75,22 +75,10 @@ collections:
           widget: list,
           fields:
             [
-              { label: Sub-Issue Title, name: subIssueTitle, widget: string },
-              {
-                label: Sub-Issue Title (Spanish),
-                name: subIssueTitle_es,
-                widget: string,
-              },
-              {
-                label: Sub-Issue Summary,
-                name: subIssueSummary,
-                widget: richtext,
-              },
-              {
-                label: Sub-Issue Summary (Spanish),
-                name: subIssueSummary_es,
-                widget: richtext,
-              },
+              { label: Title, name: title, widget: string },
+              { label: Title (Spanish), name: title_es, widget: string },
+              { label: Summary, name: summary, widget: richtext },
+              { label: Summary (Spanish), name: summary_es, widget: richtext },
               {
                 label: Problems & Solutions,
                 name: problemsAndSolutions,

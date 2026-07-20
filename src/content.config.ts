@@ -21,12 +21,29 @@ const issues = defineCollection({
     z.object({
       title: z.string(),
       title_es: z.string(),
-      content: z.string(),
-      content_es: z.string(),
-      link: z.string(),
+      summary: z.string(),
+      summary_es: z.string(),
       slug: z.string(),
       lucideIcon: z.string(),
       order: z.number(),
+      subIssues: z
+        .array(
+          z.object({
+            title: z.string(),
+            title_es: z.string(),
+            summary: z.string(),
+            summary_es: z.string(),
+            problemsAndSolutions: z.array(
+              z.object({
+                problem: z.string(),
+                problem_es: z.string(),
+                solution: z.string(),
+                solution_es: z.string(),
+              }),
+            ),
+          }),
+        )
+        .optional(),
     }),
 })
 
