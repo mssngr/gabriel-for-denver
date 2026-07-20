@@ -8,6 +8,67 @@ summary_es: Desde mis veintitantos años, he trabajado con nuestros vecinos que
   conceptos erróneos y los miedos injustificados. Las políticas que priorizan la
   vivienda funcionan. Pongamos un techo sobre la cabeza de cada habitante de
   Denver.
+intro: Since my early twenties, I've worked with our neighbors experiencing
+  homelessness. It's time to set aside the misconceptions and unjustified
+  fears. **The number of unhoused individuals in Denver has nearly doubled since
+  2019.** Let's put a roof over every Denverite's head.
+intro_es: Desde mis veintitantos años, he trabajado con nuestros vecinos que
+  enfrentan la situación de no tener hogar. Es hora de dejar de lado los
+  conceptos erróneos y los miedos injustificados. **El número de personas sin
+  hogar en Denver casi se ha duplicado desde 2019.** Pongamos un techo sobre la
+  cabeza de cada habitante de Denver.
 slug: homelessness
 lucideIcon: HouseHeart
 order: 5
+subIssues:
+  - summary_es: "**Las políticas de vivienda primero funcionan.** Es decir, las
+      personas sin hogar no necesitan resolver todos sus problemas antes de
+      poder acceder a una vivienda."
+    title_es: Vivienda Primero
+    problemsAndSolutions:
+      - solution_es: >-
+          * • Establecer un impuesto sobre las unidades de alquiler que
+          permanezcan vacías en Denver.
+
+          * • Los ingresos de este impuesto se destinan directamente a proporcionar vivienda gratuita.
+
+          * • Exigir un porcentaje fijo de viviendas de bajos ingresos en Denver.
+
+          * • Aumentar el número de refugios en Denver y reducir sus requisitos.
+        problem_es: 27,000 unidades de alquiler están vacías en nuestra ciudad mientras
+          10,000 de nuestros vecinos siguen sin hogar.
+        problem: 27,000 rental units sit empty in our fair city while 10,000 of our
+          neighbors remain unhoused.
+        solution: >-
+          * • Institute a tax on rental units left vacant in Denver.
+
+          * • Revenue from this tax goes directly towards providing free housing.
+
+          * • Require a flat percentage of low-income housing in Denver.
+
+          * • Increase the number of shelters in Denver and reduce their requirements.
+    title: Housing-First
+    summary: "**Housing-first policies work.** Meaning, unhoused people don't need
+      to address all of their problems before they can access housing."
+  - summary_es: Un estudio del Journal of Urban Health encontró que los desalojos de
+      campamentos de personas sin hogar en Denver no tuvieron ningún efecto en
+      la reducción de la delincuencia.
+    title_es: Fin a los Desalojos
+    problemsAndSolutions:
+      - solution_es: >-
+          * • Prohibir los desalojos de campamentos de personas sin hogar en
+          Denver.
+
+          * • Centrar los esfuerzos en proporcionar vivienda y servicios a quienes viven en campamentos.
+        problem: Our unhoused neighbors face discriminatory misconceptions and inhumane
+          sweeps from the city. These sweeps solve no problems. They only create
+          them.
+        problem_es: Nuestros vecinos sin hogar enfrentan conceptos erróneos
+          discriminatorios y desalojos inhumanos por parte de la ciudad. Estos
+          desalojos no resuelven ningún problema. Solo los crean.
+        solution: |-
+          * • Ban unhoused encampment sweeps in Denver.
+          * • Focus efforts on providing housing and services to those in camps.
+    title: End Sweeps
+    summary: A study by the Journal of Urban Health found that sweeps of unhoused
+      encampments in Denver had no effect on reducing crime.
