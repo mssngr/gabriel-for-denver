@@ -6,5 +6,5 @@ const { Icon, title } = Astro.props;
   <h2 class="inline-flex gap-2 items-center">
     {Icon && <Icon class="size-8" />}{title}
   </h2>
-  <p class="text-lg! font-light max-w-md"><slot /></p>
+  <div class="[&_p]:text-lg! font-light max-w-md"><slot /></div>
 </div>

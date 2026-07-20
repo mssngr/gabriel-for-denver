@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { ArrowLeft } from "@lucide/astro";
+import { marked } from "marked";
+import affordability from "../../assets/affordability.svg";
+import bigTech from "../../assets/big-tech.svg";
+import foodSecurity from "../../assets/food-security.svg";
+import homelessness from "../../assets/homelessness.svg";
+import housingCrisis from "../../assets/housing-crisis.svg";
+import injustice from "../../assets/injustice.svg";
+import ProblemSolution from "../../components/problem-solution.astro";
+import Default from "../../layouts/default.astro";
+
+export async function getStaticPaths() {
+  const issues = await getCollection("issues");
+  return issues.map((issue) => ({
+    params: { id: issue.data.slug },
+    props: { issue },
+  }));
+}
+
+const { issue } = Astro.props;
+const intro = marked.parse(issue.data?.intro);
+const image = {
+  affordability,
+  "big-tech": bigTech,
+  "food-security": foodSecurity,
+  homelessness,
+  "housing-crisis": housingCrisis,
+  "criminal-injustice": injustice,
+}[issue.data.slug];
+const imageAlt = {
+  affordability: "Drawing of trap with money as the bait",
+  "big-tech": "Drawing of person getting sucked into devices",
+  "food-security": "A food container full of money",
+  homelessness: "Drawing of woman alone",
+  "housing-crisis": "Drawing of houses",
+  "criminal-injustice": "A drawing of a head in a cage",
+}[issue.data.slug];
+---
+
+<Default>
+  <main
+    class={`h-full p-8 md:p-16 flex flex-col gap-32 ${issue.data.subIssues.length % 2 == 0 ? "pb-32! md:pb-32!" : "pb-0! md:pb-0!"}`}
+  >
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <a
+          href="/issues#what-will-i-tackle"
+          class="link inline-flex items-center mb-8"
+          ><ArrowLeft class="size-4" />Back to Issues</a
+        >
+        <h1>{issue.data.title}</h1>
+        <Fragment set:html={intro} />
+      </div>
+      <Image src={image} alt={imageAlt} class="w-full max-w-md" />
+    </section>
+    {
+      issue.data.subIssues.map(async (subIssue, index) => {
+        const subIssueSummary = marked.parse(subIssue.summary);
+        return (
+          <section
+            key={subIssue.title}
+            class={
+              index === 0
+                ? "w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+                : index === 2
+                  ? "w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+                  : undefined
+            }
+          >
+            <h1 class="text-center mb-16!">{subIssue.title}</h1>
+            <div class="max-w-md mx-auto mb-16" set:html={subIssueSummary} />
+            {subIssue.problemsAndSolutions.map(
+              async (problemAndSolution, index) => {
+                const problem = marked.parse(problemAndSolution.problem);
+                const solution = marked.parse(problemAndSolution.solution);
+                return (
+                  <ProblemSolution key={`ProblemSolution-${index + 1}`}>
+                    <Fragment slot="problem" set:html={problem} />
+                    <Fragment slot="solution" set:html={solution} />
+                  </ProblemSolution>
+                );
+              },
+            )}
+          </section>
+        );
+      })
+    }
+  </main>
+</Default>

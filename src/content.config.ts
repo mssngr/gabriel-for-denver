@@ -23,6 +23,8 @@ const issues = defineCollection({
       title_es: z.string(),
       summary: z.string(),
       summary_es: z.string(),
+      intro: z.string(),
+      intro_es: z.string(),
       slug: z.string(),
       lucideIcon: z.string(),
       order: z.number(),
