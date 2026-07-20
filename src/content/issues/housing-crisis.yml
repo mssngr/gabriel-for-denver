@@ -9,6 +9,81 @@ summary_es: Las empresas de California y China que compran casas en los
   grandes torres de apartamentos de lujo no benefician a nadie más que a
   California y China. Resolver la crisis de vivienda de Denver comienza con la
   propiedad de Denver.
+intro: Housing is a **human right, not a commodity,** as enshrined by Eleanor
+  Roosevelt and the United Nations. Adequate and affordable housing should not
+  be something only accessible by the wealthy.
+intro_es: La vivienda es un **derecho humano, no una mercancía,** tal como lo
+  consagraron Eleanor Roosevelt y las Naciones Unidas. Una vivienda adecuada y
+  asequible no debería ser algo accesible únicamente para los adinerados.
 slug: housing-crisis
 lucideIcon: MapPinHouse
 order: 2
+subIssues:
+  - summary_es: En los últimos 10 años, el alquiler promedio aumentó un 45%, pero el
+      ingreso familiar medio en Denver solo subió un 28%. Es decir, **la renta
+      aumentó a casi el doble de la velocidad que los ingresos.** Esto
+      sí *es* una crisis.
+    title: The Rent is Too Damn High
+    summary: In the past 10 years, average rent shot up by 45%, but the median
+      household income in Denver only rose by 28%. Meaning, **rent increased at
+      almost twice the rate as income.** This *is* a crisis.
+    problemsAndSolutions:
+      - solution_es: >-
+          Resolver la crisis de vivienda de Denver comienza con que Denver sea
+          dueña de sus viviendas:
+
+
+          * • Prohibir a las empresas comprar viviendas unifamiliares.
+
+          * • Estabilizar la renta de las viviendas unifamiliares que ya son propiedad de empresas.
+
+          * • Exigir a las empresas foráneas que construyan viviendas en apartamentos asequibles.
+
+          * • Estabilizar la renta de los apartamentos que ya son propiedad de empresas foráneas.
+        problem: Companies from California and China are buying up neighborhood homes
+          only to flip or rent them at exorbitant rates. They're also building
+          giant, luxury apartment high-rises that don't benefit the average
+          Denverite.
+        solution: >-
+          Solving the Denver housing crisis starts with Denver ownership of
+          homes:
+
+
+          * • Ban companies from buying single family homes.
+
+          * • Stabilize rent for single family homes already owned by companies.
+
+          * • Require out-of-state companies to build affordable apartment housing.
+
+          * • Stabilize rent for apartments already owned by out-of-state companies.
+        problem_es: Empresas de California y China están comprando casas en los
+          vecindarios solo para darles vuelta o alquilarlas a precios
+          exorbitantes. También están construyendo enormes torres de
+          apartamentos de lujo que no benefician al habitante promedio de
+          Denver.
+    title_es: La Renta Está Demasiado Alta
+  - summary_es: Políticas que exigen que un porcentaje de las nuevas viviendas
+      sea **asequible** para personas con ingresos bajos a moderados.
+    title: Inclusionary Zoning
+    summary: Policies that require a percentage of new housing to
+      be **affordable** for people with low to moderate incomes.
+    problemsAndSolutions:
+      - solution_es: >-
+          * • Cambiar las leyes de zonificación de Denver para permitir
+          viviendas multifamiliares en al menos el 50% de todas las zonas
+          residenciales.
+
+          * • Exigir que el 30% de todas las nuevas viviendas construidas sean viviendas asequibles.
+        problem: Upwards of 77% of Denver's residential areas' prohibit the most
+          affordable types of homes. Apartments, condos and townhomes are widely
+          forbidden. Exclusionary zoning has racist origins.
+        solution: >-
+          * • Change Denver zoning laws to allow multi-unit housing in at least
+          50% of all residential areas.
+
+          * • Require 30% of all new housing built to be affordable housing.
+        problem_es: Más del 77% de las zonas residenciales de Denver prohíben los tipos
+          de vivienda más asequibles. Los apartamentos, condominios y casas
+          adosadas están ampliamente prohibidos. La zonificación excluyente
+          tiene orígenes racistas.
+    title_es: Zonificación Inclusiva
