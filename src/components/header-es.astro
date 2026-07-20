@@ -100,5 +100,7 @@ const currentPath = Astro.url.pathname;
       <li><a class="md:text-2xl" href="/es#involucrate">Involúcrate</a></li>
     </ul>
   </div>
-  <a href={currentPath.replace("/es", "")} class="link mt-4 md:mt-0">English</a>
+  <a href={currentPath.replace("/es", "") || "/"} class="link mt-4 md:mt-0"
+    >English</a
+  >
 </div>
