@@ -9,6 +9,85 @@ summary_es: La gran tecnología no nos salvará. Ni siquiera está *intentando*
   demos cuenta de esto, más pronto podremos resistir sus esquemas para usar
   Denver como punto de apoyo para la vigilancia, los centros de datos y la mano
   de obra barata.
+intro: From surveillance that monitors our daily habits, data centers that dry
+  up our lakes and rivers, and the dangling promise of jobs that end up being
+  filled by out of state applicants, big tech has brought as much harm to Denver
+  as it has brought economic investment. **Enough is enough.**
+intro_es: Desde la vigilancia que monitorea nuestros hábitos diarios, los
+  centros de datos que secan nuestros lagos y ríos, y la promesa vacía de
+  empleos que terminan siendo ocupados por solicitantes de fuera del estado, la
+  gran tecnología ha traído tanto daño a Denver como inversión económica. **Ya
+  es suficiente.**
 slug: big-tech
 lucideIcon: DatabaseZap
 order: 6
+subIssues:
+  - summary_es: La vigilancia impulsada por inteligencia artificial está
+      convirtiendo a Denver en un estado policial digital. Un oficial le dijo a
+      una mujer de Denver, **"No puedes tomar ni una bocanada de aire fresco
+      dentro o fuera de ese lugar sin que lo sepamos."**
+    title: Surveillance
+    summary: AI-powered surveillance is turning Denver into a digital police state.
+      One officer told a Denver woman, **"You can’t get a breath of fresh air in
+      or out of that place without us knowing."**
+    problemsAndSolutions:
+      - solution_es: >-
+          * • Prohibir que los lectores automáticos de placas rastreen los
+          movimientos de cada conductor en Denver.
+
+          * • Exigir órdenes judiciales para permitir que los oficiales de la Policía de Denver rastreen a los conductores a través de estos lectores.
+
+          * • Exigir a Axon u otros proveedores con los que trabajamos que actualicen su software para guardar únicamente los movimientos de las placas que tengan órdenes judiciales en su base de datos.
+        problem: Warrantless AI surveillance of drivers' daily movements by automatic
+          license plate readers throughout Denver is unconstitutional.
+        solution: >-
+          * • Ban automatic license plate readers from tracking every single
+          Denver driver's movements.
+
+          * • Require warrants to allow Denver police officers to track drivers through these readers.
+
+          * • Require Axon or other providers we work with to update their software to only save the movements of license plates that have warrants in their database.
+        problem_es: La vigilancia de IA sin orden judicial de los movimientos diarios de
+          los conductores mediante lectores automáticos de placas en todo Denver
+          es inconstitucional.
+    title_es: Vigilancia
+  - summary_es: Denver alberga **58 centros de datos.** Los impactos ecológicos son
+      muchos, incluyendo las enormes cantidades de combustibles fósiles quemados
+      para alimentarlos, las islas de calor que crean a su alrededor y los
+      millones de litros de agua que consumen para enfriarse.
+    title: Data Centers
+    summary: Denver is home to **58 data centers.** The ecological impacts are many,
+      including the massive amounts of fossil fuels burnt to power them, the
+      heat islands they create around them, and the millions of liters of water
+      they consume to cool down.
+    problemsAndSolutions:
+      - solution_es: Aprobar una prohibición sobre nuevos centros de datos en Denver
+          hasta que existan tecnologías para compensar los impactos ecológicos.
+        problem: Approximately 97% of Colorado is under drought restrictions, currently.
+          Yet, we only have a 1 year moratorium on new data centers that ends in
+          6 months.
+        solution: Pass a ban on new data centers in Denver until technologies exist to
+          offset the ecological impacts.
+        problem_es: Aproximadamente el 97% de Colorado está actualmente bajo
+          restricciones por sequía. Sin embargo, solo tenemos una moratoria de 1
+          año sobre nuevos centros de datos que termina en 6 meses.
+    title_es: Centros de Datos
+  - summary_es: Las grandes empresas tecnológicas siempre llegan a las ciudades
+      prometiendo empleos, pero a menudo esos empleos son ocupados
+      por **solicitantes de fuera del estado** si es que se crean.
+    title: The Promise of Jobs
+    summary: Big tech companies always come into cities promising jobs, but often
+      those jobs are filled by **out-of-state applicants** if they are created,
+      at all.
+    problemsAndSolutions:
+      - solution_es: Exigir a las empresas foráneas que se instalen en Denver que
+          contraten a una parte de su personal de entre los locales.
+        problem: About 1 in 25 Denverites you meet are unemployed, yet companies bring
+          their own workforce with them, not benefiting existing Denver
+          residents.
+        solution: Require out of state companies that move into Denver to hire a portion
+          of their workforce from locals.
+        problem_es: Aproximadamente 1 de cada 25 habitantes de Denver que conoces está
+          desempleado, sin embargo las empresas traen su propia fuerza laboral
+          consigo, sin beneficiar a los residentes existentes de Denver.
+    title_es: La Promesa de Empleos
