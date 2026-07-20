@@ -9,6 +9,143 @@ summary_es: El alquiler promedio en Denver aumentó un 45% en los últimos 10
   seguido el ritmo? Los derechos de los trabajadores son repetidamente
   recortados, mientras que las corporaciones reciben pase libre. Denver debe ser
   una ciudad para todos, no para el 1%.
+intro: >-
+  “Anyone who has ever struggled with poverty knows how
+  extremely **expensive** it is to be poor.” – James Baldwin\
+
+  \
+
+  We are slipping back into a stratified class system: the wealthy vs. the struggling. We all know there is enough money, food, clothing, and housing for everyone. Why, then, should everyday families struggle to get those very things?
+intro_es: >-
+  “Todo aquel que alguna vez ha luchado contra la pobreza sabe lo
+  extremadamente **caro** que es ser pobre.” – James Baldwin\
+
+  \
+
+  Estamos regresando a un sistema de clases estratificado: los ricos contra los que luchan. Todos sabemos que hay suficiente dinero, comida, ropa y vivienda para todos. ¿Por qué, entonces, las familias comunes deben luchar para conseguir precisamente esas cosas?
 slug: affordability
 lucideIcon: Coins
 order: 1
+subIssues:
+  - summary_es: El 'libre mercado' no nos ha proporcionado un cuidado infantil
+      adecuado. El costo de tener un bebé en guardería en Denver es, en
+      promedio, **$1,500 al mes.** Otro alquiler. Se ha convertido en una de las
+      áreas metropolitanas más caras para criar a un hijo en los EE. UU.
+    title: Child Care
+    summary: The "free market" has not provided us with adequate child care. The
+      cost of having an infant in daycare in Denver is, on average, **$1,500 a
+      month.** Another rent. It has become one of the most expensive metros to
+      raise a child in the US.
+    title_es: Cuidado Infantil
+    problemsAndSolutions:
+      - solution_es: >-
+          Washington DC implementó el Pre-K universal para toda la ciudad, a
+          partir de los 3 años. Ha sido un éxito rotundo y ha incentivado a las
+          familias a quedarse en la ciudad.
+
+
+          * • Crear un programa de Pre-K universal en las Escuelas Públicas de Denver para complementar el existente de Colorado.
+
+          * • Ampliar las horas gratuitas de 15 a 35 por semana.
+
+          * • Comenzar con niños de 3 años, en lugar de 4.
+        problem: >-
+          Study after study has shown that children who attend Pre-K have better
+          outcomes than those who don't, even later in life. However, the cost
+          is often prohibitive, leading families to keep little ones at home.\
+
+          \
+
+          Colorado offers 15 hours of free Pre-K, starting at 4 years old. This is nice, but isn't enough to allow caretakers to return to the workforce. It also has a smaller impact on childrens' outcomes.
+        problem_es: >-
+          Estudio tras estudio ha demostrado que los niños que asisten al Pre-K
+          tienen mejores resultados que los que no lo hacen, incluso más
+          adelante en la vida. Sin embargo, el costo suele ser prohibitivo, lo
+          que lleva a las familias a mantener a los pequeños en casa.\
+
+          \
+
+          Colorado ofrece 15 horas gratuitas de Pre-K, a partir de los 4 años. Esto está bien, pero no es suficiente para permitir que los cuidadores regresen a la fuerza laboral. También tiene un impacto menor en los resultados de los niños.
+        solution: >-
+          Washington DC implemented universal Pre-K for the whole city, starting
+          at 3 years old. It's been wildly successful and has enticed families
+          to stay in the city.
+
+
+          * • Create a Denver Public Schools universal Pre-K program to augment Colorado's existing one.
+
+          * • Expand free hours from 15 to 35 per week.
+
+          * • Start children at 3 years old, instead of 4.
+  - summary_es: La electricidad, el gas, el internet... son requisitos de la vida
+      moderna. Son servicios básicos. No son mercancías con las que comerciar.
+    title: Publicly Owned Utilities
+    summary: Electricity, gas, the internet... these are requirements of modern
+      life. They are utilities. They are not commodities to be bartered with.
+    problemsAndSolutions:
+      - solution_es: >-
+          * • Crear una empresa de Energía de Denver como alternativa pública a
+          las empresas energéticas privadas.
+
+          * • Crear una empresa de Banda Ancha de Denver para ofrecer internet a menor costo a todos los residentes.
+
+          * • Incorporar programas en ambas empresas de servicios públicos para ofrecer servicios a menor costo a las familias de bajos ingresos.
+
+          * • Introducir tarifas energéticas para clientes de gran consumo, como los centros de datos.
+        problem: Companies like Xcel and Xfinity use deceptive practices and pricing
+          models to dupe their customers out of hard-earned money.
+        solution: >-
+          * • Create a Denver Energy company to be a public alternative to
+          private energy companies.
+
+          * • Create a Denver Broadband company to provide reduced cost internet to all residents.
+
+          * • Bake in programs in both of these public utility companies to provide reduced cost services to low income families.
+
+          * • Introduce energy tariffs for large-load customers like data centers.
+        problem_es: Empresas como Xcel y Xfinity utilizan prácticas y modelos de precios
+          engañosos para estafar a sus clientes el dinero que tanto les costó
+          ganar.
+    title_es: Servicios Públicos de Propiedad Colectiva
+  - summary_es: Uno de los grandes beneficios de vivir en una ciudad grande es la
+      posibilidad de utilizar el transporte público y prescindir de la necesidad
+      de un carro. **Le cuesta al estadounidense promedio $11,577 ser
+      propietario de un vehículo.** Pero, habiendo dependido personalmente del
+      RTD, me ha fallado, he llegado tarde al trabajo e incluso me ha dejado
+      varado.
+    title_es: Transporte Confiable
+    problemsAndSolutions:
+      - solution_es: >-
+          Trabajar con la Junta Directiva del RTD para:
+
+
+          * • Restablecer la línea F, que tenía miles de pasajeros utilizándola cada día.
+
+          * • Introducir tarifas gratuitas para personas mayores y miembros del programa LiVE (bajos ingresos).
+
+          * • Corregir las inconsistencias en los horarios de llegada y salida de trenes y autobuses, ya que esto puede costarle el empleo a las personas.
+
+          * • Implementar un método sencillo para que los pasajeros reporten a los conductores que los ignoran, llegan tarde o no se presentan.
+        problem: RTD has become inconsistent and costly to use as your main source of
+          transportation. Many have given up on it. Access to reliable public
+          transit, however, is a vital factor for financial mobility.
+        problem_es: El RTD se ha vuelto inconsistente y costoso para usarlo como
+          principal medio de transporte. Muchos han desistido de él. Sin
+          embargo, el acceso a un transporte público confiable es un factor
+          vital para la movilidad económica.
+        solution: >-
+          Work with the RTD Board of Directors to:
+
+
+          * • Bring back the F line, which had thousands of transiters riding it every day.
+
+          * • Introduce free fares for the elderly and LiVE (low-income) program members.
+
+          * • Shore up inconsistencies in train and bus pickup and dropoff times, as this can cost people their jobs.
+
+          * • Implement an easy method for commuters to report drivers who pass them by, are late, or never show up.
+    title: Reliable Transit
+    summary: One of the great benefits of living in a large city is the ability to
+      utilize transit and forego the need of a car. **It costs the average
+      American $11,577 to own a vehicle.** But, having personally relied on RTD,
+      I've been let down, late to work, and even stranded.
