@@ -9,6 +9,108 @@ summary_es: La mayoría de las personas terminan en la cárcel por delitos menor
   que son canalizadas hacia sistemas penitenciarios con fines de lucro que
   implementan la esclavitud moderna en Colorado. Estos sistemas racistas y
   capacitistas deben ser eludidos.
+intro: >-
+  Denver Police secretly launched a "Drone as First Responder" program without
+  city approval, broadened taser use to allow deployment against non-aggressive
+  individuals, allowed misconduct to be handled informally by a supervisor, and
+  reduced discipline for misconduct to simple classroom training. **All within
+  the space of 1 year.**\
+
+  \
+
+  We are on a collision course between law enforcement and our everyday human rights. Just like our laws, law enforcement should be by the people and for the people. Not against the people.
+intro_es: >-
+  La Policía de Denver lanzó en secreto un programa de 'Dron como Primer
+  Respondedor' sin aprobación de la ciudad, amplió el uso de táseres para
+  permitir su uso contra personas no agresivas, permitió que la mala conducta
+  fuera manejada de manera informal por un supervisor, y redujo las sanciones
+  por mala conducta a simples capacitaciones en el aula. **Todo en el lapso de 1
+  año.**\
+
+  \
+
+  Estamos en curso de colisión entre las fuerzas del orden y nuestros derechos humanos cotidianos. Al igual que nuestras leyes, las fuerzas del orden deben ser del pueblo y para el pueblo. No en contra del pueblo.
 slug: criminal-injustice
 lucideIcon: Siren
 order: 3
+subIssues:
+  - summary_es: Que la policía investigue a la policía es como si tú mismo auditaras
+      tus propios impuestos. No funciona. La Policía de Denver necesita rendir
+      cuentas ante terceros externos.
+    title_es: Rendición de Cuentas
+    problemsAndSolutions:
+      - solution_es: >-
+          
+
+          * • Activar un organismo investigador dirigido por ciudadanos cuando un oficial de policía sea acusado de mala conducta.
+
+          * • El organismo dirigido por ciudadanos determina entonces la sanción para el oficial, si se le encuentra culpable, desde capacitaciones en el aula hasta la destitución.
+        problem: Police misconduct is handled informally by a supervisor. Classroom
+          training is utilized instead of suspensions or reprimands.
+        problem_es: La mala conducta policial es manejada de manera informal por un
+          supervisor. Se utilizan capacitaciones en el aula en lugar de
+          suspensiones o amonestaciones.
+        solution: >-
+          * • Trigger a citizen-ran investigative body when a police officer is
+          accused of misconduct.
+
+          * • The citizen-ran body then determines the discipline for the officer, if found guilty, from classroom training all the way up to termination.
+    title: Accountability
+    summary: The police investigating the police is like you auditing your own
+      taxes. It doesn't work. Denver Police needs to be held accountable by
+      outside third-parties.
+  - summary_es: La actividad policial tiene raíces y conexiones con los cazadores de
+      esclavos del Sur de la anteguerra. **El encarcelamiento por delitos no
+      violentos existe, hoy en día, como una cadena** para alimentar a las
+      prisiones con fines de lucro con personas indeseables para obtener mano de
+      obra barata y extorsión.
+    title_es: Encarcelamiento por Delitos No Violentos
+    problemsAndSolutions:
+      - solution_es: >-
+          * • Ampliar el programa STAR (Respuesta Asistida por Equipo de Apoyo)
+          en Denver a un programa de 24 horas.
+
+          * • Cambiar la respuesta predeterminada del Operador del 911 al envío de STAR, escalando a una respuesta policial tradicional solo si se prevé violencia.
+
+          * • Reducir las sanciones predeterminadas para muchos delitos no violentos a citaciones en lugar de tiempo en prisión.
+
+          * • Ampliar el uso del arresto domiciliario, la libertad laboral, la rehabilitación y el tratamiento, y la libertad condicional como alternativas a la cárcel para reincidentes.
+        problem_es: La mayoría de las personas en la cárcel están allí por delitos no
+          violentos, incluyendo infracciones de tráfico, desorden público,
+          cargos por drogas, daños a la propiedad y episodios de salud mental.
+        problem: Most people in jail are there for non-violent offenses, including
+          traffic violations, public disorderliness, drug charges, property
+          damage, and mental health episodes.
+        solution: >-
+          * • Expand the STAR (Support Team Assisted Response) program in Denver
+          to a 24-hour program.
+
+          * • Change the default 911 Operator response to sending STAR, only escalating to a traditional police response if there is an expectation of violence.
+
+          * • Reduce the default punishments for many non-violent offenses to citations instead of jail time.
+
+          * • Expand usage of house arrest, work release, rehabilitation & treatment, and probation as alternatives to jail for repeat offenders.
+    title: Non-Violent Jailing
+    summary: Policing has roots and connections in the slave catchers of antebellum
+      South. **Non-violent jailing exists, today, as a pipeline** for feeding
+      undesirables to for-profit prisons for cheap labor and extortion.
+  - summary_es: "Las multas y cargos monetarios suelen imponerse precisamente a las
+      poblaciones que menos pueden pagarlos. También influyen en las
+      motivaciones de las fuerzas del orden y pueden desviarlas de su objetivo
+      principal: la seguridad pública."
+    title_es: Multas, Cargos y Tribulaciones
+    problemsAndSolutions:
+      - solution_es: "* • Cambiar las sanciones predeterminadas para muchos delitos
+          menores a servicio comunitario y capacitaciones obligatorias."
+        problem_es: Las sanciones para muchos delitos menores son monetarias,
+          pervirtiendo el propósito de la justicia restaurativa al empujar al
+          infractor aún más hacia la desesperación.
+        problem: The penalties for many low-level offenses are monetary, perverting the
+          point of restorative justice by pushing the perpetrator even further
+          into desperation.
+        solution: "* • Change the default penalties for many low-level offenses to
+          community service and mandatory trainings."
+    title: Fines, Fees, & Tribulations
+    summary: "Monetary fines and fees are often issued to the very populations who
+      can least afford them. They also influence the motivations of a police
+      force and can skew them away from their intended focus: public safety."
