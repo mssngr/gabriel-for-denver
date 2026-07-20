@@ -1,15 +1,14 @@
 title: Housing Crisis
 title_es: Crisis de Vivienda
-content: Companies from California and China buying up neighborhood homes only
+summary: Companies from California and China buying up neighborhood homes only
   to flip them/charge exorbitant rents or building giant, luxury apartment
   high-rises benefits no one but California and China. Solving the Denver
   housing crisis starts with Denver ownership.
-content_es: Las empresas de California y China que compran casas en los
+summary_es: Las empresas de California y China que compran casas en los
   vecindarios solo para darles vuelta, cobrar rentas exorbitantes o construir
   grandes torres de apartamentos de lujo no benefician a nadie más que a
   California y China. Resolver la crisis de vivienda de Denver comienza con la
   propiedad de Denver.
-link: /issues/housing-crisis
 slug: housing-crisis
 lucideIcon: MapPinHouse
 order: 2

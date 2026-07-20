@@ -1,15 +1,14 @@
 title: Big Tech
 title_es: Gran Tecnología
-content: Big tech will not save us. They're not even *trying* to save us.
+summary: Big tech will not save us. They're not even *trying* to save us.
   They're trying to make money off of us. The sooner we realize this, the sooner
   we can push back against their schemes to use Denver as a foothold for
   surveillance, data centers, and cheap labor.
-content_es: La gran tecnología no nos salvará. Ni siquiera está *intentando*
+summary_es: La gran tecnología no nos salvará. Ni siquiera está *intentando*
   salvarnos. Está tratando de ganar dinero a nuestra costa. Cuanto antes nos
   demos cuenta de esto, más pronto podremos resistir sus esquemas para usar
   Denver como punto de apoyo para la vigilancia, los centros de datos y la mano
   de obra barata.
-link: /issues/big-tech
 slug: big-tech
 lucideIcon: DatabaseZap
 order: 6

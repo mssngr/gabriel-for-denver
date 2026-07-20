@@ -13,10 +13,10 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
   {
     sortedIssues.map((issue) => {
       const Icon = icons[issue.data.icon];
-      const content = marked.parse(issue.data.content_es);
+      const summary = marked.parse(issue.data.summary_es);
       return (
         <Issue icon={issue.data.lucideIcon} title={issue.data.title_es}>
-          <Fragment set:html={content} />
+          <Fragment set:html={summary} />
           <br />
           <a
             class="link font-medium text-2xl"

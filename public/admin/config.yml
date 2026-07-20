@@ -62,9 +62,54 @@ collections:
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Title (Spanish), name: title_es, widget: string }
-      - { label: Content, name: content, widget: richtext }
-      - { label: Content (Spanish), name: content_es, widget: richtext }
-      - { label: Link, name: link, widget: string }
+      - { label: Summary, name: summary, widget: richtext }
+      - { label: Summary (Spanish), name: summary_es, widget: richtext }
+      - { label: Intro, name: intro, widget: richtext }
+      - { label: Intro (Spanish), name: intro_es, widget: richtext }
       - { label: Slug, name: slug, widget: string }
       - { label: Lucide Icon, name: lucideIcon, widget: string }
       - { label: Order, name: order, widget: number }
+      - {
+          label: Sub-Issues,
+          name: subIssues,
+          widget: list,
+          fields:
+            [
+              { label: Sub-Issue Title, name: subIssueTitle, widget: string },
+              {
+                label: Sub-Issue Title (Spanish),
+                name: subIssueTitle_es,
+                widget: string,
+              },
+              {
+                label: Sub-Issue Summary,
+                name: subIssueSummary,
+                widget: richtext,
+              },
+              {
+                label: Sub-Issue Summary (Spanish),
+                name: subIssueSummary_es,
+                widget: richtext,
+              },
+              {
+                label: Problems & Solutions,
+                name: problemsAndSolutions,
+                widget: list,
+                fields:
+                  [
+                    { label: Problem, name: problem, widget: richtext },
+                    {
+                      label: Problem (Spanish),
+                      name: problem_es,
+                      widget: richtext,
+                    },
+                    { label: Solution, name: solution, widget: richtext },
+                    {
+                      label: Solution (Spanish),
+                      name: solution_es,
+                      widget: richtext,
+                    },
+                  ],
+              },
+            ],
+        }

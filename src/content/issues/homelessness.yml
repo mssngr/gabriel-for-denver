@@ -1,14 +1,13 @@
 title: Homelessness
 title_es: Personas sin Hogar
-content: Since my early twenties, I've worked with our neighbors experiencing
+summary: Since my early twenties, I've worked with our neighbors experiencing
   homelessness. It's time to set aside the misconceptions and unjustified fears.
   Housing-first policies work. Let's put a roof over every Denverite's head.
-content_es: Desde mis veintitantos años, he trabajado con nuestros vecinos que
+summary_es: Desde mis veintitantos años, he trabajado con nuestros vecinos que
   enfrentan la situación de no tener hogar. Es hora de dejar de lado los
   conceptos erróneos y los miedos injustificados. Las políticas que priorizan la
   vivienda funcionan. Pongamos un techo sobre la cabeza de cada habitante de
   Denver.
-link: /issues/homelessness
 slug: homelessness
 lucideIcon: HouseHeart
 order: 5

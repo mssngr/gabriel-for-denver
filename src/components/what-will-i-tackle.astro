@@ -12,10 +12,10 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
 <div class="flex flex-wrap gap-16 justify-center">
   {
     sortedIssues.map((issue) => {
-      const content = marked.parse(issue.data.content);
+      const summary = marked.parse(issue.data.summary);
       return (
         <Issue icon={issue.data.lucideIcon} title={issue.data.title}>
-          <Fragment set:html={content} />
+          <Fragment set:html={summary} />
           <br />
           <a
             class="link font-medium text-2xl"
