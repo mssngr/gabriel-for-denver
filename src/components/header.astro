@@ -80,7 +80,8 @@ const currentPath = Astro.url.pathname;
               <a
                 href="/issues/big-tech"
                 class={`${currentPath === "/issues/big-tech" ? "text-primary font-black" : ""}`}
-                ><DatabaseZap />Big Tech</a>
+                ><DatabaseZap />Big Tech</a
+              >
             </li>
             <li>
               <a href="/issues" class="inline-flex items-center"
@@ -101,5 +102,5 @@ const currentPath = Astro.url.pathname;
       </li>
     </ul>
   </div>
-  <a href="/es" class="link">Español</a>
+  <a href={`/es${currentPath}`} class="link">Español</a>
 </div>
