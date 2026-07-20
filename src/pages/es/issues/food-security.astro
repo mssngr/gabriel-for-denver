@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import foodSecurity from "../../../assets/food-security.svg";
-import Blurb from "../../../components/blurb.astro";
+import ProblemSolution from "../../../components/problem-solution-es.astro";
 import Espanol from "../../../layouts/espanol.astro";
 ---
 
@@ -42,14 +42,14 @@ import Espanol from "../../../layouts/espanol.astro";
         > Si la comida que comemos nos está matando, el sistema no funciona.
       </p>
       <div class="flex flex-col gap-16">
-        <div class="flex gap-8 justify-center">
-          <Blurb title="Problema" Icon={CircleAlert}
+        <ProblemSolution>
+          <Fragment slot="problem"
             >Lo primero que se sacrifica en la comida suele ser su valor
             nutritivo. Mientras tanto, Denver tiene casi 20,000 acres de
             parques, casi ninguno de los cuales produce ni una onza de alimento
-            para nuestros 750,000 residentes.</Blurb
+            para nuestros 750,000 residentes.</Fragment
           >
-          <Blurb title="Solución" Icon={CircleCheck}
+          <Fragment slot="solution"
             ><ul class="mt-2">
               <li>
                 • Priorizar árboles y arbustos frutales sobre todos los demás
@@ -74,9 +74,9 @@ import Espanol from "../../../layouts/espanol.astro";
                 • Los productos que no cumplen los estándares de calidad se
                 regalan gratuitamente.
               </li>
-            </ul></Blurb
+            </ul></Fragment
           >
-        </div>
+        </ProblemSolution>
       </div>
     </section>
   </main>

@@ -4,6 +4,7 @@ import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import homelessness from "../../../assets/homelessness.svg";
 import Blurb from "../../../components/blurb.astro";
 import Input from "../../../components/input.astro";
+import ProblemSolution from "../../../components/problem-solution-es.astro";
 import Textarea from "../../../components/textarea.astro";
 import Espanol from "../../../layouts/espanol.astro";
 ---
@@ -41,12 +42,12 @@ import Espanol from "../../../layouts/espanol.astro";
         personas sin hogar no necesitan resolver todos sus problemas antes de poder
         acceder a una vivienda.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >27,000 unidades de alquiler están vacías en nuestra ciudad mientras
-          10,000 de nuestros vecinos siguen sin hogar.</Blurb
+          10,000 de nuestros vecinos siguen sin hogar.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Establecer un impuesto sobre las unidades de alquiler que
@@ -64,9 +65,9 @@ import Espanol from "../../../layouts/espanol.astro";
               • Aumentar el número de refugios en Denver y reducir sus
               requisitos.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">Fin a los Desalojos</h1>
@@ -75,13 +76,13 @@ import Espanol from "../../../layouts/espanol.astro";
         campamentos de personas sin hogar en Denver no tuvieron ningún efecto en
         la reducción de la delincuencia.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Nuestros vecinos sin hogar enfrentan conceptos erróneos
           discriminatorios y desalojos inhumanos por parte de la ciudad. Estos
-          desalojos no resuelven ningún problema. Solo los crean.</Blurb
+          desalojos no resuelven ningún problema. Solo los crean.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Prohibir los desalojos de campamentos de personas sin hogar en
@@ -91,9 +92,9 @@ import Espanol from "../../../layouts/espanol.astro";
               • Centrar los esfuerzos en proporcionar vivienda y servicios a
               quienes viven en campamentos.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       id="participa"

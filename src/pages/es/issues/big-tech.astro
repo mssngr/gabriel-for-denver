@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import bigTech from "../../../assets/big-tech.svg";
-import Blurb from "../../../components/blurb.astro";
+import ProblemSolution from "../../../components/problem-solution-es.astro";
 import Espanol from "../../../layouts/espanol.astro";
 ---
 
@@ -41,13 +41,13 @@ import Espanol from "../../../layouts/espanol.astro";
           lugar sin que lo sepamos."</b
         >
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >La vigilancia de IA sin orden judicial de los movimientos diarios de
           los conductores mediante lectores automáticos de placas en todo Denver
-          es inconstitucional.</Blurb
+          es inconstitucional.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Prohibir que los lectores automáticos de placas rastreen los
@@ -63,9 +63,9 @@ import Espanol from "../../../layouts/espanol.astro";
               actualicen su software para guardar únicamente los movimientos de
               las placas que tengan órdenes judiciales en su base de datos.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">Centros de Datos</h1>
@@ -75,17 +75,17 @@ import Espanol from "../../../layouts/espanol.astro";
         para alimentarlos, las islas de calor que crean a su alrededor y los millones
         de litros de agua que consumen para enfriarse.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Aproximadamente el 97% de Colorado está actualmente bajo
           restricciones por sequía. Sin embargo, solo tenemos una moratoria de 1
-          año sobre nuevos centros de datos que termina en 6 meses.</Blurb
+          año sobre nuevos centros de datos que termina en 6 meses.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Aprobar una prohibición sobre nuevos centros de datos en Denver hasta
-          que existan tecnologías para compensar los impactos ecológicos.</Blurb
+          que existan tecnologías para compensar los impactos ecológicos.</Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
@@ -97,17 +97,17 @@ import Espanol from "../../../layouts/espanol.astro";
           >solicitantes de fuera del estado</strong
         > si es que se crean.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Aproximadamente 1 de cada 25 habitantes de Denver que conoces está
           desempleado, sin embargo las empresas traen su propia fuerza laboral
-          consigo, sin beneficiar a los residentes existentes de Denver.</Blurb
+          consigo, sin beneficiar a los residentes existentes de Denver.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Exigir a las empresas foráneas que se instalen en Denver que
-          contraten a una parte de su personal de entre los locales.</Blurb
+          contraten a una parte de su personal de entre los locales.</Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
   </main>
 </Espanol>

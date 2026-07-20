@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import affordability from "../../assets/affordability.svg";
-import Blurb from "../../components/blurb.astro";
+import ProblemSolution from "../../components/problem-solution.astro";
 import Default from "../../layouts/default.astro";
 ---
 
@@ -43,17 +43,17 @@ import Default from "../../layouts/default.astro";
         {" "}Another rent. It has become one of the most expensive metros to
         raise a child in the US.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Study after study has shown that children who attend Pre-K have
           better outcomes than those who don't, even later in life. However, the
           cost is often prohibitive, leading families to keep little ones at
           home.<br /><br />Colorado offers 15 hours of free Pre-K, starting at 4
           years old. This is nice, but isn't enough to allow caretakers to
           return to the workforce. It also has a smaller impact on childrens'
-          outcomes.</Blurb
+          outcomes.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Washington DC implemented universal Pre-K for the whole city,
           starting at 3 years old. It's been wildly successful and has enticed
           families to stay in the city.<ul class="mt-2">
@@ -63,9 +63,9 @@ import Default from "../../layouts/default.astro";
             </li>
             <li>• Expand free hours from 15 to 35 per week.</li>
             <li>• Start children at 3 years old, instead of 4.</li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">Publicly Owned Utilities</h1>
@@ -73,12 +73,12 @@ import Default from "../../layouts/default.astro";
         Electricity, gas, the internet... these are requirements of modern life.
         They are utilities. They are not commodities to be bartered with.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Companies like Xcel and Xfinity use deceptive practices and pricing
-          models to dupe their customers out of hard-earned money.</Blurb
+          models to dupe their customers out of hard-earned money.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Create a Denver Energy company to be a public alternative to
@@ -96,9 +96,9 @@ import Default from "../../layouts/default.astro";
               • Introduce energy tariffs for large-load customers like data
               centers.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
@@ -111,13 +111,13 @@ import Default from "../../layouts/default.astro";
         > But, having personally relied on RTD, I've been let down, late to work,
         and even stranded.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >RTD has become inconsistent and costly to use as your main source of
           transportation. Many have given up on it. Access to reliable public
-          transit, however, is a vital factor for financial mobility.</Blurb
+          transit, however, is a vital factor for financial mobility.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Work with the RTD Board of Directors to:<ul class="mt-2">
             <li>
               • Bring back the F line, which had thousands of transiters riding
@@ -136,30 +136,30 @@ import Default from "../../layouts/default.astro";
               pass them by, are late, or never show up.
             </li>
           </ul>
-        </Blurb>
-      </div>
+        </Fragment>
+      </ProblemSolution>
       <!-- <h1 class="text-center mb-16!">Junk Fees</h1>
       <p class="max-w-md mx-auto mb-16">
         Colorado's new law prohibiting deceptive pricing went into effect this
         January. That's great news, except it doesn't ban or reduce those junk
         fees. It just makes them visible.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment title="problem"
           >Companies charge exorbitant fees for a myriad of things that are <em
             >not</em
-          > the product or service you are paying for.</Blurb
+          > the product or service you are paying for.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment title="solution"
           ><ul class="mt-2">
             <li>• Ban ancillary fees for products and services in Denver.</li>
             <li>
               • Require companies to include any extras they want to charge in
               the original price for the product or service.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div> -->
+      </ProblemSolution> -->
     </section>
   </main>
 </Default>

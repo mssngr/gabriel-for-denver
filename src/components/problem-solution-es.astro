@@ -1,11 +1,9 @@
 ---
 import { CircleAlert, CircleCheck } from "@lucide/astro";
 import Blurb from "./blurb.astro";
-
-const { problem, solution } = Astro.props;
 ---
 
-<div class="flex gap-8 justify-center">
-  <Blurb title="Problema" Icon={CircleAlert}>{problem}</Blurb>
-  <Blurb title="Solución" Icon={CircleCheck}>{solution}</Blurb>
+<div class="flex flex-wrap gap-8 justify-center">
+  <Blurb title="Problema" Icon={CircleAlert}><slot name="problem" /></Blurb>
+  <Blurb title="Solución" Icon={CircleCheck}><slot name="solution" /></Blurb>
 </div>

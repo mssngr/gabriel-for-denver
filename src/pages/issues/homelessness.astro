@@ -4,6 +4,7 @@ import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import homelessness from "../../assets/homelessness.svg";
 import Blurb from "../../components/blurb.astro";
 import Input from "../../components/input.astro";
+import ProblemSolution from "../../components/problem-solution.astro";
 import Textarea from "../../components/textarea.astro";
 import Default from "../../layouts/default.astro";
 ---
@@ -42,12 +43,12 @@ import Default from "../../layouts/default.astro";
         <strong>Housing-first policies work.</strong> Meaning, unhoused people don't
         need to address all of their problems before they can access housing.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >27,000 rental units sit empty in our fair city while 10,000 of our
-          neighbors remain unhoused.</Blurb
+          neighbors remain unhoused.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>• Institute a tax on rental units left vacant in Denver.</li>
             <li>
@@ -61,9 +62,9 @@ import Default from "../../layouts/default.astro";
               • Increase the number of shelters in Denver and reduce their
               requirements.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">End Sweeps</h1>
@@ -71,22 +72,22 @@ import Default from "../../layouts/default.astro";
         A study by the Journal of Urban Health found that sweeps of unhoused
         encampments in Denver had no effect on reducing crime.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Our unhoused neighbors face discriminatory misconceptions and
           inhumane sweeps from the city. These sweeps solve no problems. They
-          only create them.</Blurb
+          only create them.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>• Ban unhoused encampment sweeps in Denver.</li>
             <li>
               • Focus efforts on providing housing and services to those in
               camps.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       id="get-involved"

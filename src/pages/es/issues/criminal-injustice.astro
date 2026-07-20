@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import injustice from "../../../assets/injustice.svg";
-import Blurb from "../../../components/blurb.astro";
+import ProblemSolution from "../../../components/problem-solution-es.astro";
 import Espanol from "../../../layouts/espanol.astro";
 ---
 
@@ -41,13 +41,13 @@ import Espanol from "../../../layouts/espanol.astro";
         propios impuestos. No funciona. La Policía de Denver necesita rendir
         cuentas ante terceros externos.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >La mala conducta policial es manejada de manera informal por un
           supervisor. Se utilizan capacitaciones en el aula en lugar de
-          suspensiones o amonestaciones.</Blurb
+          suspensiones o amonestaciones.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Activar un organismo investigador dirigido por ciudadanos cuando
@@ -58,9 +58,9 @@ import Espanol from "../../../layouts/espanol.astro";
               sanción para el oficial, si se le encuentra culpable, desde
               capacitaciones en el aula hasta la destitución.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">
@@ -74,13 +74,13 @@ import Espanol from "../../../layouts/espanol.astro";
         > para alimentar a las prisiones con fines de lucro con personas indeseables
         para obtener mano de obra barata y extorsión.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >La mayoría de las personas en la cárcel están allí por delitos no
           violentos, incluyendo infracciones de tráfico, desorden público,
-          cargos por drogas, daños a la propiedad y episodios de salud mental.</Blurb
+          cargos por drogas, daños a la propiedad y episodios de salud mental.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Ampliar el programa STAR (Respuesta Asistida por Equipo de
@@ -100,9 +100,9 @@ import Espanol from "../../../layouts/espanol.astro";
               rehabilitación y el tratamiento, y la libertad condicional como
               alternativas a la cárcel para reincidentes.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
@@ -114,21 +114,21 @@ import Espanol from "../../../layouts/espanol.astro";
         motivaciones de las fuerzas del orden y pueden desviarlas de su objetivo
         principal: la seguridad pública.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Las sanciones para muchos delitos menores son monetarias,
           pervirtiendo el propósito de la justicia restaurativa al empujar al
-          infractor aún más hacia la desesperación.</Blurb
+          infractor aún más hacia la desesperación.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Cambiar las sanciones predeterminadas para muchos delitos
               menores a servicio comunitario y capacitaciones obligatorias.
             </li>
           </ul>
-        </Blurb>
-      </div>
+        </Fragment>
+      </ProblemSolution>
     </section>
   </main>
 </Espanol>

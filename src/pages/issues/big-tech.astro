@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import bigTech from "../../assets/big-tech.svg";
-import Blurb from "../../components/blurb.astro";
+import ProblemSolution from "../../components/problem-solution.astro";
 import Default from "../../layouts/default.astro";
 ---
 
@@ -43,12 +43,12 @@ import Default from "../../layouts/default.astro";
           us knowing."</b
         >
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Warrantless AI surveillance of drivers' daily movements by automatic
-          license plate readers throughout Denver is unconstitutional.</Blurb
+          license plate readers throughout Denver is unconstitutional.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Ban automatic license plate readers from tracking every single
@@ -63,9 +63,9 @@ import Default from "../../layouts/default.astro";
               software to only save the movements of license plates that have
               warrants in their database.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">Data Centers</h1>
@@ -75,17 +75,17 @@ import Default from "../../layouts/default.astro";
         the heat islands they create around them, and the millions of liters of water
         they consume to cool down.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Approximately 97% of Colorado is under drought restrictions,
           currently. Yet, we only have a 1 year moratorium on new data centers
-          that ends in 6 months.</Blurb
+          that ends in 6 months.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Pass a ban on new data centers in Denver until technologies exist to
-          offset the ecological impacts.</Blurb
+          offset the ecological impacts.</Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
@@ -96,17 +96,17 @@ import Default from "../../layouts/default.astro";
         those jobs are filled by <strong>out-of-state applicants</strong> if they
         are created, at all.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >About 1 in 25 Denverites you meet are unemployed, yet companies bring
           their own workforce with them, not benefiting existing Denver
-          residents.</Blurb
+          residents.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Require out of state companies that move into Denver to hire a
-          portion of their workforce from locals.</Blurb
+          portion of their workforce from locals.</Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
   </main>
 </Default>

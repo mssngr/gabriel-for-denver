@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import injustice from "../../assets/injustice.svg";
-import Blurb from "../../components/blurb.astro";
+import ProblemSolution from "../../components/problem-solution.astro";
 import Default from "../../layouts/default.astro";
 ---
 
@@ -43,12 +43,12 @@ import Default from "../../layouts/default.astro";
         It doesn't work. Denver Police needs to be held accountable by outside
         third-parties.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Police misconduct is handled informally by a supervisor. Classroom
-          training is utilized instead of suspensions or reprimands.</Blurb
+          training is utilized instead of suspensions or reprimands.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Trigger a citizen-ran investigative body when a police officer
@@ -59,9 +59,9 @@ import Default from "../../layouts/default.astro";
               officer, if found guilty, from classroom training all the way up
               to termination.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">Non-Violent Jailing</h1>
@@ -70,13 +70,13 @@ import Default from "../../layouts/default.astro";
         South. <strong>Non-violent jailing exists, today, as a pipeline</strong> for
         feeding undesirables to for-profit prisons for cheap labor and extortion.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Most people in jail are there for non-violent offenses, including
           traffic violations, public disorderliness, drug charges, property
-          damage, and mental health episodes.</Blurb
+          damage, and mental health episodes.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Expand the STAR (Support Team Assisted Response) program in
@@ -96,9 +96,9 @@ import Default from "../../layouts/default.astro";
               treatment, and probation as alternatives to jail for repeat
               offenders.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
@@ -109,21 +109,21 @@ import Default from "../../layouts/default.astro";
         least afford them. They also influence the motivations of a police force
         and can skew them away from their intended focus: public safety.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >The penalties for many low-level offenses are monetary, perverting
           the point of restorative justice by pushing the perpetrator even
-          further into desperation.</Blurb
+          further into desperation.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Change the default penalties for many low-level offenses to
               community service and mandatory trainings.
             </li>
           </ul>
-        </Blurb>
-      </div>
+        </Fragment>
+      </ProblemSolution>
     </section>
   </main>
 </Default>

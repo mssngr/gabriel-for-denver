@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import affordability from "../../../assets/affordability.svg";
-import Blurb from "../../../components/blurb.astro";
+import ProblemSolution from "../../../components/problem-solution-es.astro";
 import Espanol from "../../../layouts/espanol.astro";
 ---
 
@@ -41,8 +41,8 @@ import Espanol from "../../../layouts/espanol.astro";
         {" "}Otro alquiler. Se ha convertido en una de las áreas metropolitanas
         más caras para criar a un hijo en los EE. UU.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Estudio tras estudio ha demostrado que los niños que asisten al Pre-K
           tienen mejores resultados que los que no lo hacen, incluso más
           adelante en la vida. Sin embargo, el costo suele ser prohibitivo, lo
@@ -50,9 +50,9 @@ import Espanol from "../../../layouts/espanol.astro";
           />Colorado ofrece 15 horas gratuitas de Pre-K, a partir de los 4 años.
           Esto está bien, pero no es suficiente para permitir que los cuidadores
           regresen a la fuerza laboral. También tiene un impacto menor en los
-          resultados de los niños.</Blurb
+          resultados de los niños.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Washington DC implementó el Pre-K universal para toda la ciudad, a
           partir de los 3 años. Ha sido un éxito rotundo y ha incentivado a las
           familias a quedarse en la ciudad.<ul class="mt-2">
@@ -62,9 +62,9 @@ import Espanol from "../../../layouts/espanol.astro";
             </li>
             <li>• Ampliar las horas gratuitas de 15 a 35 por semana.</li>
             <li>• Comenzar con niños de 3 años, en lugar de 4.</li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">
@@ -74,13 +74,13 @@ import Espanol from "../../../layouts/espanol.astro";
         La electricidad, el gas, el internet... son requisitos de la vida
         moderna. Son servicios básicos. No son mercancías con las que comerciar.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Empresas como Xcel y Xfinity utilizan prácticas y modelos de precios
           engañosos para estafar a sus clientes el dinero que tanto les costó
-          ganar.</Blurb
+          ganar.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Crear una empresa de Energía de Denver como alternativa pública
@@ -99,9 +99,9 @@ import Espanol from "../../../layouts/espanol.astro";
               • Introducir tarifas energéticas para clientes de gran consumo,
               como los centros de datos.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
@@ -116,14 +116,14 @@ import Espanol from "../../../layouts/espanol.astro";
         > Pero, habiendo dependido personalmente del RTD, me ha fallado, he llegado
         tarde al trabajo e incluso me ha dejado varado.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >El RTD se ha vuelto inconsistente y costoso para usarlo como
           principal medio de transporte. Muchos han desistido de él. Sin
           embargo, el acceso a un transporte público confiable es un factor
-          vital para la movilidad económica.</Blurb
+          vital para la movilidad económica.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Trabajar con la Junta Directiva del RTD para:<ul class="mt-2">
             <li>
               • Restablecer la línea F, que tenía miles de pasajeros
@@ -143,30 +143,30 @@ import Espanol from "../../../layouts/espanol.astro";
               los conductores que los ignoran, llegan tarde o no se presentan.
             </li>
           </ul>
-        </Blurb>
-      </div>
+        </Fragment>
+      </ProblemSolution>
       <!-- <h1 class="text-center mb-16!">Junk Fees</h1>
       <p class="max-w-md mx-auto mb-16">
         Colorado's new law prohibiting deceptive pricing went into effect this
         January. That's great news, except it doesn't ban or reduce those junk
         fees. It just makes them visible.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problem" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Companies charge exorbitant fees for a myriad of things that are <em
             >not</em
-          > the product or service you are paying for.</Blurb
+          > the product or service you are paying for.</Fragment
         >
-        <Blurb title="Solution" Icon={CircleCheck}
+        <Fragment title="Solution"
           ><ul class="mt-2">
             <li>• Ban ancillary fees for products and services in Denver.</li>
             <li>
               • Require companies to include any extras they want to charge in
               the original price for the product or service.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div> -->
+      </ProblemSolution> -->
     </section>
   </main>
 </Espanol>

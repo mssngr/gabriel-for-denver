@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import housingCrisis from "../../../assets/housing-crisis.svg";
-import Blurb from "../../../components/blurb.astro";
+import ProblemSolution from "../../../components/problem-solution-es.astro";
 import Espanol from "../../../layouts/espanol.astro";
 ---
 
@@ -36,15 +36,15 @@ import Espanol from "../../../layouts/espanol.astro";
           >la renta aumentó a casi el doble de la velocidad que los ingresos.</strong
         > Esto sí <em>es</em> una crisis.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Empresas de California y China están comprando casas en los
           vecindarios solo para darles vuelta o alquilarlas a precios
           exorbitantes. También están construyendo enormes torres de
           apartamentos de lujo que no benefician al habitante promedio de
-          Denver.</Blurb
+          Denver.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           >Resolver la crisis de vivienda de Denver comienza con que Denver sea
           dueña de sus viviendas:<ul class="mt-2">
             <li>• Prohibir a las empresas comprar viviendas unifamiliares.</li>
@@ -60,9 +60,9 @@ import Espanol from "../../../layouts/espanol.astro";
               • Estabilizar la renta de los apartamentos que ya son propiedad de
               empresas foráneas.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
     <section>
       <h1 class="text-center mb-16!">Zonificación Inclusiva</h1>
@@ -71,14 +71,14 @@ import Espanol from "../../../layouts/espanol.astro";
           >asequible</strong
         > para personas con ingresos bajos a moderados.
       </p>
-      <div class="flex gap-8 justify-center">
-        <Blurb title="Problema" Icon={CircleAlert}
+      <ProblemSolution>
+        <Fragment slot="problem"
           >Más del 77% de las zonas residenciales de Denver prohíben los tipos
           de vivienda más asequibles. Los apartamentos, condominios y casas
           adosadas están ampliamente prohibidos. La zonificación excluyente
-          tiene orígenes racistas.</Blurb
+          tiene orígenes racistas.</Fragment
         >
-        <Blurb title="Solución" Icon={CircleCheck}
+        <Fragment slot="solution"
           ><ul class="mt-2">
             <li>
               • Cambiar las leyes de zonificación de Denver para permitir
@@ -89,9 +89,9 @@ import Espanol from "../../../layouts/espanol.astro";
               • Exigir que el 30% de todas las nuevas viviendas construidas sean
               viviendas asequibles.
             </li>
-          </ul></Blurb
+          </ul></Fragment
         >
-      </div>
+      </ProblemSolution>
     </section>
   </main>
 </Espanol>

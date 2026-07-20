@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { ArrowLeft, CircleAlert, CircleCheck } from "@lucide/astro";
 import foodSecurity from "../../assets/food-security.svg";
-import Blurb from "../../components/blurb.astro";
+import ProblemSolution from "../../components/problem-solution.astro";
 import Default from "../../layouts/default.astro";
 ---
 
@@ -41,13 +41,13 @@ import Default from "../../layouts/default.astro";
         > If the food we eat is killing us, the system doesn't work.
       </p>
       <div class="flex flex-col gap-16">
-        <div class="flex gap-8 justify-center">
-          <Blurb title="Problem" Icon={CircleAlert}
+        <ProblemSolution>
+          <Fragment slot="problem"
             >The first corner cut on food is often its healthiness. Meanwhile,
             Denver has nearly 20,000 acres of parkland, almost none of it
-            producing a single ounce of food for our 750,000 residents.</Blurb
+            producing a single ounce of food for our 750,000 residents.</Fragment
           >
-          <Blurb title="Solution" Icon={CircleCheck}
+          <Fragment slot="solution"
             ><ul class="mt-2">
               <li>
                 • Prioritize fruit-bearing trees and bushes over all other kinds
@@ -70,9 +70,9 @@ import Default from "../../layouts/default.astro";
                 • Produce that doesn't meet quality standards is given away for
                 free.
               </li>
-            </ul></Blurb
+            </ul></Fragment
           >
-        </div>
+        </ProblemSolution>
       </div>
     </section>
   </main>
