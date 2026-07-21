@@ -102,5 +102,13 @@ const currentPath = Astro.url.pathname;
       </li>
     </ul>
   </div>
-  <a href={`/es${currentPath}`} class="link">Español</a>
+  <a href={`/es${currentPath}`} class="link" id="lang-switch-es">Español</a>
 </div>
+
+<script is:inline>
+  document
+    .getElementById("lang-switch-es")
+    ?.addEventListener("click", function () {
+      window.posthog?.capture("language_switched", { to: "es" });
+    });
+</script>

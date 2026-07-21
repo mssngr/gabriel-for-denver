@@ -41,6 +41,15 @@ const imageAlt = {
 ---
 
 <Default>
+  <script
+    is:inline
+    define:vars={{ issueSlug: issue.data.slug, issueTitle: issue.data.title }}
+  >
+    window.posthog?.capture("issue_viewed", {
+      issue_slug: issueSlug,
+      issue_title: issueTitle,
+    });
+  </script>
   <main
     class={`h-full p-8 md:p-16 flex flex-col gap-32 ${issue.data.subIssues.length % 2 == 0 ? "pb-32! md:pb-32!" : "pb-0! md:pb-0!"}`}
   >

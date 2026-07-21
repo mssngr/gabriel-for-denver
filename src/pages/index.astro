@@ -68,6 +68,19 @@ const content = marked.parse(page.data?.content);
           />
           <button type="submit" class="btn btn-accent mt-4">Send</button>
         </form>
+
+        <script is:inline>
+          document.addEventListener("DOMContentLoaded", function () {
+            var form = document.querySelector(
+              'form[action="https://api.web3forms.com/submit"]',
+            );
+            if (form) {
+              form.addEventListener("submit", function () {
+                window.posthog?.capture("contact_form_submitted");
+              });
+            }
+          });
+        </script>
         <Blurb title="Start the conversation."
           >Send me a message. I'll respond. Personally. If you have more
           questions about my plans, who I am, or how you can help, don't leave

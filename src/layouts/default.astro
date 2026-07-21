@@ -2,6 +2,7 @@
 import { Font } from "astro:assets";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
+import PostHog from "../components/posthog.astro";
 import "../styles/global.css";
 ---
 
@@ -16,6 +17,7 @@ import "../styles/global.css";
     <Font cssVariable="--font-league-spartan" />
     <Font cssVariable="--font-edu-sa-hand" />
     <title>Gabriel for Denver</title>
+    <PostHog />
   </head>
   <body>
     <Header />

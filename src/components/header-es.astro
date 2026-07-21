@@ -100,7 +100,17 @@ const currentPath = Astro.url.pathname;
       <li><a class="md:text-2xl" href="/es#involucrate">Involúcrate</a></li>
     </ul>
   </div>
-  <a href={currentPath.replace("/es", "") || "/"} class="link mt-4 md:mt-0"
-    >English</a
+  <a
+    href={currentPath.replace("/es", "") || "/"}
+    class="link mt-4 md:mt-0"
+    id="lang-switch-en">English</a
   >
 </div>
+
+<script is:inline>
+  document
+    .getElementById("lang-switch-en")
+    ?.addEventListener("click", function () {
+      window.posthog?.capture("language_switched", { to: "en" });
+    });
+</script>

@@ -1,0 +1,32 @@
+[
+  {
+    "event_name": "contact_form_submitted",
+    "event_description": "User submits the Get Involved contact form on the home page.",
+    "file": "src/pages/index.astro"
+  },
+  {
+    "event_name": "contact_form_completed",
+    "event_description": "Thank-you page loads after a successful form submission, confirming campaign contact.",
+    "file": "src/pages/thank-you.astro"
+  },
+  {
+    "event_name": "issue_viewed",
+    "event_description": "User views an individual issue detail page, indicating specific policy interest.",
+    "file": "src/pages/issues/[id].astro"
+  },
+  {
+    "event_name": "language_switched",
+    "event_description": "User clicks the Español link in the English header to switch to Spanish.",
+    "file": "src/components/header.astro"
+  },
+  {
+    "event_name": "language_switched",
+    "event_description": "User clicks the English link in the Spanish header to switch back to English.",
+    "file": "src/components/header-es.astro"
+  },
+  {
+    "event_name": "issue_read_more_clicked",
+    "event_description": "User clicks Read More on an issue card to navigate to the issue detail page.",
+    "file": "src/components/what-will-i-tackle.astro"
+  }
+]

@@ -18,8 +18,10 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
           <Fragment set:html={summary} />
           <br />
           <a
-            class="link font-medium text-2xl"
+            class="link font-medium text-2xl issue-read-more"
             href={`/issues/${issue.data.slug}`}
+            data-issue-slug={issue.data.slug}
+            data-issue-title={issue.data.title}
           >
             Read More
             <ArrowRight class="size-6 inline-block align-middle ml-2" />
@@ -29,3 +31,15 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
     })
   }
 </div>
+
+<script is:inline>
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest(".issue-read-more");
+    if (link) {
+      window.posthog?.capture("issue_read_more_clicked", {
+        issue_slug: link.dataset.issueSlug,
+        issue_title: link.dataset.issueTitle,
+      });
+    }
+  });
+</script>

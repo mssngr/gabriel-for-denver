@@ -5,6 +5,9 @@ import Default from "../layouts/default.astro";
 ---
 
 <Default>
+  <script is:inline>
+    window.posthog?.capture("contact_form_completed");
+  </script>
   <main class="h-full p-8 md:p-16 flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
