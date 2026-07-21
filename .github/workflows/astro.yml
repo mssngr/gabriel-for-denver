@@ -42,6 +42,9 @@ jobs:
         run: bun install
         working-directory: ${{ env.BUILD_PATH }}
       - name: Build with Astro
+        env:
+          PUBLIC_POSTHOG_PROJECT_TOKEN: ${{ secrets.PUBLIC_POSTHOG_PROJECT_TOKEN }}
+          PUBLIC_POSTHOG_HOST: ${{ secrets.PUBLIC_POSTHOG_HOST }}
         run: |
           bun run build \
             --site "${{ steps.pages.outputs.origin }}" \
