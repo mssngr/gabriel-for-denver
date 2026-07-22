@@ -32,21 +32,21 @@ subIssues:
       or out of that place without us knowing."**
     problemsAndSolutions:
       - solution_es: >-
-          * • Prohibir que los lectores automáticos de placas rastreen los
+          * Prohibir que los lectores automáticos de placas rastreen los
           movimientos de cada conductor en Denver.
 
-          * • Exigir órdenes judiciales para permitir que los oficiales de la Policía de Denver rastreen a los conductores a través de estos lectores.
+          * Exigir órdenes judiciales para permitir que los oficiales de la Policía de Denver rastreen a los conductores a través de estos lectores.
 
-          * • Exigir a Axon u otros proveedores con los que trabajamos que actualicen su software para guardar únicamente los movimientos de las placas que tengan órdenes judiciales en su base de datos.
+          * Exigir a Axon u otros proveedores con los que trabajamos que actualicen su software para guardar únicamente los movimientos de las placas que tengan órdenes judiciales en su base de datos.
         problem: Warrantless AI surveillance of drivers' daily movements by automatic
           license plate readers throughout Denver is unconstitutional.
         solution: >-
-          * • Ban automatic license plate readers from tracking every single
+          * Ban automatic license plate readers from tracking every single
           Denver driver's movements.
 
-          * • Require warrants to allow Denver police officers to track drivers through these readers.
+          * Require warrants to allow Denver police officers to track drivers through these readers.
 
-          * • Require Axon or other providers we work with to update their software to only save the movements of license plates that have warrants in their database.
+          * Require Axon or other providers we work with to update their software to only save the movements of license plates that have warrants in their database.
         problem_es: La vigilancia de IA sin orden judicial de los movimientos diarios de
           los conductores mediante lectores automáticos de placas en todo Denver
           es inconstitucional.
