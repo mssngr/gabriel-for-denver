@@ -40,21 +40,20 @@ subIssues:
     title_es: Rendición de Cuentas
     problemsAndSolutions:
       - solution_es: >-
-          
+          * Activar un organismo investigador dirigido por ciudadanos cuando un
+          oficial de policía sea acusado de mala conducta.
 
-          * • Activar un organismo investigador dirigido por ciudadanos cuando un oficial de policía sea acusado de mala conducta.
-
-          * • El organismo dirigido por ciudadanos determina entonces la sanción para el oficial, si se le encuentra culpable, desde capacitaciones en el aula hasta la destitución.
+          * El organismo dirigido por ciudadanos determina entonces la sanción para el oficial, si se le encuentra culpable, desde capacitaciones en el aula hasta la destitución.
         problem: Police misconduct is handled informally by a supervisor. Classroom
           training is utilized instead of suspensions or reprimands.
         problem_es: La mala conducta policial es manejada de manera informal por un
           supervisor. Se utilizan capacitaciones en el aula en lugar de
           suspensiones o amonestaciones.
         solution: >-
-          * • Trigger a citizen-ran investigative body when a police officer is
+          * Trigger a citizen-ran investigative body when a police officer is
           accused of misconduct.
 
-          * • The citizen-ran body then determines the discipline for the officer, if found guilty, from classroom training all the way up to termination.
+          * The citizen-ran body then determines the discipline for the officer, if found guilty, from classroom training all the way up to termination.
     title: Accountability
     summary: The police investigating the police is like you auditing your own
       taxes. It doesn't work. Denver Police needs to be held accountable by
@@ -67,14 +66,14 @@ subIssues:
     title_es: Encarcelamiento por Delitos No Violentos
     problemsAndSolutions:
       - solution_es: >-
-          * • Ampliar el programa STAR (Respuesta Asistida por Equipo de Apoyo)
-          en Denver a un programa de 24 horas.
+          * Ampliar el programa STAR (Respuesta Asistida por Equipo de Apoyo) en
+          Denver a un programa de 24 horas.
 
-          * • Cambiar la respuesta predeterminada del Operador del 911 al envío de STAR, escalando a una respuesta policial tradicional solo si se prevé violencia.
+          * Cambiar la respuesta predeterminada del Operador del 911 al envío de STAR, escalando a una respuesta policial tradicional solo si se prevé violencia.
 
-          * • Reducir las sanciones predeterminadas para muchos delitos no violentos a citaciones en lugar de tiempo en prisión.
+          * Reducir las sanciones predeterminadas para muchos delitos no violentos a citaciones en lugar de tiempo en prisión.
 
-          * • Ampliar el uso del arresto domiciliario, la libertad laboral, la rehabilitación y el tratamiento, y la libertad condicional como alternativas a la cárcel para reincidentes.
+          * Ampliar el uso del arresto domiciliario, la libertad laboral, la rehabilitación y el tratamiento, y la libertad condicional como alternativas a la cárcel para reincidentes.
         problem_es: La mayoría de las personas en la cárcel están allí por delitos no
           violentos, incluyendo infracciones de tráfico, desorden público,
           cargos por drogas, daños a la propiedad y episodios de salud mental.
@@ -82,14 +81,14 @@ subIssues:
           traffic violations, public disorderliness, drug charges, property
           damage, and mental health episodes.
         solution: >-
-          * • Expand the STAR (Support Team Assisted Response) program in Denver
+          * Expand the STAR (Support Team Assisted Response) program in Denver
           to a 24-hour program.
 
-          * • Change the default 911 Operator response to sending STAR, only escalating to a traditional police response if there is an expectation of violence.
+          * Change the default 911 Operator response to sending STAR, only escalating to a traditional police response if there is an expectation of violence.
 
-          * • Reduce the default punishments for many non-violent offenses to citations instead of jail time.
+          * Reduce the default punishments for many non-violent offenses to citations instead of jail time.
 
-          * • Expand usage of house arrest, work release, rehabilitation & treatment, and probation as alternatives to jail for repeat offenders.
+          * Expand usage of house arrest, work release, rehabilitation & treatment, and probation as alternatives to jail for repeat offenders.
     title: Non-Violent Jailing
     summary: Policing has roots and connections in the slave catchers of antebellum
       South. **Non-violent jailing exists, today, as a pipeline** for feeding
@@ -100,7 +99,7 @@ subIssues:
       principal: la seguridad pública."
     title_es: Multas, Cargos y Tribulaciones
     problemsAndSolutions:
-      - solution_es: "* • Cambiar las sanciones predeterminadas para muchos delitos
+      - solution_es: "* Cambiar las sanciones predeterminadas para muchos delitos
           menores a servicio comunitario y capacitaciones obligatorias."
         problem_es: Las sanciones para muchos delitos menores son monetarias,
           pervirtiendo el propósito de la justicia restaurativa al empujar al
@@ -108,7 +107,7 @@ subIssues:
         problem: The penalties for many low-level offenses are monetary, perverting the
           point of restorative justice by pushing the perpetrator even further
           into desperation.
-        solution: "* • Change the default penalties for many low-level offenses to
+        solution: "* Change the default penalties for many low-level offenses to
           community service and mandatory trainings."
     title: Fines, Fees, & Tribulations
     summary: "Monetary fines and fees are often issued to the very populations who
