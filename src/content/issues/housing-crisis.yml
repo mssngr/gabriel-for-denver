@@ -29,38 +29,37 @@ subIssues:
       almost twice the rate as income.** This *is* a crisis.
     problemsAndSolutions:
       - solution_es: >-
-          Resolver la crisis de vivienda de Denver comienza con que Denver sea
-          dueña de sus viviendas:
+          La oferta de vivienda de Denver debería estar hecha para los
+          residentes de Denver, no para forasteros adinerados. Aproximadamente
+          el 50% de los habitantes de Denver están por debajo del ingreso
+          medio. Ya tenemos suficiente
+          vivienda para los ricos. Construyamos vivienda para el resto de nosotros.
 
 
-          * • Prohibir a las empresas comprar viviendas unifamiliares.
+          * • Exigir que toda vivienda nueva (de alquiler y en venta) sea asequible para la distribución actual de ingresos de los hogares de Denver.
 
-          * • Estabilizar la renta de las viviendas unifamiliares que ya son propiedad de empresas.
-
-          * • Exigir a las empresas foráneas que construyan viviendas en apartamentos asequibles.
-
-          * • Estabilizar la renta de los apartamentos que ya son propiedad de empresas foráneas.
-        problem: Companies from California and China are buying up neighborhood homes
-          only to flip or rent them at exorbitant rates. They're also building
-          giant, luxury apartment high-rises that don't benefit the average
-          Denverite.
+          * • Estabilizar los alquileres existentes para que coincidan con la distribución de ingresos de los hogares, de modo que haya suficiente vivienda para el 50% inferior de nosotros.
+        problem: Companies come into Denver to build giant, luxury apartments that only
+          benefit the wealthy and drive up rents for the rest of us. They are
+          only required to provide ~10% of their housing as "affordable," which
+          is based on median income. Yet, we all know that so many more than 10%
+          of Denverites fall below the median income.
         solution: >-
-          Solving the Denver housing crisis starts with Denver ownership of
-          homes:
+          The Denver housing supply should be made for Denver residents, not
+          wealthy outsiders. Roughly 50% of Denverites fall below the median
+          income. We have enough housing for the wealthy. Let's build housing
+          for the rest of us.
 
 
-          * • Ban companies from buying single family homes.
+          * • Require all new housing (rent and for sale) to be affordable for existing Denver household income distributions.
 
-          * • Stabilize rent for single family homes already owned by companies.
-
-          * • Require out-of-state companies to build affordable apartment housing.
-
-          * • Stabilize rent for apartments already owned by out-of-state companies.
-        problem_es: Empresas de California y China están comprando casas en los
-          vecindarios solo para darles vuelta o alquilarlas a precios
-          exorbitantes. También están construyendo enormes torres de
-          apartamentos de lujo que no benefician al habitante promedio de
-          Denver.
+          * • Stabilize existing rents to match household income distributions, so that there's enough housing for the bottom 50% of us.
+        problem_es: Empresas de fuera vienen a Denver a construir apartamentos gigantes
+          y de lujo que solo benefician a los ricos y suben los alquileres para
+          el resto de nosotros. Solo se les exige que aproximadamente el 10% de
+          sus viviendas sean "asequibles," lo cual se basa en el ingreso medio.
+          Sin embargo, todos sabemos que muchos más del 10% de los habitantes de
+          Denver están por debajo del ingreso medio.
     title_es: La Renta Está Demasiado Alta
   - summary_es: Políticas que exigen que un porcentaje de las nuevas viviendas
       sea **asequible** para personas con ingresos bajos a moderados.
