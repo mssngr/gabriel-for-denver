@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import photo from "../../assets/gabriel-with-city.jpg";
-import Blurb from "../../components/blurb.astro";
 import Input from "../../components/input.astro";
 import MyBackground from "../../components/my-background-es.astro";
 import Textarea from "../../components/textarea.astro";
@@ -45,7 +44,7 @@ const content = marked.parse(page.data?.content_es);
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
       <h1 class="text-center mb-16!">Involúcrate</h1>
-      <div class="flex flex-wrap items-center justify-center gap-16">
+      <div class="flex flex-wrap items-start justify-center gap-16">
         <form
           class="w-xs flex flex-col items-end text-black!"
           action="https://api.web3forms.com/submit"
@@ -77,11 +76,14 @@ const content = marked.parse(page.data?.content_es);
           />
           <button type="submit" class="btn btn-accent mt-4">Enviar</button>
         </form>
-        <Blurb title="Inicia la conversación."
-          >Envíame un mensaje. Responderé. Personalmente. Si tienes más
-          preguntas sobre mis planes, quién soy, o cómo puedes ayudar, no te
-          quedes con la duda. ¡Solo pregunta!</Blurb
-        >
+        <div class="min-w-3xs w-lg max-w-full">
+          <h2>Inicia la conversación.</h2>
+          <p class="font-light">
+            Envíame un mensaje. Responderé. Personalmente. Si tienes más
+            preguntas sobre mis planes, quién soy, o cómo puedes ayudar, no te
+            quedes con la duda. ¡Solo pregunta!
+          </p>
+        </div>
       </div>
     </section>
   </main>

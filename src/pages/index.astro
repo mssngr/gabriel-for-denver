@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import photo from "../assets/gabriel-with-city.jpg";
-import Blurb from "../components/blurb.astro";
 import Input from "../components/input.astro";
 import MyBackground from "../components/my-background.astro";
 import Textarea from "../components/textarea.astro";
@@ -41,7 +40,7 @@ const content = marked.parse(page.data?.content);
       class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
       <h1 class="text-center mb-16!">Get involved</h1>
-      <div class="flex flex-wrap items-center justify-center gap-16">
+      <div class="flex flex-wrap items-start justify-center gap-16">
         <form
           class="w-xs flex flex-col items-end text-black!"
           action="https://api.web3forms.com/submit"
@@ -68,7 +67,14 @@ const content = marked.parse(page.data?.content);
           />
           <button type="submit" class="btn btn-accent mt-4">Send</button>
         </form>
-
+        <div class="min-w-3xs w-lg max-w-full">
+          <h2>Start the conversation.</h2>
+          <p class="font-light">
+            Send me a message. I'll respond. Personally. If you have more
+            questions about my plans, who I am, or how you can help, don't leave
+            yourself guessing. Just ask!
+          </p>
+        </div>
         <script is:inline>
           document.addEventListener("DOMContentLoaded", function () {
             var form = document.querySelector(
@@ -81,11 +87,6 @@ const content = marked.parse(page.data?.content);
             }
           });
         </script>
-        <Blurb title="Start the conversation."
-          >Send me a message. I'll respond. Personally. If you have more
-          questions about my plans, who I am, or how you can help, don't leave
-          yourself guessing. Just ask!</Blurb
-        >
       </div>
     </section>
   </main>
