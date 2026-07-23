@@ -1,0 +1,51 @@
+---
+import { Image } from "astro:assets";
+import { getEntry, render } from "astro:content";
+import { marked } from "marked";
+import chainLogo from "../../../../assets/chainlogo.webp";
+import events from "../../../../assets/events.svg";
+import ContactForm from "../../../../components/contact-form.astro";
+import WhatWillITackle from "../../../../components/what-will-i-tackle.astro";
+import Layout from "../../../../layouts/espanol.astro";
+
+const page = await getEntry("pages", "events");
+const content = marked.parse(page.data?.content_es);
+---
+
+<Layout>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md [&_a]:link">
+        <h1>{page.data.heading_es}</h1>
+        <Fragment set:html={content} />
+      </div>
+      <Image
+        src={events}
+        alt={page.data.photoAltText_es}
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <h1 class="text-center mb-16!">Dónde voy a estar</h1>
+      <div class="flex flex-wrap items-center justify-center gap-16">
+        <Image
+          src={chainLogo}
+          alt="Logo de Chain Reaction Brewing Co"
+          class="flex-1 max-w-48"
+        />
+        <div class="flex-1 max-w-2xl">
+          <h2>Lanzamiento de la Campaña</h2>
+          <p>Chain Reaction Brewing Co.</p>
+          <h3>8/8/26, 5:00pm</h3>
+          <p class="font-light mt-4">
+            ¡Estamos lanzando nuestra campaña con cerveza, firmas y música!
+            Ayúdenos a comenzar con el pie derecho y a tomar la delantera para
+            aparecer en la boleta electoral.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

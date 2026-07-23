@@ -1,0 +1,68 @@
+---
+import Input from "../components/input.astro";
+import Textarea from "../components/textarea.astro";
+---
+
+<h1 class="text-center mb-16!">Get involved</h1>
+<div class="flex flex-wrap items-start justify-center gap-16">
+  <form
+    id="form"
+    class="w-xs flex flex-col items-end text-black!"
+    action="https://api.web3forms.com/submit"
+    method="POST"
+  >
+    <input
+      type="hidden"
+      name="access_key"
+      value="9f051aba-5544-4c84-b506-a64e38552d39"
+    />
+    <Input name="name" label="Name" placeholder="Jane Doe" required />
+    <Input
+      type="email"
+      name="email"
+      label="Email"
+      placeholder="jane.doe@gmail.com"
+      required
+    />
+    <Textarea
+      name="message"
+      label="Message"
+      placeholder="So, I wanted to ask..."
+      required
+    />
+    <button id="submit-button" type="submit" class="btn btn-accent mt-4"
+      >Send</button
+    >
+  </form>
+  <div class="min-w-3xs w-lg max-w-full">
+    <h2>Start the conversation.</h2>
+    <p class="font-light">
+      Send me a message. I'll respond. Personally. If you have more questions
+      about my plans, who I am, or how you can help, don't leave yourself
+      guessing. Just ask!
+    </p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById("form") as HTMLFormElement;
+  const submitButton = document.getElementById("submit-button") as HTMLElement;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitButton.innerHTML = "Sending...";
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: new FormData(form),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      window.location.href = "/thank-you";
+    } else {
+      result.innerHTML = data.message;
+    }
+    window.posthog?.capture("contact_form_submitted");
+  });
+</script>

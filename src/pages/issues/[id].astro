@@ -10,7 +10,7 @@ import homelessness from "../../assets/homelessness.svg";
 import housingCrisis from "../../assets/housing-crisis.svg";
 import injustice from "../../assets/injustice.svg";
 import ProblemSolution from "../../components/problem-solution.astro";
-import Default from "../../layouts/default.astro";
+import Layout from "../../layouts/default.astro";
 
 export async function getStaticPaths() {
   const issues = await getCollection("issues");
@@ -40,7 +40,7 @@ const imageAlt = {
 }[issue.data.slug];
 ---
 
-<Default>
+<Layout>
   <script
     is:inline
     define:vars={{ issueSlug: issue.data.slug, issueTitle: issue.data.title }}
@@ -98,4 +98,4 @@ const imageAlt = {
       })
     }
   </main>
-</Default>
+</Layout>

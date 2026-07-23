@@ -68,6 +68,20 @@ collections:
               name: photoAltText_es,
               widget: string,
             }
+      - label: Request
+        name: request
+        file: src/content/pages/request.yml
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
       - label: Donate
         name: donate
         file: src/content/pages/donate.yml
@@ -157,3 +171,24 @@ collections:
               },
             ],
         }
+  - label: Events
+    name: events
+    folder: src/content/events
+    extension: yml
+    create: true
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Title (Spanish), name: title_es, widget: string }
+      - { label: Summary, name: summary, widget: richtext }
+      - { label: Summary (Spanish), name: summary_es, widget: richtext }
+      - { label: Description, name: description, widget: richtext }
+      - { label: Description (Spanish), name: description_es, widget: richtext }
+      - { label: Slug, name: slug, widget: string }
+      - {
+          label: Start Time,
+          name: startTime,
+          widget: datetime,
+          default: "{{now}}",
+        }
+      - { label: End Time, name: endTime, widget: datetime, default: "{{now}}" }
+      - { label: Location, name: location, widget: string }

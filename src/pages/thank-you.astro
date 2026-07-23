@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import profile from "../assets/profile.jpg";
-import Default from "../layouts/default.astro";
+import Layout from "../layouts/default.astro";
 ---
 
-<Default>
+<Layout>
   <script is:inline>
     window.posthog?.capture("contact_form_completed");
   </script>
@@ -21,4 +21,4 @@ import Default from "../layouts/default.astro";
       <Image src={profile} alt="Photo of Gabriel" class="w-full max-w-md" />
     </section>
   </main>
-</Default>
+</Layout>

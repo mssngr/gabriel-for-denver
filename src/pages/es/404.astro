@@ -1,0 +1,28 @@
+---
+import { Image } from "astro:assets";
+import lost from "../../assets/lost.svg";
+import Layout from "../../layouts/espanol.astro";
+---
+
+<Layout>
+  <main class="h-full p-8 md:p-16 flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>¿Se perdió?</h1>
+        <p>
+          Esta no parece ser la página (ni los droides) que estaba buscando.
+          ¿Tal vez se desorientó?
+          <br />
+          <br />
+          Sea cual sea el caso, haga clic en el botón de abajo para volver al inicio.
+        </p>
+        <a class="btn btn-primary mt-8" href="/">Volver al inicio</a>
+      </div>
+      <Image
+        src={lost}
+        alt="Foto de un hombre en un laberinto dentro del cerebro de alguien"
+        class="w-full max-w-md"
+      />
+    </section>
+  </main>
+</Layout>

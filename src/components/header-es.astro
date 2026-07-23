@@ -3,11 +3,15 @@ import { Image } from "astro:assets";
 import {
   Apple,
   ArrowRight,
+  CalendarDays,
   Coins,
   DatabaseZap,
+  HandCoins,
   HouseHeart,
   MapPinHouse,
+  MessageCircle,
   Siren,
+  Users,
 } from "@lucide/astro";
 import { Astro } from "astro";
 import logoDesktop from "../assets/gfd-banner.svg";
@@ -97,7 +101,44 @@ const currentPath = Astro.url.pathname;
           href="/es/why-me">¿Por qué yo?</a
         >
       </li>
-      <li><a class="md:text-2xl" href="/es#involucrate">Involúcrate</a></li>
+      <li>
+        <details>
+          <summary
+            class={`md:text-2xl ${currentPath.includes("/es/get-involved/") ? "text-primary font-black" : ""}`}
+            >Involúcrate</summary
+          >
+          <ul class="bg-base-100 rounded-t-none p-2 z-10">
+            <li>
+              <a
+                href="/es/get-involved/events"
+                class={`${currentPath.includes("/es/get-involved/events") ? "text-primary font-black" : ""}`}
+                ><CalendarDays />Eventos</a
+              >
+            </li>
+            <!-- <li>
+              <a
+                href="/es/get-involved/donate"
+                class={`${currentPath === "/es/get-involved/donate" ? "text-primary font-black" : ""}`}
+                ><HandCoins />Donar</a
+              >
+            </li> -->
+            <li>
+              <a
+                href="/es/get-involved/volunteer"
+                class={`${currentPath === "/es/get-involved/volunteer" ? "text-primary font-black" : ""}`}
+                ><Users />Voluntario</a
+              >
+            </li>
+            <li>
+              <a
+                href="/es/get-involved/contact-me"
+                class={`${currentPath === "/es/get-involved/contact-me" ? "text-primary font-black" : ""}`}
+                ><MessageCircle />Contáctanos</a
+              >
+            </li>
+          </ul>
+        </details>
+      </li>
     </ul>
   </div>
   <a

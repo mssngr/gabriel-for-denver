@@ -4,13 +4,13 @@ import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import city from "../../assets/city.svg";
 import WhatWillITackle from "../../components/what-will-i-tackle.astro";
-import Default from "../../layouts/default.astro";
+import Layout from "../../layouts/default.astro";
 
 const page = await getEntry("pages", "issues");
 const content = marked.parse(page.data?.content);
 ---
 
-<Default>
+<Layout>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
@@ -26,4 +26,4 @@ const content = marked.parse(page.data?.content);
       <WhatWillITackle />
     </section>
   </main>
-</Default>
+</Layout>

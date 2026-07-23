@@ -1,0 +1,12 @@
+---
+import Fieldset from "./fieldset.astro";
+
+const { name, label, placeholder, options, required } = Astro.props;
+---
+
+<Fieldset label={label}>
+  <select class="select" name={name} required={required}>
+    <option disabled selected>{placeholder}</option>
+    {options.map((option) => <option>{option}</option>)}
+  </select></Fieldset
+>

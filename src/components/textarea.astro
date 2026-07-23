@@ -1,10 +1,13 @@
 ---
 import Fieldset from "./fieldset.astro";
 
-const { label, placeholder } = Astro.props;
+const { name, label, placeholder, required } = Astro.props;
 ---
 
 <Fieldset label={label}
-  ><textarea class="textarea w-full text-base" placeholder={placeholder}
-  ></textarea></Fieldset
+  ><textarea
+    name={name}
+    class="textarea w-full text-base"
+    placeholder={placeholder}
+    required={required}></textarea></Fieldset
 >

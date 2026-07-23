@@ -2,13 +2,13 @@
 import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
-import people from "../../assets/people.svg";
-import Input from "../../components/input.astro";
-import Select from "../../components/select.astro";
-import Textarea from "../../components/textarea.astro";
-import Layout from "../../layouts/default.astro";
+import presentation from "../../../assets/presentation.svg";
+import Input from "../../../components/input.astro";
+import Select from "../../../components/select.astro";
+import Textarea from "../../../components/textarea.astro";
+import Layout from "../../../layouts/default.astro";
 
-const page = await getEntry("pages", "volunteer");
+const page = await getEntry("pages", "request");
 const content = marked.parse(page.data?.content);
 ---
 
@@ -20,7 +20,7 @@ const content = marked.parse(page.data?.content);
         <Fragment set:html={content} />
       </div>
       <Image
-        src={people}
+        src={presentation}
         alt={page.data.photoAltText}
         class="w-full max-w-md"
       />
@@ -28,13 +28,13 @@ const content = marked.parse(page.data?.content);
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center mb-16!">Get involved</h1>
+      <h1 class="text-center mb-16!">The info</h1>
       <div class="flex flex-wrap items-start justify-center gap-16">
         <form id="form" class="w-xs flex flex-col items-end text-black!">
           <input
             type="hidden"
             name="access_key"
-            value="3016be5e-b143-437a-98fa-09a3415ddd41"
+            value="e28d4ed9-e67d-4fc3-b246-b0aebf5d9243"
           />
           <Input name="name" label="Name" placeholder="Jane Doe" required />
           <Input
@@ -45,35 +45,52 @@ const content = marked.parse(page.data?.content);
             required
           />
           <Select
-            name="interest"
-            label="Interest"
-            placeholder="I am interested in..."
+            name="attendance"
+            label="Expected Attendance"
+            placeholder="I am expecting..."
             options={[
-              "Gathering signatures/donations",
-              "Event planning/hosting",
-              "Posting on social media",
-              "Creating art/media",
-              "Whatever, just sign me up!",
-              "I have something else in mind...",
+              "5 to 50 people",
+              "51-200 people",
+              "200+ people",
+              "Unsure...",
             ]}
             required
           />
+          <Select
+            name="committment"
+            label="Time Committment"
+            placeholder="It should take about..."
+            options={[
+              "10-15 minutes",
+              "30-60 minutes",
+              "1-2 hours",
+              "3+ hours",
+              "Unsure...",
+            ]}
+            required
+          />
+          <Input
+            name="date-time"
+            label="Date/Time"
+            placeholder="1/1/11, 1pm"
+            required
+          />
           <Textarea
-            name="message"
-            label="(Optional) Message"
-            placeholder="Some more details on how I'd like to help..."
+            name="details"
+            label="Details"
+            placeholder="So, here's the details..."
+            required
           />
           <button id="submit-button" type="submit" class="btn btn-accent mt-4"
             >Send</button
           >
         </form>
         <div class="min-w-3xs w-lg max-w-full">
-          <h2>Help us out.</h2>
+          <h2>Send the deets.</h2>
           <p class="font-light">
-            Not all support is financial. In fact, campaigns are mostly about
-            people. Help us collect signatures, set up events, and have
-            conversations with our neighbors. Change doesn't come easy. But it's
-            easier, together.
+            I'm really looking forward to showing up and connecting with your
+            community! But, I need to know some specifics to really plan it out.
+            Please share the particulars with me on this form.
           </p>
         </div>
       </div>

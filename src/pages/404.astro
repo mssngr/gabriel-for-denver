@@ -1,0 +1,28 @@
+---
+import { Image } from "astro:assets";
+import lost from "../assets/lost.svg";
+import Layout from "../layouts/default.astro";
+---
+
+<Layout>
+  <main class="h-full p-8 md:p-16 flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>You lost?</h1>
+        <p>
+          This doesn't seem to be the page (or the droids) you were looking for.
+          Maybe you got turned around?
+          <br />
+          <br />
+          Whatever the case, click the button below to head back home.
+        </p>
+        <a class="btn btn-primary mt-8" href="/">Return home</a>
+      </div>
+      <Image
+        src={lost}
+        alt="Photo of man in a maze within someone's brain"
+        class="w-full max-w-md"
+      />
+    </section>
+  </main>
+</Layout>

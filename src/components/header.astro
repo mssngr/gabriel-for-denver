@@ -102,8 +102,7 @@ const currentPath = Astro.url.pathname;
         >
       </li>
       <li>
-        <a class="md:text-2xl" href="/#get-involved">Get involved</a>
-        <!-- <details>
+        <details>
           <summary
             class={`md:text-2xl ${currentPath.includes("/get-involved/") ? "text-primary font-black" : ""}`}
             >Get involved</summary
@@ -112,17 +111,17 @@ const currentPath = Astro.url.pathname;
             <li>
               <a
                 href="/get-involved/events"
-                class={`${currentPath === "/get-involved/events" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/get-involved/events") ? "text-primary font-black" : ""}`}
                 ><CalendarDays />Events</a
               >
             </li>
-            <li>
+            <!-- <li>
               <a
                 href="/get-involved/donate"
                 class={`${currentPath === "/get-involved/donate" ? "text-primary font-black" : ""}`}
                 ><HandCoins />Donate</a
               >
-            </li>
+            </li> -->
             <li>
               <a
                 href="/get-involved/volunteer"
@@ -133,12 +132,12 @@ const currentPath = Astro.url.pathname;
             <li>
               <a
                 href="/get-involved/contact-me"
-                class={`${currentPath === "/get-involved/volunteer" ? "text-primary font-black" : ""}`}
+                class={`${currentPath === "/get-involved/contact-me" ? "text-primary font-black" : ""}`}
                 ><MessageCircle />Contact Me</a
               >
             </li>
           </ul>
-        </details> -->
+        </details>
       </li>
     </ul>
   </div>

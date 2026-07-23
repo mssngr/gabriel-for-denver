@@ -2,33 +2,33 @@
 import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
-import people from "../../assets/people.svg";
-import Input from "../../components/input.astro";
-import Select from "../../components/select.astro";
-import Textarea from "../../components/textarea.astro";
-import Layout from "../../layouts/default.astro";
+import people from "../../../assets/people.svg";
+import Input from "../../../components/input.astro";
+import Select from "../../../components/select.astro";
+import Textarea from "../../../components/textarea.astro";
+import Layout from "../../../layouts/espanol.astro";
 
 const page = await getEntry("pages", "volunteer");
-const content = marked.parse(page.data?.content);
+const content = marked.parse(page.data?.content_es);
 ---
 
 <Layout>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>{page.data.heading}</h1>
+        <h1>{page.data.heading_es}</h1>
         <Fragment set:html={content} />
       </div>
       <Image
         src={people}
-        alt={page.data.photoAltText}
+        alt={page.data.photoAltText_es}
         class="w-full max-w-md"
       />
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <h1 class="text-center mb-16!">Get involved</h1>
+      <h1 class="text-center mb-16!">Involúcrese</h1>
       <div class="flex flex-wrap items-start justify-center gap-16">
         <form id="form" class="w-xs flex flex-col items-end text-black!">
           <input
@@ -36,44 +36,49 @@ const content = marked.parse(page.data?.content);
             name="access_key"
             value="3016be5e-b143-437a-98fa-09a3415ddd41"
           />
-          <Input name="name" label="Name" placeholder="Jane Doe" required />
+          <Input
+            name="name"
+            label="Nombre"
+            placeholder="Juana Pérez"
+            required
+          />
           <Input
             type="email"
             name="email"
-            label="Email"
-            placeholder="jane.doe@gmail.com"
+            label="Correo electrónico"
+            placeholder="juana.perez@gmail.com"
             required
           />
           <Select
             name="interest"
-            label="Interest"
-            placeholder="I am interested in..."
+            label="Interés"
+            placeholder="Estoy interesado/a en..."
             options={[
-              "Gathering signatures/donations",
-              "Event planning/hosting",
-              "Posting on social media",
-              "Creating art/media",
-              "Whatever, just sign me up!",
-              "I have something else in mind...",
+              "Recolectar firmas/donaciones",
+              "Planificar/organizar eventos",
+              "Publicar en redes sociales",
+              "Crear arte/contenido multimedia",
+              "Lo que sea, ¡solo inscríbanme!",
+              "Tengo algo más en mente...",
             ]}
             required
           />
           <Textarea
             name="message"
-            label="(Optional) Message"
-            placeholder="Some more details on how I'd like to help..."
+            label="(Opcional) Mensaje"
+            placeholder="Algunos detalles más sobre cómo me gustaría ayudar..."
           />
           <button id="submit-button" type="submit" class="btn btn-accent mt-4"
-            >Send</button
+            >Enviar</button
           >
         </form>
         <div class="min-w-3xs w-lg max-w-full">
-          <h2>Help us out.</h2>
+          <h2>Ayúdenos.</h2>
           <p class="font-light">
-            Not all support is financial. In fact, campaigns are mostly about
-            people. Help us collect signatures, set up events, and have
-            conversations with our neighbors. Change doesn't come easy. But it's
-            easier, together.
+            No todo el apoyo es financiero. De hecho, las campañas se tratan
+            principalmente de personas. Ayúdenos a recolectar firmas, organizar
+            eventos y tener conversaciones con nuestros vecinos. El cambio no es
+            fácil. Pero es más fácil, juntos.
           </p>
         </div>
       </div>
@@ -87,7 +92,7 @@ const content = marked.parse(page.data?.content);
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    submitButton.innerHTML = "Sending...";
+    submitButton.innerHTML = "Enviando...";
 
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
@@ -96,7 +101,7 @@ const content = marked.parse(page.data?.content);
 
     const data = await response.json();
     if (data.success) {
-      window.location.href = "/thank-you";
+      window.location.href = "/es/thank-you";
     } else {
       result.innerHTML = data.message;
     }
