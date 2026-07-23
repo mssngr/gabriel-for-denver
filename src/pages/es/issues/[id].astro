@@ -52,10 +52,10 @@ const imageAlt = {
         <h1>{issue.data.title_es}</h1>
         <Fragment set:html={intro} />
       </div>
-      <Image src={image} alt={imageAlt} class="w-full max-w-md" />
+      <Image src={image || ""} alt={imageAlt || null} class="w-full max-w-md" />
     </section>
     {
-      issue.data.subIssues.map(async (subIssue, index) => {
+      issue.data.subIssues?.map(async (subIssue, index) => {
         const subIssueSummary = marked.parse(subIssue.summary_es);
         return (
           <section

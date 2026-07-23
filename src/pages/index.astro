@@ -9,18 +9,22 @@ import WhatWillITackle from "../components/what-will-i-tackle.astro";
 import Layout from "../layouts/default.astro";
 
 const page = await getEntry("pages", "home");
-const content = marked.parse(page.data?.content);
+const content = page?.data && marked.parse(page.data.content);
 ---
 
 <Layout>
   <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="w-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>{page.data.heading}</h1>
+        <h1>{page?.data.heading}</h1>
         <Fragment set:html={content} />
         <a class="btn btn-primary mt-8" href="/#get-involved">Get involved</a>
       </div>
-      <Image src={photo} alt={page.data.photoAltText} class="w-full max-w-md" />
+      <Image
+        src={photo}
+        alt={page?.data.photoAltText || null}
+        class="w-full max-w-md"
+      />
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"

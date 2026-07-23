@@ -51,7 +51,7 @@ const imageAlt = {
     });
   </script>
   <main
-    class={`h-full p-8 md:p-16 flex flex-col gap-32 ${issue.data.subIssues.length % 2 == 0 ? "pb-32! md:pb-32!" : "pb-0! md:pb-0!"}`}
+    class={`h-full p-8 md:p-16 flex flex-col gap-32 ${(issue.data.subIssues?.length || 0) % 2 == 0 ? "pb-32! md:pb-32!" : "pb-0! md:pb-0!"}`}
   >
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
@@ -63,10 +63,10 @@ const imageAlt = {
         <h1>{issue.data.title}</h1>
         <Fragment set:html={intro} />
       </div>
-      <Image src={image} alt={imageAlt} class="w-full max-w-md" />
+      <Image src={image || ""} alt={imageAlt || null} class="w-full max-w-md" />
     </section>
     {
-      issue.data.subIssues.map(async (subIssue, index) => {
+      issue.data.subIssues?.map(async (subIssue, index) => {
         const subIssueSummary = marked.parse(subIssue.summary);
         return (
           <section

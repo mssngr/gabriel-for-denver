@@ -28,6 +28,7 @@ import Textarea from "../components/textarea.astro";
     <button id="submit-button" type="submit" class="btn btn-accent mt-4"
       >Send</button
     >
+    <div id="result"></div>
   </form>
   <div class="min-w-3xs w-lg max-w-full">
     <h2>Start the conversation.</h2>
@@ -42,6 +43,7 @@ import Textarea from "../components/textarea.astro";
 <script>
   const form = document.getElementById("form") as HTMLFormElement;
   const submitButton = document.getElementById("submit-button") as HTMLElement;
+  const result = document.getElementById("result") as HTMLElement;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

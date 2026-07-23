@@ -12,7 +12,6 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
 <div class="flex flex-wrap gap-16 justify-center">
   {
     sortedIssues.map((issue) => {
-      const Icon = icons[issue.data.icon];
       const summary = marked.parse(issue.data.summary_es);
       return (
         <Issue icon={issue.data.lucideIcon} title={issue.data.title_es}>

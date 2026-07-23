@@ -4,23 +4,22 @@ import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import contact from "../../assets/contact.svg";
 import ContactForm from "../../components/contact-form.astro";
-import WhatWillITackle from "../../components/what-will-i-tackle.astro";
 import Layout from "../../layouts/default.astro";
 
 const page = await getEntry("pages", "contact-me");
-const content = marked.parse(page.data?.content);
+const content = page?.data && marked.parse(page.data.content);
 ---
 
 <Layout>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md [&_a]:link">
-        <h1>{page.data.heading}</h1>
+        <h1>{page?.data.heading}</h1>
         <Fragment set:html={content} />
       </div>
       <Image
         src={contact}
-        alt={page.data.photoAltText}
+        alt={page?.data.photoAltText || null}
         class="w-full max-w-md"
       />
     </section>

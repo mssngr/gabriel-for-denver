@@ -9,19 +9,19 @@ import Textarea from "../../components/textarea.astro";
 import Layout from "../../layouts/default.astro";
 
 const page = await getEntry("pages", "volunteer");
-const content = marked.parse(page.data?.content);
+const content = page?.data && marked.parse(page.data.content);
 ---
 
 <Layout>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>{page.data.heading}</h1>
+        <h1>{page?.data.heading}</h1>
         <Fragment set:html={content} />
       </div>
       <Image
         src={people}
-        alt={page.data.photoAltText}
+        alt={page?.data.photoAltText || null}
         class="w-full max-w-md"
       />
     </section>
@@ -66,6 +66,7 @@ const content = marked.parse(page.data?.content);
           <button id="submit-button" type="submit" class="btn btn-accent mt-4"
             >Send</button
           >
+          <div id="result"></div>
         </form>
         <div class="min-w-3xs w-lg max-w-full">
           <h2>Help us out.</h2>
@@ -84,6 +85,7 @@ const content = marked.parse(page.data?.content);
 <script>
   const form = document.getElementById("form") as HTMLFormElement;
   const submitButton = document.getElementById("submit-button") as HTMLElement;
+  const result = document.getElementById("result") as HTMLElement;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

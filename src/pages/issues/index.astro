@@ -1,23 +1,27 @@
 ---
 import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
+import { getEntry } from "astro:content";
 import { marked } from "marked";
 import city from "../../assets/city.svg";
 import WhatWillITackle from "../../components/what-will-i-tackle.astro";
 import Layout from "../../layouts/default.astro";
 
 const page = await getEntry("pages", "issues");
-const content = marked.parse(page.data?.content);
+const content = page?.data && marked.parse(page.data?.content);
 ---
 
 <Layout>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>{page.data.heading}</h1>
+        <h1>{page?.data.heading}</h1>
         <Fragment set:html={content} />
       </div>
-      <Image src={city} alt={page.data.photoAltText} class="w-full max-w-md" />
+      <Image
+        src={city}
+        alt={page?.data.photoAltText || null}
+        class="w-full max-w-md"
+      />
     </section>
     <section
       id="what-will-i-tackle"

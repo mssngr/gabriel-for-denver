@@ -9,20 +9,20 @@ import WhatWillITackle from "../../components/what-will-i-tackle-es.astro";
 import Espanol from "../../layouts/espanol.astro";
 
 const page = await getEntry("pages", "home");
-const content = marked.parse(page.data?.content_es);
+const content = page?.data && marked.parse(page.data.content_es);
 ---
 
 <Espanol>
   <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="w-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>{page.data.heading_es}</h1>
+        <h1>{page?.data.heading_es}</h1>
         <Fragment set:html={content} />
         <a class="btn btn-primary mt-8" href="/es#involucrate">Involúcrate</a>
       </div>
       <Image
         src={photo}
-        alt={page.data.photoAltText_es}
+        alt={page?.data.photoAltText_es || null}
         class="w-full max-w-md"
       />
     </section>
