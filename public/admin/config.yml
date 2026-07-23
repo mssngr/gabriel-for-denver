@@ -54,6 +54,62 @@ collections:
               name: photoAltText_es,
               widget: string,
             }
+      - label: Events
+        name: events
+        file: src/content/pages/events.yml
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
+      - label: Donate
+        name: donate
+        file: src/content/pages/donate.yml
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
+      - label: Volunteer
+        name: volunteer
+        file: src/content/pages/volunteer.yml
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
+      - label: Contact Me
+        name: contact-me
+        file: src/content/pages/contact-me.yml
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Content, name: content, widget: richtext }
+          - { label: Content (Spanish), name: content_es, widget: richtext }
+          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text (Spanish),
+              name: photoAltText_es,
+              widget: string,
+            }
   - label: Issues
     name: issues
     folder: src/content/issues
