@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import build from "../../../assets/build.svg";
+import Input from "../../../components/input.astro";
+import Select from "../../../components/select.astro";
 import Layout from "../../../layouts/espanol.astro";
 
 const page = await getEntry("pages", "donate");
@@ -22,9 +24,76 @@ const content = marked.parse(page.data?.content_es);
         class="w-full max-w-md"
       />
     </section>
-    <!-- <section
+    <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-    </section> -->
+      <h1 class="text-center mb-16!">Comprometerse</h1>
+      <div class="flex flex-wrap items-start justify-center gap-16">
+        <form id="form" class="w-xs flex flex-col items-end text-black!">
+          <input
+            type="hidden"
+            name="access_key"
+            value="02f9fed2-c3c5-44ba-a07b-970ddeab6b80"
+          />
+          <Input name="name" label="Nombre" placeholder="Jane Doe" required />
+          <Input
+            type="email"
+            name="email"
+            label="Correo Electrónico"
+            placeholder="jane.doe@gmail.com"
+            required
+          />
+          <Select
+            name="pledge"
+            label="Monto del Compromiso"
+            placeholder="Estoy dispuesto/a a dar..."
+            options={[
+              "$5",
+              "$10",
+              "$25",
+              "$50",
+              "$100",
+              "$250",
+              "$415 (Máximo permitido)",
+              "Otro",
+            ]}
+            required
+          />
+          <button id="submit-button" type="submit" class="btn btn-accent mt-4"
+            >Enviar</button
+          >
+        </form>
+        <div class="min-w-3xs w-lg max-w-full">
+          <h2>Comprométase con un Denver mejor.</h2>
+          <p class="font-light">
+            Las donaciones se abrirán el 5 de agosto. Infórmenos su compromiso,
+            y le recordaremos cuando llegue el momento.
+          </p>
+        </div>
+      </div>
+    </section>
   </main>
 </Layout>
+
+<script>
+  const form = document.getElementById("form") as HTMLFormElement;
+  const submitButton = document.getElementById("submit-button") as HTMLElement;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitButton.innerHTML = "Enviando...";
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: new FormData(form),
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      window.location.href = "/es/thank-you";
+    } else {
+      result.innerHTML = data.message;
+    }
+    window.posthog?.capture("contact_form_submitted");
+  });
+</script>

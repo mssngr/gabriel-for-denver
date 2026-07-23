@@ -118,7 +118,7 @@ const content = marked.parse(page.data?.content_es);
 
     const data = await response.json();
     if (data.success) {
-      window.location.href = "/thank-you";
+      window.location.href = "/es/thank-you";
     } else {
       result.innerHTML = data.message;
     }
