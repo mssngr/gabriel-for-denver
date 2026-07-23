@@ -41,49 +41,49 @@ const currentPath = Astro.url.pathname;
       <li>
         <details>
           <summary
-            class={`md:text-2xl ${currentPath.includes("/issues/") ? "text-primary font-black" : ""}`}
+            class={`md:text-2xl ${currentPath.includes("/issues") ? "text-primary font-black" : ""}`}
             >Issues Denver faces</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
               <a
                 href="/issues/affordability"
-                class={`${currentPath === "/issues/affordability" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/issues/affordability") ? "text-primary font-black" : ""}`}
                 ><Coins />Affordability</a
               >
             </li>
             <li>
               <a
                 href="/issues/housing-crisis"
-                class={`${currentPath === "/issues/housing-crisis" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/issues/housing-crisis") ? "text-primary font-black" : ""}`}
                 ><MapPinHouse />Housing Crisis</a
               >
             </li>
             <li>
               <a
                 href="/issues/criminal-injustice"
-                class={`${currentPath === "/issues/criminal-injustice" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/issues/criminal-injustice") ? "text-primary font-black" : ""}`}
                 ><Siren />Criminal Injustice</a
               >
             </li>
             <li>
               <a
                 href="/issues/food-security"
-                class={`${currentPath === "/issues/food-security" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/issues/food-security") ? "text-primary font-black" : ""}`}
                 ><Apple />Food Security</a
               >
             </li>
             <li>
               <a
                 href="/issues/homelessness"
-                class={`${currentPath === "/issues/homelessness" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/issues/homelessness") ? "text-primary font-black" : ""}`}
                 ><HouseHeart />Homelessness</a
               >
             </li>
             <li>
               <a
                 href="/issues/big-tech"
-                class={`${currentPath === "/issues/big-tech" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/issues/big-tech") ? "text-primary font-black" : ""}`}
                 ><DatabaseZap />Big Tech</a
               >
             </li>
@@ -97,14 +97,14 @@ const currentPath = Astro.url.pathname;
       </li>
       <li>
         <a
-          class={`md:text-2xl ${currentPath === "/why-me" ? "text-primary font-black" : ""}`}
+          class={`md:text-2xl ${currentPath.includes("/why-me") ? "text-primary font-black" : ""}`}
           href="/why-me">Why me?</a
         >
       </li>
       <li>
         <details>
           <summary
-            class={`md:text-2xl ${currentPath.includes("/get-involved/") ? "text-primary font-black" : ""}`}
+            class={`md:text-2xl ${currentPath.includes("/get-involved") ? "text-primary font-black" : ""}`}
             >Get involved</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
@@ -118,21 +118,21 @@ const currentPath = Astro.url.pathname;
             <li>
               <a
                 href="/get-involved/donate"
-                class={`${currentPath === "/get-involved/donate" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/get-involved/donate") ? "text-primary font-black" : ""}`}
                 ><HandCoins />Donate</a
               >
             </li>
             <li>
               <a
                 href="/get-involved/volunteer"
-                class={`${currentPath === "/get-involved/volunteer" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/get-involved/volunteer") ? "text-primary font-black" : ""}`}
                 ><Users />Volunteer</a
               >
             </li>
             <li>
               <a
                 href="/get-involved/contact-me"
-                class={`${currentPath === "/get-involved/contact-me" ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes("/get-involved/contact-me") ? "text-primary font-black" : ""}`}
                 ><MessageCircle />Contact Me</a
               >
             </li>
