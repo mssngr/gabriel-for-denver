@@ -3,11 +3,15 @@ import { Image } from "astro:assets";
 import {
   Apple,
   ArrowRight,
+  CalendarDays,
   Coins,
   DatabaseZap,
+  HandCoins,
   HouseHeart,
   MapPinHouse,
+  MessageCircle,
   Siren,
+  Users,
 } from "@lucide/astro";
 import { Astro } from "astro";
 import logoDesktop from "../assets/gfd-banner.svg";
@@ -99,6 +103,42 @@ const currentPath = Astro.url.pathname;
       </li>
       <li>
         <a class="md:text-2xl" href="/#get-involved">Get involved</a>
+        <!-- <details>
+          <summary
+            class={`md:text-2xl ${currentPath.includes("/get-involved/") ? "text-primary font-black" : ""}`}
+            >Get involved</summary
+          >
+          <ul class="bg-base-100 rounded-t-none p-2 z-10">
+            <li>
+              <a
+                href="/get-involved/events"
+                class={`${currentPath === "/get-involved/events" ? "text-primary font-black" : ""}`}
+                ><CalendarDays />Events</a
+              >
+            </li>
+            <li>
+              <a
+                href="/get-involved/donate"
+                class={`${currentPath === "/get-involved/donate" ? "text-primary font-black" : ""}`}
+                ><HandCoins />Donate</a
+              >
+            </li>
+            <li>
+              <a
+                href="/get-involved/volunteer"
+                class={`${currentPath === "/get-involved/volunteer" ? "text-primary font-black" : ""}`}
+                ><Users />Volunteer</a
+              >
+            </li>
+            <li>
+              <a
+                href="/get-involved/contact-me"
+                class={`${currentPath === "/get-involved/volunteer" ? "text-primary font-black" : ""}`}
+                ><MessageCircle />Contact Me</a
+              >
+            </li>
+          </ul>
+        </details> -->
       </li>
     </ul>
   </div>

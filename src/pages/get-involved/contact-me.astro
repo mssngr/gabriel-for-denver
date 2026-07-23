@@ -1,0 +1,33 @@
+---
+import { Image } from "astro:assets";
+import { getEntry, render } from "astro:content";
+import { marked } from "marked";
+import contact from "../../assets/contact.svg";
+import WhatWillITackle from "../../components/what-will-i-tackle.astro";
+import Default from "../../layouts/default.astro";
+
+const page = await getEntry("pages", "contact-me");
+const content = marked.parse(page.data?.content);
+---
+
+<Default>
+  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
+    <section class="size-full flex flex-wrap justify-center items-center gap-8">
+      <div class="w-md">
+        <h1>{page.data.heading}</h1>
+        <Fragment set:html={content} />
+      </div>
+      <Image
+        src={contact}
+        alt={page.data.photoAltText}
+        class="w-full max-w-md"
+      />
+    </section>
+    <section
+      id="what-will-i-tackle"
+      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
+      <WhatWillITackle />
+    </section>
+  </main>
+</Default>
