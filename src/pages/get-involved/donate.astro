@@ -3,7 +3,6 @@ import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import build from "../../assets/build.svg";
-import WhatWillITackle from "../../components/what-will-i-tackle.astro";
 import Layout from "../../layouts/default.astro";
 
 const page = await getEntry("pages", "donate");
@@ -20,10 +19,8 @@ const content = marked.parse(page.data?.content);
       <Image src={build} alt={page.data.photoAltText} class="w-full max-w-md" />
     </section>
     <!-- <section
-      id="what-will-i-tackle"
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
-      <WhatWillITackle />
     </section> -->
   </main>
 </Layout>
