@@ -49,4 +49,20 @@ const issues = defineCollection({
     }),
 })
 
-export const collections = { pages, issues }
+const events = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/events' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      title_es: z.string(),
+      location: z.string(),
+      startTime: z.coerce.date(),
+      description: z.string(),
+      description_es: z.string(),
+      image: image(),
+      imageAlt: z.string(),
+      imageAlt_es: z.string(),
+    }),
+})
+
+export const collections = { pages, issues, events }

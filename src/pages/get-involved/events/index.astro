@@ -1,13 +1,19 @@
 ---
 import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
+import { getEntry } from "astro:content";
 import { marked } from "marked";
-import chainLogo from "../../../assets/chainlogo.webp";
 import events from "../../../assets/events.svg";
 import Layout from "../../../layouts/default.astro";
+import {
+  formatEventTime,
+  getUpcomingEvents,
+  listedUntil,
+} from "../../../lib/events";
 
 const page = await getEntry("pages", "events");
 const content = page?.data && marked.parse(page.data.content);
+
+const upcomingEvents = await getUpcomingEvents();
 ---
 
 <Layout>
@@ -27,23 +33,56 @@ const content = page?.data && marked.parse(page.data.content);
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
     >
       <h1 class="text-center mb-16!">Where I'm going to be</h1>
-      <div class="flex flex-wrap items-center justify-center gap-16">
-        <Image
-          src={chainLogo}
-          alt="Chain Reaction Brewing Co logo"
-          class="flex-1 max-w-48"
-        />
-        <div class="flex-1 max-w-2xl">
-          <h2>Campaign Kickoff</h2>
-          <p>Chain Reaction Brewing Co.</p>
-          <h3>8/8/26, 5:00pm</h3>
-          <p class="font-light mt-4">
-            We are kicking off our campaign with beer, signatures, and music!
-            Help us kick it off right and get a head start on getting on that
-            ballot!
-          </p>
-        </div>
+      <div class="flex flex-col gap-24">
+        {
+          upcomingEvents.map((event) => (
+            <div
+              class="flex flex-wrap items-center justify-center gap-16"
+              data-event-until={listedUntil(event.data.startTime).toISOString()}
+            >
+              <Image
+                src={event.data.image}
+                alt={event.data.imageAlt}
+                class="flex-1 max-w-48"
+              />
+              <div class="flex-1 max-w-2xl">
+                <h2>{event.data.title}</h2>
+                <p>{event.data.location}</p>
+                <h3>{formatEventTime(event.data.startTime)}</h3>
+                <div
+                  class="font-light mt-4"
+                  set:html={marked.parse(event.data.description)}
+                />
+              </div>
+            </div>
+          ))
+        }
       </div>
+      <p
+        id="no-upcoming-events"
+        class="text-center font-light"
+        hidden={upcomingEvents.length > 0}
+      >
+        No upcoming events right now — check back soon!
+      </p>
     </section>
   </main>
 </Layout>
+
+<script is:inline>
+  // The page is prerendered, so hide any event that has passed since the build.
+  (function () {
+    var now = Date.now();
+    var remaining = 0;
+    document.querySelectorAll("[data-event-until]").forEach(function (event) {
+      if (Date.parse(event.dataset.eventUntil) <= now) {
+        event.hidden = true;
+      } else {
+        remaining += 1;
+      }
+    });
+    if (remaining === 0) {
+      document.getElementById("no-upcoming-events")?.removeAttribute("hidden");
+    }
+  })();
+</script>

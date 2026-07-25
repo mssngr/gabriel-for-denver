@@ -22,6 +22,7 @@ auth:
 logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 site_url: https://gabrielfordenver.com
 media_folder: "src/assets/images"
+public_folder: "/src/assets/images"
 collections:
   - label: Pages
     name: pages
@@ -176,19 +177,29 @@ collections:
     folder: src/content/events
     extension: yml
     create: true
+    identifier_field: title
+    summary: "{{title}} — {{startTime}}"
+    sortable_fields: [startTime, title]
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Title (Spanish), name: title_es, widget: string }
-      - { label: Summary, name: summary, widget: richtext }
-      - { label: Summary (Spanish), name: summary_es, widget: richtext }
-      - { label: Description, name: description, widget: richtext }
-      - { label: Description (Spanish), name: description_es, widget: richtext }
-      - { label: Slug, name: slug, widget: string }
+      - { label: Location, name: location, widget: string }
       - {
           label: Start Time,
           name: startTime,
           widget: datetime,
           default: "{{now}}",
+          format: "YYYY-MM-DDTHH:mm:ssZ",
+          date_format: "M/D/YY",
+          time_format: "h:mma",
+          picker_utc: false,
         }
-      - { label: End Time, name: endTime, widget: datetime, default: "{{now}}" }
-      - { label: Location, name: location, widget: string }
+      - { label: Description, name: description, widget: richtext }
+      - { label: Description (Spanish), name: description_es, widget: richtext }
+      - { label: Image, name: image, widget: image }
+      - { label: Image Alt Text, name: imageAlt, widget: string }
+      - {
+          label: Image Alt Text (Spanish),
+          name: imageAlt_es,
+          widget: string,
+        }
