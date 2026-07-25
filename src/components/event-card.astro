@@ -50,12 +50,12 @@ const calendarEvent = {
   data-event-until={listedUntil(startTime).toISOString()}
 >
   <div
-    class="flex items-center justify-center bg-base-200 p-8 rounded-t-3xl md:rounded-tr-none md:rounded-bl-3xl md:w-56 md:shrink-0 lg:w-72"
+    class="relative h-48 md:h-auto rounded-t-3xl md:rounded-tr-none md:rounded-bl-3xl overflow-hidden md:w-56 md:shrink-0 lg:w-72"
   >
     <Image
       src={image}
       alt={imageAlt}
-      class="h-32 md:h-40 lg:h-48 w-auto max-w-full object-contain"
+      class="absolute inset-0 h-full w-full object-cover object-center"
     />
   </div>
   <div class="flex flex-1 flex-col justify-center gap-4 p-8">
