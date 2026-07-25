@@ -1,0 +1,17 @@
+<script is:inline>
+  // The page is prerendered, so hide any event that has passed since the build.
+  (function () {
+    var now = Date.now();
+    var remaining = 0;
+    document.querySelectorAll("[data-event-until]").forEach(function (event) {
+      if (Date.parse(event.dataset.eventUntil) <= now) {
+        event.hidden = true;
+      } else {
+        remaining += 1;
+      }
+    });
+    if (remaining === 0) {
+      document.getElementById("no-upcoming-events")?.removeAttribute("hidden");
+    }
+  })();
+</script>

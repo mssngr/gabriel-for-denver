@@ -185,6 +185,13 @@ collections:
       - { label: Title (Spanish), name: title_es, widget: string }
       - { label: Location, name: location, widget: string }
       - {
+          label: Address,
+          name: address,
+          widget: string,
+          required: false,
+          hint: Street address, linked to Google Maps. Leave blank to hide it.,
+        }
+      - {
           label: Start Time,
           name: startTime,
           widget: datetime,

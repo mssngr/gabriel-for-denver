@@ -57,6 +57,12 @@ export async function getUpcomingEvents() {
     .sort((a, b) => a.data.startTime.getTime() - b.data.startTime.getTime())
 }
 
+/** A Google Maps search link for a venue, e.g. its name plus street address. */
+export function mapsUrl(...parts: (string | undefined)[]) {
+  const query = encodeURIComponent(parts.filter(Boolean).join(', '))
+  return `https://www.google.com/maps/search/?api=1&query=${query}`
+}
+
 /** Denver's UTC offset at `date`, formatted for a date string, e.g. "-06:00" */
 function denverOffset(date: Date) {
   const offset = new Intl.DateTimeFormat('en-US', {

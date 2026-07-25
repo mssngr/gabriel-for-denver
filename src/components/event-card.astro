@@ -1,0 +1,60 @@
+---
+import { Image } from "astro:assets";
+import { CalendarDays, MapPin } from "@lucide/astro";
+import { marked } from "marked";
+import { formatEventTime, listedUntil, mapsUrl } from "../lib/events";
+
+interface Props {
+  title: string;
+  location: string;
+  address?: string;
+  startTime: Date;
+  description: string;
+  image: ImageMetadata;
+  imageAlt: string;
+}
+
+const { title, location, address, startTime, description, image, imageAlt } =
+  Astro.props;
+---
+
+<article
+  class="w-full max-w-sm md:max-w-4xl flex flex-col md:flex-row overflow-hidden rounded-3xl bg-base-100 text-base-content shadow-xl"
+  data-event-until={listedUntil(startTime).toISOString()}
+>
+  <div
+    class="flex items-center justify-center bg-base-200 p-8 md:w-56 md:shrink-0 lg:w-72"
+  >
+    <Image
+      src={image}
+      alt={imageAlt}
+      class="h-32 md:h-40 lg:h-48 w-auto max-w-full object-contain"
+    />
+  </div>
+  <div class="flex flex-1 flex-col justify-center gap-4 p-8">
+    <p
+      class="self-start inline-flex items-center gap-2 rounded-full bg-accent text-accent-content px-4 py-1 text-lg! font-semibold"
+    >
+      <CalendarDays class="size-5" />
+      {formatEventTime(startTime)}
+    </p>
+    <div>
+      <h2 class="mb-2!">{title}</h2>
+      <p class="text-xl! font-medium">{location}</p>
+      {
+        address && (
+          <a
+            class="link inline-flex items-start gap-2 text-lg font-light text-primary"
+            href={mapsUrl(location, address)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <MapPin class="size-5 shrink-0 mt-1" />
+            {address}
+          </a>
+        )
+      }
+    </div>
+    <div class="font-light [&_p]:text-lg!" set:html={marked.parse(description)} />
+  </div>
+</article>

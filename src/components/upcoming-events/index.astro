@@ -1,0 +1,33 @@
+---
+import EventCard from "../event-card.astro";
+import HidePastEvents from "./hide-past-events.astro";
+import { getUpcomingEvents } from "../../lib/events";
+
+const upcomingEvents = await getUpcomingEvents();
+---
+
+<h1 class="text-center mb-16!">Where I'm going to be</h1>
+<div class="flex flex-col items-center gap-8">
+  {
+    upcomingEvents.map((event) => (
+      <EventCard
+        title={event.data.title}
+        location={event.data.location}
+        address={event.data.address}
+        startTime={event.data.startTime}
+        description={event.data.description}
+        image={event.data.image}
+        imageAlt={event.data.imageAlt}
+      />
+    ))
+  }
+</div>
+<p
+  id="no-upcoming-events"
+  class="text-center font-light"
+  hidden={upcomingEvents.length > 0}
+>
+  No upcoming events right now — check back soon!
+</p>
+
+<HidePastEvents />
