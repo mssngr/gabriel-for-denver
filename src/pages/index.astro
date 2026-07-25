@@ -12,7 +12,10 @@ const page = await getEntry('pages', 'home')
 const content = page?.data && marked.parse(page.data.content)
 ---
 
-<Layout>
+<Layout
+  title="Gabriel for Denver | City Council At Large B"
+  description="Gabriel Konkle is running for Denver City Council At Large B, fighting for affordability, housing, and workers' rights so Denver can be the community we've always wanted."
+>
   <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="w-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">

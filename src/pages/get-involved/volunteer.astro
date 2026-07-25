@@ -12,7 +12,10 @@ const page = await getEntry('pages', 'volunteer')
 const content = page?.data && marked.parse(page.data.content)
 ---
 
-<Layout>
+<Layout
+  title="Volunteer | Gabriel for Denver"
+  description="Volunteer for Gabriel Konkle's campaign for Denver City Council At Large B — gather signatures, host events, or spread the word."
+>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">

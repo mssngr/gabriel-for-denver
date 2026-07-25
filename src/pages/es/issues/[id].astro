@@ -10,6 +10,7 @@ import homelessness from '../../../assets/homelessness.svg'
 import housingCrisis from '../../../assets/housing-crisis.svg'
 import injustice from '../../../assets/injustice.svg'
 import ProblemSolution from '../../../components/problem-solution/es'
+import { stripMarkdown } from '../../../lib/seo'
 import Espanol from '../../../layouts/espanol.astro'
 
 export async function getStaticPaths() {
@@ -40,7 +41,10 @@ const imageAlt = {
 }[issue.data.slug]
 ---
 
-<Espanol>
+<Espanol
+  title={`${issue.data.title_es} | Gabriel por Denver`}
+  description={stripMarkdown(issue.data.summary_es)}
+>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">

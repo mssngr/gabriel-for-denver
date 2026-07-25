@@ -4,7 +4,11 @@ import profile from '../assets/profile.jpg'
 import Layout from '../layouts/default.astro'
 ---
 
-<Layout>
+<Layout
+  title="Thank You | Gabriel for Denver"
+  description="Thanks for reaching out to Gabriel Konkle's campaign for Denver City Council At Large B."
+  noindex
+>
   <script is:inline>
     window.posthog?.capture('contact_form_completed')
   </script>

@@ -1,10 +1,18 @@
 // @ts-check
 import netlify from '@astrojs/netlify'
+import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://gabrielfordenver.com',
+  integrations: [
+    sitemap({
+      filter: page =>
+        !/\/(admin|thank-you|404)\/?$/.test(new URL(page).pathname),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
     resolve: {

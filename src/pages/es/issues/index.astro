@@ -10,11 +10,14 @@ const page = await getEntry('pages', 'issues')
 const content = page?.data && marked.parse(page.data.content_es)
 ---
 
-<Espanol>
+<Espanol
+  title="Retos que Enfrenta Denver | Gabriel por Denver"
+  description="Desde la crisis de vivienda hasta la rendición de cuentas policial, conozca los retos que enfrenta Denver y el plan de Gabriel Konkle para resolverlos."
+>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
-        <h1>page.data.heading_es</h1>
+        <h1>{page?.data.heading_es}</h1>
         <Fragment set:html={content} />
       </div>
       <Image

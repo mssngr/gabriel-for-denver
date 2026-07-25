@@ -3,7 +3,27 @@ import { Font } from 'astro:assets'
 import Footer from '../components/footer'
 import Header from '../components/header'
 import PostHog from '../components/posthog.astro'
+import { alternatePath } from '../lib/seo'
 import '../styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+  image?: string
+  noindex?: boolean
+}
+
+const {
+  title,
+  description,
+  image = '/og-image.jpg',
+  noindex = false,
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const imageURL = new URL(image, Astro.site)
+const enURL = new URL(alternatePath(Astro.url.pathname, 'en'), Astro.site)
+const esURL = new URL(alternatePath(Astro.url.pathname, 'es'), Astro.site)
 ---
 
 <!doctype html>
@@ -16,7 +36,29 @@ import '../styles/global.css'
     <meta name="generator" content={Astro.generator} />
     <Font cssVariable="--font-league-spartan" />
     <Font cssVariable="--font-edu-sa-hand" />
-    <title>Gabriel for Denver</title>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <link rel="alternate" hreflang="en" href={enURL} />
+    <link rel="alternate" hreflang="es" href={esURL} />
+    <link rel="alternate" hreflang="x-default" href={enURL} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gabriel for Denver" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
     <PostHog />
   </head>
   <body>

@@ -10,7 +10,10 @@ const page = await getEntry('pages', 'issues')
 const content = page?.data && marked.parse(page.data?.content)
 ---
 
-<Layout>
+<Layout
+  title="Issues Denver Faces | Gabriel for Denver"
+  description="From the housing crisis to police accountability, see the issues facing Denver and Gabriel Konkle's plan to fix them as your next City Councilmember."
+>
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">

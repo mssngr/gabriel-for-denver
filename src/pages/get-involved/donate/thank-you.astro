@@ -4,7 +4,11 @@ import celebrate from '../../../assets/celebrate.svg'
 import Layout from '../../../layouts/default.astro'
 ---
 
-<Layout>
+<Layout
+  title="Thank You | Gabriel for Denver"
+  description="Thanks for donating to Gabriel Konkle's campaign for Denver City Council At Large B."
+  noindex
+>
   <script is:inline>
     window.posthog?.capture('donation_completed')
   </script>

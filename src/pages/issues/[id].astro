@@ -10,6 +10,7 @@ import homelessness from '../../assets/homelessness.svg'
 import housingCrisis from '../../assets/housing-crisis.svg'
 import injustice from '../../assets/injustice.svg'
 import ProblemSolution from '../../components/problem-solution'
+import { stripMarkdown } from '../../lib/seo'
 import Layout from '../../layouts/default.astro'
 
 export async function getStaticPaths() {
@@ -40,7 +41,10 @@ const imageAlt = {
 }[issue.data.slug]
 ---
 
-<Layout>
+<Layout
+  title={`${issue.data.title} | Gabriel for Denver`}
+  description={stripMarkdown(issue.data.summary)}
+>
   <script
     is:inline
     define:vars={{ issueSlug: issue.data.slug, issueTitle: issue.data.title }}
