@@ -1,0 +1,61 @@
+---
+import Field from './field.astro'
+import { US_STATES } from './us-states'
+---
+
+<section data-step="1" class="hidden flex-col gap-3">
+  <h2 class="card-title">Your info</h2>
+  <p class="text-sm opacity-70 mb-1">
+    I know, filling out forms isn't very fun. But, campaign finance laws
+    require us to collect this info. We'll wrap this up quick, I promise.
+  </p>
+  <div class="grid grid-cols-2 gap-2">
+    <Field name="firstName" label="First Name" required />
+    <Field name="lastName" label="Last Name" required />
+  </div>
+  <Field name="email" label="Email" type="email" required />
+  <Field
+    name="phone"
+    label="Phone Number"
+    type="tel"
+    inputmode="numeric"
+    placeholder="(720) 555-1234"
+    minlength="14"
+    maxlength="14"
+    pattern="\(\d{3}\) \d{3}-\d{4}"
+    title="10-digit phone number, like (720) 555-1234"
+    required
+  />
+  <Field name="addressLine1" label="Street Address" required />
+  <Field name="addressLine2" label="Apt / Suite / Unit (optional)" />
+  <div class="grid grid-cols-3 gap-2">
+    <Field name="city" label="City" required />
+    <label class="floating-label">
+      <span>State</span>
+      <select name="state" class="select w-full" required>
+        <option value="" disabled selected>State</option>
+        {US_STATES.map(([code, name]) => <option value={code}>{name}</option>)}
+      </select>
+    </label>
+    <Field
+      name="zip"
+      label="ZIP"
+      inputmode="numeric"
+      minlength="5"
+      maxlength="5"
+      pattern="\d{5}"
+      title="5-digit ZIP code"
+      required
+    />
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <Field name="employer" label="Employer" required />
+    <Field name="occupation" label="Occupation" required />
+  </div>
+  <div class="flex gap-2 mt-2">
+    <button type="button" class="btn btn-ghost" data-back>Back</button>
+    <button type="button" class="btn btn-accent flex-1" data-next
+      >Continue</button
+    >
+  </div>
+</section>

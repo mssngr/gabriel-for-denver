@@ -1,0 +1,62 @@
+---
+import Field from '../field.astro'
+import { US_STATES } from '../us-states'
+---
+
+<section data-step="1" class="hidden flex-col gap-3">
+  <h2 class="card-title">Sus datos</h2>
+  <p class="text-sm opacity-70 mb-1">
+    Lo sé, llenar formularios no es muy divertido. Pero las leyes de
+    financiamiento de campañas nos obligan a recopilar esta información.
+    Terminaremos rápido, se lo prometo.
+  </p>
+  <div class="grid grid-cols-2 gap-2">
+    <Field name="firstName" label="Nombre" required />
+    <Field name="lastName" label="Apellido" required />
+  </div>
+  <Field name="email" label="Correo Electrónico" type="email" required />
+  <Field
+    name="phone"
+    label="Número de Teléfono"
+    type="tel"
+    inputmode="numeric"
+    placeholder="(720) 555-1234"
+    minlength="14"
+    maxlength="14"
+    pattern="\(\d{3}\) \d{3}-\d{4}"
+    title="Número de teléfono de 10 dígitos, como (720) 555-1234"
+    required
+  />
+  <Field name="addressLine1" label="Dirección" required />
+  <Field name="addressLine2" label="Apto / Unidad (opcional)" />
+  <div class="grid grid-cols-3 gap-2">
+    <Field name="city" label="Ciudad" required />
+    <label class="floating-label">
+      <span>Estado</span>
+      <select name="state" class="select w-full" required>
+        <option value="" disabled selected>Estado</option>
+        {US_STATES.map(([code, name]) => <option value={code}>{name}</option>)}
+      </select>
+    </label>
+    <Field
+      name="zip"
+      label="C.P."
+      inputmode="numeric"
+      minlength="5"
+      maxlength="5"
+      pattern="\d{5}"
+      title="Código postal de 5 dígitos"
+      required
+    />
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <Field name="employer" label="Empleador" required />
+    <Field name="occupation" label="Ocupación" required />
+  </div>
+  <div class="flex gap-2 mt-2">
+    <button type="button" class="btn btn-ghost" data-back>Atrás</button>
+    <button type="button" class="btn btn-accent flex-1" data-next
+      >Continuar</button
+    >
+  </div>
+</section>

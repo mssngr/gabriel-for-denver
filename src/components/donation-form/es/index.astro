@@ -1,0 +1,41 @@
+---
+import AmountStep from './amount-step.astro'
+import InfoStep from './info-step.astro'
+import PaymentStep from './payment-step.astro'
+
+const publishableKey = import.meta.env.STRIPE_PUBLISHABLE_KEY
+---
+
+<form
+  id="donation-form"
+  class="card w-md max-w-full bg-base-100 text-black shadow-xl"
+  data-publishable-key={publishableKey}
+  novalidate
+>
+  <div class="card-body gap-6">
+    <ul class="steps w-full text-sm font-medium" id="donation-steps">
+      <li class="step step-secondary">Cantidad</li>
+      <li class="step">Sus datos</li>
+      <li class="step">Pago</li>
+    </ul>
+    <AmountStep />
+    <InfoStep />
+    <PaymentStep />
+    <div id="donation-result" class="text-error text-sm empty:hidden"></div>
+  </div>
+</form>
+
+<script>
+  import { initDonationCheckout } from "../checkout";
+
+  initDonationCheckout({
+    locale: "es",
+    submitLabel: (amount) => `Contribuir $${amount}`,
+    summaryLabel: (amount) => `Contribución de $${amount}`,
+    processingLabel: "Procesando...",
+    genericError: "Algo salió mal. Por favor, inténtelo de nuevo.",
+    cardSaveError:
+      "No se pudo guardar su tarjeta. Por favor, inténtelo de nuevo.",
+    thankYouPath: "/es/get-involved/donate/thank-you",
+  });
+</script>

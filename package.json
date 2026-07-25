@@ -14,9 +14,11 @@
   "dependencies": {
     "@astrojs/netlify": "^8.1.2",
     "@lucide/astro": "^1.21.0",
+    "@stripe/stripe-js": "^9.12.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.1",
     "marked": "^18.0.6",
+    "stripe": "^22.3.2",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

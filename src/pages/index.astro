@@ -3,9 +3,9 @@ import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 import { marked } from "marked";
 import photo from "../assets/gabriel-with-city.jpg";
-import ContactForm from "../components/contact-form.astro";
-import MyBackground from "../components/my-background.astro";
-import WhatWillITackle from "../components/what-will-i-tackle.astro";
+import ContactForm from "../components/contact-form";
+import MyBackground from "../components/my-background";
+import WhatWillITackle from "../components/what-will-i-tackle";
 import Layout from "../layouts/default.astro";
 
 const page = await getEntry("pages", "home");

@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
-import * as icons from "@lucide/astro";
+import { ArrowRight } from "@lucide/astro";
 import { marked } from "marked";
-import Issue from "./issue.astro";
+import Issue from "../issue.astro";
 
 const allIssues = await getCollection("issues");
 const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
@@ -18,11 +18,13 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
           <Fragment set:html={summary} />
           <br />
           <a
-            class="link font-medium text-2xl"
+            class="link font-medium text-2xl issue-read-more"
             href={`/es/issues/${issue.data.slug}`}
+            data-issue-slug={issue.data.slug}
+            data-issue-title={issue.data.title}
           >
             Leer Más
-            <icons.ArrowRight class="size-6 inline-block align-middle ml-2" />
+            <ArrowRight class="size-6 inline-block align-middle ml-2" />
           </a>
         </Issue>
       );

@@ -1,0 +1,35 @@
+<section data-step="0" class="flex flex-col gap-4">
+  <h2 class="card-title">Elija su cantidad</h2>
+  <div class="grid grid-cols-3 gap-2">
+    <button type="button" class="btn" data-preset="5">$5</button>
+    <button type="button" class="btn" data-preset="10">$10</button>
+    <button type="button" class="btn" data-preset="25">$25</button>
+    <button type="button" class="btn" data-preset="50">$50</button>
+    <button type="button" class="btn" data-preset="100">$100</button>
+    <button type="button" class="btn" data-preset="250">$250</button>
+    <button type="button" class="btn col-span-3" data-preset="415"
+      >$415 — el máximo permitido</button
+    >
+  </div>
+  <label class="input w-full flex items-center gap-1 text-base">
+    $
+    <input
+      name="amount"
+      type="number"
+      min="5"
+      max="415"
+      step="1"
+      placeholder="Otra cantidad"
+      class="grow"
+      required
+    />
+  </label>
+  <p class="text-sm opacity-70">
+    Done desde $5 hasta $415, el máximo permitido. Si reside en Denver, ¡los
+    primeros $50 pueden ser igualados al 900% por el Fair Elections Fund de la
+    ciudad!
+  </p>
+  <button type="button" class="btn btn-accent w-full" data-next
+    >Continuar</button
+  >
+</section>

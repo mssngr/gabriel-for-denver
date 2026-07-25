@@ -1,0 +1,11 @@
+---
+// Floating-label text input for the donation form. `label` doubles as the
+// placeholder unless one is passed; any other attributes (type, pattern,
+// minlength, inputmode, title, required...) spread onto the input.
+const { label, placeholder = Astro.props.label, ...attrs } = Astro.props
+---
+
+<label class="floating-label">
+  <span>{label}</span>
+  <input placeholder={placeholder} class="input w-full" {...attrs} />
+</label>

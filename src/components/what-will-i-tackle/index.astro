@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import { ArrowRight } from "@lucide/astro";
 import { marked } from "marked";
-import Issue from "./issue.astro";
+import Issue from "../issue.astro";
 
 const allIssues = await getCollection("issues");
 const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);

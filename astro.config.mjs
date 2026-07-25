@@ -7,6 +7,11 @@ import { defineConfig, fontProviders } from 'astro/config'
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      // Vite's defaults plus .astro, so a folder with an index.astro can be
+      // imported by its bare path (e.g. `components/donation-form`)
+      extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.astro'],
+    },
   },
   fonts: [
     {
