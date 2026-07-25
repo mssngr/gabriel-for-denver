@@ -58,6 +58,7 @@ const events = defineCollection({
       location: z.string(),
       address: z.string().optional(),
       startTime: z.coerce.date(),
+      endTime: z.coerce.date().optional(),
       description: z.string(),
       description_es: z.string(),
       image: image(),

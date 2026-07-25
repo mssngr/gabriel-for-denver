@@ -201,6 +201,18 @@ collections:
           time_format: "h:mma",
           picker_utc: false,
         }
+      - {
+          label: End Time,
+          name: endTime,
+          widget: datetime,
+          required: false,
+          format: "YYYY-MM-DDTHH:mm:ssZ",
+          date_format: "M/D/YY",
+          time_format: "h:mma",
+          picker_utc: false,
+          hint: Shown on the event and used for calendar invites. Defaults to 2
+            hours after the start time.,
+        }
       - { label: Description, name: description, widget: richtext }
       - { label: Description (Spanish), name: description_es, widget: richtext }
       - { label: Image, name: image, widget: image }

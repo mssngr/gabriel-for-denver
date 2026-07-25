@@ -1,9 +1,16 @@
 ---
 import EventCard from "../event-card.astro";
 import HidePastEvents from "./hide-past-events.astro";
+import { eventSlug } from "../../lib/calendar";
 import { getUpcomingEvents } from "../../lib/events";
 
 const upcomingEvents = await getUpcomingEvents();
+
+const labels = {
+  addToCalendar: "Añadir al calendario",
+  googleCalendar: "Google Calendar",
+  appleOutlook: "Apple / Outlook (.ics)",
+};
 ---
 
 <h1 class="text-center mb-16!">Dónde voy a estar</h1>
@@ -15,9 +22,12 @@ const upcomingEvents = await getUpcomingEvents();
         location={event.data.location}
         address={event.data.address}
         startTime={event.data.startTime}
+        endTime={event.data.endTime}
         description={event.data.description_es}
         image={event.data.image}
         imageAlt={event.data.imageAlt_es}
+        icsUrl={`/es/events/${eventSlug(event.id)}.ics`}
+        labels={labels}
       />
     ))
   }
