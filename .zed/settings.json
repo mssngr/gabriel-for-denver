@@ -53,6 +53,19 @@
           "name": "biome"
         }
       }
+    },
+    "Astro": {
+      "formatter": {
+        "external": {
+          "command": "./node_modules/.bin/prettier",
+          "arguments": [
+            "--plugin=prettier-plugin-astro",
+            "--parser=astro",
+            "--stdin-filepath",
+            "{buffer_path}"
+          ]
+        }
+      }
     }
   }
 }

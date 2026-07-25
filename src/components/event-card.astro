@@ -1,25 +1,25 @@
 ---
-import { Image } from "astro:assets";
-import { CalendarDays, CalendarPlus, MapPin } from "@lucide/astro";
-import { marked } from "marked";
-import { googleCalendarUrl } from "../lib/calendar";
-import { formatEventTimeRange, listedUntil, mapsUrl } from "../lib/events";
+import { Image } from 'astro:assets'
+import { CalendarDays, CalendarPlus, MapPin } from '@lucide/astro'
+import { marked } from 'marked'
+import { googleCalendarUrl } from '../lib/calendar'
+import { formatEventTimeRange, listedUntil, mapsUrl } from '../lib/events'
 
 interface Props {
-  title: string;
-  location: string;
-  address?: string;
-  startTime: Date;
-  endTime?: Date;
-  description: string;
-  image: ImageMetadata;
-  imageAlt: string;
-  icsUrl: string;
+  title: string
+  location: string
+  address?: string
+  startTime: Date
+  endTime?: Date
+  description: string
+  image: ImageMetadata
+  imageAlt: string
+  icsUrl: string
   labels: {
-    addToCalendar: string;
-    googleCalendar: string;
-    appleOutlook: string;
-  };
+    addToCalendar: string
+    googleCalendar: string
+    appleOutlook: string
+  }
 }
 
 const {
@@ -33,9 +33,16 @@ const {
   imageAlt,
   icsUrl,
   labels,
-} = Astro.props;
+} = Astro.props
 
-const calendarEvent = { title, description, location, address, startTime, endTime };
+const calendarEvent = {
+  title,
+  description,
+  location,
+  address,
+  startTime,
+  endTime,
+}
 ---
 
 <article
@@ -75,7 +82,10 @@ const calendarEvent = { title, description, location, address, startTime, endTim
         )
       }
     </div>
-    <div class="font-light [&_p]:text-lg!" set:html={marked.parse(description)} />
+    <div
+      class="font-light [&_p]:text-lg!"
+      set:html={marked.parse(description)}
+    />
     <details class="dropdown self-start">
       <summary
         class="inline-flex cursor-pointer list-none items-center gap-2 rounded-full bg-primary px-5 py-2 text-lg font-semibold text-primary-content [&::-webkit-details-marker]:hidden"

@@ -35,6 +35,6 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**"]
+    "includes": ["**", "!**/*.astro"]
   }
 }

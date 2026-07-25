@@ -1,15 +1,15 @@
 ---
-import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
-import { marked } from "marked";
-import presentation from "../../../assets/presentation.svg";
-import Input from "../../../components/input.astro";
-import Select from "../../../components/select.astro";
-import Textarea from "../../../components/textarea.astro";
-import Layout from "../../../layouts/default.astro";
+import { Image } from 'astro:assets'
+import { getEntry, render } from 'astro:content'
+import { marked } from 'marked'
+import presentation from '../../../assets/presentation.svg'
+import Input from '../../../components/input.astro'
+import Select from '../../../components/select.astro'
+import Textarea from '../../../components/textarea.astro'
+import Layout from '../../../layouts/default.astro'
 
-const page = await getEntry("pages", "request");
-const content = page?.data && marked.parse(page.data.content);
+const page = await getEntry('pages', 'request')
+const content = page?.data && marked.parse(page.data.content)
 ---
 
 <Layout>
@@ -49,10 +49,10 @@ const content = page?.data && marked.parse(page.data.content);
             label="Expected Attendance"
             placeholder="I am expecting..."
             options={[
-              "5 to 50 people",
-              "51-200 people",
-              "200+ people",
-              "Unsure...",
+              '5 to 50 people',
+              '51-200 people',
+              '200+ people',
+              'Unsure...',
             ]}
             required
           />
@@ -61,11 +61,11 @@ const content = page?.data && marked.parse(page.data.content);
             label="Time Committment"
             placeholder="It should take about..."
             options={[
-              "10-15 minutes",
-              "30-60 minutes",
-              "1-2 hours",
-              "3+ hours",
-              "Unsure...",
+              '10-15 minutes',
+              '30-60 minutes',
+              '1-2 hours',
+              '3+ hours',
+              'Unsure...',
             ]}
             required
           />
@@ -100,25 +100,25 @@ const content = page?.data && marked.parse(page.data.content);
 </Layout>
 
 <script>
-  const form = document.getElementById("form") as HTMLFormElement;
-  const submitButton = document.getElementById("submit-button") as HTMLElement;
-  const result = document.getElementById("result") as HTMLElement;
+  const form = document.getElementById('form') as HTMLFormElement
+  const submitButton = document.getElementById('submit-button') as HTMLElement
+  const result = document.getElementById('result') as HTMLElement
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    submitButton.innerHTML = "Sending...";
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    submitButton.innerHTML = 'Sending...'
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
+    const response = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
       body: new FormData(form),
-    });
+    })
 
-    const data = await response.json();
+    const data = await response.json()
     if (data.success) {
-      window.location.href = "/thank-you";
+      window.location.href = '/thank-you'
     } else {
-      result.innerHTML = data.message;
+      result.innerHTML = data.message
     }
-    window.posthog?.capture("contact_form_submitted");
-  });
+    window.posthog?.capture('contact_form_submitted')
+  })
 </script>

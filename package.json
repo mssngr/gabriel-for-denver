@@ -9,7 +9,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "biome format --write . && prettier --write \"**/*.astro\"",
+    "lint": "biome lint ."
   },
   "dependencies": {
     "@astrojs/netlify": "^8.1.2",
@@ -23,6 +25,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.1",
-    "daisyui": "^5.5.23"
+    "daisyui": "^5.5.23",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { Image } from 'astro:assets'
 import {
   Apple,
   ArrowRight,
@@ -12,11 +12,11 @@ import {
   MessageCircle,
   Siren,
   Users,
-} from "@lucide/astro";
-import logoDesktop from "../../assets/gfd-banner.svg";
-import logoMobile from "../../assets/gfd-mobile-banner.svg";
+} from '@lucide/astro'
+import logoDesktop from '../../assets/gfd-banner.svg'
+import logoMobile from '../../assets/gfd-mobile-banner.svg'
 
-const currentPath = Astro.url.pathname;
+const currentPath = Astro.url.pathname
 ---
 
 <div
@@ -40,49 +40,49 @@ const currentPath = Astro.url.pathname;
       <li>
         <details>
           <summary
-            class={`md:text-2xl ${currentPath.includes("/issues") ? "text-primary font-black" : ""}`}
+            class={`md:text-2xl ${currentPath.includes('/issues') ? 'text-primary font-black' : ''}`}
             >Retos de Denver</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
               <a
                 href="/es/issues/affordability"
-                class={`${currentPath.includes("/es/issues/affordability") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/issues/affordability') ? 'text-primary font-black' : ''}`}
                 ><Coins />Asequibilidad</a
               >
             </li>
             <li>
               <a
                 href="/es/issues/housing-crisis"
-                class={`${currentPath.includes("/es/issues/housing-crisis") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/issues/housing-crisis') ? 'text-primary font-black' : ''}`}
                 ><MapPinHouse />Crisis de Vivienda</a
               >
             </li>
             <li>
               <a
                 href="/es/issues/criminal-injustice"
-                class={`${currentPath.includes("/es/issues/criminal-injustice") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/issues/criminal-injustice') ? 'text-primary font-black' : ''}`}
                 ><Siren />Injusticia Penal</a
               >
             </li>
             <li>
               <a
                 href="/es/issues/food-security"
-                class={`${currentPath.includes("/es/issues/food-security") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/issues/food-security') ? 'text-primary font-black' : ''}`}
                 ><Apple />Seguridad Alimentaria</a
               >
             </li>
             <li>
               <a
                 href="/es/issues/homelessness"
-                class={`${currentPath.includes("/es/issues/homelessness") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/issues/homelessness') ? 'text-primary font-black' : ''}`}
                 ><HouseHeart />Personas sin Hogar</a
               >
             </li>
             <li>
               <a
                 href="/es/issues/big-tech"
-                class={`${currentPath.includes("/es/issues/big-tech") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/issues/big-tech') ? 'text-primary font-black' : ''}`}
                 ><DatabaseZap />Grandes Tecnológicas</a
               >
             </li>
@@ -96,42 +96,42 @@ const currentPath = Astro.url.pathname;
       </li>
       <li>
         <a
-          class={`md:text-2xl ${currentPath.includes("/es/why-me") ? "text-primary font-black" : ""}`}
+          class={`md:text-2xl ${currentPath.includes('/es/why-me') ? 'text-primary font-black' : ''}`}
           href="/es/why-me">¿Por qué yo?</a
         >
       </li>
       <li>
         <details>
           <summary
-            class={`md:text-2xl ${currentPath.includes("/es/get-involved") ? "text-primary font-black" : ""}`}
+            class={`md:text-2xl ${currentPath.includes('/es/get-involved') ? 'text-primary font-black' : ''}`}
             >Involúcrate</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
               <a
                 href="/es/get-involved/events"
-                class={`${currentPath.includes("/es/get-involved/events") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/get-involved/events') ? 'text-primary font-black' : ''}`}
                 ><CalendarDays />Eventos</a
               >
             </li>
             <li>
               <a
                 href="/es/get-involved/donate"
-                class={`${currentPath.includes("/es/get-involved/donate") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/get-involved/donate') ? 'text-primary font-black' : ''}`}
                 ><HandCoins />Donar</a
               >
             </li>
             <li>
               <a
                 href="/es/get-involved/volunteer"
-                class={`${currentPath.includes("/es/get-involved/volunteer") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/get-involved/volunteer') ? 'text-primary font-black' : ''}`}
                 ><Users />Voluntario</a
               >
             </li>
             <li>
               <a
                 href="/es/get-involved/contact-me"
-                class={`${currentPath.includes("/es/get-involved/contact-me") ? "text-primary font-black" : ""}`}
+                class={`${currentPath.includes('/es/get-involved/contact-me') ? 'text-primary font-black' : ''}`}
                 ><MessageCircle />Contáctanos</a
               >
             </li>
@@ -141,7 +141,7 @@ const currentPath = Astro.url.pathname;
     </ul>
   </div>
   <a
-    href={currentPath.replace("/es", "") || "/"}
+    href={currentPath.replace('/es', '') || '/'}
     class="link mt-4 md:mt-0"
     id="lang-switch-en">English</a
   >
@@ -149,8 +149,8 @@ const currentPath = Astro.url.pathname;
 
 <script is:inline>
   document
-    .getElementById("lang-switch-en")
-    ?.addEventListener("click", function () {
-      window.posthog?.capture("language_switched", { to: "en" });
-    });
+    .getElementById('lang-switch-en')
+    ?.addEventListener('click', function () {
+      window.posthog?.capture('language_switched', { to: 'en' })
+    })
 </script>

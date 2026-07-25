@@ -1,13 +1,13 @@
 ---
-import { Image } from "astro:assets";
-import { getEntry } from "astro:content";
-import { marked } from "marked";
-import events from "../../../../assets/events.svg";
-import UpcomingEvents from "../../../../components/upcoming-events/es";
-import Layout from "../../../../layouts/espanol.astro";
+import { Image } from 'astro:assets'
+import { getEntry } from 'astro:content'
+import { marked } from 'marked'
+import events from '../../../../assets/events.svg'
+import UpcomingEvents from '../../../../components/upcoming-events/es'
+import Layout from '../../../../layouts/espanol.astro'
 
-const page = await getEntry("pages", "events");
-const content = page?.data && marked.parse(page.data.content_es);
+const page = await getEntry('pages', 'events')
+const content = page?.data && marked.parse(page.data.content_es)
 ---
 
 <Layout>

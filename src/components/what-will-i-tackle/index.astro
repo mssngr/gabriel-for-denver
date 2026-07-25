@@ -1,18 +1,18 @@
 ---
-import { getCollection } from "astro:content";
-import { ArrowRight } from "@lucide/astro";
-import { marked } from "marked";
-import Issue from "../issue.astro";
+import { getCollection } from 'astro:content'
+import { ArrowRight } from '@lucide/astro'
+import { marked } from 'marked'
+import Issue from '../issue.astro'
 
-const allIssues = await getCollection("issues");
-const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
+const allIssues = await getCollection('issues')
+const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order)
 ---
 
 <h1 class="text-center mb-16!">What will I tackle?</h1>
 <div class="flex flex-wrap gap-16 justify-center">
   {
     sortedIssues.map((issue) => {
-      const summary = marked.parse(issue.data.summary);
+      const summary = marked.parse(issue.data.summary)
       return (
         <Issue icon={issue.data.lucideIcon} title={issue.data.title}>
           <Fragment set:html={summary} />
@@ -27,19 +27,19 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order);
             <ArrowRight class="size-6 inline-block align-middle ml-2" />
           </a>
         </Issue>
-      );
+      )
     })
   }
 </div>
 
 <script is:inline>
-  document.addEventListener("click", function (event) {
-    var link = event.target.closest(".issue-read-more");
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest('.issue-read-more')
     if (link) {
-      window.posthog?.capture("issue_read_more_clicked", {
+      window.posthog?.capture('issue_read_more_clicked', {
         issue_slug: link.dataset.issueSlug,
         issue_title: link.dataset.issueTitle,
-      });
+      })
     }
-  });
+  })
 </script>

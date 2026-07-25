@@ -1,16 +1,16 @@
 ---
-import EventCard from "../event-card.astro";
-import HidePastEvents from "./hide-past-events.astro";
-import { eventSlug } from "../../lib/calendar";
-import { getUpcomingEvents } from "../../lib/events";
+import EventCard from '../event-card.astro'
+import HidePastEvents from './hide-past-events.astro'
+import { eventSlug } from '../../lib/calendar'
+import { getUpcomingEvents } from '../../lib/events'
 
-const upcomingEvents = await getUpcomingEvents();
+const upcomingEvents = await getUpcomingEvents()
 
 const labels = {
-  addToCalendar: "Add to calendar",
-  googleCalendar: "Google Calendar",
-  appleOutlook: "Apple / Outlook (.ics)",
-};
+  addToCalendar: 'Add to calendar',
+  googleCalendar: 'Google Calendar',
+  appleOutlook: 'Apple / Outlook (.ics)',
+}
 ---
 
 <h1 class="text-center mb-16!">Where I'm going to be</h1>

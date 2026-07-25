@@ -10,7 +10,16 @@ export default defineConfig({
     resolve: {
       // Vite's defaults plus .astro, so a folder with an index.astro can be
       // imported by its bare path (e.g. `components/donation-form`)
-      extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.astro'],
+      extensions: [
+        '.mjs',
+        '.js',
+        '.mts',
+        '.ts',
+        '.jsx',
+        '.tsx',
+        '.json',
+        '.astro',
+      ],
     },
   },
   fonts: [

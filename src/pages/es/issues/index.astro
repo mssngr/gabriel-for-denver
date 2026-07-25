@@ -1,13 +1,13 @@
 ---
-import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
-import { marked } from "marked";
-import city from "../../../assets/city.svg";
-import WhatWillITackle from "../../../components/what-will-i-tackle/es";
-import Espanol from "../../../layouts/espanol.astro";
+import { Image } from 'astro:assets'
+import { getEntry, render } from 'astro:content'
+import { marked } from 'marked'
+import city from '../../../assets/city.svg'
+import WhatWillITackle from '../../../components/what-will-i-tackle/es'
+import Espanol from '../../../layouts/espanol.astro'
 
-const page = await getEntry("pages", "issues");
-const content = page?.data && marked.parse(page.data.content_es);
+const page = await getEntry('pages', 'issues')
+const content = page?.data && marked.parse(page.data.content_es)
 ---
 
 <Espanol>
