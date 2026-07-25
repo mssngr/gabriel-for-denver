@@ -1,4 +1,5 @@
 // @ts-check
+import netlify from '@astrojs/netlify'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 
@@ -24,4 +25,5 @@ export default defineConfig({
     locales: ['es', 'en'],
     defaultLocale: 'en',
   },
+  adapter: netlify(),
 })
