@@ -2,6 +2,12 @@ import Stripe from 'stripe'
 
 export const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY)
 
+// Restricted keys (rk_live_…) count as live too. Anything unrecognized is
+// treated as not-provably-live, so callers never skip a real event.
+export const IS_LIVE_MODE = /_live_/.test(
+  import.meta.env.STRIPE_SECRET_KEY ?? '',
+)
+
 // Every contribution's draft invoice auto-finalizes (and charges) at this
 // moment: August 6, 2026, 6:00 AM in Denver (MDT, UTC-6).
 export const CHARGE_AT = Math.floor(

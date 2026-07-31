@@ -1,9 +1,23 @@
 import type { APIRoute } from 'astro'
 import type Stripe from 'stripe'
 import { scheduleDonationInvoice } from '../../../lib/schedule-donation'
-import { stripe } from '../../../lib/stripe'
+import { IS_LIVE_MODE, stripe } from '../../../lib/stripe'
 
 export const prerender = false
+
+const acknowledged = () =>
+  new Response(JSON.stringify({ received: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+// Errors that can never succeed on retry. Deliberately narrow: anything not
+// listed here keeps retrying, because a dropped delivery silently costs a
+// contribution, while a pointless retry only costs noise.
+const isPermanentStripeError = (error: unknown) => {
+  const { type, code } = (error ?? {}) as { type?: string; code?: string }
+  return type === 'StripeInvalidRequestError' && code === 'resource_missing'
+}
 
 // Safety net for the checkout flow: if a contributor's card is saved but they
 // close the tab before /api/donate/schedule runs, this webhook still creates
@@ -32,6 +46,14 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response('Invalid signature', { status: 400 })
   }
 
+  // A test-mode event delivered to a live deployment can never be processed —
+  // the live key cannot see the object. Only ever skip in this direction:
+  // dropping a stray test event is harmless, dropping a live one is not.
+  if (IS_LIVE_MODE && !event.livemode) {
+    console.error(`Ignoring test-mode event ${event.id} on a live deployment`)
+    return acknowledged()
+  }
+
   if (event.type === 'setup_intent.succeeded') {
     const received = event.data.object
     // Only handle donation setup intents (created by /api/donate/setup);
@@ -51,15 +73,18 @@ export const POST: APIRoute = async ({ request }) => {
           }
         }
       } catch (error) {
-        // Transient failure — return 500 so Stripe retries the delivery
-        console.error(`Webhook failed for ${received.id}`, error)
-        return new Response('Failed to process event', { status: 500 })
+        // Possibly transient — 500 so Stripe retries the delivery. Retrying is
+        // safe because scheduleDonationInvoice is idempotent per setup intent.
+        if (!isPermanentStripeError(error)) {
+          console.error(`Webhook failed for ${received.id}`, error)
+          return new Response('Failed to process event', { status: 500 })
+        }
+        // The key genuinely cannot see this object, so no retry will ever
+        // succeed — acknowledge instead of looping for days
+        console.error(`Webhook cannot process ${received.id}`, error)
       }
     }
   }
 
-  return new Response(JSON.stringify({ received: true }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  })
+  return acknowledged()
 }
