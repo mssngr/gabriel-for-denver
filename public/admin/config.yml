@@ -177,6 +177,33 @@ collections:
               },
             ],
         }
+  - label: Posts
+    name: posts
+    folder: src/content/posts
+    extension: yml
+    create: true
+    identifier_field: title
+    summary: "{{title}}"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Title (Spanish), name: title_es, widget: string }
+      - {
+          label: Slug,
+          name: slug,
+          widget: string,
+          hint: "Used in the URL: /posts/your-slug",
+        }
+      - { label: Intro, name: intro, widget: richtext }
+      - { label: Intro (Spanish), name: intro_es, widget: richtext }
+      - { label: Content, name: content, widget: richtext }
+      - { label: Content (Spanish), name: content_es, widget: richtext }
+      - { label: Photo, name: photo, widget: image }
+      - { label: Photo Alt Text, name: photoAlt, widget: string }
+      - {
+          label: Photo Alt Text (Spanish),
+          name: photoAlt_es,
+          widget: string,
+        }
   - label: Events
     name: events
     folder: src/content/events

@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
+import { marked } from 'marked'
+import { stripMarkdown } from '../../lib/seo'
+import Layout from '../../layouts/default.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts')
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }))
+}
+
+const { post } = Astro.props
+const intro = marked.parse(post.data.intro)
+const content = marked.parse(post.data.content)
+---
+
+<Layout
+  title={`${post.data.title} | Gabriel for Denver`}
+  description={stripMarkdown(post.data.intro)}
+>
+  <main class="h-full p-8 md:p-16 flex flex-col gap-16">
+    <section
+      class="size-full flex flex-wrap justify-center items-center gap-8"
+    >
+      <div class="w-md">
+        <h1>{post.data.title}</h1>
+        <Fragment set:html={intro} />
+      </div>
+      <Image
+        src={post.data.photo}
+        alt={post.data.photoAlt}
+        class="w-full max-w-md rounded-3xl"
+      />
+    </section>
+    <section class="max-w-2xl mx-auto w-full" set:html={content} />
+  </main>
+</Layout>
