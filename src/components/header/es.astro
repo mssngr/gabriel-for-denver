@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
 import {
   Apple,
   ArrowRight,
@@ -9,38 +10,65 @@ import {
   HandCoins,
   HouseHeart,
   MapPinHouse,
+  Menu,
   MessageCircle,
   Siren,
   Users,
+  X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-banner.svg'
 import logoMobile from '../../assets/gfd-mobile-banner.svg'
 
 const currentPath = Astro.url.pathname
+const recentPosts = (await getCollection('posts'))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3)
 ---
 
 <div
-  class="w-full h-40 md:h-56 p-4 md:px-16 md:py-8 flex items-center justify-between"
+  class="relative z-40 w-full h-40 lg:h-56 p-4 lg:px-16 lg:py-8 grid grid-cols-[auto_1fr_auto] items-center lg:flex lg:justify-between transition-colors duration-300 has-[#mobile-menu-toggle:checked]:bg-base-100 lg:bg-transparent"
 >
-  <a class="w-32 h-32 md:w-fit md:h-44 shrink-0" href="/es"
+  <input
+    type="checkbox"
+    id="mobile-menu-toggle"
+    class="peer sr-only"
+    aria-label="Menú"
+  />
+  <a
+    class="relative z-50 w-32 h-32 lg:w-fit lg:h-44 shrink-0 lg:order-1"
+    href="/es"
     ><Image
-      class="md:hidden"
+      class="lg:hidden"
       src={logoMobile}
       alt="Logo that reads 'Gabriel for Denver'"
     /><Image
-      class="max-md:hidden w-fit h-full"
+      class="max-lg:hidden w-fit h-full"
       src={logoDesktop}
       alt="Logo that reads 'Gabriel for Denver'"
     /></a
   >
-  <div>
+  <a
+    href={currentPath.replace('/es', '') || '/'}
+    class="relative z-50 link justify-self-center lg:order-3 lg:ml-4"
+    id="lang-switch-en">English</a
+  >
+  <label
+    for="mobile-menu-toggle"
+    class="relative z-50 lg:hidden justify-self-end inline-flex items-center cursor-pointer peer-checked:[&>.icon-menu]:hidden peer-checked:[&>.icon-x]:block"
+  >
+    <Menu class="icon-menu size-7" aria-hidden="true" />
+    <X class="icon-x size-7 hidden" aria-hidden="true" />
+  </label>
+  <nav
+    class="fixed inset-x-0 top-40 bottom-0 z-30 flex flex-col items-center justify-center gap-8 overflow-y-auto py-12 bg-base-100 text-4xl font-semibold opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:pointer-events-auto lg:static lg:inset-auto lg:z-auto lg:order-2 lg:flex-row lg:gap-1 lg:overflow-visible lg:py-0 lg:bg-transparent lg:text-lg lg:opacity-100 lg:scale-100 lg:pointer-events-auto lg:transition-none"
+  >
     <ul
-      class="ml-6 menu menu-horizontal px-1 text-lg md:text-2xl font-semibold"
+      class="menu px-1 font-semibold flex flex-col items-center gap-2 lg:flex-row lg:menu-horizontal lg:gap-0"
     >
       <li>
         <details>
           <summary
-            class={`md:text-2xl ${currentPath.includes('/issues') ? 'text-primary font-black' : ''}`}
+            class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-primary font-black' : ''}`}
             >Retos de Denver</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
@@ -96,14 +124,14 @@ const currentPath = Astro.url.pathname
       </li>
       <li>
         <a
-          class={`md:text-2xl ${currentPath.includes('/es/why-me') ? 'text-primary font-black' : ''}`}
+          class={`text-3xl lg:text-2xl ${currentPath.includes('/es/why-me') ? 'text-primary font-black' : ''}`}
           href="/es/why-me">¿Por qué yo?</a
         >
       </li>
       <li>
         <details>
           <summary
-            class={`md:text-2xl ${currentPath.includes('/es/get-involved') ? 'text-primary font-black' : ''}`}
+            class={`text-3xl lg:text-2xl ${currentPath.includes('/es/get-involved') ? 'text-primary font-black' : ''}`}
             >Involúcrate</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
@@ -138,13 +166,30 @@ const currentPath = Astro.url.pathname
           </ul>
         </details>
       </li>
+      <li class="group relative">
+        <a
+          class={`text-3xl lg:text-2xl ${currentPath.includes('/posts') ? 'text-primary font-black' : ''}`}
+          href="/es/posts">Publicaciones</a
+        >
+        <ul
+          class="hidden lg:group-hover:block absolute top-full right-0 min-w-64 bg-base-100 rounded-box p-2 shadow-xl z-10"
+        >
+          {
+            recentPosts.map((post) => (
+              <li>
+                <a href={`/es/posts/${post.data.slug}`}>{post.data.title_es}</a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/es/posts" class="inline-flex items-center"
+              >Ver Todas <ArrowRight class="size-4" /></a
+            >
+          </li>
+        </ul>
+      </li>
     </ul>
-  </div>
-  <a
-    href={currentPath.replace('/es', '') || '/'}
-    class="link mt-4 md:mt-0"
-    id="lang-switch-en">English</a
-  >
+  </nav>
 </div>
 
 <script is:inline>

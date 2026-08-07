@@ -1,7 +1,7 @@
-// Client for the /api/donate endpoints. Failures throw an Error whose
-// message is safe to show the contributor; an empty message means the
-// caller should show its own locale-appropriate generic error.
-export type DonationSetupPayload = {
+// Client for the /api/donate endpoint. Failures throw an Error whose message
+// is safe to show the contributor; an empty message means the caller should
+// show its own locale-appropriate generic error.
+export type DonationIntentPayload = {
   fullName: string
   email: string
   phone: string
@@ -28,11 +28,5 @@ async function postJson<T>(url: string, body: object): Promise<T> {
   return data
 }
 
-export const createDonationSetup = (payload: DonationSetupPayload) =>
-  postJson<{ clientSecret: string; setupIntentId: string }>(
-    '/api/donate/setup',
-    payload,
-  )
-
-export const scheduleDonationInvoice = (setupIntentId: string) =>
-  postJson<{ invoiceId: string }>('/api/donate/schedule', { setupIntentId })
+export const createDonationIntent = (payload: DonationIntentPayload) =>
+  postJson<{ clientSecret: string }>('/api/donate/intent', payload)

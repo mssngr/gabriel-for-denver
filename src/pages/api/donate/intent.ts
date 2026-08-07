@@ -80,20 +80,17 @@ export const POST: APIRoute = async ({ request }) => {
       metadata: { employer, occupation },
     })
 
-    // Saves the card for the future charge without charging it today
-    const setupIntent = await stripe.setupIntents.create({
+    const paymentIntent = await stripe.paymentIntents.create({
       customer: customer.id,
-      usage: 'off_session',
+      amount: amountCents,
+      currency: 'usd',
       payment_method_types: ['card'],
-      metadata: { amount_cents: String(amountCents) },
+      description: 'Campaign contribution — Gabriel for Denver',
     })
 
-    return json({
-      clientSecret: setupIntent.client_secret,
-      setupIntentId: setupIntent.id,
-    })
+    return json({ clientSecret: paymentIntent.client_secret })
   } catch (error) {
-    console.error('Failed to set up donation', error)
+    console.error('Failed to create donation payment intent', error)
     return json(
       {
         error:

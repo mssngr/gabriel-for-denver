@@ -1,5 +1,5 @@
 import { loadStripe, type StripeElementLocale } from '@stripe/stripe-js'
-import { createDonationSetup, scheduleDonationInvoice } from './api'
+import { createDonationIntent } from './api'
 import { attachPhoneMask } from './phone-mask'
 
 // Locale-specific text and routing, supplied by each language's entry
@@ -10,7 +10,7 @@ export type DonationCheckoutConfig = {
   summaryLabel: (amount: number) => string
   processingLabel: string
   genericError: string
-  cardSaveError: string
+  paymentError: string
   thankYouPath: string
 }
 
@@ -37,9 +37,12 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
   const stripe = await loadStripe(form.dataset.publishableKey || '')
   if (!stripe) throw new Error('Failed to load Stripe.js')
 
+  const amountCents = () => Math.round(Number(amountInput.value || 5) * 100)
+
   const elements = stripe.elements({
-    mode: 'setup',
+    mode: 'payment',
     currency: 'usd',
+    amount: amountCents(),
     paymentMethodTypes: ['card'],
     locale: config.locale,
   })
@@ -48,7 +51,7 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
     // passed along at confirm time, so the card element skips them
     fields: { billingDetails: 'never' },
     // Link's bank option would produce a non-card payment method that the
-    // card-only SetupIntent rejects, so keep it out of the element
+    // card-only PaymentIntent rejects, so keep it out of the element
     wallets: { link: 'never' },
   })
   let paymentMounted = false
@@ -66,6 +69,7 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
       label.classList.toggle('step-secondary', i <= index)
     })
     if (index === 2) {
+      elements.update({ amount: amountCents() })
       if (!paymentMounted) {
         paymentElement.mount('#payment-element')
         paymentMounted = true
@@ -145,7 +149,7 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
     if (submitError) return fail(submitError.message)
 
     try {
-      const setup = await createDonationSetup({
+      const intent = await createDonationIntent({
         fullName,
         email: data.email,
         phone: data.phone,
@@ -159,9 +163,9 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
         amountDollars: Number(data.amount),
       })
 
-      const { error: confirmError, setupIntent } = await stripe.confirmSetup({
+      const { error: confirmError, paymentIntent } = await stripe.confirmPayment({
         elements,
-        clientSecret: setup.clientSecret,
+        clientSecret: intent.clientSecret,
         confirmParams: {
           return_url: `${window.location.origin}${config.thankYouPath}`,
           payment_method_data: {
@@ -183,9 +187,7 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
         redirect: 'if_required',
       })
       if (confirmError) return fail(confirmError.message)
-      if (setupIntent?.status !== 'succeeded') return fail(config.cardSaveError)
-
-      await scheduleDonationInvoice(setupIntent.id)
+      if (paymentIntent?.status !== 'succeeded') return fail(config.paymentError)
     } catch (error) {
       return fail(error instanceof Error ? error.message : undefined)
     }

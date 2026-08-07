@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets'
+import { getCollection } from 'astro:content'
+import { stripMarkdown } from '../../lib/seo'
+import Layout from '../../layouts/default.astro'
+
+const posts = (await getCollection('posts')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+)
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
+---
+
+<Layout
+  title="Posts | Gabriel for Denver"
+  description="Updates from Gabriel Konkle's campaign for Denver City Council."
+>
+  <main class="h-full p-8 md:p-16 flex flex-col gap-16">
+    <h1>Posts</h1>
+    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        posts.map((post) => (
+          <a
+            href={`/posts/${post.data.slug}`}
+            class="flex flex-col gap-3"
+          >
+            <Image
+              src={post.data.photo}
+              alt={post.data.photoAlt}
+              class="w-full aspect-video object-cover rounded-3xl"
+            />
+            <p class="text-base! text-secondary font-semibold">
+              {dateFormatter.format(post.data.date)}
+            </p>
+            <h2 class="mb-0!">{post.data.title}</h2>
+            <p class="text-lg!">{stripMarkdown(post.data.intro)}</p>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+</Layout>

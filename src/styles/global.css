@@ -64,4 +64,9 @@
   li {
     font-size: 1.125rem;
   }
+
+  /* Locks background scroll while the mobile full-page menu is open. */
+  body:has(#mobile-menu-toggle:checked) {
+    overflow: hidden;
+  }
 }

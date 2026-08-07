@@ -74,6 +74,7 @@ const posts = defineCollection({
       title: z.string(),
       title_es: z.string(),
       slug: z.string(),
+      date: z.coerce.date(),
       intro: z.string(),
       intro_es: z.string(),
       content: z.string(),
