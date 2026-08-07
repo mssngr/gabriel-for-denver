@@ -193,7 +193,16 @@ collections:
           widget: string,
           hint: "Used in the URL: /posts/your-slug",
         }
-      - { label: Date, name: date, widget: date, default: "{{now}}" }
+      - {
+          label: Date,
+          name: date,
+          widget: datetime,
+          type: date,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          default: "{{now}}",
+        }
       - { label: Intro, name: intro, widget: richtext }
       - { label: Intro (Spanish), name: intro_es, widget: richtext }
       - { label: Content, name: content, widget: richtext }
