@@ -7,7 +7,7 @@ const { Icon, title } = Astro.props
     {Icon && <Icon class="size-8" />}{title}
   </h2>
   <div
-    class="[&_p]:text-lg! font-light max-w-md [&_ul:not(*:first-child)]:mt-2"
+    class="font-light max-w-md [&_li]:text-2xl [&_ul:not(*:first-child)]:mt-2"
   >
     <slot />
   </div>
