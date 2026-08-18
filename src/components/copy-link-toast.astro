@@ -1,0 +1,42 @@
+---
+interface Props {
+  message: string
+}
+const { message } = Astro.props
+---
+
+<div
+  id="copy-link-toast"
+  class="toast toast-top toast-center z-50"
+  data-message={message}
+>
+</div>
+
+<script is:inline>
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('.anchor-copy-link')
+    if (!trigger) return
+
+    const id = trigger.getAttribute('href')?.slice(1)
+    if (!id) return
+
+    const url = `${location.origin}${location.pathname}${location.search}#${id}`
+    navigator.clipboard?.writeText(url)
+
+    const container = document.getElementById('copy-link-toast')
+    if (!container) return
+
+    container.innerHTML = ''
+    const alertEl = document.createElement('div')
+    alertEl.className = 'alert alert-success'
+    const span = document.createElement('span')
+    span.textContent = container.dataset.message || 'Copied!'
+    alertEl.appendChild(span)
+    container.appendChild(alertEl)
+
+    window.clearTimeout(container.dataset.timeoutId)
+    container.dataset.timeoutId = window.setTimeout(() => {
+      container.innerHTML = ''
+    }, 3000)
+  })
+</script>

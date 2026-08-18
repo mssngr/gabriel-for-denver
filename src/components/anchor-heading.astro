@@ -1,0 +1,18 @@
+---
+interface Props {
+  id: string
+  tooltip: string
+  class?: string
+}
+const { id, tooltip, class: className = '' } = Astro.props
+---
+
+<h1 id={id} class={`scroll-mt-8 text-center mb-16! ${className}`}>
+  <slot />
+  <a
+    href={`#${id}`}
+    class="anchor-copy-link tooltip tooltip-bottom font-normal opacity-60 hover:opacity-100 no-underline ml-2"
+    data-tip={tooltip}
+    aria-label={tooltip}>#</a
+  >
+</h1>

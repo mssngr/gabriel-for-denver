@@ -9,8 +9,11 @@ import foodSecurity from '../../../assets/food-security.svg'
 import homelessness from '../../../assets/homelessness.svg'
 import housingCrisis from '../../../assets/housing-crisis.svg'
 import injustice from '../../../assets/injustice.svg'
+import AnchorHeading from '../../../components/anchor-heading.astro'
+import CopyLinkToast from '../../../components/copy-link-toast.astro'
 import ProblemSolution from '../../../components/problem-solution/es'
 import { stripMarkdown } from '../../../lib/seo'
+import { slugify } from '../../../lib/slug'
 import Espanol from '../../../layouts/espanol.astro'
 
 export async function getStaticPaths() {
@@ -45,6 +48,7 @@ const imageAlt = {
   title={`${issue.data.title_es} | Gabriel por Denver`}
   description={stripMarkdown(issue.data.summary_es)}
 >
+  <CopyLinkToast message="¡Enlace copiado al portapapeles!" />
   <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
       <div class="w-md">
@@ -61,6 +65,7 @@ const imageAlt = {
     {
       issue.data.subIssues?.map(async (subIssue, index) => {
         const subIssueSummary = marked.parse(subIssue.summary_es)
+        const subIssueId = slugify(subIssue.title_es)
         return (
           <section
             key={subIssue.title_es}
@@ -72,7 +77,12 @@ const imageAlt = {
                   : undefined
             }
           >
-            <h1 class="text-center mb-16!">{subIssue.title_es}</h1>
+            <AnchorHeading
+              id={subIssueId}
+              tooltip="Copiar enlace a esta sección"
+            >
+              {subIssue.title_es}
+            </AnchorHeading>
             <div class="max-w-md mx-auto mb-16" set:html={subIssueSummary} />
             {subIssue.problemsAndSolutions.map(
               async (problemAndSolution, index) => {
