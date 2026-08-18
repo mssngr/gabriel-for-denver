@@ -1,4 +1,5 @@
 import { loadStripe, type StripeElementLocale } from '@stripe/stripe-js'
+import { canCoverFees, totalWithFeesCents } from '../../lib/fees'
 import { createDonationIntent } from './api'
 import { attachPhoneMask } from './phone-mask'
 
@@ -6,13 +7,14 @@ import { attachPhoneMask } from './phone-mask'
 // component (index.astro / es/index.astro)
 export type DonationCheckoutConfig = {
   locale: StripeElementLocale
-  submitLabel: (amount: number) => string
-  summaryLabel: (amount: number) => string
+  submitLabel: (totalAmount: number) => string
   processingLabel: string
   genericError: string
   paymentError: string
   thankYouPath: string
 }
+
+const formatDollars = (cents: number) => `$${(cents / 100).toFixed(2)}`
 
 export async function initDonationCheckout(config: DonationCheckoutConfig) {
   const form = document.getElementById('donation-form') as HTMLFormElement
@@ -33,16 +35,31 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
   const summaryAmount = document.getElementById(
     'donation-summary-amount',
   ) as HTMLElement
+  const summaryFee = document.getElementById('donation-summary-fee') as HTMLElement
+  const summaryTotal = document.getElementById(
+    'donation-summary-total',
+  ) as HTMLElement
+  const feeRow = form.querySelector('[data-fee-row]') as HTMLElement
+  const coverFeesRow = form.querySelector(
+    '[data-cover-fees-row]',
+  ) as HTMLElement
+  const coverFeesInput = document.getElementById(
+    'donation-cover-fees',
+  ) as HTMLInputElement
 
   const stripe = await loadStripe(form.dataset.publishableKey || '')
   if (!stripe) throw new Error('Failed to load Stripe.js')
 
   const amountCents = () => Math.round(Number(amountInput.value || 5) * 100)
+  const chargeCents = () =>
+    coverFeesInput.checked && canCoverFees(amountCents())
+      ? totalWithFeesCents(amountCents())
+      : amountCents()
 
   const elements = stripe.elements({
     mode: 'payment',
     currency: 'usd',
-    amount: amountCents(),
+    amount: chargeCents(),
     paymentMethodTypes: ['card'],
     locale: config.locale,
   })
@@ -56,7 +73,21 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
   })
   let paymentMounted = false
 
-  const submitLabel = () => config.submitLabel(Number(amountInput.value))
+  const submitLabel = () => config.submitLabel(chargeCents() / 100)
+
+  const updateSummary = () => {
+    // Leaves the checkbox's checked state untouched — chargeCents() already
+    // ignores it once covering the fee would exceed the cap, so it just
+    // quietly resumes applying once the amount drops back below that point.
+    coverFeesRow.classList.toggle('hidden', !canCoverFees(amountCents()))
+
+    const fee = chargeCents() - amountCents()
+    summaryAmount.textContent = formatDollars(amountCents())
+    summaryFee.textContent = formatDollars(fee)
+    feeRow.classList.toggle('hidden', fee === 0)
+    summaryTotal.textContent = formatDollars(chargeCents())
+    submitButton.textContent = submitLabel()
+  }
 
   attachPhoneMask(form.querySelector('input[name="phone"]') as HTMLInputElement)
 
@@ -69,15 +100,19 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
       label.classList.toggle('step-secondary', i <= index)
     })
     if (index === 2) {
-      elements.update({ amount: amountCents() })
+      elements.update({ amount: chargeCents() })
       if (!paymentMounted) {
         paymentElement.mount('#payment-element')
         paymentMounted = true
       }
-      summaryAmount.textContent = config.summaryLabel(Number(amountInput.value))
-      submitButton.textContent = submitLabel()
+      updateSummary()
     }
   }
+
+  coverFeesInput.addEventListener('change', () => {
+    elements.update({ amount: chargeCents() })
+    updateSummary()
+  })
 
   const stepIsValid = (index: number) => {
     for (const field of steps[index].querySelectorAll<
@@ -161,6 +196,7 @@ export async function initDonationCheckout(config: DonationCheckoutConfig) {
         employer: data.employer,
         occupation: data.occupation,
         amountDollars: Number(data.amount),
+        coverFees: coverFeesInput.checked,
       })
 
       const { error: confirmError, paymentIntent } = await stripe.confirmPayment({

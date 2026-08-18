@@ -1,5 +1,11 @@
 import type { APIRoute } from 'astro'
-import { MAX_AMOUNT_CENTS, MIN_AMOUNT_CENTS, stripe } from '../../../lib/stripe'
+import {
+  canCoverFees,
+  MAX_AMOUNT_CENTS,
+  MIN_AMOUNT_CENTS,
+  totalWithFeesCents,
+} from '../../../lib/fees'
+import { stripe } from '../../../lib/stripe'
 
 export const prerender = false
 
@@ -64,6 +70,13 @@ export const POST: APIRoute = async ({ request }) => {
     )
   }
 
+  // Fee coverage isn't offered once grossing up the contribution would push
+  // the card charge itself past the $415 cap — mirrors the client, which
+  // hides the checkbox in that case; enforced again here in case that's ever
+  // bypassed.
+  const coverFees = body.coverFees === true && canCoverFees(amountCents)
+  const chargeCents = coverFees ? totalWithFeesCents(amountCents) : amountCents
+
   try {
     const customer = await stripe.customers.create({
       name: fullName,
@@ -82,10 +95,15 @@ export const POST: APIRoute = async ({ request }) => {
 
     const paymentIntent = await stripe.paymentIntents.create({
       customer: customer.id,
-      amount: amountCents,
+      amount: chargeCents,
       currency: 'usd',
       payment_method_types: ['card'],
       description: 'Campaign contribution — Gabriel for Denver',
+      metadata: {
+        contributionCents: String(amountCents),
+        feeCents: String(chargeCents - amountCents),
+        coverFees: String(coverFees),
+      },
     })
 
     return json({ clientSecret: paymentIntent.client_secret })

@@ -1,8 +1,37 @@
 <section data-step="2" class="hidden flex-col gap-4">
   <h2 class="card-title">Pago</h2>
-  <div class="rounded-box bg-secondary/10 p-4 text-sm">
-    <p class="font-semibold text-lg" id="donation-summary-amount"></p>
+  <div class="rounded-box bg-secondary/10 p-4 text-sm flex flex-col gap-1">
+    <p class="flex justify-between">
+      <span>Contribución</span>
+      <span id="donation-summary-amount"></span>
+    </p>
+    <p class="flex justify-between text-lg opacity-70" data-fee-row>
+      <span>Comisión de procesamiento</span>
+      <span id="donation-summary-fee"></span>
+    </p>
+    <p
+      class="flex justify-between font-semibold text-lg border-t border-base-300 pt-1 mt-1"
+    >
+      <span>Total a cobrar hoy</span>
+      <span id="donation-summary-total"></span>
+    </p>
   </div>
+  <label
+    class="flex items-start gap-2 text-sm cursor-pointer"
+    data-cover-fees-row
+  >
+    <input
+      type="checkbox"
+      name="coverFees"
+      id="donation-cover-fees"
+      class="checkbox checkbox-sm mt-0.5"
+      checked
+    />
+    <span
+      >Agregar la comisión de procesamiento para que el 100% de mi
+      contribución vaya a la campaña</span
+    >
+  </label>
   <div id="payment-element"></div>
   <p class="text-xs opacity-70">Su tarjeta se procesa de forma segura con Stripe.</p>
   <div class="flex gap-2">

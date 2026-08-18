@@ -20,7 +20,12 @@
 }
 
 @utility btn {
-  @apply rounded-2xl text-2xl p-6 font-semibold;
+  /* League Spartan's line-box reserves far more room below the baseline
+     than button labels (rarely, if ever, descenders like g/j/p/q/y) ever
+     use, so equal top/bottom padding reads as extra space underneath the
+     text. pb-5 instead of pt-6 corrects for that, measured against the
+     font's actual glyph metrics rather than guessed. */
+  @apply rounded-2xl text-2xl px-6 pt-6 pb-5 font-semibold;
 }
 
 @layer base {

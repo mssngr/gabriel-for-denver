@@ -30,8 +30,7 @@ const publishableKey = import.meta.env.STRIPE_PUBLISHABLE_KEY
 
   initDonationCheckout({
     locale: 'es',
-    submitLabel: (amount) => `Contribuir $${amount}`,
-    summaryLabel: (amount) => `Contribución de $${amount}`,
+    submitLabel: (amount) => `Contribuir $${amount.toFixed(2)}`,
     processingLabel: 'Procesando...',
     genericError: 'Algo salió mal. Por favor, inténtelo de nuevo.',
     paymentError:

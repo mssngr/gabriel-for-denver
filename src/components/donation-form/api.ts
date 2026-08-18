@@ -13,6 +13,7 @@ export type DonationIntentPayload = {
   employer: string
   occupation: string
   amountDollars: number
+  coverFees: boolean
 }
 
 async function postJson<T>(url: string, body: object): Promise<T> {
