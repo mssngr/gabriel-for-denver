@@ -7,14 +7,14 @@ const { customersCreate, paymentIntentsCreate } = vi.hoisted(() => ({
   paymentIntentsCreate: vi.fn(),
 }))
 
-vi.mock('../../../lib/stripe', () => ({
+vi.mock('../../../../lib/stripe', () => ({
   stripe: {
     customers: { create: customersCreate },
     paymentIntents: { create: paymentIntentsCreate },
   },
 }))
 
-const { POST } = await import('./intent')
+const { POST } = await import('../intent')
 
 const validDonor = {
   fullName: 'Ada Lovelace',
