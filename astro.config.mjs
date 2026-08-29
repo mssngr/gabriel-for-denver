@@ -47,5 +47,11 @@ export default defineConfig({
     locales: ['es', 'en'],
     defaultLocale: 'en',
   },
+  redirects: {
+    '/get-involved/donate': '/donate',
+    '/get-involved/donate/thank-you': '/donate/thank-you',
+    '/es/get-involved/donate': '/es/donate',
+    '/es/get-involved/donate/thank-you': '/es/donate/thank-you',
+  },
   adapter: netlify(),
 })

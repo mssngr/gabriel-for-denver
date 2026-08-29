@@ -101,7 +101,7 @@ const config = {
   processingLabel: 'Processing...',
   genericError: 'Something went wrong. Please try again.',
   paymentError: 'Your payment could not be processed. Please try again.',
-  thankYouPath: '/get-involved/donate/thank-you',
+  thankYouPath: '/donate/thank-you',
 }
 
 function el<T extends Element>(selector: string): T {

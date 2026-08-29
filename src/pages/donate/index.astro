@@ -1,8 +1,8 @@
 ---
 import { getEntry } from 'astro:content'
 import { marked } from 'marked'
-import DonationForm from '../../../components/donation-form'
-import Layout from '../../../layouts/default.astro'
+import DonationForm from '../../components/donation-form'
+import Layout from '../../layouts/default.astro'
 
 const page = await getEntry('pages', 'donate')
 const content = page?.data && marked.parse(page.data.content)
