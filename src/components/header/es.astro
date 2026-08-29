@@ -1,13 +1,11 @@
 ---
 import { Image } from 'astro:assets'
-import { getCollection } from 'astro:content'
 import {
   Apple,
   ArrowRight,
   CalendarDays,
   Coins,
   DatabaseZap,
-  HandCoins,
   HouseHeart,
   MapPinHouse,
   Menu,
@@ -20,9 +18,6 @@ import logoDesktop from '../../assets/gfd-banner.svg'
 import logoMobile from '../../assets/gfd-mobile-banner.svg'
 
 const currentPath = Astro.url.pathname
-const recentPosts = (await getCollection('posts'))
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3)
 ---
 
 <div
@@ -69,7 +64,7 @@ const recentPosts = (await getCollection('posts'))
         <details>
           <summary
             class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-primary font-black' : ''}`}
-            >Retos de Denver</summary
+            >Retos</summary
           >
           <ul class="bg-base-100 rounded-t-none p-2 z-10">
             <li>
@@ -144,13 +139,6 @@ const recentPosts = (await getCollection('posts'))
             </li>
             <li>
               <a
-                href="/es/donate"
-                class={`${currentPath.includes('/es/donate') ? 'text-primary font-black' : ''}`}
-                ><HandCoins />Donar</a
-              >
-            </li>
-            <li>
-              <a
                 href="/es/get-involved/volunteer"
                 class={`${currentPath.includes('/es/get-involved/volunteer') ? 'text-primary font-black' : ''}`}
                 ><Users />Voluntario</a
@@ -166,27 +154,8 @@ const recentPosts = (await getCollection('posts'))
           </ul>
         </details>
       </li>
-      <li class="group relative">
-        <a
-          class={`text-3xl lg:text-2xl ${currentPath.includes('/posts') ? 'text-primary font-black' : ''}`}
-          href="/es/posts">Publicaciones</a
-        >
-        <ul
-          class="hidden lg:group-hover:block absolute top-full right-0 min-w-64 bg-base-100 rounded-box p-2 shadow-xl z-10"
-        >
-          {
-            recentPosts.map((post) => (
-              <li>
-                <a href={`/es/posts/${post.data.slug}`}>{post.data.title_es}</a>
-              </li>
-            ))
-          }
-          <li>
-            <a href="/es/posts" class="inline-flex items-center"
-              >Ver Todas <ArrowRight class="size-4" /></a
-            >
-          </li>
-        </ul>
+      <li>
+        <a class="btn btn-primary lg:ml-2" href="/es/donate">Donar</a>
       </li>
     </ul>
   </nav>

@@ -9,8 +9,13 @@ export default defineConfig({
   site: 'https://gabrielfordenver.com',
   integrations: [
     sitemap({
-      filter: page =>
-        !/\/(admin|thank-you|404)\/?$/.test(new URL(page).pathname),
+      filter: page => {
+        const { pathname } = new URL(page)
+        return (
+          !/\/(admin|thank-you|404)\/?$/.test(pathname) &&
+          !/(^|\/)posts(\/|$)/.test(pathname)
+        )
+      },
     }),
   ],
   vite: {

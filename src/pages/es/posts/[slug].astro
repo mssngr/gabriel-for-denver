@@ -21,6 +21,7 @@ const content = marked.parse(post.data.content_es)
 <Espanol
   title={`${post.data.title_es} | Gabriel por Denver`}
   description={stripMarkdown(post.data.intro_es)}
+  noindex
 >
   <main class="h-full p-8 md:p-16 flex flex-col gap-16">
     <section class="size-full flex flex-wrap justify-center items-center gap-8">
