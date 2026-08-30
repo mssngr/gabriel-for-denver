@@ -3,7 +3,7 @@ import { Image } from 'astro:assets'
 import { getEntry } from 'astro:content'
 import { marked } from 'marked'
 import city from '../../assets/city.svg'
-import WhatWillITackle from '../../components/what-will-i-tackle'
+import WhatWillITackle from '../../components/what-will-i-tackle/index.astro'
 import Layout from '../../layouts/default.astro'
 
 const page = await getEntry('pages', 'issues')

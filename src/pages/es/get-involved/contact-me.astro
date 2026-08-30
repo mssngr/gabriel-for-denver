@@ -3,7 +3,7 @@ import { Image } from 'astro:assets'
 import { getEntry, render } from 'astro:content'
 import { marked } from 'marked'
 import contact from '../../../assets/contact.svg'
-import ContactForm from '../../../components/contact-form/es'
+import ContactForm from '../../../components/contact-form/es.astro'
 import Layout from '../../../layouts/espanol.astro'
 
 const page = await getEntry('pages', 'contact-me')

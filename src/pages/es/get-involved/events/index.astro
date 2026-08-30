@@ -3,7 +3,7 @@ import { Image } from 'astro:assets'
 import { getEntry } from 'astro:content'
 import { marked } from 'marked'
 import events from '../../../../assets/events.svg'
-import UpcomingEvents from '../../../../components/upcoming-events/es'
+import UpcomingEvents from '../../../../components/upcoming-events/es.astro'
 import Layout from '../../../../layouts/espanol.astro'
 
 const page = await getEntry('pages', 'events')

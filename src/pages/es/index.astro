@@ -3,9 +3,9 @@ import { Image } from 'astro:assets'
 import { getEntry, render } from 'astro:content'
 import { marked } from 'marked'
 import photo from '../../assets/gabriel-with-city.jpg'
-import ContactForm from '../../components/contact-form/es'
-import MyBackground from '../../components/my-background/es'
-import WhatWillITackle from '../../components/what-will-i-tackle/es'
+import ContactForm from '../../components/contact-form/es.astro'
+import MyBackground from '../../components/my-background/es.astro'
+import WhatWillITackle from '../../components/what-will-i-tackle/es.astro'
 import Espanol from '../../layouts/espanol.astro'
 
 const page = await getEntry('pages', 'home')
@@ -23,11 +23,13 @@ const content = page?.data && marked.parse(page.data.content_es)
         <Fragment set:html={content} />
         <a class="btn btn-primary mt-8" href="/es#involucrate">Involúcrate</a>
       </div>
-      <Image
-        src={photo}
-        alt={page?.data.photoAltText_es || null}
-        class="w-full max-w-md"
-      />
+      <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
+        <Image
+          src={photo}
+          alt={page?.data.photoAltText_es || null}
+          class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] -translate-y-[15%] origin-top"
+        />
+      </div>
     </section>
     <section
       class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
