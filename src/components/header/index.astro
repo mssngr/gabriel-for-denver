@@ -15,7 +15,7 @@ import {
   Users,
   X,
 } from '@lucide/astro'
-import logoDesktop from '../../assets/gfd-banner.svg'
+import logoDesktop from '../../assets/gfd-logo.svg'
 
 const currentPath = Astro.url.pathname
 ---
@@ -55,7 +55,9 @@ const currentPath = Astro.url.pathname
             class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-primary font-black' : ''}`}
             >Issues</summary
           >
-          <ul class="bg-base-100 rounded-t-none p-2 z-10">
+          <ul
+            class="bg-base-100 rounded-t-none p-2 z-10 lg:w-max lg:whitespace-nowrap"
+          >
             <li>
               <a
                 href="/issues/affordability"
@@ -118,7 +120,9 @@ const currentPath = Astro.url.pathname
             class={`text-3xl lg:text-2xl ${currentPath.includes('/get-involved') ? 'text-primary font-black' : ''}`}
             >Get involved</summary
           >
-          <ul class="bg-base-100 rounded-t-none p-2 z-10">
+          <ul
+            class="bg-base-100 rounded-t-none p-2 z-10 lg:w-max lg:whitespace-nowrap"
+          >
             <li>
               <a
                 href="/get-involved/events"

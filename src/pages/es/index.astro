@@ -22,13 +22,13 @@ const content = page?.data && marked.parse(page.data.content_es)
         <Image
           src={photo}
           alt={page?.data.photoAltText_es || null}
-          class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] -translate-y-[15%] origin-top"
+          class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] translate-y-[-15%] origin-top"
         />
       </div>
       <div class="w-md">
         <h1>{page?.data.heading_es}</h1>
         <Fragment set:html={content} />
-        <a class="btn btn-primary mt-8" href="/es#involucrate">Involúcrate</a>
+        <a class="btn btn-primary mt-8" href="/es/donate">Donar</a>
       </div>
     </section>
     <section
