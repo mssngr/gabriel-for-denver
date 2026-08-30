@@ -9,6 +9,7 @@ import WhatWillITackle from '../components/what-will-i-tackle/index.astro'
 import Layout from '../layouts/default.astro'
 
 const page = await getEntry('pages', 'home')
+const heading = page?.data && marked.parseInline(page.data.heading)
 const content = page?.data && marked.parse(page.data.content)
 ---
 
@@ -26,7 +27,7 @@ const content = page?.data && marked.parse(page.data.content)
         />
       </div>
       <div class="w-md">
-        <h1>{page?.data.heading}</h1>
+        <h1 class="home-heading" set:html={heading} />
         <Fragment set:html={content} />
         <a class="btn btn-primary mt-8" href="/donate">Donate</a>
       </div>

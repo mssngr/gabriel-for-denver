@@ -44,6 +44,11 @@
     margin-bottom: 1rem;
   }
 
+  .home-heading strong {
+    color: var(--color-accent);
+    font-weight: inherit;
+  }
+
   h2 {
     font-size: 1.875rem;
     line-height: 1;
