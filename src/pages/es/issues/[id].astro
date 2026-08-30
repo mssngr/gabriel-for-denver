@@ -47,21 +47,25 @@ const imageAlt = {
 <Espanol
   title={`${issue.data.title_es} | Gabriel por Denver`}
   description={stripMarkdown(issue.data.summary_es)}
+  heroGradient
 >
   <CopyLinkToast message="¡Enlace copiado al portapapeles!" />
-  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
-    <section class="size-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-md">
-        <a
-          href="/es/issues#what-will-i-tackle"
-          class="link inline-flex items-center mb-8"
-          ><ArrowLeft class="size-4" />Volver a los Retos</a
-        >
-        <h1>{issue.data.title_es}</h1>
-        <Fragment set:html={intro} />
-      </div>
-      <Image src={image || ''} alt={imageAlt || null} class="w-full max-w-md" />
-    </section>
+  <section
+    slot="hero"
+    class="size-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-md">
+      <a
+        href="/es/issues#what-will-i-tackle"
+        class="link inline-flex items-center mb-8"
+        ><ArrowLeft class="size-4" />Volver a los Retos</a
+      >
+      <h1>{issue.data.title_es}</h1>
+      <Fragment set:html={intro} />
+    </div>
+    <Image src={image || ''} alt={imageAlt || null} class="w-full max-w-md" />
+  </section>
+  <main class="h-full px-8 md:px-16 flex flex-col pb-0!">
     {
       issue.data.subIssues?.map(async (subIssue, index) => {
         const subIssueSummary = marked.parse(subIssue.summary_es)
@@ -71,10 +75,12 @@ const imageAlt = {
             key={subIssue.title_es}
             class={
               index === 0
-                ? 'w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white'
-                : index === 2
-                  ? 'w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white'
-                  : undefined
+                ? 'w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black'
+                : index === 1
+                  ? 'w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white'
+                  : index === 2
+                    ? 'w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black'
+                    : undefined
             }
           >
             <AnchorHeading

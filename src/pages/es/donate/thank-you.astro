@@ -8,28 +8,30 @@ import Layout from '../../../layouts/espanol.astro'
   title="Gracias | Gabriel por Denver"
   description="Gracias por donar a la campaña de Gabriel Konkle para el Concejo Municipal de Denver General B."
   noindex
+  heroGradient
 >
   <script is:inline>
     window.posthog?.capture('donation_completed')
   </script>
-  <main class="h-full p-8 md:p-16 flex flex-col gap-32">
-    <section class="size-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-md">
-        <h1>¡Gracias!</h1>
-        <p>Su contribución ha sido procesada. ¡Gracias por su apoyo!</p>
-        <p class="mt-4">
-          ¿Quiere hacer más que donar? Venga a conocerme en persona — me
-          encantaría verle en un próximo evento.
-        </p>
-        <a class="btn btn-accent mt-8" href="/es/get-involved/events"
-          >Acompáñenos en un evento</a
-        >
-      </div>
-      <Image
-        src={celebrate}
-        alt="Ilustración de dos personas celebrando"
-        class="w-full max-w-md"
-      />
-    </section>
+  <main
+    slot="hero"
+    class="size-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-md">
+      <h1>¡Gracias!</h1>
+      <p>Su contribución ha sido procesada. ¡Gracias por su apoyo!</p>
+      <p class="mt-4">
+        ¿Quiere hacer más que donar? Venga a conocerme en persona — me
+        encantaría verle en un próximo evento.
+      </p>
+      <a class="btn btn-accent mt-8" href="/es/get-involved/events"
+        >Acompáñenos en un evento</a
+      >
+    </div>
+    <Image
+      src={celebrate}
+      alt="Ilustración de dos personas celebrando"
+      class="w-full max-w-md"
+    />
   </main>
 </Layout>

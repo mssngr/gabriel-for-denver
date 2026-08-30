@@ -3,51 +3,49 @@ import { Image } from 'astro:assets'
 import { getEntry, render } from 'astro:content'
 import { marked } from 'marked'
 import photo from '../../assets/gabriel-with-city.jpg'
-import ContactForm from '../../components/contact-form/es.astro'
 import MyBackground from '../../components/my-background/es.astro'
 import WhatWillITackle from '../../components/what-will-i-tackle/es.astro'
 import Espanol from '../../layouts/espanol.astro'
 
 const page = await getEntry('pages', 'home')
+const heading = page?.data && marked.parseInline(page.data.heading_es)
 const content = page?.data && marked.parse(page.data.content_es)
 ---
 
 <Espanol
   title="Gabriel por Denver | Concejo Municipal General B"
   description="Gabriel Konkle se postula para el Concejo Municipal de Denver en General B, luchando por la asequibilidad, la vivienda y los derechos laborales para que Denver sea la comunidad que siempre hemos querido."
+  heroGradient
 >
-  <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
-    <section class="w-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
-        <Image
-          src={photo}
-          alt={page?.data.photoAltText_es || null}
-          class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] translate-y-[-15%] origin-top"
-        />
-      </div>
-      <div class="w-md">
-        <h1>{page?.data.heading_es}</h1>
-        <Fragment set:html={content} />
-        <a class="btn btn-primary mt-8" href="/es/donate">Donar</a>
-      </div>
-    </section>
+  <section
+    slot="hero"
+    class="w-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
+      <Image
+        src={photo}
+        alt={page?.data.photoAltText_es || null}
+        class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] translate-y-[-15%] origin-top"
+      />
+    </div>
+    <div class="w-md hero-highlight">
+      <h1 set:html={heading} />
+      <Fragment set:html={content} />
+      <a class="btn btn-accent mt-8" href="/es/donate">Donar</a>
+    </div>
+  </section>
+  <main class="px-8 md:px-16 flex flex-col">
     <section
-      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+      class="home-issues w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black [&_.w-2xs]:w-80"
     >
       <WhatWillITackle />
     </section>
-    <section>
+    <section class="w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white">
       <h1 class="text-center mb-16!">¿Por qué yo?</h1>
       <MyBackground />
       <p class="mx-auto mt-16 text-center">
         Lea más sobre mí <a href="/es/why-me" class="link">aquí.</a>
       </p>
-    </section>
-    <section
-      id="involucrate"
-      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
-    >
-      <ContactForm />
     </section>
   </main>
 </Espanol>

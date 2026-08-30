@@ -9,25 +9,29 @@ import Layout from '../layouts/default.astro'
 <Layout
   title="Why Me? | Gabriel for Denver"
   description="Meet Gabriel Konkle — a Denver husband and father running for City Council At Large B with a clear, specific plan for social justice and affordability."
+  heroGradient
 >
-  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
-    <section class="size-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-md">
-        <h1>Why me?</h1>
-        <p>
-          I'll get straight to the point. I'm a husband and father in an
-          interracial, blended family. I've lived under the poverty line and
-          also in the disappearing "middle class". <strong
-            >I am one of those terrible, bleeding-heart liberals with a
-            progressive agenda.</strong
-          > 😉 And, what sets me apart is, I have clear and specific legislation in
-          mind for my term as City Councillor.
-        </p>
-      </div>
-      <Image src={meAndMicala} alt="Photo of Gabriel" class="w-full max-w-md" />
-    </section>
+  <section
+    slot="hero"
+    class="size-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-md">
+      <h1>Why me?</h1>
+      <p>
+        I'll get straight to the point. I'm a husband and father in an
+        interracial, blended family. I've lived under the poverty line and
+        also in the disappearing "middle class". <strong
+          >I am one of those terrible, bleeding-heart liberals with a
+          progressive agenda.</strong
+        > 😉 And, what sets me apart is, I have clear and specific legislation in
+        mind for my term as City Councillor.
+      </p>
+    </div>
+    <Image src={meAndMicala} alt="Photo of Gabriel" class="w-full max-w-md" />
+  </section>
+  <main class="h-full px-8 md:px-16 flex flex-col pb-0!">
     <section
-      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+      class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black"
     >
       <h1 class="text-center mb-16!">My Plan</h1>
       <p class="max-w-md mx-auto mb-16">
@@ -76,12 +80,14 @@ import Layout from '../layouts/default.astro'
         >
       </p>
     </section>
-    <section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
       <h1 class="text-center mb-16!">My Background</h1>
       <MyBackground />
     </section>
     <section
-      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+      class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black"
     >
       <Endorsements />
     </section>

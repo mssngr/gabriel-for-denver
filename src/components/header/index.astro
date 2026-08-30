@@ -52,11 +52,11 @@ const currentPath = Astro.url.pathname
       <li>
         <details>
           <summary
-            class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-primary font-black' : ''}`}
+            class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-accent font-black' : ''}`}
             >Issues</summary
           >
           <ul
-            class="bg-base-100 rounded-t-none p-2 z-10 lg:w-max lg:whitespace-nowrap"
+            class="bg-base-100 text-base-content p-2 z-10 lg:w-max lg:whitespace-nowrap"
           >
             <li>
               <a
@@ -110,18 +110,18 @@ const currentPath = Astro.url.pathname
       </li>
       <li>
         <a
-          class={`text-3xl lg:text-2xl ${currentPath.includes('/why-me') ? 'text-primary font-black' : ''}`}
+          class={`text-3xl lg:text-2xl ${currentPath.includes('/why-me') ? 'text-accent font-black' : ''}`}
           href="/why-me">Why me?</a
         >
       </li>
       <li>
         <details>
           <summary
-            class={`text-3xl lg:text-2xl ${currentPath.includes('/get-involved') ? 'text-primary font-black' : ''}`}
+            class={`text-3xl lg:text-2xl ${currentPath.includes('/get-involved') ? 'text-accent font-black' : ''}`}
             >Get involved</summary
           >
           <ul
-            class="bg-base-100 rounded-t-none p-2 z-10 lg:w-max lg:whitespace-nowrap"
+            class="bg-base-100 text-base-content p-2 z-10 lg:w-max lg:whitespace-nowrap"
           >
             <li>
               <a
@@ -148,12 +148,12 @@ const currentPath = Astro.url.pathname
         </details>
       </li>
       <li>
-        <a class="btn btn-primary" href="/donate">Donate</a>
+        <a class="btn btn-accent" href="/donate">Donate</a>
       </li>
       <li>
         <a
           href={`/es${currentPath}`}
-          class="btn btn-outline btn-primary relative z-50 justify-self-center lg:order-3"
+          class="btn btn-outline border-white text-white hover:bg-white hover:text-primary relative z-50 justify-self-center lg:order-3"
           id="lang-switch-es"
           ><Globe class="size-5" aria-hidden="true" /><span>es</span></a
         >

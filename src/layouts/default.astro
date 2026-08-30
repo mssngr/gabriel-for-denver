@@ -11,6 +11,8 @@ interface Props {
   description: string
   image?: string
   noindex?: boolean
+  heroGradient?: boolean
+  fullGradient?: boolean
 }
 
 const {
@@ -18,6 +20,8 @@ const {
   description,
   image = '/og-image.jpg',
   noindex = false,
+  heroGradient = false,
+  fullGradient = false,
 } = Astro.props
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -62,8 +66,31 @@ const esURL = new URL(alternatePath(Astro.url.pathname, 'es'), Astro.site)
     <PostHog />
   </head>
   <body>
-    <Header />
-    <slot />
-    <Footer />
+    <div
+      class:list={[
+        heroGradient &&
+          'bg-[linear-gradient(to_bottom_right,var(--color-secondary),var(--color-primary))] text-white',
+        heroGradient && !fullGradient && 'pb-32',
+      ]}
+    >
+      <Header />
+      <slot name="hero" />
+      {
+        fullGradient && (
+          <>
+            <slot />
+            <Footer transparent />
+          </>
+        )
+      }
+    </div>
+    {
+      !fullGradient && (
+        <>
+          <slot />
+          <Footer />
+        </>
+      )
+    }
   </body>
 </html>

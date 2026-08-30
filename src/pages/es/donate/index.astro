@@ -11,16 +11,17 @@ const content = page?.data && marked.parse(page.data.content_es)
 <Layout
   title="Donar | Gabriel por Denver"
   description="Done a la campaña de Gabriel Konkle para el Concejo Municipal de Denver General B. Gracias al Fondo de Elecciones Justas, los primeros $50 de su donación son igualados en un 900% por la ciudad."
+  heroGradient
+  fullGradient
 >
-  <main class="h-full p-8 md:p-16 flex flex-col gap-32">
-    <section
-      class="size-full flex flex-wrap justify-center items-start gap-x-16 gap-y-12"
-    >
-      <div class="w-md [&_a]:link">
-        <h1>{page?.data.heading_es}</h1>
-        <Fragment set:html={content} />
-      </div>
-      <DonationForm />
-    </section>
+  <main
+    slot="hero"
+    class="size-full flex flex-wrap justify-center items-start gap-x-16 gap-y-12 p-8 md:p-16 pb-0"
+  >
+    <div class="w-md [&_a]:link">
+      <h1>{page?.data.heading_es}</h1>
+      <Fragment set:html={content} />
+    </div>
+    <DonationForm />
   </main>
 </Layout>

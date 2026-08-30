@@ -8,21 +8,23 @@ import Layout from '../layouts/default.astro'
   title="Thank You | Gabriel for Denver"
   description="Thanks for reaching out to Gabriel Konkle's campaign for Denver City Council At Large B."
   noindex
+  heroGradient
 >
   <script is:inline>
     window.posthog?.capture('contact_form_completed')
   </script>
-  <main class="h-full p-8 md:p-16 flex flex-col gap-32">
-    <section class="size-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-md">
-        <h1>Thank you!</h1>
-        <p>
-          You can expect an email from me soon. Unless you just sent me memes.
-          In that case, I will laugh quietly at them by myself.
-        </p>
-        <a class="btn btn-primary mt-8" href="/">Return home</a>
-      </div>
-      <Image src={profile} alt="Photo of Gabriel" class="w-full max-w-md" />
-    </section>
+  <main
+    slot="hero"
+    class="size-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-md">
+      <h1>Thank you!</h1>
+      <p>
+        You can expect an email from me soon. Unless you just sent me memes.
+        In that case, I will laugh quietly at them by myself.
+      </p>
+      <a class="btn btn-accent mt-8" href="/">Return home</a>
+    </div>
+    <Image src={profile} alt="Photo of Gabriel" class="w-full max-w-md" />
   </main>
 </Layout>

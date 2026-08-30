@@ -11,12 +11,15 @@
   --color-primary: #1900a8;
   --color-secondary: #0646f5;
   --color-accent: #ffc800;
+  --color-neutral: #d5e0ff;
 }
 
 @theme inline {
   --font-sans: var(--font-league-spartan);
   --font-league-spartan: var(--font-league-spartan);
   --font-edu-sa-hand: var(--font-edu-sa-hand);
+  --color-tertiary: #0e005c;
+  --color-quaternary: #6e93fa;
 }
 
 @utility btn {
@@ -34,7 +37,7 @@
     margin: 0;
     width: 100%;
     min-height: 100%;
-    background: radial-gradient(circle at 50% 10%, #edf2ff, #81a3ff);
+    background: var(--color-base);
   }
 
   h1 {
@@ -44,9 +47,18 @@
     margin-bottom: 1rem;
   }
 
-  .home-heading strong {
+  .hero-highlight strong {
     color: var(--color-accent);
-    font-weight: inherit;
+  }
+
+  .home-issues .w-2xs {
+    background: var(--color-base);
+    color: black;
+    border-radius: 1.5rem;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
+    padding: 2rem;
   }
 
   h2 {

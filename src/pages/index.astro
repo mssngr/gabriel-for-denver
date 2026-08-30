@@ -3,7 +3,6 @@ import { Image } from 'astro:assets'
 import { getEntry } from 'astro:content'
 import { marked } from 'marked'
 import photo from '../assets/gabriel-with-city.jpg'
-import ContactForm from '../components/contact-form/index.astro'
 import MyBackground from '../components/my-background/index.astro'
 import WhatWillITackle from '../components/what-will-i-tackle/index.astro'
 import Layout from '../layouts/default.astro'
@@ -16,39 +15,37 @@ const content = page?.data && marked.parse(page.data.content)
 <Layout
   title="Gabriel for Denver | City Council At Large B"
   description="Gabriel Konkle is running for Denver City Council At Large B, fighting for affordability, housing, and workers' rights so Denver can be the community we've always wanted."
+  heroGradient
 >
-  <main class="p-8 md:p-16 pb-0! flex flex-col gap-32">
-    <section class="w-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
-        <Image
-          src={photo}
-          alt={page?.data.photoAltText || null}
-          class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] translate-y-[-15%] origin-top"
-        />
-      </div>
-      <div class="w-md">
-        <h1 class="home-heading" set:html={heading} />
-        <Fragment set:html={content} />
-        <a class="btn btn-primary mt-8" href="/donate">Donate</a>
-      </div>
-    </section>
+  <section
+    slot="hero"
+    class="w-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
+      <Image
+        src={photo}
+        alt={page?.data.photoAltText || null}
+        class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] translate-y-[-15%] origin-top"
+      />
+    </div>
+    <div class="w-md hero-highlight">
+      <h1 set:html={heading} />
+      <Fragment set:html={content} />
+      <a class="btn btn-accent mt-8" href="/donate">Donate</a>
+    </div>
+  </section>
+  <main class="px-8 md:px-16 flex flex-col">
     <section
-      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+      class="home-issues w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black [&_.w-2xs]:w-80"
     >
       <WhatWillITackle />
     </section>
-    <section>
+    <section class="w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white">
       <h1 class="text-center mb-16!">Why me?</h1>
       <MyBackground />
       <p class="mx-auto mt-16 text-center">
         Read more about me <a href="/why-me" class="link">here.</a>
       </p>
-    </section>
-    <section
-      id="get-involved"
-      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
-    >
-      <ContactForm />
     </section>
   </main>
 </Layout>

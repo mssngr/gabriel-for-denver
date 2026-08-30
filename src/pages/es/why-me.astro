@@ -9,25 +9,29 @@ import Espanol from '../../layouts/espanol.astro'
 <Espanol
   title="¿Por qué yo? | Gabriel por Denver"
   description="Conozca a Gabriel Konkle — esposo y padre de Denver que se postula para el Concejo Municipal General B con un plan claro y específico para la justicia social y la asequibilidad."
+  heroGradient
 >
-  <main class="h-full p-8 md:p-16 pb-0! flex flex-col gap-32">
-    <section class="size-full flex flex-wrap justify-center items-center gap-8">
-      <div class="w-md">
-        <h1>¿Por qué yo?</h1>
-        <p>
-          Iré directo al grano. Soy esposo y padre en una familia interracial y
-          mixta. He vivido por debajo de la línea de pobreza y también en la
-          desapareciente 'clase media'. <strong
-            >Soy uno de esos terribles liberales de corazón sensible con una
-            agenda progresista.</strong
-          > 😉 Y lo que me distingue es que tengo legislación clara y específica en
-          mente para mi mandato como Concejal de la Ciudad.
-        </p>
-      </div>
-      <Image src={meAndMicala} alt="Foto de Gabriel" class="w-full max-w-md" />
-    </section>
+  <section
+    slot="hero"
+    class="size-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
+  >
+    <div class="w-md">
+      <h1>¿Por qué yo?</h1>
+      <p>
+        Iré directo al grano. Soy esposo y padre en una familia interracial y
+        mixta. He vivido por debajo de la línea de pobreza y también en la
+        desapareciente 'clase media'. <strong
+          >Soy uno de esos terribles liberales de corazón sensible con una
+          agenda progresista.</strong
+        > 😉 Y lo que me distingue es que tengo legislación clara y específica en
+        mente para mi mandato como Concejal de la Ciudad.
+      </p>
+    </div>
+    <Image src={meAndMicala} alt="Foto de Gabriel" class="w-full max-w-md" />
+  </section>
+  <main class="h-full px-8 md:px-16 flex flex-col pb-0!">
     <section
-      class="w-[calc(100% + 2rem)] bg-secondary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+      class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black"
     >
       <h1 class="text-center mb-16!">Mi Plan</h1>
       <p class="max-w-md mx-auto mb-16">
@@ -91,12 +95,14 @@ import Espanol from '../../layouts/espanol.astro'
         >
       </p>
     </section>
-    <section>
+    <section
+      class="w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
       <h1 class="text-center mb-16!">Mi Trayectoria</h1>
       <MyBackground />
     </section>
     <section
-      class="w-[calc(100% + 2rem)] bg-primary px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+      class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black"
     >
       <Endorsements />
     </section>
