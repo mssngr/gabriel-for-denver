@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Coins,
   DatabaseZap,
+  Globe,
   HouseHeart,
   MapPinHouse,
   Menu,
@@ -15,13 +16,12 @@ import {
   X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-banner.svg'
-import logoMobile from '../../assets/gfd-mobile-banner.svg'
 
 const currentPath = Astro.url.pathname
 ---
 
 <div
-  class="relative z-40 w-full h-40 lg:h-56 p-4 lg:px-16 lg:py-8 grid grid-cols-[auto_1fr_auto] items-center lg:flex lg:justify-between transition-colors duration-300 has-[#mobile-menu-toggle:checked]:bg-base-100 lg:bg-transparent"
+  class="relative z-40 w-full h-40 lg:h-56 p-8 lg:px-16 lg:py-8 grid grid-cols-[auto_1fr_auto] items-center lg:flex lg:justify-between transition-colors duration-300 has-[#mobile-menu-toggle:checked]:bg-base-100 lg:bg-transparent"
 >
   <input
     type="checkbox"
@@ -29,23 +29,12 @@ const currentPath = Astro.url.pathname
     class="peer sr-only"
     aria-label="Menu"
   />
-  <a
-    class="relative z-50 w-32 h-32 lg:w-fit lg:h-44 shrink-0 lg:order-1"
-    href="/"
+  <a class="relative z-50 h-28 lg:h-36 shrink-0 lg:order-1" href="/"
     ><Image
-      class="lg:hidden"
-      src={logoMobile}
-      alt="Logo that reads 'Gabriel for Denver'"
-    /><Image
-      class="max-lg:hidden w-fit h-full"
+      class="h-full w-auto"
       src={logoDesktop}
       alt="Logo that reads 'Gabriel for Denver'"
     /></a
-  >
-  <a
-    href={`/es${currentPath}`}
-    class="relative z-50 link justify-self-center lg:order-3 lg:ml-4"
-    id="lang-switch-es">Español</a
   >
   <label
     for="mobile-menu-toggle"
@@ -55,10 +44,10 @@ const currentPath = Astro.url.pathname
     <X class="icon-x size-7 hidden" aria-hidden="true" />
   </label>
   <nav
-    class="fixed inset-x-0 top-40 bottom-0 z-30 flex flex-col items-center justify-center gap-8 overflow-y-auto py-12 bg-base-100 text-4xl font-semibold opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:pointer-events-auto lg:static lg:inset-auto lg:z-auto lg:order-2 lg:flex-row lg:gap-1 lg:overflow-visible lg:py-0 lg:bg-transparent lg:text-lg lg:opacity-100 lg:scale-100 lg:pointer-events-auto lg:transition-none"
+    class="fixed inset-x-0 top-0 bottom-0 z-30 flex flex-col items-center justify-center gap-8 overflow-y-auto py-12 bg-base-100 text-4xl font-semibold opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:pointer-events-auto lg:static lg:inset-auto lg:z-auto lg:order-2 lg:flex-row lg:gap-1 lg:overflow-visible lg:py-0 lg:bg-transparent lg:text-lg lg:opacity-100 lg:scale-100 lg:pointer-events-auto lg:transition-none"
   >
     <ul
-      class="menu px-1 font-semibold flex flex-col items-center gap-2 lg:flex-row lg:menu-horizontal lg:gap-0"
+      class="menu px-1 font-semibold flex flex-col items-center gap-4 lg:flex-row lg:menu-horizontal"
     >
       <li>
         <details>
@@ -155,7 +144,15 @@ const currentPath = Astro.url.pathname
         </details>
       </li>
       <li>
-        <a class="btn btn-primary lg:ml-2" href="/donate">Donate</a>
+        <a class="btn btn-primary" href="/donate">Donate</a>
+      </li>
+      <li>
+        <a
+          href={`/es${currentPath}`}
+          class="btn btn-outline btn-primary relative z-50 justify-self-center lg:order-3"
+          id="lang-switch-es"
+          ><Globe class="size-5" aria-hidden="true" /><span>es</span></a
+        >
       </li>
     </ul>
   </nav>
