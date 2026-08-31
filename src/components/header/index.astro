@@ -21,7 +21,7 @@ const currentPath = Astro.url.pathname
 ---
 
 <div
-  class="relative z-40 w-full h-40 lg:h-56 p-8 lg:px-16 lg:py-8 grid grid-cols-[auto_1fr_auto] items-center lg:flex lg:justify-between transition-colors duration-300 has-[#mobile-menu-toggle:checked]:bg-base-100 lg:bg-transparent"
+  class="relative z-40 w-full h-40 lg:h-56 p-8 lg:px-16 lg:py-8 grid grid-cols-[auto_1fr_auto] items-center lg:flex lg:justify-between transition-colors duration-300 has-[#mobile-menu-toggle:checked]:bg-secondary lg:bg-transparent"
 >
   <input
     type="checkbox"
@@ -44,7 +44,7 @@ const currentPath = Astro.url.pathname
     <X class="icon-x size-7 hidden" aria-hidden="true" />
   </label>
   <nav
-    class="fixed inset-x-0 top-0 bottom-0 z-30 flex flex-col items-center justify-center gap-8 overflow-y-auto py-12 bg-base-100 text-4xl font-semibold opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:pointer-events-auto lg:static lg:inset-auto lg:z-auto lg:order-2 lg:flex-row lg:gap-1 lg:overflow-visible lg:py-0 lg:bg-transparent lg:text-lg lg:opacity-100 lg:scale-100 lg:pointer-events-auto lg:transition-none"
+    class="fixed inset-x-0 top-0 bottom-0 z-30 flex flex-col items-center justify-center gap-8 overflow-y-auto py-12 bg-secondary text-white text-4xl font-semibold opacity-0 scale-95 pointer-events-none transition-all duration-300 ease-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:pointer-events-auto lg:static lg:inset-auto lg:z-auto lg:order-2 lg:flex-row lg:gap-1 lg:overflow-visible lg:py-0 lg:bg-transparent lg:text-inherit lg:text-lg lg:opacity-100 lg:scale-100 lg:pointer-events-auto lg:transition-none"
   >
     <ul
       class="menu px-1 font-semibold flex flex-col items-center gap-4 lg:flex-row lg:menu-horizontal"
