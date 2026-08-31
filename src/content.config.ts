@@ -61,9 +61,9 @@ const events = defineCollection({
       endTime: z.coerce.date().optional(),
       description: z.string(),
       description_es: z.string(),
-      image: image(),
-      imageAlt: z.string(),
-      imageAlt_es: z.string(),
+      image: image().optional(),
+      imageAlt: z.string().optional(),
+      imageAlt_es: z.string().optional(),
     }),
 })
 
