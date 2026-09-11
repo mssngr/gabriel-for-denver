@@ -48,15 +48,24 @@ const content = page?.data && marked.parse(page.data.content_es)
         Lea más sobre mí <a href="/es/why-me" class="link">aquí.</a>
       </p>
     </section>
-    <section class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black">
+    <section
+      class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black"
+    >
       <h1 class="text-center mb-16!">Síguenos</h1>
-      <InstagramFeed />
+      <InstagramFeed
+        labels={{
+          emptyState:
+            'No hay publicaciones para mostrar en este momento. ¡Vuelve pronto!',
+          genericAlt: 'Publicación de Instagram de Gabriel por Denver',
+        }}
+      />
       <p class="mx-auto mt-16 text-center">
         Ve más en <a
           href="https://www.instagram.com/gabrielfordenver/"
           target="_blank"
           rel="noopener noreferrer"
-          class="link">Instagram.</a>
+          class="link">Instagram.</a
+        >
       </p>
     </section>
   </main>
