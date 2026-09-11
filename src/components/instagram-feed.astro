@@ -1,13 +1,32 @@
 ---
+import {
+  altTextFor,
+  displayImageUrl,
+  getInstagramPosts,
+} from '../lib/instagram'
 
+const posts = await getInstagramPosts(import.meta.env.FEEDFRAMER_API_KEY)
 ---
 
-<div class="max-w-3xl mx-auto">
-  <div class="sk-instagram-feed" data-embed-id="25710170"></div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+  {
+    posts.map((post) => (
+      <a
+        href={post.permalink}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="block aspect-square overflow-hidden rounded-2xl shadow-xl"
+      >
+        <img
+          src={displayImageUrl(post)}
+          alt={altTextFor(post)}
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </a>
+    ))
+  }
 </div>
-
-<script
-  is:inline
-  src="https://widgets.sociablekit.com/instagram-feed/widget.js"
-  defer
-></script>
+<p class="text-center font-light" hidden={posts.length > 0}>
+  No posts to show right now — check back soon!
+</p>
