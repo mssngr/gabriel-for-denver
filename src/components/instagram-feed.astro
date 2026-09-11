@@ -5,6 +5,14 @@ import {
   getInstagramPosts,
 } from '../lib/instagram'
 
+interface Props {
+  labels: {
+    emptyState: string
+    genericAlt: string
+  }
+}
+
+const { labels } = Astro.props
 const posts = await getInstagramPosts(import.meta.env.FEEDFRAMER_API_KEY)
 ---
 
@@ -19,7 +27,7 @@ const posts = await getInstagramPosts(import.meta.env.FEEDFRAMER_API_KEY)
       >
         <img
           src={displayImageUrl(post)}
-          alt={altTextFor(post)}
+          alt={altTextFor(post, labels.genericAlt)}
           class="w-full h-full object-cover"
           loading="lazy"
         />
@@ -28,5 +36,5 @@ const posts = await getInstagramPosts(import.meta.env.FEEDFRAMER_API_KEY)
   }
 </div>
 <p class="text-center font-light" hidden={posts.length > 0}>
-  No posts to show right now — check back soon!
+  {labels.emptyState}
 </p>

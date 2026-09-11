@@ -14,7 +14,6 @@ interface FeedframerResponse {
 const FEEDFRAMER_API_URL = 'https://feedframer.com/api/v1/me'
 const POSTS_PER_PAGE = 6
 const MAX_ALT_TEXT_LENGTH = 140
-const GENERIC_ALT_TEXT = 'Instagram post from Gabriel for Denver'
 
 // Videos only expose a playable mediaUrl, so the thumbnail is what's actually
 // displayable as an <img>; images have no thumbnail and use mediaUrl directly.
@@ -22,8 +21,10 @@ export function displayImageUrl(post: FeedframerPost): string {
   return post.thumbnailUrl || post.mediaUrl
 }
 
-export function altTextFor(post: FeedframerPost): string {
-  if (!post.caption) return GENERIC_ALT_TEXT
+// `fallback` is caller-supplied (rather than a hardcoded English string) so
+// this stays correct on both the English and Spanish home pages.
+export function altTextFor(post: FeedframerPost, fallback: string): string {
+  if (!post.caption) return fallback
   if (post.caption.length <= MAX_ALT_TEXT_LENGTH) return post.caption
   return `${post.caption.slice(0, MAX_ALT_TEXT_LENGTH)}…`
 }

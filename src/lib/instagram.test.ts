@@ -43,19 +43,23 @@ describe('displayImageUrl', () => {
 })
 
 describe('altTextFor', () => {
-  it('falls back to a generic description when there is no caption', () => {
+  const fallback = 'Instagram post from Gabriel for Denver'
+
+  it('returns the given fallback when there is no caption', () => {
     const post = makePost({ caption: null })
-    expect(altTextFor(post)).toBe('Instagram post from Gabriel for Denver')
+    expect(altTextFor(post, fallback)).toBe(fallback)
   })
 
-  it('returns a short caption as-is', () => {
+  it('returns a short caption as-is, ignoring the fallback', () => {
     const post = makePost({ caption: 'Knocking doors in Capitol Hill today!' })
-    expect(altTextFor(post)).toBe('Knocking doors in Capitol Hill today!')
+    expect(altTextFor(post, fallback)).toBe(
+      'Knocking doors in Capitol Hill today!',
+    )
   })
 
   it('truncates a long caption to 140 characters with an ellipsis', () => {
     const longCaption = 'a'.repeat(200)
-    const alt = altTextFor(makePost({ caption: longCaption }))
+    const alt = altTextFor(makePost({ caption: longCaption }), fallback)
     expect(alt).toBe(`${'a'.repeat(140)}…`)
   })
 })
