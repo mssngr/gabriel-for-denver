@@ -101,8 +101,11 @@ export type Plank = z.infer<typeof plankSchema>
 /**
  * Every field the schema gives an `_es` twin, derived from the shape rather
  * than listed by hand so a new translatable field is covered by the publish
- * gate the moment it's added. Nested twins — a source's `label_es` — aren't
- * picked up; those are short enough to spot in review.
+ * gate the moment it's added.
+ *
+ * Only top level, so a source's `label_es` is never gated — deliberately: a
+ * source label is usually a document title ("Denver zoning analysis, 2024"),
+ * and those are often correct untranslated. There's a test pinning this.
  */
 function translatableFields(shape: z.ZodRawShape): readonly string[] {
   return Object.keys(shape).filter(
@@ -229,10 +232,14 @@ export function assertUniqueSlugs<T extends { slug: string }>(
 }
 
 /**
- * Fails the build when a *published* entry is missing a Spanish twin. Drafts
- * are exempt, which is the whole reason `_es` is optional in the schema: the
- * platform has to be draftable in English over weeks, while the two live sites
- * still can't drift apart.
+ * Fails the build when a *published* entry has a field in one language but not
+ * the other. Drafts are exempt, which is the whole reason `_es` is optional in
+ * the schema: the platform has to be draftable in English over weeks, while
+ * the two live sites still can't drift apart.
+ *
+ * The check runs both ways on purpose. A Spanish twin written ahead of its
+ * English base — a `kicker_es` with no `kicker` — diverges the two sites just
+ * as much as the reverse, it just does it to the English page instead.
  */
 export function assertTranslated<T extends { status: PublishStatus }>(
   collection: string,
@@ -243,16 +250,19 @@ export function assertTranslated<T extends { status: PublishStatus }>(
     .filter(entry => entry.data.status === 'published')
     .flatMap(entry => {
       const values = entry.data as Record<string, unknown>
-      const missing = fields.filter(
-        field => values[field] && !values[`${field}_es`],
-      )
-      if (missing.length === 0) return []
-      return [`${entry.id} (${missing.map(field => `${field}_es`).join(', ')})`]
+      const gaps = fields.flatMap(field => {
+        const hasEnglish = Boolean(values[field])
+        const hasSpanish = Boolean(values[`${field}_es`])
+        if (hasEnglish === hasSpanish) return []
+        return [hasEnglish ? `${field}_es` : field]
+      })
+      if (gaps.length === 0) return []
+      return [`${entry.id} (${gaps.join(', ')})`]
     })
   if (problems.length === 0) return
   throw new Error(
-    `Published ${collection} are missing their Spanish twins: ${problems.join('; ')}. ` +
-      `Fill them in, or set status back to draft.`,
+    `Published ${collection} have fields in one language but not the other: ` +
+      `${problems.join('; ')}. Fill the named fields in, or set status back to draft.`,
   )
 }
 

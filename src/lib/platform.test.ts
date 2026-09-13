@@ -230,6 +230,32 @@ describe('assertTranslated', () => {
 
   // The entire point of making `_es` optional in Zod: an English-only entry
   // has to be saveable, or the platform cannot be drafted at all.
+  // The gate runs both ways. A kicker_es written before its English base
+  // diverges the two sites just as much as the reverse — it just strands the
+  // content on /es/ instead, where an English-speaking reviewer won't see it.
+  it('rejects a published plank whose Spanish has run ahead of its English', () => {
+    const plank = makePlank({ kicker: undefined, kicker_es: 'Zonificación' })
+    expect(() =>
+      assertTranslated('planks', [plank], PLANK_TRANSLATABLE_FIELDS),
+    ).toThrow(/legalize-multi-unit \(kicker\)/)
+  })
+
+  // Source labels are usually document titles, which are often right
+  // untranslated — so `sources[].label_es` is deliberately outside the gate.
+  // Pinned here so a later refactor of translatableFields can't quietly
+  // start or stop enforcing it.
+  it('leaves a source label untranslated without complaint', () => {
+    const plank = makePlank({
+      sources: [
+        { label: 'Denver zoning analysis, 2024', url: 'https://example.org' },
+      ],
+    })
+    expect(PLANK_TRANSLATABLE_FIELDS).not.toContain('sources')
+    expect(() =>
+      assertTranslated('planks', [plank], PLANK_TRANSLATABLE_FIELDS),
+    ).not.toThrow()
+  })
+
   it('exempts drafts from the translation gate', () => {
     const draft = makePlank({ status: 'draft', why_es: undefined })
     expect(() =>
