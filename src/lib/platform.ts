@@ -99,6 +99,21 @@ export type Guide = z.infer<typeof guideSchema>
 export type Plank = z.infer<typeof plankSchema>
 
 /**
+ * Fields that already fall back to something sensible per language, so filling
+ * one side and leaving the other is a real editorial choice rather than a gap.
+ * `metaDescription` defaults to `stripMarkdown(stance)` in whichever language
+ * the page is in, which is the whole reason it exists — an editor who
+ * overrides only the Spanish snippet because the generated one reads badly has
+ * done nothing wrong, and failing the site's build over it is exactly the
+ * outcome this schema is shaped to avoid.
+ *
+ * Nothing else belongs here. A one-sided `kicker` or `pullQuote` genuinely
+ * diverges the two pages, and `localized()` would render the English text on
+ * the Spanish page rather than omit it, which is worse than a gap.
+ */
+const SELF_FALLBACK_FIELDS: readonly string[] = ['metaDescription']
+
+/**
  * Every field the schema gives an `_es` twin, derived from the shape rather
  * than listed by hand so a new translatable field is covered by the publish
  * gate the moment it's added.
@@ -109,7 +124,10 @@ export type Plank = z.infer<typeof plankSchema>
  */
 function translatableFields(shape: z.ZodRawShape): readonly string[] {
   return Object.keys(shape).filter(
-    key => !key.endsWith('_es') && `${key}_es` in shape,
+    key =>
+      !key.endsWith('_es') &&
+      `${key}_es` in shape &&
+      !SELF_FALLBACK_FIELDS.includes(key),
   )
 }
 

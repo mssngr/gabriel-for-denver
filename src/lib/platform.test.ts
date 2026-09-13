@@ -273,10 +273,21 @@ describe('assertTranslated', () => {
   it('gates every guide field the schema gives a Spanish twin', () => {
     expect([...GUIDE_TRANSLATABLE_FIELDS].sort()).toEqual([
       'artworkAlt',
-      'metaDescription',
       'stance',
       'title',
     ])
+  })
+
+  // metaDescription falls back to stripMarkdown(stance) per language, so
+  // overriding only the Spanish snippet — because the generated one reads
+  // badly — is a legitimate edit. Gating it would fail the whole site's build
+  // over a harmless one, which is the failure mode this schema avoids by
+  // design.
+  it('lets a guide override the meta description in one language only', () => {
+    const guide = makeGuide({ metaDescription_es: 'Vivienda para Denver.' })
+    expect(() =>
+      assertTranslated('guides', [guide], GUIDE_TRANSLATABLE_FIELDS),
+    ).not.toThrow()
   })
 
   it('gates every plank field the schema gives a Spanish twin', () => {
