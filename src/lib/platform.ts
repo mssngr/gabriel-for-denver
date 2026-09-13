@@ -316,6 +316,27 @@ export function planksForPage<E extends Entry<Plank>>(
 }
 
 /**
+ * The cross-links shown at the foot of a guide, resolved from slugs to entries.
+ *
+ * Status is filtered the same way `planksForPage` filters planks, and for the
+ * same reason: a published page is public, so it must not hand a reader a link
+ * into an unlisted, `noindex` draft. A draft guide is already a private
+ * preview, so there its cross-links resolve to whatever they name.
+ */
+export function relatedGuides<G extends Entry<Guide>>(
+  guides: G[],
+  guide: Guide,
+): G[] {
+  const visible =
+    guide.status === 'draft'
+      ? guides
+      : guides.filter(entry => entry.data.status === 'published')
+  return (guide.related ?? [])
+    .map(slug => visible.find(entry => entry.data.slug === slug))
+    .filter(entry => entry !== undefined)
+}
+
+/**
  * What a visitor is allowed to see, in order. A guide's status wins over its
  * planks', so a plank published ahead of the guide it sits in can't leak onto
  * the live site on its own.

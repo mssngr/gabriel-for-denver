@@ -55,7 +55,7 @@ const number = String(index + 1).padStart(2, '0')
   >
     {t.open} &rarr;
   </summary>
-  <div class="plank-detail__scrim hidden" data-plank-close></div>
+  <div class="plank-detail__scrim" data-plank-close></div>
   <div
     class="plank-detail__panel mt-6 max-w-2xl bg-base text-black rounded-2xl p-6"
   >
@@ -67,7 +67,9 @@ const number = String(index + 1).padStart(2, '0')
           {t.plank}
           {number}
         </p>
-        <h3 class="mt-2 text-2xl leading-tight">{commitment}</h3>
+        <h3 id={`${anchor}-title`} class="mt-2 text-2xl leading-tight">
+          {commitment}
+        </h3>
       </div>
       <button
         type="button"

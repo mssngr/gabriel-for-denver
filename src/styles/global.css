@@ -177,6 +177,14 @@
     color: #0b0d15;
   }
 
+  /* Hidden here rather than with Tailwind's `hidden` utility: that lives in
+     the `utilities` layer, which is declared after `components`, so it would
+     win on layer order no matter how specific this selector got — and a
+     display:none scrim can't be clicked, which silently breaks closing. */
+  .plank-detail__scrim {
+    display: none;
+  }
+
   html.sheet-open .plank-detail[open] .plank-detail__scrim {
     display: block;
     position: fixed;

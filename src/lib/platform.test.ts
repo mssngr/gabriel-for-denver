@@ -14,6 +14,7 @@ import {
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
   plankAnchor,
+  relatedGuides,
   planksForGuide,
   planksForPage,
   resolveHero,
@@ -448,5 +449,41 @@ describe('planksForPage', () => {
     const other = makePlank({ id: 'x', slug: 'x', guide: 'big-tech' })
     const page = planksForPage([published, other], makeGuide().data)
     expect(page.map(plank => plank.data.slug)).toEqual(['live'])
+  })
+})
+
+describe('relatedGuides', () => {
+  const housing = makeGuide()
+  const draft = makeGuide({ id: 'homelessness', slug: 'homelessness', status: 'draft' })
+  const live = makeGuide({ id: 'affordability', slug: 'affordability' })
+  const all = [housing, draft, live]
+
+  // The same leak planksForPage prevents, one level up: a public page must not
+  // hand a reader a link into an unlisted, noindexed draft.
+  it('drops draft guides from a published guide’s cross-links', () => {
+    const guide = makeGuide({ related: ['homelessness', 'affordability'] }).data
+    expect(relatedGuides(all, guide).map(entry => entry.data.slug)).toEqual([
+      'affordability',
+    ])
+  })
+
+  it('keeps drafts when the linking guide is itself a draft preview', () => {
+    const guide = makeGuide({
+      status: 'draft',
+      related: ['homelessness', 'affordability'],
+    }).data
+    expect(relatedGuides(all, guide).map(entry => entry.data.slug)).toEqual([
+      'homelessness',
+      'affordability',
+    ])
+  })
+
+  it('ignores a related slug that matches no guide', () => {
+    const guide = makeGuide({ related: ['nope'] }).data
+    expect(relatedGuides(all, guide)).toEqual([])
+  })
+
+  it('returns nothing when a guide names no related guides', () => {
+    expect(relatedGuides(all, makeGuide().data)).toEqual([])
   })
 })

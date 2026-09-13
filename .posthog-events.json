@@ -47,6 +47,6 @@
   {
     "event_name": "plank_detail_opened",
     "event_description": "User opens the policy detail for a single plank, indicating which specific promise they care enough about to read. Includes a lang property ('en' or 'es').",
-    "file": "src/components/platform/sheet.astro"
+    "file": "src/components/platform/sheet-behavior.astro"
   }
 ]

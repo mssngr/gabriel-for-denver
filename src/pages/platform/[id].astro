@@ -3,7 +3,8 @@ import { ArrowLeft } from '@lucide/astro'
 import { marked } from 'marked'
 import Band from '../../components/platform/band.astro'
 import PlankRail from '../../components/platform/plank-rail.astro'
-import { guideMetaDescription } from '../../lib/platform'
+import SheetBehavior from '../../components/platform/sheet-behavior.astro'
+import { guideMetaDescription, relatedGuides } from '../../lib/platform'
 import { getGuides, getPlanks } from '../../lib/platform-content'
 import Layout from '../../layouts/default.astro'
 
@@ -29,9 +30,7 @@ const title = guide.data.title
 const stance = marked.parse(guide.data.stance)
 const isDraft = guide.data.status === 'draft'
 
-const related = (guide.data.related ?? [])
-  .map((slug) => guides.find((entry) => entry.data.slug === slug))
-  .filter((entry) => entry !== undefined)
+const related = relatedGuides(guides, guide.data)
 
 const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -121,88 +120,5 @@ const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
     </section>
   </main>
 
-  <script is:inline>
-    // The detail panels are <details> elements and work on their own. This only
-    // promotes an open one into a fixed sheet, keeps the URL in step so the
-    // state is shareable, and closes it the ways a sheet is expected to close.
-    ;(function () {
-      var root = document.documentElement
-
-      function anyOpen() {
-        return document.querySelector('details.plank-detail[open]')
-      }
-
-      function syncHash(details) {
-        var url = details
-          ? '#' + details.id
-          : location.pathname + location.search
-        history.replaceState(null, '', url)
-      }
-
-      function closeAll() {
-        document
-          .querySelectorAll('details.plank-detail[open]')
-          .forEach(function (details) {
-            details.open = false
-          })
-      }
-
-      // `toggle` does not bubble, so this listens in the capture phase.
-      document.addEventListener(
-        'toggle',
-        function (event) {
-          var details = event.target
-          if (
-            !details ||
-            !details.classList ||
-            !details.classList.contains('plank-detail')
-          )
-            return
-
-          if (details.open) {
-            document
-              .querySelectorAll('details.plank-detail[open]')
-              .forEach(function (other) {
-                if (other !== details) other.open = false
-              })
-            root.classList.add('sheet-open')
-            syncHash(details)
-            window.posthog?.capture('plank_detail_opened', {
-              guide_slug: details.dataset.guideSlug,
-              plank_slug: details.dataset.plankSlug,
-              lang: document.documentElement.lang,
-            })
-            var heading = details.querySelector('h3')
-            if (heading) {
-              heading.setAttribute('tabindex', '-1')
-              heading.focus({ preventScroll: true })
-            }
-          } else if (!anyOpen()) {
-            root.classList.remove('sheet-open')
-            syncHash(null)
-          }
-        },
-        true,
-      )
-
-      document.addEventListener('click', function (event) {
-        if (event.target.closest('[data-plank-close]')) closeAll()
-      })
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && anyOpen()) closeAll()
-      })
-
-      // Arriving on a permalink opens that plank rather than leaving the reader
-      // scrolled to a closed disclosure.
-      if (location.hash) {
-        // CSS.escape must not see the leading '#' — it would escape it and
-        // produce a class-plus-literal selector that matches nothing.
-        var target = document.querySelector(
-          `details.plank-detail#${CSS.escape(location.hash.slice(1))}`,
-        )
-        if (target) target.open = true
-      }
-    })()
-  </script>
+  <SheetBehavior />
 </Layout>

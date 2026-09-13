@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../../lib/platform'
-import { plankAnchor } from '../../lib/platform'
+import { localized, plankAnchor } from '../../lib/platform'
 import type { PlankEntry } from '../../lib/platform-content'
 
 interface Props {
@@ -26,7 +26,9 @@ const label = lang === 'es' ? 'Puntos de esta guía' : 'Planks in this guide'
         <a
           href={`#${plankAnchor(plank.data.slug)}`}
           class="size-8 rounded-full grid place-items-center text-xs font-bold opacity-60 hover:opacity-100 focus-visible:opacity-100"
-          title={plank.data.commitment}
+          title={
+            localized(plank.data, 'commitment', lang) ?? plank.data.commitment
+          }
         >
           {String(index + 1).padStart(2, '0')}
         </a>
