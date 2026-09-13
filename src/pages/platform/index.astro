@@ -1,0 +1,41 @@
+---
+import GuideCard from '../../components/platform/guide-card.astro'
+import { planksForGuide } from '../../lib/platform'
+import { getPublishedPlatform } from '../../lib/platform-content'
+import Layout from '../../layouts/default.astro'
+
+const lang = 'en' as const
+const { guides, planks } = await getPublishedPlatform()
+const total = planks.length
+---
+
+<Layout
+  title="The platform | Gabriel for Denver"
+  description="Every promise Gabriel Konkle is making, across every issue."
+  heroGradient
+>
+  <section slot="hero" class="px-6 pb-16 md:px-12 md:pb-24">
+    <h1>Everything I&rsquo;d do in office</h1>
+    <p class="max-w-[44ch] font-light text-2xl leading-tight">
+      {
+        total === 0
+          ? 'The platform is being written. Check back shortly.'
+          : `${total} ${total === 1 ? 'promise' : 'promises'} across ${guides.length} ${guides.length === 1 ? 'issue' : 'issues'}. Read them all here, or open a guide.`
+      }
+    </p>
+  </section>
+
+  <main class="px-6 py-16 md:px-12 md:py-20">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        guides.map((guide) => (
+          <GuideCard
+            guide={guide}
+            planks={planksForGuide(planks, guide.data.slug)}
+            lang={lang}
+          />
+        ))
+      }
+    </div>
+  </main>
+</Layout>

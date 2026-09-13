@@ -92,3 +92,127 @@
     overflow: hidden;
   }
 }
+
+/* ---------------------------------------------------------------
+   Platform bands. One plank per band, full bleed.
+
+   Each theme sets its ground, its text, and `--band-figure`: the colour
+   the hero number takes, which is always whichever brand colour is
+   neither the ground nor the text. Yellow on the blue band, blue on the
+   pale band, navy on the gold band — that rule is what makes an enormous
+   figure read as deliberate rather than as a highlighter.
+
+   The rotation itself lives in `bandTheme()` in src/lib/platform.ts,
+   where it can be tested; these classes only supply the paint.
+   --------------------------------------------------------------- */
+@layer components {
+  .band {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .band-ink {
+    background: linear-gradient(
+      to bottom right,
+      var(--color-primary),
+      var(--color-tertiary)
+    );
+    color: #fff;
+    --band-figure: var(--color-accent);
+    --band-hair: rgb(255 255 255 / 0.3);
+    --band-mute: rgb(255 255 255 / 0.78);
+  }
+
+  .band-sky {
+    background: var(--color-neutral);
+    color: #0b0d15;
+    --band-figure: var(--color-primary);
+    --band-hair: rgb(14 0 92 / 0.22);
+    --band-mute: rgb(14 0 92 / 0.72);
+  }
+
+  .band-gold {
+    background: var(--color-accent);
+    color: #1a1305;
+    --band-figure: var(--color-tertiary);
+    --band-hair: rgb(26 19 5 / 0.25);
+    --band-mute: rgb(26 19 5 / 0.75);
+  }
+
+  .band-paper {
+    background: var(--color-base);
+    color: #0b0d15;
+    --band-figure: var(--color-primary);
+    --band-hair: rgb(11 13 21 / 0.14);
+    --band-mute: rgb(11 13 21 / 0.66);
+  }
+
+  .band-figure {
+    color: var(--band-figure);
+  }
+  .band-mute {
+    color: var(--band-mute);
+  }
+  .band-rule {
+    border-color: var(--band-hair);
+  }
+
+  /* The detail panel ships as a <details>, so with JS off it is an ordinary
+     inline disclosure that prints and is read by crawlers. The script in
+     platform/[id].astro adds `.sheet-open` to <html>, which is the only thing
+     that turns it into a fixed panel. */
+  html.sheet-open body {
+    overflow: hidden;
+  }
+
+  html.sheet-open .plank-detail[open] .plank-detail__panel {
+    position: fixed;
+    inset: auto 0 0 0;
+    height: 86%;
+    z-index: 60;
+    border-radius: 1.4rem 1.4rem 0 0;
+    box-shadow: 0 -18px 50px -20px rgb(8 10 20 / 0.5);
+    overflow-y: auto;
+    background: var(--color-base);
+    color: #0b0d15;
+  }
+
+  html.sheet-open .plank-detail[open] .plank-detail__scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgb(8 10 20 / 0.55);
+  }
+
+  @media (min-width: 768px) {
+    html.sheet-open .plank-detail[open] .plank-detail__panel {
+      inset: 0 0 0 auto;
+      width: min(36rem, 44%);
+      height: 100%;
+      border-radius: 0;
+      box-shadow: -20px 0 60px -30px rgb(8 10 20 / 0.6);
+    }
+  }
+
+  /* Printing un-does all of it, so a guide prints as a plain document. */
+  @media print {
+    .plank-detail__panel,
+    .plank-detail[open] .plank-detail__panel {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+    }
+    .plank-detail__scrim {
+      display: none !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plank-detail__panel {
+      transition: none !important;
+    }
+  }
+}

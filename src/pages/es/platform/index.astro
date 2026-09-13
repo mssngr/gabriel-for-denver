@@ -1,0 +1,41 @@
+---
+import GuideCard from '../../../components/platform/guide-card.astro'
+import { planksForGuide } from '../../../lib/platform'
+import { getPublishedPlatform } from '../../../lib/platform-content'
+import Espanol from '../../../layouts/espanol.astro'
+
+const lang = 'es' as const
+const { guides, planks } = await getPublishedPlatform()
+const total = planks.length
+---
+
+<Espanol
+  title="La plataforma | Gabriel por Denver"
+  description="Cada promesa que Gabriel Konkle está haciendo, en todos los temas."
+  heroGradient
+>
+  <section slot="hero" class="px-6 pb-16 md:px-12 md:pb-24">
+    <h1>Todo lo que haría en el cargo</h1>
+    <p class="max-w-[44ch] font-light text-2xl leading-tight">
+      {
+        total === 0
+          ? 'La plataforma se está escribiendo. Vuelve pronto.'
+          : `${total} ${total === 1 ? 'promesa' : 'promesas'} en ${guides.length} ${guides.length === 1 ? 'tema' : 'temas'}. Léelas todas aquí, o abre una guía.`
+      }
+    </p>
+  </section>
+
+  <main class="px-6 py-16 md:px-12 md:py-20">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        guides.map((guide) => (
+          <GuideCard
+            guide={guide}
+            planks={planksForGuide(planks, guide.data.slug)}
+            lang={lang}
+          />
+        ))
+      }
+    </div>
+  </main>
+</Espanol>

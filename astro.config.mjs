@@ -13,7 +13,12 @@ export default defineConfig({
         const { pathname } = new URL(page)
         return (
           !/\/(admin|thank-you|404)\/?$/.test(pathname) &&
-          !/(^|\/)posts(\/|$)/.test(pathname)
+          !/(^|\/)posts(\/|$)/.test(pathname) &&
+          // The platform is unlisted until cutover: every guide is still a
+          // draft, and a draft carries noindex anyway. PR 3 of the plan in
+          // docs/proposals/2026-09-13-platform-field-guide/ replaces this
+          // whole-tree exclusion with one driven by the actual draft slugs.
+          !/(^|\/)platform(\/|$)/.test(pathname)
         )
       },
     }),

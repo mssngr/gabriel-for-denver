@@ -1,0 +1,36 @@
+---
+import type { Lang } from '../../lib/platform'
+import { plankAnchor } from '../../lib/platform'
+import type { PlankEntry } from '../../lib/platform-content'
+
+interface Props {
+  planks: PlankEntry[]
+  lang: Lang
+}
+
+const { planks, lang } = Astro.props
+const label = lang === 'es' ? 'Puntos de esta guía' : 'Planks in this guide'
+
+// A field guide's index tabs: one tick per plank, pinned so the reader always
+// knows how many are left. Hidden below md, where the bands are already a
+// single thumb-scroll and a fixed rail would just cover content.
+---
+
+{
+  planks.length > 1 && (
+    <nav
+      aria-label={label}
+      class="hidden md:flex flex-col gap-1 fixed left-5 top-1/2 -translate-y-1/2 z-30 rounded-full bg-[rgb(9_11_20/0.7)] p-2 text-white"
+    >
+      {planks.map((plank, index) => (
+        <a
+          href={`#${plankAnchor(plank.data.slug)}`}
+          class="size-8 rounded-full grid place-items-center text-xs font-bold opacity-60 hover:opacity-100 focus-visible:opacity-100"
+          title={plank.data.commitment}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </a>
+      ))}
+    </nav>
+  )
+}

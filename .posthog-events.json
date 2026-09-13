@@ -21,7 +21,7 @@
   },
   {
     "event_name": "language_switched",
-    "event_description": "User clicks the Español link in the English header to switch to Spanish.",
+    "event_description": "User clicks the Espa\u00f1ol link in the English header to switch to Spanish.",
     "file": "src/components/header.astro"
   },
   {
@@ -36,7 +36,17 @@
   },
   {
     "event_name": "issue_read_more_clicked",
-    "event_description": "User clicks Leer Más on an issue card in Spanish to navigate to the issue detail page. Includes a lang property ('en' or 'es').",
+    "event_description": "User clicks Leer M\u00e1s on an issue card in Spanish to navigate to the issue detail page. Includes a lang property ('en' or 'es').",
     "file": "src/components/what-will-i-tackle/es.astro"
+  },
+  {
+    "event_name": "platform_guide_viewed",
+    "event_description": "User views a platform guide page, indicating interest in that issue area. Includes a lang property ('en' or 'es').",
+    "file": "src/pages/platform/[id].astro"
+  },
+  {
+    "event_name": "plank_detail_opened",
+    "event_description": "User opens the policy detail for a single plank, indicating which specific promise they care enough about to read. Includes a lang property ('en' or 'es').",
+    "file": "src/components/platform/sheet.astro"
   }
 ]
