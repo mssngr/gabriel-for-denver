@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Issues at Two Speeds — Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
+<style>
+  :root {
+    --paper:        #f6f5f2;
+    --surface:      #ffffff;
+    --surface-2:    #ece9e2;
+    --ink:          #1c1b19;
+    --ink-2:        #55534c;
+    --ink-3:        #8b8880;
+    --rule:         #ddd9d1;
+    --rule-strong:  #1c1b19;
+    --focus:        #1c1b19;
+    --pin:          #7a3b2e;
+    --pin-bg:       #f4e9e4;
+    --ok:           #2f5d42;
+    --ok-bg:        #e9f0ea;
+
+    --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body:    "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #161513; --surface: #1e1d1a; --surface-2: #272620;
+      --ink: #ece9e2; --ink-2: #b3afa4; --ink-3: #837f75;
+      --rule: #322f28; --rule-strong: #ece9e2; --focus: #ece9e2;
+      --pin: #e0a898; --pin-bg: #2c211d; --ok: #8fc4a2; --ok-bg: #1c2620;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #161513; --surface: #1e1d1a; --surface-2: #272620;
+    --ink: #ece9e2; --ink-2: #b3afa4; --ink-3: #837f75;
+    --rule: #322f28; --rule-strong: #ece9e2; --focus: #ece9e2;
+    --pin: #e0a898; --pin-bg: #2c211d; --ok: #8fc4a2; --ok-bg: #1c2620;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(28px,5vw,72px) clamp(16px,4vw,48px) 96px; }
+
+  h1,h2,h3,h4 { font-family: var(--font-display); text-wrap: balance; margin: 0; color: var(--ink); }
+  h1 { font-size: clamp(2.1rem,5vw,3.1rem); font-weight: 700; letter-spacing: -0.01em; line-height: 1.02; }
+  h2 { font-size: clamp(1.4rem,2.6vw,1.7rem); font-weight: 700; letter-spacing: -0.005em; }
+  h3 { font-size: 1.15rem; font-weight: 600; }
+  h4 { font-size: 1rem; font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--pin); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { text-decoration-thickness: 2px; }
+  code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); padding: 0.1em 0.4em; border-radius: 3px; }
+  strong { font-weight: 600; }
+
+  .kicker { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink-3); }
+  .grounded { font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-3); margin-top: 10px; }
+  .grounded code { background: none; padding: 0; color: var(--ink-2); }
+
+  header.doc { display: flex; flex-direction: column; gap: 16px; padding-bottom: 28px; border-bottom: 3px solid var(--rule-strong); }
+  .docnav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .docnav a { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .lede { font-size: 1.18rem; line-height: 1.55; color: var(--ink-2); max-width: 62ch; margin-top: 4px; }
+
+  section.sec { display: grid; grid-template-columns: 168px minmax(0,1fr); gap: 0 36px; padding-top: 26px; margin-top: 52px; border-top: 1px solid var(--rule); }
+  section.sec > .tag { grid-column: 1; position: sticky; top: 18px; align-self: start; }
+  section.sec > .content { grid-column: 2; display: flex; flex-direction: column; gap: 16px; max-width: 74ch; }
+  @media (max-width: 860px) {
+    section.sec { grid-template-columns: minmax(0,1fr); gap: 10px; }
+    section.sec > .tag { position: static; }
+  }
+
+  ul.tight, ol.tight { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; }
+  ul.tight li::marker, ol.tight li::marker { color: var(--ink-3); }
+
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 18px 20px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap: 14px; }
+  .cards h4 { margin-bottom: 6px; }
+  .cards p { color: var(--ink-2); font-size: 0.95rem; }
+  .chip { display: inline-flex; align-items: center; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.07em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--rule); color: var(--ink-2); }
+  .chip.rec { background: var(--ok-bg); color: var(--ok); border-color: var(--ok); }
+  .chip.rej { background: var(--pin-bg); color: var(--pin); border-color: var(--pin); }
+
+  .phase { display: flex; flex-direction: column; gap: 14px; padding: 20px 0; border-top: 1px dashed var(--rule); }
+  .phase:first-child { border-top: none; padding-top: 0; }
+  .phase-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .phase-title .kicker { color: var(--ink-3); }
+
+  .pr { border: 1px solid var(--rule); border-radius: 6px; background: var(--surface); overflow: hidden; }
+  .pr-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding: 13px 16px; background: var(--surface-2); border-bottom: 1px solid var(--rule); }
+  .pr-head .n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); letter-spacing: 0.05em; }
+  .pr-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 9px; }
+  .pr-row { display: grid; grid-template-columns: 96px minmax(0,1fr); gap: 10px; font-size: 0.93rem; }
+  .pr-row .k { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); padding-top: 2px; }
+  .pr-row .v { color: var(--ink-2); line-height: 1.5; }
+  .pr-row .v code { font-size: 0.82em; }
+
+  .qa { border-top: 1px solid var(--rule); padding: 20px 0; display: flex; flex-direction: column; gap: 10px; }
+  .qa:last-child { border-bottom: 1px solid var(--rule); }
+  .qa .qn { font-family: var(--font-mono); font-size: 0.78rem; color: var(--pin); }
+  .qa h4 { font-size: 1.04rem; }
+  .qa p { color: var(--ink-2); font-size: 0.96rem; line-height: 1.55; }
+  .qa .rec, .qa .alt { display: flex; gap: 8px; font-size: 0.94rem; }
+  .qa .rec b, .qa .alt b { flex: none; color: var(--ink); font-weight: 600; }
+  .qa .rec p, .qa .alt p { color: var(--ink-2); }
+  .badge-answered { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ok); background: var(--ok-bg); border: 1px solid var(--ok); border-radius: 999px; padding: 2px 8px; }
+
+  .f-item { border-top: 1px solid var(--rule); padding: 16px 0; display: flex; flex-direction: column; gap: 8px; }
+  .f-item:last-child { border-bottom: 1px solid var(--rule); }
+  .f-item .fn { font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-3); }
+  .f-item .row { display: flex; gap: 8px; font-size: 0.93rem; }
+  .f-item .row b { flex: none; color: var(--ink); font-weight: 600; }
+  .f-item .row p { color: var(--ink-2); }
+  .subhead { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px; }
+
+  .table-wrap { overflow-x: auto; }
+  table.diag { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  table.diag th, table.diag td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.diag th { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  table.diag td.num { font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="doc">
+    <div class="docnav">
+      <span class="kicker">docs/proposals/2026-09-13-issues-commitment-ledger</span>
+      <a href="./design.html">→ design.html</a>
+      <a href="./schema.html">→ schema.html</a>
+    </div>
+    <h1>Issues at Two Speeds</h1>
+    <p class="lede">
+      The <code>/issues</code> section has to satisfy a reader who gives it twenty seconds on a
+      phone and a reader who wants to check every number. This plan restructures the content
+      model and the page around a single unit — the commitment — so one page and one URL serve
+      both, and locks the shape before more policy content gets written into it.
+    </p>
+    <p class="grounded">Grounded against <code>main</code> @ <code>07970fe</code> — 2026-09-13.</p>
+  </header>
+
+  <!-- SUMMARY -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Summary</span></div>
+    <div class="content">
+      <p>
+        The six <code>/issues</code> detail pages already contain thirty-six concrete policy
+        commitments, but they're buried three levels deep in "Solution" bullet lists set smaller
+        than the surrounding prose, inside full-bleed color bands that spend most of a phone
+        screen on padding rather than text. Nothing on the pages is sourced, a latent bug drops
+        the background entirely on any issue's fourth sub-section, and a detail page dead-ends
+        at its last bullet with no path to donate, volunteer, or read the next issue. This
+        matters now because the campaign is about to add more policy content, and the current
+        layout doesn't survive that — three times the words makes today's 7-screen Affordability
+        page a 20-screen one.
+      </p>
+      <p>
+        This plan promotes the commitment to be the first-class unit of the content model, rebuilds
+        the issue detail page as a scannable ledger of commitments with the full problem/mechanism/
+        sources behind a native disclosure, rebuilds the <code>/issues</code> index as a real table
+        of contents instead of a copy of the homepage grid, and fixes four small pre-existing bugs
+        along the way. It ships as four PRs in two phases — see
+        <a href="#phases">Phases, PRs, and Spikes</a> — with the schema and structural work landing
+        first so the redesign in phase two only has to be built once, in one shared component,
+        not once per locale.
+      </p>
+    </div>
+  </section>
+
+  <!-- CHOSEN APPROACH -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Approach</span></div>
+    <div class="content">
+      <h2>Chosen approach: the Commitment Ledger</h2>
+      <p>
+        Restructure each sub-issue's content from a single problem/solution paragraph pair into a
+        list of <strong>commitments</strong> — first-person, checkable statements ("Require 30% of
+        all new housing built to be affordable housing") that already exist today, just buried in
+        bullet lists. Each commitment renders as one row: the bold statement plus a one-line,
+        always-visible <em>why</em>, with the existing problem prose, the governing mechanism
+        (<code>authority</code>), a rough <code>timeline</code>, and numbered sources behind a
+        native <code>&lt;details&gt;</code> disclosure. An "expand all" control and stat tiles
+        under a one-line stance headline replace the alternating full-bleed color bands, and the
+        <code>/issues</code> index becomes a single table of contents listing every commitment by
+        issue.
+      </p>
+      <p>
+        This wins over the alternatives below because it's the only shape that serves a
+        twenty-second phone reader and a fact-checking deep-diver from the <em>same</em> page and
+        URL, scales to roughly ten commitments per issue without the page feeling longer (native
+        disclosure is a zero-JS pattern — see the accessibility note under
+        <a href="#q1">Q1</a>), and needs no new dependency or infrastructure: it's a schema change
+        plus a template rewrite on a static Astro site that already ships zero client-side
+        framework for this section.
+      </p>
+    </div>
+  </section>
+
+  <!-- ALTERNATIVES -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Weighed</span></div>
+    <div class="content">
+      <h2>Alternatives considered</h2>
+      <div class="cards">
+        <div class="card">
+          <span class="chip rej">Rejected</span>
+          <h4 style="margin-top:8px;">Separate summary + details pages</h4>
+          <p>
+            The obvious first idea: a short summary page per issue, linking out to a long details
+            page. Doubles the writing (every commitment gets written twice, in two voices), splits
+            search authority across two URLs per issue, and forces the twenty-second reader to make
+            a "do I want the long version?" decision at exactly the moment they're deciding whether
+            to bounce. A single page with an in-page disclosure gets the same effect without the
+            duplication.
+          </p>
+        </div>
+        <div class="card">
+          <span class="chip rej">Partially adopted</span>
+          <h4 style="margin-top:8px;">Field Guide — one commitment per full-bleed band</h4>
+          <p>
+            Keeps today's alternating color bands but gives each one a single giant stat or
+            pull-quote and exactly one commitment, with detail in a side sheet. The strongest first
+            impression of anything considered — each band is basically a shareable image — but
+            length still scales 1:1 with commitment count (ten commitments is ten bands), it needs
+            an ongoing illustration budget per band, and detail living off-page in a sheet is easy
+            to miss and hard to link or print for a deep-diver. Its stat-tile hero is worth keeping;
+            the rest doesn't survive content growth.
+          </p>
+        </div>
+        <div class="card">
+          <span class="chip rej">Partially adopted</span>
+          <h4 style="margin-top:8px;">Platform Index as the issue page itself</h4>
+          <p>
+            Make every issue page a filterable table of every commitment across the whole platform,
+            not just that issue. Genuinely the best artifact for an endorsement questionnaire — one
+            linkable, filterable URL for all thirty-six commitments — but cold as a landing
+            experience for someone arriving from a social link with no context yet. Right shape for
+            the <code>/issues</code> index specifically (see PR 4 of 4 below); wrong shape for an
+            individual issue's detail page.
+          </p>
+        </div>
+        <div class="card">
+          <span class="chip rej">Rejected</span>
+          <h4 style="margin-top:8px;">Master-detail two-pane layout</h4>
+          <p>
+            A documentation-style layout — a persistent left index of commitments, an expanding
+            right-hand detail pane, no page navigation at all. Common for desktop reference sites,
+            and it would satisfy both readers from one URL too. Rejected because this campaign's
+            actual traffic pattern is a phone reader arriving from an Instagram or text-message
+            link (per the PostHog <code>issue_viewed</code> event already wired up in
+            <code>src/pages/issues/[id].astro</code>) — a fixed two-pane layout has no good mobile
+            translation and would need its own from-scratch responsive treatment, adding real
+            complexity to solve a problem in-page disclosure already solves for free.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT BREAKS TODAY -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Verified</span></div>
+    <div class="content">
+      <h2>What the current implementation actually does</h2>
+      <p>Confirmed against <code>main</code> @ <code>07970fe</code> before writing this plan:</p>
+      <div class="table-wrap">
+        <table class="diag">
+          <thead><tr><th>Finding</th><th>Where</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>4th sub-issue gets no background — an <code>index === 0/1/2</code> chain with no fallback resolves to <code>class={undefined}</code></td><td><code>src/pages/issues/[id].astro:85-93</code> and the identical <code>es/issues/[id].astro:76-84</code></td><td class="num">Confirmed</td></tr>
+            <tr><td>Solution bullets (the commitments) render at <code>1.125rem</code> while body prose renders at <code>1.5rem</code></td><td><code>src/styles/global.css:71-88</code> (<code>li</code> vs <code>p</code>)</td><td class="num">Confirmed</td></tr>
+            <tr><td>Problem and Solution blurbs share one component with no visual hierarchy between them</td><td><code>src/components/problem-solution/index.astro:6-9</code>, <code>blurb.astro</code></td><td class="num">Confirmed</td></tr>
+            <tr><td><code>AnchorHeading</code> hard-codes <code>&lt;h1&gt;</code> with no level prop — up to 4 <code>&lt;h1&gt;</code>s per page</td><td><code>src/components/anchor-heading.astro:2-10</code></td><td class="num">Confirmed</td></tr>
+            <tr><td>Zero sourced statistics anywhere in issue content</td><td>all of <code>src/content/issues/*.yml</code></td><td class="num">Confirmed</td></tr>
+            <tr><td>English/Spanish page, index, header, and footer files are separate near-duplicates, not one shared component</td><td><code>src/pages/issues/[id].astro</code> vs <code>es/issues/[id].astro</code>; same for index, header, footer</td><td class="num">Confirmed</td></tr>
+            <tr><td><code>/issues</code> renders the same <code>WhatWillITackle</code> grid as the homepage; a detail page ends at its last bullet with no CTA</td><td><code>src/pages/index.astro:8,42</code> + <code>issues/index.astro:6,37</code>; <code>issues/[id].astro:77-116</code></td><td class="num">Confirmed</td></tr>
+            <tr><td><em>New, found during this investigation:</em> the <code>issue_viewed</code> and <code>issue_read_more_clicked</code> PostHog events fire in English but are missing from their Spanish call sites</td><td><code>issues/[id].astro:56-59</code>, <code>what-will-i-tackle/index.astro:35-45</code> vs their <code>es</code> siblings</td><td class="num">New finding</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.92rem;color:var(--ink-2);">
+        Content inventory: 6 issues, 14 sub-issues, 36 solution bullet points (counted directly),
+        matching what this plan restructures into 36 commitments. <code>housing-crisis.yml</code>
+        carries 318 words of English prose across its whole page against roughly two 128px-tall
+        full-bleed band paddings plus a hero illustration — consistent with the "scroll spent on
+        air" framing above.
+      </p>
+    </div>
+  </section>
+
+  <!-- DESIGN -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Design</span></div>
+    <div class="content">
+      <h2>Design</h2>
+      <p>
+        See <a href="./design.html">design.html</a> for the full mockup: the issue detail page at
+        rest on a phone, the "today vs. proposed" rendering of one real commitment, the
+        <code>/issues</code> index as a table of contents, and the new page-foot exit block. Every
+        mockup uses the site's actual copy and color tokens (<code>--color-primary</code> etc. from
+        <code>src/styles/global.css</code>) rather than placeholder text, so it can be checked
+        directly against the live site.
+      </p>
+      <p>
+        One interaction decision worth flagging here: commitments default to fully collapsed with
+        only the bold statement and its "why" line visible — see <a href="#q1">Q1</a> for the case
+        against defaulting the first one open instead.
+      </p>
+    </div>
+  </section>
+
+  <!-- SCHEMA -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Schema</span></div>
+    <div class="content">
+      <h2>Schema changes</h2>
+      <p>
+        The issues content collection (<code>src/content.config.ts</code>) gains an optional
+        <code>commitments</code> array on each sub-issue plus issue-level <code>stance</code>,
+        <code>tags</code>, <code>related</code>, <code>stats</code>, and <code>sources</code>
+        fields — every existing field stays and the current <code>problemsAndSolutions</code>
+        shape becomes optional rather than required, so nothing breaks mid-migration. Full detail,
+        including the exact Zod shape and the migration/rollback strategy, is in
+        <a href="./schema.html">schema.html</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- PHASES / PRS -->
+  <section class="sec" id="phases">
+    <div class="tag"><span class="kicker">Build order</span></div>
+    <div class="content">
+      <h2>Phases, PRs, and Spikes</h2>
+      <p>
+        Four PRs, no Spikes — the investigation above already resolved every technical unknown;
+        what's left is either schema/content work or a template rewrite, both of which this plan
+        can already scope with confidence. Two phases: phase one is invisible prep work that ships
+        no visual change and can land in either order; phase two is the actual redesign, which
+        depends on phase one being done first so it's built once, not per locale.
+      </p>
+
+      <div class="phase">
+        <div class="phase-title"><span class="kicker">Phase 1 of 2</span><h3>Foundation — no visual change ships</h3></div>
+
+        <div class="pr">
+          <div class="pr-head"><span class="n">PR 1 of 4</span><h4>Extend the issues schema for the commitment model</h4></div>
+          <div class="pr-body">
+            <div class="pr-row"><span class="k">Goal</span><span class="v">Add the optional fields described in <a href="./schema.html">schema.html</a>; migrate <code>housing-crisis.yml</code> — the smallest issue, 2 sub-issues — by hand into the new <code>commitments</code> shape as a reference. Nothing reads the new fields yet, so this ships no visual change.</span></div>
+            <div class="pr-row"><span class="k">Touches</span><span class="v"><code>src/content.config.ts</code>, <code>src/content/issues/housing-crisis.yml</code></span></div>
+            <div class="pr-row"><span class="k">Tests</span><span class="v">Zod parse tests confirming both the old and new sub-issue shapes validate; a build check that all 6 issue files (5 old-shape, 1 new-shape) still compile together.</span></div>
+            <div class="pr-row"><span class="k">Depends on</span><span class="v">none</span></div>
+          </div>
+        </div>
+
+        <div class="pr" style="margin-top:14px;">
+          <div class="pr-head"><span class="n">PR 2 of 4</span><h4>Structural repairs, independent of the redesign</h4></div>
+          <div class="pr-body">
+            <div class="pr-row"><span class="k">Goal</span><span class="v">Fix the 4th-sub-issue background fallback (add a real default case, or better, extract a <code>bandClass(index)</code> helper that cycles rather than branches); give <code>AnchorHeading</code> a <code>level</code> prop and correct the page's heading hierarchy (h1 hero, h2 sub-issue titles); bump the Solution-bullet font-size to match body copy; unify <code>issues/[id].astro</code> + <code>es/issues/[id].astro</code> (and the two <code>ProblemSolution</code> variants) into one component taking a <code>lang</code> prop, matching the pattern the header/footer/layouts already use; and add the two PostHog events already firing in English (<code>issue_viewed</code>, <code>issue_read_more_clicked</code>) to their missing Spanish call sites.</span></div>
+            <div class="pr-row"><span class="k">Touches</span><span class="v"><code>src/pages/issues/[id].astro</code>, <code>es/issues/[id].astro</code>, <code>src/components/anchor-heading.astro</code>, <code>src/components/problem-solution/*</code>, <code>src/styles/global.css</code>, <code>src/components/what-will-i-tackle/es.astro</code></span></div>
+            <div class="pr-row"><span class="k">Tests</span><span class="v">Unit test for the extracted band-index helper across 0-5 sub-issues; heading-level snapshot for a multi-sub-issue page; a PostHog call-site test confirming both events fire on both locales.</span></div>
+            <div class="pr-row"><span class="k">Depends on</span><span class="v">none — can land before, after, or alongside PR 1 of 4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-title"><span class="kicker">Phase 2 of 2</span><h3>The redesign</h3></div>
+
+        <div class="pr">
+          <div class="pr-head"><span class="n">PR 3 of 4</span><h4>Build the Commitment Ledger and migrate all issue content</h4></div>
+          <div class="pr-body">
+            <div class="pr-row"><span class="k">Goal</span><span class="v">Ship the new issue-detail template: stance hero with 2-3 sourced stat tiles, commitments grouped under quiet sub-issue labels (full-bleed color bands retired), each row collapsing to the bold commitment plus its always-visible "why," full detail behind a native <code>&lt;details&gt;</code>, an "expand all" control, a numbered source list, and deep-linkable per-commitment anchors that auto-expand on direct link. Migrate the remaining 5 issues' content into the new shape in this same PR, so production never renders a mix of old and new sub-issue shapes.</span></div>
+            <div class="pr-row"><span class="k">Touches</span><span class="v">the unified issue-detail component from PR 2 of 4, all 6 <code>src/content/issues/*.yml</code>, new commitment-row and stat-tile components</span></div>
+            <div class="pr-row"><span class="k">Tests</span><span class="v">Render test per issue confirming none still use the old Problem/Solution component; keyboard and screen-reader test on the disclosure; deep-link test that a commitment anchor opens its own detail on load; a content-schema test asserting all 6 issues now carry <code>commitments</code>.</span></div>
+            <div class="pr-row"><span class="k">Depends on</span><span class="v">PR 1 of 4 (needs the schema); strongly benefits from PR 2 of 4 landing first so the ledger is built once, not once per locale</span></div>
+          </div>
+        </div>
+
+        <div class="pr" style="margin-top:14px;">
+          <div class="pr-head"><span class="n">PR 4 of 4</span><h4>Rebuild the index and close the page-foot dead end</h4></div>
+          <div class="pr-body">
+            <div class="pr-row"><span class="k">Goal</span><span class="v">Replace <code>/issues</code> (and <code>/es/issues</code>) — currently a duplicate of the homepage's <code>WhatWillITackle</code> grid — with a table of contents listing every commitment headline grouped by issue (tag filtering deferred, see F2). Add a "where this connects" related-issues block and a donate/volunteer/share block to the foot of every issue detail page, replacing today's dead end at the last bullet.</span></div>
+            <div class="pr-row"><span class="k">Touches</span><span class="v"><code>src/pages/issues/index.astro</code> (+ <code>es</code>), a new commitment-index component, the page-foot section of the unified issue-detail component</span></div>
+            <div class="pr-row"><span class="k">Tests</span><span class="v">Index render test asserting all 36 commitment links appear across all 6 issues; foot-CTA test confirming the correct <code>related</code> links render per issue.</span></div>
+            <div class="pr-row"><span class="k">Depends on</span><span class="v">PR 3 of 4 (needs <code>commitments</code> and <code>related</code> live on every issue)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPEN QUESTIONS -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Your call</span></div>
+    <div class="content">
+      <h2>Open questions &amp; risks</h2>
+
+      <div class="qa" id="q1">
+        <span class="qn">Q1</span>
+        <h4>How much of a commitment's detail should be visible by default?</h4>
+        <p>
+          The design in <a href="./design.html">design.html</a> ships every commitment fully
+          collapsed — bold statement plus one-line "why," nothing else, until tapped. The
+          alternative is defaulting the first commitment per issue open, which proves there's
+          real substance behind the toggle at the cost of a bit more length on first paint.
+        </p>
+        <div class="rec"><b>Recommendation:</b><p>Ship fully collapsed with a visible "expand all" control next to the stat tiles. Native <code>&lt;details&gt;</code> plus an always-visible "why" line already tells a skimming reader there's more without opening anything — the accessibility research behind this pattern (WCAG disclosure guidance) treats the collapsed default as the norm precisely because the trigger and its label are what signal depth, not the open state.</p></div>
+        <div class="alt"><b>Alternative:</b><p>First-commitment-open-by-default, if early feedback says the disclosure reads as concealment rather than organization.</p></div>
+      </div>
+
+      <div class="qa" id="q2">
+        <span class="qn">Q2</span>
+        <h4>Is the campaign committed to sourcing every statistic before PR 3 of 4 ships?</h4>
+        <p>
+          The whole design leans on citations as the cheapest available credibility upgrade — the
+          stat tiles and footnote markers are load-bearing in the mockup. Partial sourcing (some
+          numbers cited, others bare) reads worse to a hostile reader than sourcing none at all,
+          because it invites the question of why the uncited ones weren't.
+        </p>
+        <div class="rec"><b>Recommendation:</b><p>Source every number that appears in a stat tile or gets a footnote marker before PR 3 ships; for any number that can't be sourced in time, cut it from the hero stats and leave it in the collapsed prose unmarked rather than shipping a bare superscript next to sourced ones.</p></div>
+        <div class="alt"><b>Alternative:</b><p>Ship with an explicit "sources being compiled" note on the affected stat tiles if sourcing genuinely can't finish in time — honest about the gap rather than silent about it.</p></div>
+      </div>
+
+      <div class="qa" id="q3">
+        <span class="qn">Q3</span>
+        <h4>Do the six per-issue SVG illustrations survive the redesign?</h4>
+        <p>
+          Direction A's ledger has no half-page hero for the illustration to occupy the way today's
+          layout does. They're a real piece of the campaign's visual identity, not filler.
+        </p>
+        <div class="rec"><b>Recommendation:</b><p>Move them to the <code>/issues</code> index (PR 4 of 4) as the visual marker for each issue row — they do real work there distinguishing six list items at a glance, and the detail page can stay text-first without losing them from the site.</p></div>
+        <div class="alt"><b>Alternative:</b><p>Keep a smaller version in the stance hero on the detail page if the illustrations are judged too central to the brand to move off that page entirely.</p></div>
+      </div>
+
+      <div class="qa" id="q4">
+        <span class="qn">Q4</span>
+        <h4>Should the Spanish site ship in the same PRs as English, or can it lag?</h4>
+        <p>
+          After PR 2 of 4 the two locales share one component, so shipping the ledger to both is
+          structurally free. What isn't free is translation: every new <code>why</code>,
+          <code>authority</code>, and <code>commitment</code> string (up to 108 new strings across
+          36 commitments) needs a Spanish twin, per the <code>_es</code>-suffix convention already
+          used throughout <code>src/content.config.ts</code>.
+        </p>
+        <div class="rec"><b>Recommendation:</b><p>Ship the component and schema to both locales in PR 3/4 of 4, but let Spanish content translation lag behind English by a defined window (e.g. two weeks) rather than blocking the English launch — see F1 below, which tracks this as required follow-up work rather than in-scope for this plan.</p></div>
+        <div class="alt"><b>Alternative:</b><p>Block the whole redesign on having both locales' content ready simultaneously, if a lagging Spanish site is not acceptable to the campaign for equity reasons.</p></div>
+      </div>
+
+      <div class="qa" id="q5">
+        <span class="qn">Q5</span>
+        <h4>How rigorously does each commitment's <code>authority</code> need to be verified before publishing?</h4>
+        <p>
+          This surfaced during the investigation, not in the original design: the new
+          <code>authority</code> field states which governmental mechanism enacts a commitment (a
+          zoning text amendment, a budget line, a ballot referral). Getting this wrong — claiming
+          Council can do something it legally can't — is a factual, checkable claim a hostile
+          reader (a rival campaign, a reporter) can and will verify, unlike a stylistic choice.
+        </p>
+        <div class="rec"><b>Recommendation:</b><p>Treat <code>authority</code> as optional per-commitment (already true in the schema — see <a href="./schema.html">schema.html</a>) and only fill it in once actually confirmed, rather than guessing to fill the field for every row before PR 3 ships. A commitment can go live with just its statement and "why"; authority and timeline can follow once verified.</p></div>
+        <div class="alt"><b>Alternative:</b><p>None seriously worth considering — guessing at legal mechanism to avoid an empty field is strictly worse than leaving it blank.</p></div>
+      </div>
+
+      <h3 class="subhead" style="margin-top:8px;">Follow-ups after this plan ships</h3>
+
+      <div style="margin-top:6px;">
+        <p style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink-3);">Required</p>
+        <div class="f-item" id="f1">
+          <span class="fn">F1</span>
+          <div class="row"><b>What:</b><p>Translate every new <code>_es</code> field — <code>why_es</code>, <code>authority_es</code>, <code>commitment_es</code> — across all 36 commitments in all 6 issues.</p></div>
+          <div class="row"><b>Why:</b><p>Without it the Spanish site either shows blank fields or silently falls back to English mid-sentence, which is worse for a Spanish-speaking reader than the current, fully-translated (if thinner) content.</p></div>
+          <div class="row"><b>Why not in the plan:</b><p>It's translation labor, not engineering — it depends on PR 3 of 4's English copy existing first, and bundling it into that PR would block a reviewable code change on a content-writing task with its own separate timeline (see Q4).</p></div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <p style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.09em;text-transform:uppercase;color:var(--ink-3);">Optional</p>
+        <div class="f-item" id="f2">
+          <span class="fn">F2</span>
+          <div class="row"><b>What:</b><p>Tag-filter chips on the <code>/issues</code> index, plus a print-friendly view for endorsement questionnaires.</p></div>
+          <div class="row"><b>Why:</b><p>Once the platform crosses roughly fifteen commitments, a flat list of headlines under six issues starts to feel long; filtering by tag (housing, safety, cost-of-living) makes the index scale.</p></div>
+          <div class="row"><b>Why not:</b><p>At today's 36 commitments across 6 clearly-labeled issues, a flat list is still easy to scan — filtering now would be UI for content that doesn't exist yet.</p></div>
+        </div>
+        <div class="f-item" id="f3">
+          <span class="fn">F3</span>
+          <div class="row"><b>What:</b><p>Replace the parallel <code>/es/</code> directory tree (separate page files per locale) with a formal Astro <code>[lang]</code> route parameter across the whole site, not just the issues section.</p></div>
+          <div class="row"><b>Why:</b><p>It would remove the last structural duplication this plan doesn't touch — header, footer, and layout files are still copy-pasted per locale even after PR 2 of 4 unifies the issue page specifically.</p></div>
+          <div class="row"><b>Why not:</b><p>It's a site-wide routing change touching every page, not just <code>/issues</code>, and the current duplicate-file pattern — while imperfect — is a working convention the rest of the site already relies on; rewriting it is a bigger bet than this proposal's scope justifies for two locales and roughly a dozen page files.</p></div>
+        </div>
+        <div class="f-item" id="f4">
+          <span class="fn">F4</span>
+          <div class="row"><b>What:</b><p>Once PR 3 of 4 has been live for a release cycle with no need to roll back, delete the now-unread <code>problemsAndSolutions</code> field from the schema and from all 6 YAML files.</p></div>
+          <div class="row"><b>Why:</b><p>Removes a dead, unread field from the content schema, keeping the schema honest about what the templates actually render.</p></div>
+          <div class="row"><b>Why not:</b><p>Leaving it a little longer costs nothing and keeps a same-PR rollback path — see the Rollback section of <a href="./schema.html">schema.html</a> — until the new shape has proven out in production.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
