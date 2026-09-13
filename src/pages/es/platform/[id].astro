@@ -1,0 +1,133 @@
+---
+import { ArrowLeft } from '@lucide/astro'
+import { marked } from 'marked'
+import Band from '../../../components/platform/band.astro'
+import PlankRail from '../../../components/platform/plank-rail.astro'
+import SheetBehavior from '../../../components/platform/sheet-behavior.astro'
+import {
+  guideMetaDescription,
+  localized,
+  relatedGuides,
+} from '../../../lib/platform'
+import { getGuides, getPlanks } from '../../../lib/platform-content'
+import Espanol from '../../../layouts/espanol.astro'
+
+export async function getStaticPaths() {
+  const guides = await getGuides()
+  return guides.map((guide) => ({
+    params: { id: guide.data.slug },
+    props: { guide },
+  }))
+}
+
+const { guide } = Astro.props
+const lang = 'es' as const
+
+const planks = await getPlanks(guide)
+const guides = await getGuides()
+const published = guides.filter((entry) => entry.data.status === 'published')
+const position = published.findIndex(
+  (entry) => entry.data.slug === guide.data.slug,
+)
+
+const title = localized(guide.data, 'title', lang) ?? guide.data.title
+const stance = marked.parse(
+  localized(guide.data, 'stance', lang) ?? guide.data.stance,
+)
+const isDraft = guide.data.status === 'draft'
+
+const related = relatedGuides(guides, guide.data)
+
+const updated = guide.data.lastReviewed?.toLocaleDateString('es-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+})
+---
+
+<Espanol
+  title={`${title} | Gabriel for Denver`}
+  description={guideMetaDescription(guide.data, lang)}
+  noindex={isDraft}
+  heroGradient
+>
+  <script
+    is:inline
+    define:vars={{ guideSlug: guide.data.slug, guideTitle: title }}
+  >
+    window.posthog?.capture('platform_guide_viewed', {
+      guide_slug: guideSlug,
+      guide_title: guideTitle,
+      lang: 'es',
+    })
+  </script>
+
+  <section slot="hero" class="px-6 pb-16 md:px-12 md:pb-24">
+    <a href="/es/platform" class="link inline-flex items-center gap-1 mb-8">
+      <ArrowLeft class="size-4" />La plataforma
+    </a>
+    <p class="text-xs tracking-[0.2em] uppercase font-semibold opacity-75 mb-2">
+      Plataforma{position >= 0 && ` · ${position + 1} de ${published.length}`}
+    </p>
+    <h1>{title}</h1>
+    <div
+      class="hero-highlight max-w-[26ch] font-light [&_p]:text-2xl md:[&_p]:text-3xl [&_p]:leading-tight"
+      set:html={stance}
+    />
+    <div
+      class="flex flex-wrap items-center gap-3 mt-6 text-xs tracking-wider uppercase font-medium opacity-80"
+    >
+      {
+        isDraft && (
+          <span class="rounded-full bg-accent text-tertiary px-3 pt-1 pb-0.5 font-bold tracking-widest">
+            Borrador — sin publicar
+          </span>
+        )
+      }
+      <span>{planks.length} {planks.length === 1 ? 'punto' : 'puntos'}</span>
+      {updated && <span>Actualizado {updated}</span>}
+    </div>
+  </section>
+
+  <main class="flex flex-col">
+    <PlankRail planks={planks} lang={lang} />
+    {
+      planks.map((plank, index) => (
+        <Band plank={plank} guideTitle={title} index={index} lang={lang} />
+      ))
+    }
+
+    <section class="bg-tertiary text-white px-6 py-16 md:px-12 md:py-20">
+      <h2 class="text-3xl md:text-4xl mb-6 text-balance">
+        ¿De acuerdo con {
+          planks.length === 1 ? 'esto' : `estos ${planks.length}`
+        }?
+      </h2>
+      <div class="flex flex-wrap gap-3">
+        <a class="btn bg-accent text-tertiary text-lg!" href="/es/donate"
+          >Donar</a
+        >
+        <a
+          class="btn border-[1.5px] border-white/45 text-lg!"
+          href="/es/get-involved/volunteer">Voluntario</a
+        >
+      </div>
+      {
+        related.length > 0 && (
+          <ul class="list-none pl-0 mt-10 border-t border-white/20 pt-5 font-light">
+            {related.map((entry) => (
+              <li class="mt-2 text-lg">
+                <a class="link" href={`/es/platform/${entry.data.slug}`}>
+                  {localized(entry.data, 'title', lang) ?? entry.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+  </main>
+
+  <SheetBehavior />
+</Espanol>

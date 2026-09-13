@@ -4,6 +4,7 @@ import {
   assertTranslated,
   assertUniqueSlugs,
   bandTheme,
+  guideMetaDescription,
   GUIDE_TRANSLATABLE_FIELDS,
   type Entry,
   type Guide,
@@ -12,7 +13,10 @@ import {
   type Plank,
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
+  plankAnchor,
+  relatedGuides,
   planksForGuide,
+  planksForPage,
   resolveHero,
   selectPublished,
 } from './platform'
@@ -374,5 +378,112 @@ describe('schemas', () => {
       ],
     })
     expect(() => plankSchema.parse(plank.data)).not.toThrow()
+  })
+})
+
+describe('plankAnchor', () => {
+  it('namespaces the anchor so it cannot collide with a section heading', () => {
+    expect(plankAnchor('legalize-multi-unit')).toBe('plank-legalize-multi-unit')
+  })
+
+  // `slug` is a free-text CMS field, so an editor can type something that is
+  // not URL-safe. The anchor is a permalink; it has to survive that.
+  it('normalizes a slug an editor typed loosely', () => {
+    expect(plankAnchor('Legalize Multi Unit!')).toBe(
+      'plank-legalize-multi-unit',
+    )
+  })
+})
+
+describe('guideMetaDescription', () => {
+  it('prefers an explicit override', () => {
+    const guide = makeGuide({ metaDescription: 'Housing for Denver.' }).data
+    expect(guideMetaDescription(guide, 'en')).toBe('Housing for Denver.')
+  })
+
+  it('falls back to the stance with its markdown stripped', () => {
+    expect(guideMetaDescription(makeGuide().data, 'en')).toBe(
+      'Housing is a human right, not a commodity.',
+    )
+  })
+
+  it('reads the Spanish override on the Spanish page', () => {
+    const guide = makeGuide({
+      metaDescription_es: 'Vivienda para Denver.',
+    }).data
+    expect(guideMetaDescription(guide, 'es')).toBe('Vivienda para Denver.')
+  })
+
+  // The reason metaDescription is exempt from the translation gate. Each
+  // language falls back on its own, so an English-only override must NOT leak
+  // onto the Spanish page — which is exactly what `localized` would do here.
+  it('falls back to the Spanish stance rather than an English override', () => {
+    const guide = makeGuide({ metaDescription: 'Housing for Denver.' }).data
+    expect(guideMetaDescription(guide, 'es')).toBe(
+      'La vivienda es un derecho humano, no una mercancía.',
+    )
+  })
+})
+
+describe('planksForPage', () => {
+  const published = makePlank({ id: 'live', slug: 'live', order: 1 })
+  const draft = makePlank({ id: 'wip', slug: 'wip', order: 2, status: 'draft' })
+
+  // A published guide's page is public, so a plank still being written must
+  // not appear on it just because its guide went live first.
+  it('shows only published planks on a published guide', () => {
+    const page = planksForPage([published, draft], makeGuide().data)
+    expect(page.map(plank => plank.data.slug)).toEqual(['live'])
+  })
+
+  // A draft guide's page is already unlisted and noindexed, and previewing
+  // unfinished planks is the only reason it gets built at all — hiding them
+  // there would make the preview useless.
+  it('shows drafts too on a draft guide, which is what the preview is for', () => {
+    const guide = makeGuide({ status: 'draft' }).data
+    const page = planksForPage([published, draft], guide)
+    expect(page.map(plank => plank.data.slug)).toEqual(['live', 'wip'])
+  })
+
+  it('ignores planks belonging to another guide', () => {
+    const other = makePlank({ id: 'x', slug: 'x', guide: 'big-tech' })
+    const page = planksForPage([published, other], makeGuide().data)
+    expect(page.map(plank => plank.data.slug)).toEqual(['live'])
+  })
+})
+
+describe('relatedGuides', () => {
+  const housing = makeGuide()
+  const draft = makeGuide({ id: 'homelessness', slug: 'homelessness', status: 'draft' })
+  const live = makeGuide({ id: 'affordability', slug: 'affordability' })
+  const all = [housing, draft, live]
+
+  // The same leak planksForPage prevents, one level up: a public page must not
+  // hand a reader a link into an unlisted, noindexed draft.
+  it('drops draft guides from a published guide’s cross-links', () => {
+    const guide = makeGuide({ related: ['homelessness', 'affordability'] }).data
+    expect(relatedGuides(all, guide).map(entry => entry.data.slug)).toEqual([
+      'affordability',
+    ])
+  })
+
+  it('keeps drafts when the linking guide is itself a draft preview', () => {
+    const guide = makeGuide({
+      status: 'draft',
+      related: ['homelessness', 'affordability'],
+    }).data
+    expect(relatedGuides(all, guide).map(entry => entry.data.slug)).toEqual([
+      'homelessness',
+      'affordability',
+    ])
+  })
+
+  it('ignores a related slug that matches no guide', () => {
+    const guide = makeGuide({ related: ['nope'] }).data
+    expect(relatedGuides(all, guide)).toEqual([])
+  })
+
+  it('returns nothing when a guide names no related guides', () => {
+    expect(relatedGuides(all, makeGuide().data)).toEqual([])
   })
 })

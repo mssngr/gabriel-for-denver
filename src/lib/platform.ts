@@ -1,4 +1,6 @@
 import { z } from 'astro/zod'
+import { stripMarkdown } from './seo'
+import { slugify } from './slug'
 
 /**
  * The platform content model: `guides` (one per issue area) and `planks` (one
@@ -288,11 +290,50 @@ const byOrder = <T extends { data: { order: number } }>(a: T, b: T) =>
   a.data.order - b.data.order
 
 /** That guide's planks, whatever their status, in the order they're shown. */
-export function planksForGuide(
-  planks: Entry<Plank>[],
+export function planksForGuide<E extends Entry<Plank>>(
+  planks: E[],
   guideSlug: string,
-): Entry<Plank>[] {
+): E[] {
   return planks.filter(plank => plank.data.guide === guideSlug).sort(byOrder)
+}
+
+/**
+ * The planks that render on a guide's own page.
+ *
+ * A published guide's page is public, so it shows published planks only — a
+ * plank still being written must not surface just because its guide went live
+ * first. A draft guide's page is already unlisted and `noindex`, and previewing
+ * unfinished planks is the entire reason it gets built, so there it shows
+ * everything.
+ */
+export function planksForPage<E extends Entry<Plank>>(
+  planks: E[],
+  guide: Guide,
+): E[] {
+  const forGuide = planksForGuide(planks, guide.slug)
+  if (guide.status === 'draft') return forGuide
+  return forGuide.filter(plank => plank.data.status === 'published')
+}
+
+/**
+ * The cross-links shown at the foot of a guide, resolved from slugs to entries.
+ *
+ * Status is filtered the same way `planksForPage` filters planks, and for the
+ * same reason: a published page is public, so it must not hand a reader a link
+ * into an unlisted, `noindex` draft. A draft guide is already a private
+ * preview, so there its cross-links resolve to whatever they name.
+ */
+export function relatedGuides<G extends Entry<Guide>>(
+  guides: G[],
+  guide: Guide,
+): G[] {
+  const visible =
+    guide.status === 'draft'
+      ? guides
+      : guides.filter(entry => entry.data.status === 'published')
+  return (guide.related ?? [])
+    .map(slug => visible.find(entry => entry.data.slug === slug))
+    .filter(entry => entry !== undefined)
 }
 
 /**
@@ -300,10 +341,10 @@ export function planksForGuide(
  * planks', so a plank published ahead of the guide it sits in can't leak onto
  * the live site on its own.
  */
-export function selectPublished(
-  guides: Entry<Guide>[],
-  planks: Entry<Plank>[],
-): { guides: Entry<Guide>[]; planks: Entry<Plank>[] } {
+export function selectPublished<G extends Entry<Guide>, P extends Entry<Plank>>(
+  guides: G[],
+  planks: P[],
+): { guides: G[]; planks: P[] } {
   const published = guides
     .filter(guide => guide.data.status === 'published')
     .sort(byOrder)
@@ -317,4 +358,33 @@ export function selectPublished(
       )
       .sort(byOrder),
   }
+}
+
+/**
+ * The id a plank's detail panel carries, and the anchor its permalink points
+ * at. Namespaced so it can't collide with a section heading's own anchor, and
+ * re-slugified because `slug` is free text an editor types — a permalink has
+ * to survive that.
+ */
+export function plankAnchor(slug: string): string {
+  return `plank-${slugify(slug)}`
+}
+
+/**
+ * A guide's meta description, per language: the explicit override if there is
+ * one, otherwise the stance with its markdown stripped.
+ *
+ * The override is read directly rather than through `localized()`, and that is
+ * the whole point. `localized()` falls back to English, which would put an
+ * English override on the Spanish page — worse than the Spanish stance it
+ * would have generated on its own. Because each language falls back
+ * independently, filling in one side only is a legitimate edit, which is why
+ * `metaDescription` sits in `SELF_FALLBACK_FIELDS` and outside the
+ * translation gate.
+ */
+export function guideMetaDescription(guide: Guide, lang: Lang): string {
+  const override =
+    lang === 'es' ? guide.metaDescription_es : guide.metaDescription
+  if (override) return override
+  return stripMarkdown(localized(guide, 'stance', lang) ?? guide.stance)
 }

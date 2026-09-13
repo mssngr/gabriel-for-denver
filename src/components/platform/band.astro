@@ -1,0 +1,111 @@
+---
+import type { BandTheme, Lang } from '../../lib/platform'
+import { bandTheme, localized, resolveHero } from '../../lib/platform'
+import type { PlankEntry } from '../../lib/platform-content'
+import Sheet from './sheet.astro'
+
+interface Props {
+  plank: PlankEntry
+  guideTitle: string
+  index: number
+  lang: Lang
+}
+
+const { plank, guideTitle, index, lang } = Astro.props
+
+const theme: BandTheme = bandTheme(index, plank.data.theme)
+const hero = resolveHero(plank.data, lang)
+const kicker = localized(plank.data, 'kicker', lang)
+const commitment =
+  localized(plank.data, 'commitment', lang) ?? plank.data.commitment
+const why = localized(plank.data, 'why', lang) ?? plank.data.why
+
+const t =
+  lang === 'es'
+    ? { will: 'Voy a', draft: 'Borrador' }
+    : { will: 'I will', draft: 'Draft' }
+
+// A statement band already leads with the commitment, so repeating it under
+// "I will" would print the same sentence twice on the same screen.
+const showsCommitmentTwice = hero.kind === 'statement'
+---
+
+<section
+  class:list={[
+    'band flex flex-col justify-center px-6 py-20 md:px-12 md:py-28 min-h-[36rem] md:min-h-[44rem]',
+    `band-${theme}`,
+  ]}
+  data-plank={plank.data.slug}
+>
+  <div
+    class="w-full grid gap-10 md:grid-cols-[1.05fr_0.95fr] md:gap-16 md:items-center"
+  >
+    <div>
+      {
+        (kicker || plank.data.status === 'draft') && (
+          <p class="band-mute text-xs tracking-[0.24em] uppercase font-semibold mb-5">
+            {guideTitle}
+            {kicker && ` · ${kicker}`}
+            {plank.data.status === 'draft' && ` · ${t.draft}`}
+          </p>
+        )
+      }
+      {
+        hero.kind === 'stat' && (
+          <>
+            <span class="band-figure block font-bold leading-[0.82] tracking-tighter text-[6.5rem] md:text-[13rem]">
+              {hero.value}
+            </span>
+            {hero.caption && (
+              <p class="mt-4 max-w-[20ch] text-xl md:text-2xl font-light leading-tight">
+                {hero.caption}
+              </p>
+            )}
+          </>
+        )
+      }
+      {
+        hero.kind === 'quote' && (
+          <p class="band-figure font-bold leading-none tracking-tight text-4xl md:text-6xl max-w-[13ch] text-balance">
+            &ldquo;{hero.quote}&rdquo;
+          </p>
+        )
+      }
+      {
+        hero.kind === 'statement' && (
+          <p class="band-figure font-bold leading-[1.02] tracking-tight text-3xl md:text-5xl max-w-[16ch] text-balance">
+            {hero.text}
+          </p>
+        )
+      }
+    </div>
+
+    <div
+      class="band-rule border-t pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-12"
+    >
+      {
+        !showsCommitmentTwice && (
+          <>
+            <p class="band-figure text-xs tracking-[0.24em] uppercase font-bold mb-3">
+              {t.will}
+            </p>
+            <p class="text-2xl md:text-4xl font-semibold leading-tight text-balance">
+              {commitment}
+            </p>
+          </>
+        )
+      }
+      <p
+        class:list={[
+          'band-mute font-light leading-snug max-w-[34ch] text-base md:text-lg',
+          !showsCommitmentTwice && 'mt-4',
+        ]}
+      >
+        {why}
+      </p>
+      <div class="mt-7">
+        <Sheet plank={plank} lang={lang} index={index} />
+      </div>
+    </div>
+  </div>
+</section>
