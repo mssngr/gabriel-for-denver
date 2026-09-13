@@ -264,7 +264,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
 
   <div class="item">
     <span class="item__no">PR 2 of 5</span>
-    <h3>Render <code class="inl">/platform</code> and <code class="inl">/platform/&lt;slug&gt;</code>, unlisted</h3>
+    <h3>Render <code class="inl">/platform</code> and <code class="inl">/platform/&lt;slug&gt;</code>, unlisted <span style="font-family:var(--f-mono);font-size:.58em;letter-spacing:.1em;color:var(--ok);vertical-align:.2em">&#10003; DONE</span></h3>
     <dl>
       <dt>Goal</dt>
       <dd>The Field Guide exists and is viewable on the real domain while being invisible to search, to the sitemap, and to every navigation on the site (Q1). <code>/issues</code> is still the linked-to platform surface and is not modified. At the end of this PR the campaign can read its own draft and nobody else will find it. <strong>This is also where the three build-time assertions get called</strong> — <code>assertGuideRefs</code>, <code>assertUniqueSlugs</code> and <code>assertTranslated</code> shipped as tested library code in PR&nbsp;1, but cross-collection checks need a caller holding both collections at once, which does not exist until a route loads them.</dd>
@@ -274,6 +274,10 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
       <dd><code>getGuides()</code> and <code>getPlanks()</code> across every draft/published combination, and ordering. Plus first-ever coverage for <code>slugify()</code> and <code>stripMarkdown()</code> in <code>src/lib/</code>: both are untested today, and this PR makes the plank anchors and the guide meta descriptions depend on them, so the debt is picked up where it is newly load-bearing rather than left for later.</dd>
       <dt>Depends on</dt>
       <dd>PR 1 of 5</dd>
+      <dt>Shipped in</dt>
+      <dd><a href="https://github.com/mssngr/gabriel-for-denver/pull/9">PR #9</a> — 13 Sept 2026.</dd>
+      <dt>Deviations</dt>
+      <dd>Added <code>src/lib/platform-content.ts</code>, not in the Touches list — the loading layer had to be its own file to keep <code>platform.ts</code> free of <code>astro:content</code> and therefore testable, which is the seam PR&nbsp;1 was built around. It also settles a rule the plan left open, as <code>planksForPage()</code>: a published guide shows published planks only, while a draft guide shows drafts too, since its page is already unlisted and previewing them is the only reason it is built. And <code>alternatePath()</code> coverage was picked up here rather than left entirely to PR&nbsp;3 — the new routes depend on it for their <code>hreflang</code> pair immediately, so shipping them against untested code was the worse option. PR&nbsp;3's redirect-specific cases are still outstanding.</dd>
     </dl>
   </div>
 
@@ -319,7 +323,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <h3>Complete the platform instrumentation and repair the event registry</h3>
     <dl>
       <dt>Goal</dt>
-      <dd>Make &ldquo;which promises do voters actually care about&rdquo; an answerable question. PR&nbsp;2 ships the two page-level events; this adds the rest of the funnel — <code>plank_source_clicked</code>, <code>plank_shared</code>, and <code>platform_cta_clicked</code> with the plank the reader was on — so opens can be read against what people did next rather than in isolation. It also repairs <code>.posthog-events.json</code>, whose <code>file</code> paths are stale for three of the six events already registered, and adds the analytics the Spanish pages have always been missing.</dd>
+      <dd>Make &ldquo;which promises do voters actually care about&rdquo; an answerable question. PR&nbsp;2 ships the two page-level events; this adds the rest of the funnel — <code>plank_source_clicked</code>, <code>plank_shared</code>, and <code>platform_cta_clicked</code> with the plank the reader was on — so opens can be read against what people did next rather than in isolation. It also repairs what is left of <code>.posthog-events.json</code> — a scope that has shrunk since this plan was written. <a href="https://github.com/mssngr/gabriel-for-denver/pull/8">PR #8</a> added the Spanish analytics and corrected four stale <code>file</code> paths, leaving only the two <code>language_switched</code> entries, which still point at <code>header.astro</code> and <code>header-es.astro</code> rather than <code>header/index.astro</code> and <code>header/es.astro</code>.</dd>
       <dt>Touches</dt>
       <dd><code>src/components/platform/*.astro</code> · <code>src/pages/platform/</code> and <code>src/pages/es/platform/</code> · <code>.posthog-events.json</code></dd>
       <dt>Tests</dt>
