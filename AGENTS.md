@@ -18,13 +18,13 @@ the command.
 
 ## Development
 
-When starting the dev server, use background mode:
+`astro` isn't on `PATH`, so run it through Bun. When starting the dev server, use background mode:
 
 ```
-astro dev --background
+bunx astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+Manage the background server with `bunx astro dev stop`, `bunx astro dev status`, and `bunx astro dev logs`.
 
 ## Tests
 
@@ -84,6 +84,10 @@ Analytics follow one shape: `window.posthog?.capture()`, always optional-chained
 always in an `is:inline` script, snake_case event and property names, and a
 matching entry added to `.posthog-events.json`. That file is hand-maintained and
 its `file` paths are already stale in places; don't trust them as a map.
+
+(`src/components/platform/sheet-behavior.astro` is a deliberate exception to
+the `is:inline` rule: it needs to import from `src/lib/sheet.ts` so that logic
+is covered by unit tests, which an inline script can't do.)
 
 ## Documentation
 
