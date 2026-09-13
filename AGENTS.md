@@ -34,5 +34,5 @@ fails validation fails the *whole build*, not just its own page, so the site sil
 stops updating until it is fixed.
 
 The signal for that is Netlify's **Deploy failed** notification (Site configuration →
-Notifications → Deploy notifications), which emails gabriel@gabrielfordenver.com. If
+Notifications → Deploy notifications), which emails info@gabrielfordenver.com. If
 content changes stop appearing on the live site, check the Netlify deploy log first.
