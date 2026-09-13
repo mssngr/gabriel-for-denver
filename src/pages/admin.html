@@ -13,6 +13,10 @@
       public/admin/ because Astro's dev server won't serve a directory index
       out of public/, which would 404 /admin during local development.
     -->
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <!-- Pinned deliberately. Sveltia is pre-1.0, so an unpinned `latest` can
+         change the CMS under the campaign mid-election, and the platform
+         collections lean on documented-but-subtle relation-widget behaviour.
+         Bump this on purpose, after checking the admin UI still loads. -->
+    <script src="https://unpkg.com/@sveltia/cms@0.211.4/dist/sveltia-cms.js"></script>
   </body>
 </html>

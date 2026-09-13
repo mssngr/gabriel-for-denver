@@ -177,6 +177,297 @@ collections:
               },
             ],
         }
+  # The platform. Field Guides are the issue areas; Planks are the individual
+  # promises, one file each. Deliberately separate from Issues above: nothing
+  # here renders on the live site yet, so it is safe to write months ahead of
+  # launch without touching what /issues shows today.
+  - { divider: true, name: platform-divider }
+  - label: Field Guides
+    label_singular: Field Guide
+    name: guides
+    folder: src/content/guides
+    extension: yml
+    create: true
+    icon: menu_book
+    identifier_field: slug
+    summary: "{{title}} — {{status}}"
+    sortable_fields: [order, title, status]
+    description: One issue area. The promises inside it live under Planks.
+    fields:
+      - { label: Title, name: title, widget: string }
+      - {
+          label: Title (Spanish),
+          name: title_es,
+          widget: string,
+          required: false,
+        }
+      - {
+          label: Slug,
+          name: slug,
+          widget: string,
+          hint: "Used in the URL: /platform/your-slug. Keep it identical to the
+            filename.",
+        }
+      - {
+          label: Stance,
+          name: stance,
+          widget: string,
+          hint: The whole issue in one line. Wrap the key phrase in
+            **double asterisks** to highlight it.,
+        }
+      - {
+          label: Stance (Spanish),
+          name: stance_es,
+          widget: string,
+          required: false,
+        }
+      - { label: Lucide Icon, name: lucideIcon, widget: string }
+      - { label: Order, name: order, widget: number }
+      - {
+          label: Status,
+          name: status,
+          widget: select,
+          options: [draft, published],
+          default: draft,
+          hint: Drafts are visible on the site only to someone with the link.
+            Every Spanish field must be filled before this can be published.,
+        }
+      - { label: Artwork, name: artwork, widget: image, required: false }
+      - {
+          label: Artwork Alt Text,
+          name: artworkAlt,
+          widget: string,
+          required: false,
+        }
+      - {
+          label: Artwork Alt Text (Spanish),
+          name: artworkAlt_es,
+          widget: string,
+          required: false,
+        }
+      - {
+          label: Last Reviewed,
+          name: lastReviewed,
+          widget: datetime,
+          required: false,
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          time_format: false,
+          hint: Shown on the page as "Updated ...". A platform page with no date
+            reads as unmaintained.,
+        }
+      - {
+          label: Related Guides,
+          name: related,
+          widget: relation,
+          collection: guides,
+          multiple: true,
+          required: false,
+          value_field: "{{fields.slug}}",
+          display_fields: ["{{fields.title}} — {{fields.status}}"],
+          search_fields: [title, slug],
+          hint: Cross-links shown at the foot of the page.,
+        }
+      - {
+          label: Meta Description,
+          name: metaDescription,
+          widget: text,
+          required: false,
+          hint: Falls back to the stance. Set it when the stance makes a poor
+            search snippet.,
+        }
+      - {
+          label: Meta Description (Spanish),
+          name: metaDescription_es,
+          widget: text,
+          required: false,
+        }
+  - label: Planks
+    label_singular: Plank
+    name: planks
+    folder: src/content/planks
+    extension: yml
+    create: true
+    icon: flag
+    identifier_field: slug
+    summary: "{{commitment}}"
+    sortable_fields: [order, slug, status]
+    view_groups:
+      - { label: Field Guide, field: guide }
+      - { label: Status, field: status }
+    description: One promise = one band on a Field Guide page.
+    fields:
+      # `{{fields.slug}}` is the guide's slug FIELD. `{{slug}}` would be the
+      # entry slug — the filename — which is the coupling this join exists to
+      # avoid. See docs/proposals/2026-09-13-platform-field-guide/ (Spike S1).
+      - {
+          label: Field Guide,
+          name: guide,
+          widget: relation,
+          collection: guides,
+          value_field: "{{fields.slug}}",
+          display_fields: ["{{fields.title}} — {{fields.status}}"],
+          search_fields: [title, slug],
+          hint: Which guide this promise belongs to.,
+        }
+      - {
+          label: Slug,
+          name: slug,
+          widget: string,
+          hint: "Short and stable — it is the permalink: #plank-your-slug. Not
+            the whole sentence.",
+        }
+      - {
+          label: Order,
+          name: order,
+          widget: number,
+          hint: Position within its guide.,
+        }
+      - {
+          label: Status,
+          name: status,
+          widget: select,
+          options: [draft, published],
+          default: draft,
+          hint: Per plank, so a guide can go live with three promises while two
+            more are still being written.,
+        }
+      - {
+          label: Kicker,
+          name: kicker,
+          widget: string,
+          required: false,
+          hint: 'Sub-topic shown above the hero, e.g. "Zoning".',
+        }
+      - {
+          label: Kicker (Spanish),
+          name: kicker_es,
+          widget: string,
+          required: false,
+        }
+      - {
+          label: Statistic,
+          name: statValue,
+          widget: string,
+          required: false,
+          hint: 'The giant figure. Any form works: "77%", "1 in 3", "$1.2B".
+            Leave blank to use a pull-quote instead.',
+        }
+      - {
+          label: Statistic Caption,
+          name: statCaption,
+          widget: text,
+          required: false,
+          hint: What the figure counts. A number with no caption is a rumour.,
+        }
+      - {
+          label: Statistic Caption (Spanish),
+          name: statCaption_es,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Pull Quote,
+          name: pullQuote,
+          widget: text,
+          required: false,
+          hint: Used as the hero only when there is no statistic.,
+        }
+      - {
+          label: Pull Quote (Spanish),
+          name: pullQuote_es,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Commitment,
+          name: commitment,
+          widget: text,
+          hint: The promise, written as a verb phrase. "Legalize...", not
+            "Housing should be...".,
+        }
+      - {
+          label: Commitment (Spanish),
+          name: commitment_es,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Why,
+          name: why,
+          widget: text,
+          hint: One sentence of justification, always visible on the band. This
+            is what keeps the closed detail panel from hiding the argument.,
+        }
+      - { label: Why (Spanish), name: why_es, widget: text, required: false }
+      - {
+          label: Detail,
+          name: detail,
+          widget: richtext,
+          required: false,
+          hint: The prose behind "Read the policy".,
+        }
+      - {
+          label: Detail (Spanish),
+          name: detail_es,
+          widget: richtext,
+          required: false,
+        }
+      - {
+          label: What Council Can Do,
+          name: authority,
+          widget: text,
+          required: false,
+          hint: 'e.g. "A zoning text amendment — a Council vote, no ballot
+            measure required." This is the field that separates a platform from
+            a wish list.',
+        }
+      - {
+          label: What Council Can Do (Spanish),
+          name: authority_es,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Timeline,
+          name: timeline,
+          widget: select,
+          required: false,
+          options: [day-one, first-budget, ordinance, ballot-referral, ongoing],
+        }
+      - {
+          label: Sources,
+          name: sources,
+          widget: list,
+          required: false,
+          summary: "{{fields.label}}",
+          fields:
+            [
+              { label: Label, name: label, widget: string },
+              {
+                label: Label (Spanish),
+                name: label_es,
+                widget: string,
+                required: false,
+              },
+              {
+                label: URL,
+                name: url,
+                widget: string,
+                pattern:
+                  ["^https?://", "Include the https:// at the front."],
+              },
+            ],
+        }
+      - {
+          label: Band Theme,
+          name: theme,
+          widget: select,
+          required: false,
+          options: [ink, sky, gold, paper],
+          hint: Leave blank to use the automatic rotation. Only set this to fix
+            a specific band that clashes with its neighbour.,
+        }
   - label: Posts
     name: posts
     folder: src/content/posts

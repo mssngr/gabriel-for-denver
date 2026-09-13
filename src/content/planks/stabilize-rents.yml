@@ -1,0 +1,32 @@
+guide: housing-crisis
+slug: stabilize-rents
+order: 2
+status: draft
+kicker: Rent
+kicker_es: Alquiler
+pullQuote: Rent went up 45%. Paychecks went up 28%.
+pullQuote_es: El alquiler subió 45%. Los sueldos subieron 28%.
+commitment: Stabilize rents against what Denver households actually earn.
+commitment_es: Estabilizar los alquileres según lo que realmente ganan los hogares de Denver.
+why: Rent rose at nearly twice the rate of income over the last decade. That gap is the crisis.
+why_es: El alquiler subió a casi el doble de la velocidad que los ingresos en la última década. Esa brecha es la crisis.
+detail: |-
+  In the past 10 years, average rent shot up by 45%, but the median household
+  income in Denver only rose by 28%. Rent increased at almost twice the rate
+  of income.
+
+  Roughly 50% of Denverites fall below the median income. We have enough
+  housing for the wealthy. Stabilizing rents against the actual income
+  distribution is how there comes to be enough for everyone else.
+detail_es: |-
+  En los últimos 10 años, el alquiler promedio aumentó un 45%, pero el ingreso
+  familiar medio en Denver solo subió un 28%. El alquiler aumentó a casi el
+  doble de la velocidad que los ingresos.
+
+  Aproximadamente el 50% de los habitantes de Denver están por debajo del
+  ingreso medio. Ya tenemos suficiente vivienda para los ricos. Estabilizar
+  los alquileres según la distribución real de ingresos es como llega a haber
+  suficiente para el resto.
+authority: An ordinance, paired with the first budget that funds enforcement.
+authority_es: Una ordenanza, junto con el primer presupuesto que financie su cumplimiento.
+timeline: first-budget
