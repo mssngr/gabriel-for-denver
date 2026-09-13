@@ -1,32 +1,46 @@
-# Astro Starter Kit: Basics
+# Gabriel for Denver
 
-```sh
-bun create astro@latest -- --template basics
-```
+The campaign site for Gabriel Konkle, candidate for Denver City Council At-Large.
+Built with Astro, deployed on Netlify, and edited through Sveltia CMS at `/admin`.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Conventions this repo expects — commands, test style, how content and the CMS fit
+together — are in [AGENTS.md](AGENTS.md). Design proposals live in
+[`docs/proposals/`](docs/proposals/).
 
 ## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
 
 ```text
 /
 ├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+│   └── admin/config.yml    Sveltia CMS configuration
+├── src/
+│   ├── assets/             images and issue illustrations, optimized by Astro
+│   ├── components/         .astro components, many as index.astro + es.astro pairs
+│   ├── content/            YAML content collections, one directory per collection
+│   ├── layouts/            default.astro (English) and espanol.astro (Spanish)
+│   ├── lib/                plain .ts modules — where testable logic lives
+│   ├── pages/              routes; src/pages/es mirrors the English tree
+│   ├── styles/global.css   Tailwind and the daisyUI theme
+│   └── content.config.ts   Zod schema for every collection
+├── docs/proposals/         design proposals, written as .html
+├── astro.config.mjs
+└── vitest.config.ts
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Two things about this layout are worth knowing before you go looking for them.
+
+**Spanish is not a routing feature.** There is no i18n dictionary and no locale
+routing. Every translatable field is duplicated in its collection with an `_es`
+suffix, and `src/pages/es/` is a hand-maintained mirror of the English route
+tree. Components that differ only by their hardcoded strings ship as an
+`index.astro`/`es.astro` pair in the same folder.
+
+**`src/lib/` exists so there is something to test.** Vitest only picks up
+`src/**/*.test.ts` and runs in a node environment, where `.astro` files and
+Astro's virtual modules (`astro:content`) don't resolve. Logic that needs test
+coverage is extracted into a plain `.ts` module first, which is why `fees.ts`,
+`instagram.ts` and `seo.ts` exist as separate files rather than living inside
+the components that use them.
 
 ## 🧞 Commands
 
