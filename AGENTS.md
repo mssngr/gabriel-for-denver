@@ -33,6 +33,11 @@ Content is validated by Zod schemas in `src/content.config.ts`. A single entry t
 fails validation fails the *whole build*, not just its own page, so the site silently
 stops updating until it is fixed.
 
-The signal for that is Netlify's **Deploy failed** notification (Site configuration →
-Notifications → Deploy notifications), which emails info@gabrielfordenver.com. If
-content changes stop appearing on the live site, check the Netlify deploy log first.
+The signal for that is Netlify's **Deploy failed** notification, which emails whoever
+is configured under Site configuration → Notifications → Deploy notifications. That
+is a dashboard setting rather than code, so nothing in this repo enforces it or can
+tell you whether it is on — confirm it is before relying on it, because an
+unannounced failed build is otherwise completely silent.
+
+If content changes stop appearing on the live site, check the Netlify deploy log
+first.
