@@ -254,7 +254,24 @@ pre .s { color: var(--ok); }
   )
 }</pre>
 
-  <p>The CMS still gives the editor a dropdown rather than a free-text box — Sveltia's <code class="inl">relation</code> widget, configured to search the <code class="inl">guides</code> collection and write its <code class="inl">slug</code>. That the widget writes the value we expect is the one mechanical unknown in this proposal; it is the subject of Spike S1 in the plan.</p>
+  <p>The CMS still gives the editor a dropdown rather than a free-text box — Sveltia's <code class="inl">relation</code> widget, configured to search the <code class="inl">guides</code> collection and write its <code class="inl">slug</code> field. Spike S1 settled how to spell that, and the obvious spelling is the wrong one:</p>
+
+<pre><span class="c"># public/admin/config.yml — the planks collection</span>
+- <span class="k">label</span>: Field Guide
+  <span class="k">name</span>: guide
+  <span class="k">widget</span>: relation
+  <span class="k">collection</span>: guides
+  <span class="c"># "{{fields.slug}}" is the slug FIELD. "{{slug}}" would be the entry</span>
+  <span class="c"># slug — i.e. the filename — which is exactly the coupling this join</span>
+  <span class="c"># exists to avoid. Bare `slug` means the field too, but spell it out.</span>
+  <span class="k">value_field</span>: <span class="s">"{{fields.slug}}"</span>
+  <span class="c"># Multi-tag templates are allowed, so draft status shows in the dropdown</span>
+  <span class="c"># and nobody attaches a plank to a guide that is going nowhere.</span>
+  <span class="k">display_fields</span>: [<span class="s">"{{fields.title}} · {{fields.status}}"</span>]
+  <span class="k">search_fields</span>: [title, slug]
+  <span class="k">required</span>: true</pre>
+
+  <p>Two behaviours worth knowing about, both from Sveltia's own source. Its config parser <em>does</em> validate <code class="inl">value_field</code> against the referenced collection's fields, so a typo surfaces as a config error in the CMS rather than silently. At runtime, though, the widget fails open: an unresolvable key path falls back to the entry summary and then to the entry slug. A guide saved with an empty <code class="inl">slug</code> would therefore have its planks quietly store its <code class="inl">title</code> — which is the concrete scenario <code class="inl">assertGuideRefs()</code> above exists to stop at build time.</p>
 
   <h4 class="sub2">Constraints, enforced in <code class="inl">src/lib/platform.ts</code></h4>
   <ul class="plain">

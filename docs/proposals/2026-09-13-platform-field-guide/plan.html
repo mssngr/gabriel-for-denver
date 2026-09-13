@@ -225,7 +225,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
 
   <div class="item item--spike">
     <span class="item__no s">S1 of 1 — Spike</span>
-    <h3>Does Sveltia's <code class="inl">relation</code> widget write a guide's <code class="inl">slug</code>, and stay usable once drafts are in the list?</h3>
+    <h3>Does Sveltia's <code class="inl">relation</code> widget write a guide's <code class="inl">slug</code>, and stay usable once drafts are in the list? <span style="font-family:var(--f-mono);font-size:.58em;letter-spacing:.1em;color:var(--ok);vertical-align:.2em">&#10003; DONE</span></h3>
     <dl>
       <dt>Why</dt>
       <dd>A plank's <code>guide</code> field should be a dropdown of existing guides, not a slug typed from memory. Sveltia's <code>relation</code> widget does that, but which string it writes depends on <code>value_field</code> resolving against a field rather than a filename, and that behaviour against a folder collection of YAML is not something the documentation settles. If it writes the wrong thing, the fallback is a hand-maintained <code>select</code> with six options — workable, but it is a different config and a small ongoing maintenance cost, so PR&nbsp;1 cannot be written confidently until this is known.</dd>
@@ -235,6 +235,10 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
       <dd>none</dd>
       <dt>Feeds into</dt>
       <dd>PR 1 of 5 — specifically the <code>planks.guide</code> field config, and whether <code>display_fields</code> can show draft status so an editor does not attach a plank to a guide that is going nowhere.</dd>
+      <dt>Finding</dt>
+      <dd><p style="margin:0 0 .7rem"><strong>Answered from Sveltia's source rather than the planned clickthrough, in about an hour of the half-day box.</strong> The widget has three spellings carrying two meanings, and the obvious one is the wrong one: <code>value_field: "{{slug}}"</code> writes the <strong>entry slug</strong> — the filename — while <code>value_field: "{{fields.slug}}"</code> writes the <code>slug</code> <strong>field</strong>. Bare unbraced <code>value_field: slug</code> normalizes to the second, and Sveltia's <code>normalizeFieldName()</code> carries an in-source comment warning about precisely this confusion. We want the field, since not binding the join to filenames is the entire reason it avoids Astro's <code>reference()</code>. PR&nbsp;1 uses the explicit <code>"{{fields.slug}}"</code> form so nobody has to remember the rule.</p>
+      <p style="margin:0 0 .7rem">Three things came out beyond the question asked. <strong>(1)</strong> <code>display_fields</code> accepts a multi-tag template string, so <code>["{{fields.title}} · {{fields.status}}"]</code> puts draft status directly in the dropdown — the second half of this spike is a yes, and no fallback config is needed. <strong>(2)</strong> Sveltia's config parser validates <code>value_field</code> against the referenced collection's fields and surfaces a config error in the CMS, so a typo is caught at parse time rather than silently. <strong>(3)</strong> At <em>runtime</em> it still fails open: the source comment is explicit that an unknown key path is &ldquo;not reported at runtime — the widget silently falls back to the entry summary or slug.&rdquo; So a guide saved with an empty <code>slug</code> would have its planks quietly store its <code>title</code> instead. <code>assertGuideRefs()</code> catches that at build, which is the assertion earning its keep on day one rather than in theory.</p>
+      <p style="margin:0"><strong>Unrelated risk this turned up:</strong> <code>src/pages/admin.html</code> loads <code>https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js</code> with no version pin, so the CMS silently upgrades to whatever ships. A config that now leans on a subtle documented behaviour, on a campaign site during an election, should not also be riding an unpinned <code>latest</code>. Pinning it is added to PR&nbsp;1 — see its Touches.</p></dd>
     </dl>
   </div>
 
@@ -245,11 +249,12 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
       <dt>Goal</dt>
       <dd>Writing can start. This PR renders <strong>nothing</strong> — no route reads either collection — and that is the point: it is the smallest change that unblocks months of content work, and it is incapable of affecting a deployed page. Ships with <code>housing-crisis</code> and its three planks hand-migrated as the worked example.</dd>
       <dt>Touches</dt>
-      <dd><code>src/content.config.ts</code> · <code>public/admin/config.yml</code> · <code>src/lib/platform.ts</code> (new) · <code>src/lib/platform.test.ts</code> (new) · <code>src/content/guides/housing-crisis.yml</code> (new) · <code>src/content/planks/*.yml</code> (3 new)</dd>
+      <dd><code>src/content.config.ts</code> · <code>public/admin/config.yml</code> · <code>src/lib/platform.ts</code> (new) · <code>src/lib/platform.test.ts</code> (new) · <code>src/content/guides/housing-crisis.yml</code> (new) · <code>src/content/planks/*.yml</code> (3 new) · <code>src/pages/admin.html</code>, to pin the Sveltia version per S1's finding</dd>
       <dt>Tests</dt>
       <dd><code>bandTheme()</code> across a rotation and past its end — the case today's hardcoded ternary gets wrong, so it is a regression test for a bug being designed out. <code>resolveHero()</code> for stat, quote and statement shapes in both languages. <code>assertGuideRefs()</code> throwing with the orphan named and the known guides listed. <code>assertTranslated()</code> (Q3) failing a published entry that is missing an <code>_es</code> twin, and passing the same entry while it is a draft. Draft filtering, including a published plank sitting under a draft guide.</dd>
       <dt>Depends on</dt>
-      <dd>S1 of 1</dd>
+      <dd>S1 of 1 — resolved, and it did not change this PR's scope. The <code>planks.guide</code> field is settled as
+      <code>{ widget: relation, collection: guides, value_field: "{{fields.slug}}", display_fields: ["{{fields.title}} · {{fields.status}}"], search_fields: [title, slug] }</code>.</dd>
     </dl>
   </div>
 
