@@ -11,8 +11,13 @@
   },
   {
     "event_name": "issue_viewed",
-    "event_description": "User views an individual issue detail page, indicating specific policy interest.",
+    "event_description": "User views an individual issue detail page, indicating specific policy interest. Includes a lang property ('en' or 'es').",
     "file": "src/pages/issues/[id].astro"
+  },
+  {
+    "event_name": "issue_viewed",
+    "event_description": "User views an individual issue detail page in Spanish, indicating specific policy interest. Includes a lang property ('en' or 'es').",
+    "file": "src/pages/es/issues/[id].astro"
   },
   {
     "event_name": "language_switched",
@@ -26,7 +31,12 @@
   },
   {
     "event_name": "issue_read_more_clicked",
-    "event_description": "User clicks Read More on an issue card to navigate to the issue detail page.",
-    "file": "src/components/what-will-i-tackle.astro"
+    "event_description": "User clicks Read More on an issue card to navigate to the issue detail page. Includes a lang property ('en' or 'es').",
+    "file": "src/components/what-will-i-tackle/index.astro"
+  },
+  {
+    "event_name": "issue_read_more_clicked",
+    "event_description": "User clicks Leer Más on an issue card in Spanish to navigate to the issue detail page. Includes a lang property ('en' or 'es').",
+    "file": "src/components/what-will-i-tackle/es.astro"
   }
 ]

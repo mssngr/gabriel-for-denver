@@ -39,6 +39,7 @@ const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order)
       window.posthog?.capture('issue_read_more_clicked', {
         issue_slug: link.dataset.issueSlug,
         issue_title: link.dataset.issueTitle,
+        lang: 'en',
       })
     }
   })
