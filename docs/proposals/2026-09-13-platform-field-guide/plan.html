@@ -244,7 +244,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
 
   <div class="item">
     <span class="item__no">PR 1 of 5</span>
-    <h3>Add the <code class="inl">guides</code> and <code class="inl">planks</code> collections, the CMS forms, and the helper module</h3>
+    <h3>Add the <code class="inl">guides</code> and <code class="inl">planks</code> collections, the CMS forms, and the helper module <span style="font-family:var(--f-mono);font-size:.58em;letter-spacing:.1em;color:var(--ok);vertical-align:.2em">&#10003; DONE</span></h3>
     <dl>
       <dt>Goal</dt>
       <dd>Writing can start. This PR renders <strong>nothing</strong> — no route reads either collection — and that is the point: it is the smallest change that unblocks months of content work, and it is incapable of affecting a deployed page. Ships with <code>housing-crisis</code> and its three planks hand-migrated as the worked example.</dd>
@@ -255,6 +255,10 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
       <dt>Depends on</dt>
       <dd>S1 of 1 — resolved, and it did not change this PR's scope. The <code>planks.guide</code> field is settled as
       <code>{ widget: relation, collection: guides, value_field: "{{fields.slug}}", display_fields: ["{{fields.title}} · {{fields.status}}"], search_fields: [title, slug] }</code>.</dd>
+      <dt>Shipped in</dt>
+      <dd><a href="https://github.com/mssngr/gabriel-for-denver/pull/5">PR #5</a> — 13 Sept 2026.</dd>
+      <dt>Deviations</dt>
+      <dd>Two constraints listed in <a href="./schema.html">schema.html</a> but not in this entry's Tests line were implemented rather than left to drift: <code>related</code> links are validated exactly as plank&rarr;guide links are, and duplicate slugs within a collection now fail the build. Separately, <code>sources[].url</code> is a plain <code>z.string()</code> rather than <code>.url()</code>, with a <code>pattern</code> on the CMS field doing the checking instead — the same reasoning that makes <code>resolveHero()</code> resolve rather than validate, applied consistently: a save that can fail Zod is a save that can stop the whole site from building.</dd>
     </dl>
   </div>
 
@@ -263,7 +267,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <h3>Render <code class="inl">/platform</code> and <code class="inl">/platform/&lt;slug&gt;</code>, unlisted</h3>
     <dl>
       <dt>Goal</dt>
-      <dd>The Field Guide exists and is viewable on the real domain while being invisible to search, to the sitemap, and to every navigation on the site (Q1). <code>/issues</code> is still the linked-to platform surface and is not modified. At the end of this PR the campaign can read its own draft and nobody else will find it.</dd>
+      <dd>The Field Guide exists and is viewable on the real domain while being invisible to search, to the sitemap, and to every navigation on the site (Q1). <code>/issues</code> is still the linked-to platform surface and is not modified. At the end of this PR the campaign can read its own draft and nobody else will find it. <strong>This is also where the three build-time assertions get called</strong> — <code>assertGuideRefs</code>, <code>assertUniqueSlugs</code> and <code>assertTranslated</code> shipped as tested library code in PR&nbsp;1, but cross-collection checks need a caller holding both collections at once, which does not exist until a route loads them.</dd>
       <dt>Touches</dt>
       <dd><code>src/pages/platform/index.astro</code>, <code>[id].astro</code> and their <code>src/pages/es/platform/</code> twins (new) · <code>src/components/platform/band.astro</code>, <code>sheet.astro</code>, <code>plank-rail.astro</code>, <code>guide-card.astro</code> (new, each taking a <code>lang</code> prop) · <code>src/styles/global.css</code> for the band-theme utilities · <code>astro.config.mjs</code> for the sitemap exclusion · <code>.posthog-events.json</code> for <code>platform_guide_viewed</code> and <code>plank_detail_opened</code></dd>
       <dt>Tests</dt>

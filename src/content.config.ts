@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
+import { guideSchema, plankSchema } from './lib/platform'
 
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/pages' }),
@@ -49,6 +50,22 @@ const issues = defineCollection({
     }),
 })
 
+// The platform: one guide per issue area, one plank per promise. Kept apart
+// from `issues` on purpose so the new material can be written and previewed
+// without touching what /issues renders today. Field definitions live in
+// src/lib/platform.ts so the same shapes can be unit tested.
+const guides = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/guides' }),
+  // `image()` is only available inside this callback, so artwork is the one
+  // field that can't live alongside the rest of the schema.
+  schema: ({ image }) => guideSchema.extend({ artwork: image().optional() }),
+})
+
+const planks = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/planks' }),
+  schema: () => plankSchema,
+})
+
 const events = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/events' }),
   schema: ({ image }) =>
@@ -85,4 +102,4 @@ const posts = defineCollection({
     }),
 })
 
-export const collections = { pages, issues, events, posts }
+export const collections = { pages, issues, guides, planks, events, posts }
