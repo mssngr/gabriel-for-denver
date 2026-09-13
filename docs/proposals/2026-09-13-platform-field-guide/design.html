@@ -333,7 +333,6 @@ code.inl {
 .bd--gold { background: var(--accent); color: #1a1305; --fig: var(--tertiary); --hair: rgb(26 19 5 / .25); --mute: rgb(26 19 5 / .75); }
 .bd--paper{ background: var(--base); color: var(--black); --fig: var(--primary); --hair: rgb(11 13 21 / .14); --mute: rgb(11 13 21 / .66); }
 
-.bd__art { position: absolute; right: -8%; bottom: -6%; width: 62%; opacity: .07; pointer-events: none; }
 .bd__inner { position: relative; display: flex; flex-direction: column; gap: 2rem; width: 100%; }
 
 .bd__kicker {
@@ -375,7 +374,6 @@ code.inl {
 
 @container screen (min-width: 900px) {
   .bd { min-height: 760px; padding: 5rem 3rem 5rem 6.5rem; }
-  .bd__art { width: 40%; right: 1%; bottom: -4%; opacity: .08; }
   .bd__inner {
     display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
     gap: 4.5rem; align-items: center;
@@ -524,19 +522,19 @@ code.inl {
         </thead>
         <tbody>
           <tr><td>kicker</td><td>Locates the plank: guide name, then its sub-topic. The only breadcrumb a band gets.</td><td>0.7rem / 0.24em caps</td></tr>
-          <tr><td>hero</td><td>A statistic, or a pull-quote when there is no defensible number. This is the screenshot.</td><td>13rem desktop / 6.5rem phone</td></tr>
+          <tr><td>hero</td><td>A statistic, or a pull-quote when there is no defensible number. The only thing on the band carrying visual weight, and the whole reason it is set this big.</td><td>13rem desktop / 6.5rem phone</td></tr>
           <tr><td>caption</td><td>Says what the number counts. Never optional on a stat band — a bare figure is a rumour.</td><td>1.6rem / 300 / 18ch</td></tr>
           <tr><td>commitment</td><td>The promise, under an <code class="inl">I WILL</code> eyebrow. Written as a verb phrase, always.</td><td>2.45rem / 600</td></tr>
           <tr><td>why</td><td>One sentence of justification. Always visible — this is what keeps the sheet from hiding the argument.</td><td>1.18rem / 300 / 34ch</td></tr>
           <tr><td>action</td><td>Opens the sheet. Also a real link to <code class="inl">#plank-&lt;slug&gt;</code>, so it survives JS being off.</td><td>0.98rem / 600</td></tr>
-          <tr><td>source</td><td>Footnote scoped to this band, because the band is the shareable unit.</td><td>0.76rem underlined</td></tr>
-          <tr><td>artwork</td><td>The guide's existing SVG, 8% opacity, bleeding off the edge. Zero marginal art cost per plank.</td><td>40% width</td></tr>
+          <tr><td>source</td><td>Footnote scoped to this band, because the band is the shareable unit. Absent until the citation exists &mdash; see the gold band.</td><td>0.76rem underlined</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="note">
       <p><strong>Three band themes, cycled.</strong> <code class="inl">ink</code> → <code class="inl">sky</code> → <code class="inl">ink</code> → <code class="inl">gold</code>, repeating, with a per-plank override. On every ground the hero numeral is set in whichever brand colour <em>isn't</em> the ground or the text — yellow on the blue band, blue on the pale band, navy on the gold band. That rule is what makes the giant figure read as deliberate rather than as a highlight.</p>
+      <p><strong>Bands carry no illustration.</strong> An earlier draft put the guide's SVG behind the numeral as an 8% watermark; that was dropped. A band of nothing but a 13rem numeral on a flat brand colour is the more confident poster, and it is closer to how this language has to work on Instagram, where these are going to be screenshotted. The six illustrations keep their full size on the guide hero and on the index cards &mdash; they are not being retired, they are being put where they can be themselves.</p>
       <p>It also fixes a live bug by construction: <a href="../../../src/pages/issues/%5Bid%5D.astro">src/pages/issues/[id].astro</a> picks its band colour with a hardcoded ternary chain that runs out at index 2, so a fourth sub-issue renders with no background at all. A modulo over a themes array cannot run out.</p>
     </div>
   </section>
@@ -575,11 +573,6 @@ code.inl {
 
               <!-- band 1 · ink · stat -->
               <section class="bd bd--ink">
-                <svg class="bd__art" viewBox="0 0 260 170" aria-hidden="true" fill="currentColor">
-                  <path d="M4 166V86L46 48l42 38v80H62v-46H30v46H4Z"/>
-                  <path d="M96 166V54l44-40 44 40v112h-28V96h-32v70H96Z"/>
-                  <path d="M192 166V104l34-30 34 30v62h-24v-36h-20v36h-24Z"/>
-                </svg>
                 <div class="bd__inner">
                   <div>
                     <p class="bd__kicker">Housing · Zoning</p>
@@ -621,11 +614,6 @@ code.inl {
 
               <!-- band 3 · gold · stat -->
               <section class="bd bd--gold">
-                <svg class="bd__art" viewBox="0 0 260 170" aria-hidden="true" fill="currentColor">
-                  <path d="M4 166V86L46 48l42 38v80H62v-46H30v46H4Z"/>
-                  <path d="M96 166V54l44-40 44 40v112h-28V96h-32v70H96Z"/>
-                  <path d="M192 166V104l34-30 34 30v62h-24v-36h-20v36h-24Z"/>
-                </svg>
                 <div class="bd__inner">
                   <div>
                     <p class="bd__kicker">Housing · Affordability</p>
@@ -640,7 +628,6 @@ code.inl {
                       <span class="bd__more">Read the policy &rarr;</span>
                       <span class="bd__chip">Ordinance</span>
                     </div>
-                    <p style="margin-top:1.1rem"><a class="bd__src" href="#">Denver IHO performance, 2022&ndash;2025</a></p>
                   </div>
                 </div>
               </section>
@@ -672,11 +659,6 @@ code.inl {
             <div class="mk mk-screen">
 
               <section class="bd bd--ink" style="min-height:800px">
-                <svg class="bd__art" viewBox="0 0 260 170" aria-hidden="true" fill="currentColor">
-                  <path d="M4 166V86L46 48l42 38v80H62v-46H30v46H4Z"/>
-                  <path d="M96 166V54l44-40 44 40v112h-28V96h-32v70H96Z"/>
-                  <path d="M192 166V104l34-30 34 30v62h-24v-36h-20v36h-24Z"/>
-                </svg>
                 <div class="bd__inner">
                   <div>
                     <p class="bd__kicker">Housing · Zoning</p>
@@ -733,7 +715,11 @@ code.inl {
     <div class="note">
       <p><strong>The sheet is a <code class="inl">&lt;details&gt;</code> in the HTML.</strong> Direction&nbsp;B's one real weakness, in its own words, was that the detail is &ldquo;off-page in a sheet, which reads as an afterthought and is harder to link and to print.&rdquo; That is only true if the sheet is built as a JavaScript overlay. Build it as a server-rendered <code class="inl">&lt;details&gt;</code> instead and all three problems go away at once: with JS off it is an ordinary inline disclosure, it prints as a normal document, crawlers read it as page text, and deep-linking to <code class="inl">#plank-&lt;slug&gt;</code> opens it natively. The ~40 lines of progressive enhancement only <em>promote</em> that element into a fixed panel and push the anchor into <code class="inl">history</code>.</p>
     </div>
+    <div class="note">
+      <p><strong>The gold band has no footnote, on purpose.</strong> The campaign is shipping figures uncited for now and backfilling citations as they are found, so the design needs an honest render for an unsourced number &mdash; it is the source line simply not being there, with nothing moving around it. <code class="inl">sources</code> is a one-field edit per plank, so a band gains its footnote the moment someone finds the study.</p>
+    </div>
   </section>
+
 
   <section class="block">
     <div class="sec-head">
@@ -785,11 +771,6 @@ code.inl {
                   <a href="#">02</a>
                   <a href="#">03</a>
                 </nav>
-                <svg class="bd__art" viewBox="0 0 260 170" aria-hidden="true" fill="currentColor">
-                  <path d="M4 166V86L46 48l42 38v80H62v-46H30v46H4Z"/>
-                  <path d="M96 166V54l44-40 44 40v112h-28V96h-32v70H96Z"/>
-                  <path d="M192 166V104l34-30 34 30v62h-24v-36h-20v36h-24Z"/>
-                </svg>
                 <div class="bd__inner">
                   <div>
                     <p class="bd__kicker">Housing · Zoning</p>
@@ -839,11 +820,6 @@ code.inl {
                   <a href="#">02</a>
                   <a class="on" href="#">03</a>
                 </nav>
-                <svg class="bd__art" viewBox="0 0 260 170" aria-hidden="true" fill="currentColor">
-                  <path d="M4 166V86L46 48l42 38v80H62v-46H30v46H4Z"/>
-                  <path d="M96 166V54l44-40 44 40v112h-28V96h-32v70H96Z"/>
-                  <path d="M192 166V104l34-30 34 30v62h-24v-36h-20v36h-24Z"/>
-                </svg>
                 <div class="bd__inner">
                   <div>
                     <p class="bd__kicker">Housing · Affordability</p>
@@ -857,7 +833,6 @@ code.inl {
                     <div class="bd__foot">
                       <span class="bd__more">Read the policy &rarr;</span>
                       <span class="bd__chip">Ordinance</span>
-                      <a class="bd__src" href="#">Denver IHO performance, 2022&ndash;2025</a>
                     </div>
                   </div>
                 </div>
@@ -890,11 +865,6 @@ code.inl {
             <div class="mk mk-screen">
 
               <section class="bd bd--ink" style="min-height:800px">
-                <svg class="bd__art" viewBox="0 0 260 170" aria-hidden="true" fill="currentColor">
-                  <path d="M4 166V86L46 48l42 38v80H62v-46H30v46H4Z"/>
-                  <path d="M96 166V54l44-40 44 40v112h-28V96h-32v70H96Z"/>
-                  <path d="M192 166V104l34-30 34 30v62h-24v-36h-20v36h-24Z"/>
-                </svg>
                 <div class="bd__inner" style="grid-template-columns:minmax(0,1fr)">
                   <div>
                     <p class="bd__kicker">Housing · Zoning</p>

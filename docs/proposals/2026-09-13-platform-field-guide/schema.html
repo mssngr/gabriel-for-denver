@@ -142,7 +142,7 @@ pre .s { color: var(--ok); }
     <li><strong><code class="inl">slug</code> is an explicit field</strong>, not derived from the filename, and <code class="inl">order</code> is an explicit number, not a date.</li>
   </ul>
 
-  <p>Two properties deliberately do <em>not</em> carry over. The <code class="inl">_es</code> fields here are all <strong>required</strong>, which means an entry cannot be saved until it is fully translated — workable for six issues written in one sitting, hostile to writing eighteen planks over eight weeks. And the nesting goes two levels deep (<code class="inl">subIssues[].problemsAndSolutions[]</code>), which in Sveltia means a list widget inside a list widget: the single most-complained-about editing surface on the site today, and the reason the content is hard to add to.</p>
+  <p>Two properties deliberately do <em>not</em> carry over. The <code class="inl">_es</code> fields here are all <strong>required by Zod</strong>, which means an entry cannot be saved until it is fully translated — workable for six issues written in one sitting, hostile to writing eighteen planks over eight weeks. The new collections move that gate: <code class="inl">_es</code> is optional in the schema so a draft can be saved in English, and completeness is enforced at <em>publish</em> time instead, in the build. Drafting stays fluid; the two live sites never diverge. And the nesting goes two levels deep (<code class="inl">subIssues[].problemsAndSolutions[]</code>), which in Sveltia means a list widget inside a list widget: the single most-complained-about editing surface on the site today, and the reason the content is hard to add to.</p>
 
   <div class="note">
     <p><strong>The CMS is half the schema.</strong> <code class="inl">public/admin/config.yml</code> (Sveltia, GitHub backend, committing straight to <code class="inl">main</code>) mirrors every collection field for field. A Zod change without the matching CMS change produces content nobody can edit; a CMS change without the Zod change produces a saved entry that breaks the production build. They ship together, always.</p>
@@ -170,7 +170,7 @@ pre .s { color: var(--ok); }
         <tr><td class="n">lucideIcon</td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">A raw lucide export name, e.g. <code class="inl">MapPinHouse</code> — same convention as <code class="inl">issues</code>, resolved by <code class="inl">components/icon.astro</code>.</td></tr>
         <tr><td class="n">order</td><td class="t">number</td><td><span class="req yes">yes</span></td><td class="d">Position in the index and in &ldquo;2 of 6&rdquo;.</td></tr>
         <tr><td class="n">status</td><td class="t">'draft' | 'published'</td><td><span class="req yes">yes</span></td><td class="d">Defaults to <code class="inl">draft</code>. Draft guides build, carry <code class="inl">noindex</code>, and appear in no index or nav. See Q1 in the plan.</td></tr>
-        <tr><td class="n">artwork</td><td class="t">image()</td><td><span class="req no">no</span></td><td class="d">The guide's illustration. Replaces the hardcoded slug&rarr;image map currently sitting in two page files.</td></tr>
+        <tr><td class="n">artwork</td><td class="t">image()</td><td><span class="req no">no</span></td><td class="d">The guide's illustration, used on the guide hero and on its index card. Replaces the hardcoded slug&rarr;image map currently sitting in two page files. <strong>Not</strong> used on the bands — those are type and colour only.</td></tr>
         <tr><td class="n">artworkAlt <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">Replaces the hardcoded slug&rarr;alt map next to it.</td></tr>
         <tr><td class="n">lastReviewed</td><td class="t">date</td><td><span class="req no">no</span></td><td class="d">Renders as &ldquo;Updated 13 Sept 2026&rdquo;. A platform page with no date on it reads as unmaintained.</td></tr>
         <tr><td class="n">related</td><td class="t">string[]</td><td><span class="req no">no</span></td><td class="d">Other guide slugs, for the cross-link block at the foot. Validated at build against the known slugs.</td></tr>
@@ -213,7 +213,6 @@ pre .s { color: var(--ok); }
         <tr><td class="n">timeline</td><td class="t">enum</td><td><span class="req no">no</span></td><td class="d"><code class="inl">day-one</code> | <code class="inl">first-budget</code> | <code class="inl">ordinance</code> | <code class="inl">ballot-referral</code> | <code class="inl">ongoing</code>. Renders as the chip beside the action.</td></tr>
         <tr><td class="n">sources</td><td class="t">{ label, label_es?, url }[]</td><td><span class="req no">no</span></td><td class="d">Footnotes scoped to this plank — see below.</td></tr>
         <tr><td class="n">theme</td><td class="t">'ink'|'sky'|'gold'|'paper'</td><td><span class="req no">no</span></td><td class="d">Overrides the automatic rotation for this band. Escape hatch, not the normal path.</td></tr>
-        <tr><td class="n">artwork <span class="es">+Alt, +Alt_es</span></td><td class="t">image(), string</td><td><span class="req no">no</span></td><td class="d">Per-band art. Falls back to the guide's, which is why the format has no per-plank art cost.</td></tr>
       </tbody>
     </table>
   </div>
@@ -263,6 +262,7 @@ pre .s { color: var(--ok); }
     <li><strong>Every <code class="inl">related</code> entry points at a real guide</strong> — same treatment.</li>
     <li><strong>Slugs are unique within their collection</strong> — two guides claiming <code class="inl">housing-crisis</code> would silently give one of them an unreachable route.</li>
     <li><strong>A published plank cannot sit under a draft guide</strong> — not an error, just filtered: the guide's status wins, so nothing leaks by way of a plank.</li>
+    <li><strong>A published entry has every <code class="inl">_es</code> twin filled</strong> — build fails, naming the entry and the missing fields. This is the gate that lets <code class="inl">_es</code> be optional in Zod without the Spanish site quietly falling behind the English one. Draft entries are exempt, which is the whole point.</li>
   </ul>
   <p>There are no database indices here. These are flat YAML files read at build time; eighteen to forty planks is a linear scan measured in microseconds, and any lookup structure would be ceremony.</p>
 </section>
