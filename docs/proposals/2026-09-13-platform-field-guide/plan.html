@@ -1,0 +1,413 @@
+<title>The Platform, Written Ahead</title>
+<meta name="description" content="Adopting the Field Guide direction on two new CMS collections that never touch deployed content.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  --paper: #f4f5f9; --card: #ffffff; --ink: #12141c; --ink-2: #545c72;
+  --rule: #dbdfe9; --rule-soft: #e7eaf1; --accent: #1900a8; --flag: #a4560a; --ok: #1c6a45;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+    --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+  --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--f-body);
+  font-size: 16px; line-height: 1.62; margin: 0; padding: 0 1.5rem 6rem;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 58rem; margin: 0 auto; }
+.doc-eyebrow {
+  font-family: var(--f-mono); font-size: .72rem; font-weight: 500; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-2); margin: 0 0 .9rem;
+}
+h1.doc-title {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.3rem);
+  line-height: .98; letter-spacing: -.025em; text-wrap: balance; margin: 0 0 1rem;
+}
+.doc-sub { font-size: 1.12rem; color: var(--ink-2); max-width: 40rem; margin: 0 0 1.5rem; }
+.grounded { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-2); margin: 0; }
+.grounded code { color: var(--ink); }
+h2.sec {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(1.45rem, 3vw, 1.95rem);
+  line-height: 1.05; letter-spacing: -.02em; margin: 0 0 .5rem; text-wrap: balance;
+}
+h3.sub { font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; margin: 2rem 0 .5rem; }
+p { margin: 0 0 1rem; max-width: 44rem; }
+.lede { font-size: 1.03rem; color: var(--ink-2); }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+strong { font-weight: 600; }
+em { font-style: italic; }
+section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-top: 3.5rem; }
+.sec-head { display: flex; flex-direction: column; gap: .1rem; margin-bottom: 1.5rem; }
+.sec-num { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .16em; color: var(--accent); font-weight: 700; }
+ul.plain { padding-left: 1.15rem; margin: 0 0 1rem; max-width: 44rem; }
+ul.plain li { margin-bottom: .55rem; }
+code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-soft); padding: .1em .35em; border-radius: 3px; }
+.note { border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem; margin: 1.5rem 0; color: var(--ink-2); font-size: .95rem; }
+.note strong { color: var(--ink); }
+.note p:last-child { margin-bottom: 0; }
+
+/* alternatives */
+.alt { border-top: 1px solid var(--rule-soft); padding: 1.1rem 0 .3rem; }
+.alt:first-of-type { border-top: 0; }
+.alt h3 { margin: 0 0 .35rem; font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; }
+.alt .verdict { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--flag); }
+.alt p { font-size: .95rem; color: var(--ink-2); margin-bottom: .5rem; }
+.alt p strong { color: var(--ink); }
+
+/* work items */
+.item {
+  background: var(--card); border: 1px solid var(--rule); border-radius: .7rem;
+  padding: 1.2rem 1.3rem; margin-bottom: 1rem;
+}
+.item--spike { border-style: dashed; }
+.item__no {
+  font-family: var(--f-mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; color: var(--accent); display: block; margin-bottom: .3rem;
+}
+.item__no.s { color: var(--flag); }
+.item h3 { font-family: var(--f-display); font-weight: 700; font-size: 1.12rem; margin: 0 0 .8rem; letter-spacing: -.01em; text-wrap: balance; }
+.item dl { margin: 0; display: grid; grid-template-columns: 6.5rem minmax(0,1fr); gap: .45rem 1rem; font-size: .92rem; }
+.item dt { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); padding-top: .2rem; }
+.item dd { margin: 0; color: var(--ink-2); }
+.item dd strong { color: var(--ink); }
+.item dd code { font-family: var(--f-mono); font-size: .84em; color: var(--ink); }
+@media (max-width: 34rem) { .item dl { grid-template-columns: 1fr; gap: .1rem .5rem; } .item dd { margin-bottom: .6rem; } }
+
+/* questions */
+.q { border-top: 1px solid var(--rule); padding-top: 1.6rem; margin-top: 1.8rem; }
+.q:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.q h3 {
+  font-family: var(--f-display); font-weight: 800; font-size: 1.14rem; line-height: 1.25;
+  margin: 0 0 .7rem; letter-spacing: -.015em; text-wrap: balance;
+}
+.q h3 .qn { color: var(--accent); font-family: var(--f-mono); font-size: .85em; margin-right: .35rem; }
+.q > p { font-size: .97rem; }
+.q dl { margin: 1rem 0 0; font-size: .95rem; }
+.q dt {
+  font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: var(--ink); margin-bottom: .25rem;
+}
+.q dd { margin: 0 0 1rem; color: var(--ink-2); max-width: 44rem; }
+.q dd strong { color: var(--ink); }
+
+/* follow-ups */
+.grouplabel {
+  font-family: var(--f-mono); font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 700; color: var(--flag); margin: 2.2rem 0 1rem;
+}
+.grouplabel.opt { color: var(--ink-2); }
+.f { border-left: 2px solid var(--rule); padding-left: 1.1rem; margin-bottom: 1.4rem; }
+.f h3 { font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; margin: 0 0 .6rem; }
+.f h3 .fn { color: var(--accent); font-family: var(--f-mono); font-size: .85em; margin-right: .3rem; }
+.f dl { margin: 0; font-size: .93rem; }
+.f dt { font-weight: 600; color: var(--ink); display: inline; }
+.f dd { display: inline; margin: 0; color: var(--ink-2); }
+.f dd::after { content: ""; display: block; height: .5rem; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="doc-eyebrow">Proposal · Gabriel for Denver</p>
+  <h1 class="doc-title">The Platform, Written Ahead</h1>
+  <p class="doc-sub">Build the Field Guide on two brand-new content collections at a brand-new route, so the whole platform can be written months before anyone sees it — without a single edit to the pages currently deployed.</p>
+  <p class="grounded">Grounded against <code>main</code> @ <code>07970fe</code> — 13 Sept 2026 &nbsp;·&nbsp; <a href="./design.html">design.html</a> &nbsp;·&nbsp; <a href="./schema.html">schema.html</a></p>
+</header>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec">Summary</h2></div>
+  <p>Direction&nbsp;B from <em>Issues at Two Speeds</em> becomes the campaign's policy surface: one promise per full-bleed band, a giant statistic or pull-quote as the hero, and the policy detail in a sheet. It is backed by two new CMS collections — <code class="inl">guides</code> (one per issue area) and <code class="inl">planks</code> (one per promise) — living in their own folders, edited in their own place in Sveltia, and rendered at a new <code class="inl">/platform</code> route. Nothing in <code class="inl">src/content/issues/</code> or at <code class="inl">/issues</code> changes, which is what makes it safe to draft the entire platform in public-facing tooling while the live site carries on unaltered. Three PRs: the content model first so writing can start immediately, then the pages, then a cutover that is gated on the writing actually being done rather than on any code.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec">Chosen approach</h2></div>
+  <p class="lede">Direction B is the brief, so the decision this proposal actually makes is <em>how</em> to build B such that the three costs its own critique named don't land. All three turn out to be cheap to close.</p>
+
+  <h3 class="sub">1. The sheet is a <code class="inl">&lt;details&gt;</code>, not an overlay</h3>
+  <p>B's stated weakness was that detail in a side sheet &ldquo;reads as an afterthought and is harder to link and to print.&rdquo; That is true of a JavaScript overlay and false of a server-rendered <code class="inl">&lt;details&gt;</code> element that JavaScript merely <em>promotes</em> into a fixed panel. The prose is in the HTML either way, so it prints, it is crawled, it feeds the meta description, and a direct hit on <code class="inl">#plank-&lt;slug&gt;</code> opens it natively with JS off. This is the standard progressive-enhancement posture for interactive components — core content server-rendered, the History API carrying state into a real URL — and it costs roughly forty lines.</p>
+
+  <h3 class="sub">2. The number is the art</h3>
+  <p>B's other cost was &ldquo;a real illustration or photo per band, so it has an ongoing art cost.&rdquo; Instead, the hero <em>is</em> the typography: a 13rem numeral in whichever brand colour is neither the band's ground nor its text — yellow on the blue band, blue on the pale band, navy on the gold band — with the guide's existing SVG reused as an 8% watermark behind it. Six illustrations already exist and each one serves every band in its guide, so the marginal art cost of a new plank is zero. Real per-band artwork stays available as an optional field for when it exists.</p>
+
+  <h3 class="sub">3. Length is managed, not pretended away</h3>
+  <p>One band per plank does mean twelve planks is twelve screens, and no design amendment changes that. What helps is giving the reader somewhere to stand: a pinned rail down the left with one tick per plank, and a <code class="inl">/platform</code> index that lists every commitment headline across all six guides — Direction C's idea, adopted where its value actually was. That index is also the thing you hand an endorsement questionnaire.</p>
+
+  <h3 class="sub">4. Two parallel collections, not an extension of <code class="inl">issues</code></h3>
+  <p>This is the part the brief turns on. Sveltia is configured against <code class="inl">backend.branch: main</code> with no editorial workflow, so <strong>every save in the CMS is a commit to main and a production deploy</strong>. &ldquo;Create the content ahead of time without ruining deployed content&rdquo; therefore cannot be achieved by discipline; it has to be structural. Separate collections in separate folders read by separate routes means a half-finished draft is physically incapable of appearing on <code class="inl">/issues</code>, because nothing on that page reads those files. It is the expand-and-contract shape: build the new surface alongside the old, run both, switch traffic, retire the old one — with the retirement deliberately deferred to its own change so a revert is one commit.</p>
+  <p>Visibility before launch copies a pattern the repo already runs rather than inventing one: <code class="inl">posts</code> is built, reachable by URL, marked <code class="inl">noindex</code> via the layout prop that already exists, excluded from the sitemap in <code class="inl">astro.config.mjs</code>, and linked from no navigation. Draft guides get exactly that treatment, which means Gabriel can open his own draft on the real domain and text the link to a comms volunteer without any of it being discoverable.</p>
+
+  <h3 class="sub">5. Logic in <code class="inl">src/lib/</code>, because that is what this repo can test</h3>
+  <p>Vitest is configured for <code class="inl">src/**/*.test.ts</code> in a node environment; there is no Astro component testing and no way to add it cheaply. The repo has already solved this once — <code class="inl">src/lib/events.ts</code> holds the &ldquo;which events are still upcoming&rdquo; filter precisely so it can be tested, with the <code class="inl">.astro</code> files kept as thin templates. Band-theme rotation, hero resolution, draft filtering, the guide&harr;plank join and its assertions all go into <code class="inl">src/lib/platform.ts</code> for the same reason.</p>
+  <p>One deliberate deviation from repo convention: the band and sheet components take a <code class="inl">lang</code> prop rather than shipping as an <code class="inl">index.astro</code>/<code class="inl">es.astro</code> pair. That convention has already drifted in the surface being replaced — the Spanish issue page has no analytics at all, and its index anchor is <code class="inl">#retos</code> while every back-link points at <code class="inl">#what-will-i-tackle</code>. Duplicating markup that is a near-clone is how that happens, and this is a good place to stop doing it.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec">Alternatives considered</h2></div>
+
+  <div class="alt">
+    <h3>Extend <code class="inl">issues</code> with optional fields <span class="verdict">rejected</span></h3>
+    <p>The original artifact's own recommendation: additive fields on the existing collection, six files migrated one at a time, no new route. Genuinely the smaller change.</p>
+    <p><strong>Why not:</strong> it fails the brief directly. A CMS save commits to <code class="inl">main</code>, so an editor drafting a commitment is editing the very file <code class="inl">/issues/housing-crisis</code> renders. Worse, every <code class="inl">_es</code> field on <code class="inl">issues</code> is required, so a plank cannot even be saved until it is fully translated. And the &ldquo;Issues&rdquo; form in Sveltia would grow roughly fourteen fields that do nothing on any deployed page — a form that lies to the person filling it in.</p>
+  </div>
+
+  <div class="alt">
+    <h3>One new collection, planks as a nested list widget <span class="verdict">rejected</span></h3>
+    <p>Mirror the existing shape: one file per guide with a <code class="inl">planks:</code> list inside it. No join, no reference, no spike, half the CMS config.</p>
+    <p><strong>Why not:</strong> draft status collapses to per-guide, so there is no way to publish a guide with three planks ready and two still being written — which is the exact workflow this is for. It also recreates the doubly-nested Sveltia list widget (<code class="inl">subIssues[].problemsAndSolutions[]</code>) that makes today's content unpleasant to add to, and it means every plank edit rewrites a large file, so two people cannot work on one guide at once.</p>
+  </div>
+
+  <div class="alt">
+    <h3>Sveltia editorial workflow <span class="verdict">rejected for now</span></h3>
+    <p><code class="inl">publish_mode: editorial_workflow</code> puts every unpublished entry on its own branch with a pull request, which solves the isolation problem at the CMS layer rather than the content-model layer.</p>
+    <p><strong>Why not:</strong> it changes the publishing model for <em>every</em> collection, including Events, which the campaign updates weekly and under time pressure — a volunteer adding a canvass event should not have to understand a pull request. It is also the more invasive change to a system that currently works. Worth revisiting once the campaign has more than one regular editor; kept as <strong>F5</strong>.</p>
+  </div>
+
+  <div class="alt">
+    <h3>A separate preview deploy for drafts <span class="verdict">rejected</span></h3>
+    <p>Keep drafts out of production entirely and view them on a Netlify branch deploy or a second site.</p>
+    <p><strong>Why not:</strong> the CMS commits to <code class="inl">main</code>. Pointing it at a draft branch instead means someone has to merge that branch by hand to publish anything, which is more infrastructure and more human steps than a campaign has capacity for — and it takes away the thing that actually matters, which is being able to look at the real page on the real domain.</p>
+  </div>
+
+  <div class="alt">
+    <h3>One page per plank <span class="verdict">rejected</span></h3>
+    <p><code class="inl">/platform/&lt;guide&gt;/&lt;plank&gt;</code> as real routes — the strongest possible linkability, and the friendliest thing to hand a journalist.</p>
+    <p><strong>Why not:</strong> eighteen to forty pages of two paragraphs each, none of them substantial enough to rank or to share on their own, and it dissolves the uninterrupted scroll that is the entire argument for Direction&nbsp;B. The <code class="inl">#plank-&lt;slug&gt;</code> anchor gets most of the linkability at none of the cost.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec">Design</h2></div>
+  <p>Mobile and desktop mockups at real dimensions, scrollable, including the sheet-open state on both and the <code class="inl">/platform</code> index: <a href="./design.html">design.html</a>.</p>
+  <p>Two decisions in there worth flagging because they are not obvious from looking: the band's two-column desktop layout is driven by a <strong>container query</strong>, not a viewport media query, so the same component renders correctly inside the narrower column of a future index or embed; and the sheet is deliberately white on every band theme rather than inheriting the band's palette, because it is the one surface on the page someone actually reads at length.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec">Schema changes</h2></div>
+  <p>Two new collections, <code class="inl">guides</code> and <code class="inl">planks</code>, in <code class="inl">src/content/guides/</code> and <code class="inl">src/content/planks/</code>, mirrored field-for-field in <code class="inl">public/admin/config.yml</code>. Nothing existing is modified — the four current collections, the six issue YAML files, and the Issues block in the CMS are all untouched, so backward compatibility is total and rollback is deletion. Full field tables, the reason the guide&harr;plank join avoids Astro's <code class="inl">reference()</code>, and the hand-migration of <code class="inl">housing-crisis</code> as the reference entry: <a href="./schema.html">schema.html</a>.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec">Spike and PRs</h2></div>
+  <p class="lede">Three PRs, one spike, no phases — the sequence is short enough to read straight down. Each PR leaves the site shippable, and the first two leave <code class="inl">/issues</code> as the campaign's live platform surface, untouched.</p>
+
+  <div class="item item--spike">
+    <span class="item__no s">S1 of 1 — Spike</span>
+    <h3>Does Sveltia's <code class="inl">relation</code> widget write a guide's <code class="inl">slug</code>, and stay usable once drafts are in the list?</h3>
+    <dl>
+      <dt>Why</dt>
+      <dd>A plank's <code>guide</code> field should be a dropdown of existing guides, not a slug typed from memory. Sveltia's <code>relation</code> widget does that, but which string it writes depends on <code>value_field</code> resolving against a field rather than a filename, and that behaviour against a folder collection of YAML is not something the documentation settles. If it writes the wrong thing, the fallback is a hand-maintained <code>select</code> with six options — workable, but it is a different config and a small ongoing maintenance cost, so PR&nbsp;1 cannot be written confidently until this is known.</dd>
+      <dt>Timebox</dt>
+      <dd>Half a day. Configure both collections on a scratch branch, point the CMS at it, create one guide and one plank through the real UI, and read what landed in git.</dd>
+      <dt>Depends on</dt>
+      <dd>none</dd>
+      <dt>Feeds into</dt>
+      <dd>PR 1 of 3 — specifically the <code>planks.guide</code> field config, and whether <code>display_fields</code> can show draft status so an editor does not attach a plank to a guide that is going nowhere.</dd>
+    </dl>
+  </div>
+
+  <div class="item">
+    <span class="item__no">PR 1 of 3</span>
+    <h3>Add the <code class="inl">guides</code> and <code class="inl">planks</code> collections, the CMS forms, and the helper module</h3>
+    <dl>
+      <dt>Goal</dt>
+      <dd>Writing can start. This PR renders <strong>nothing</strong> — no route reads either collection — and that is the point: it is the smallest change that unblocks months of content work, and it is impossible for it to affect a deployed page. Ships with <code>housing-crisis</code> and its three planks hand-migrated as the worked example.</dd>
+      <dt>Touches</dt>
+      <dd><code>src/content.config.ts</code> · <code>public/admin/config.yml</code> · <code>src/lib/platform.ts</code> (new) · <code>src/lib/platform.test.ts</code> (new) · <code>src/content/guides/housing-crisis.yml</code> (new) · <code>src/content/planks/*.yml</code> (3 new)</dd>
+      <dt>Tests</dt>
+      <dd><code>bandTheme()</code> across a rotation and past its end — the case today's hardcoded ternary gets wrong, so it is a regression test for a bug being designed out. <code>resolveHero()</code> for stat, quote and statement shapes in both languages. <code>assertGuideRefs()</code> throwing with the orphan named and the known guides listed. Draft filtering, including a published plank sitting under a draft guide. <code>localized()</code> falling back when an <code>_es</code> twin is absent.</dd>
+      <dt>Depends on</dt>
+      <dd>S1 of 1</dd>
+    </dl>
+  </div>
+
+  <div class="item">
+    <span class="item__no">PR 2 of 3</span>
+    <h3>Render <code class="inl">/platform</code> and <code class="inl">/platform/&lt;slug&gt;</code>, unlisted</h3>
+    <dl>
+      <dt>Goal</dt>
+      <dd>The Field Guide exists and is viewable on the real domain, while being invisible to search, to the sitemap, and to every navigation on the site. <code>/issues</code> is still the linked-to platform surface and is not modified. At the end of this PR the campaign can read its own draft and nobody else will find it.</dd>
+      <dt>Touches</dt>
+      <dd><code>src/pages/platform/index.astro</code>, <code>[id].astro</code> and their <code>src/pages/es/platform/</code> twins (new) · <code>src/components/platform/band.astro</code>, <code>sheet.astro</code>, <code>plank-rail.astro</code>, <code>guide-card.astro</code> (new, each taking a <code>lang</code> prop) · <code>src/styles/global.css</code> for the band-theme utilities · <code>astro.config.mjs</code> for the sitemap exclusion · <code>.posthog-events.json</code></dd>
+      <dt>Tests</dt>
+      <dd><code>getGuides()</code> and <code>getPlanks()</code> across every draft/published combination, and ordering. Plus first-ever coverage for <code>slugify()</code> and <code>stripMarkdown()</code> in <code>src/lib/</code>: both are untested today, and this PR makes the plank anchors and the guide meta descriptions depend on them, so the debt is picked up where it is newly load-bearing rather than left for later.</dd>
+      <dt>Depends on</dt>
+      <dd>PR 1 of 3</dd>
+    </dl>
+  </div>
+
+  <div class="item">
+    <span class="item__no">PR 3 of 3</span>
+    <h3>Cut over: nav, redirects, and retire the Issues form</h3>
+    <dl>
+      <dt>Goal</dt>
+      <dd>Make <code>/platform</code> the campaign's platform. Flip guide and plank statuses to <code>published</code>, add the nav entries to both headers, drop the sitemap exclusion, redirect <code>/issues/*</code> and <code>/es/issues/*</code> to their new homes, and set the CMS Issues collection to <code>create: false, delete: false</code> so nobody adds to a surface that no longer renders. The <code>issues</code> collection and its YAML stay on disk — retiring them is F1, deliberately not bundled here, so reverting this whole PR is one command.</dd>
+      <dt>Touches</dt>
+      <dd><code>src/components/header/index.astro</code> and <code>header/es.astro</code> · <code>astro.config.mjs</code> (redirects + sitemap) · <code>public/admin/config.yml</code> · the <code>status</code> field on every guide and plank</dd>
+      <dt>Tests</dt>
+      <dd>First coverage for <code>alternatePath()</code>, which now has to round-trip a two-segment route it has never been exercised against. A table test asserting every old issue slug has a redirect target that resolves to a real guide slug — the failure mode here is a silent 404 on a URL that has been shared for a year.</dd>
+      <dt>Depends on</dt>
+      <dd>PR 2 of 3, <em>and on the content actually being written.</em> This is the only item in the plan gated on a person rather than on code, and it should sit open until Gabriel says the platform reads the way he wants it to.</dd>
+    </dl>
+  </div>
+
+  <div class="note">
+    <p><strong>Why not split PR 2.</strong> Separating the components from the pages would ship a band component nothing renders, and separating English from Spanish would leave <code class="inl">/es/platform</code> a 404 while <code class="inl">/platform</code> worked. Since the components take a <code class="inl">lang</code> prop rather than existing as duplicated pairs, the Spanish routes are a few dozen lines on top of the English ones — reviewing them together is less work than reviewing the same markup twice.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec">Open questions &amp; risks</h2></div>
+  <p class="lede">Six decisions this proposal has a position on but should not make alone. Q1 and Q4 are the two worth settling before anyone writes code.</p>
+
+  <div class="q">
+    <h3><span class="qn">Q1:</span> Should draft guides build on the live site as unlisted <code class="inl">noindex</code> pages, or be excluded from the production build entirely?</h3>
+    <p>The CMS commits to <code class="inl">main</code>, so the only build that ever runs is the production one — there is no staging environment and no dev server Gabriel is going to run. If drafts are excluded from the production build, there is no way for anyone to look at the new platform until the moment it goes live, which makes writing it a blind exercise. If they are built and merely unlisted, they are real URLs on the real domain: crawl-suppressed, sitemap-suppressed, linked from nowhere, but guessable and shareable. There is no third option that does not involve standing up infrastructure.</p>
+    <dl>
+      <dt>My Recommendation</dt>
+      <dd>Build them, unlisted. This is not a new pattern — <code class="inl">posts</code> already works exactly this way, using the <code class="inl">noindex</code> prop that <code class="inl">layouts/default.astro</code> already accepts and a one-line sitemap exclusion that <code class="inl">astro.config.mjs</code> already has the shape for. The content is a draft of a public political platform, not anything confidential, and the ability to open the real page on the real domain and send the link to someone is worth more to this campaign than protection against a URL guess. <strong>One honest wrinkle:</strong> the sitemap filter only sees a URL, not content, so the exclusion has to cover the whole <code class="inl">/platform</code> tree until cutover. After cutover, any guide still in draft will appear in <code class="inl">sitemap.xml</code> while carrying <code class="inl">noindex</code> — Google honours the tag and files it as &ldquo;Excluded by noindex,&rdquo; which is untidy rather than harmful. F6 fixes it properly if drafts-after-cutover become routine.</dd>
+      <dt>Alternatives to Consider</dt>
+      <dd>Building drafts only when an <code class="inl">INCLUDE_DRAFTS</code> environment variable is set, and configuring a second Netlify context with it on. Genuinely airtight, and cheap if the campaign is willing to hold two deploy contexts in its head — but it is a piece of infrastructure nobody has asked for, and it hands Gabriel a second domain to remember.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q2:</span> Is <code class="inl">/platform</code> the permanent URL, or should the guides move back to <code class="inl">/issues</code> once the old pages are retired?</h3>
+    <p>A new route is what makes the parallel build safe, but it is not obviously the right long-term address. <code class="inl">/issues</code> has been shared for a year, it is what the current nav says, and inbound links point at it. <code class="inl">/platform</code> is a better description of what the page now is — a set of promises, not a set of problems — and it is easier to say out loud. Whichever loses needs a permanent redirect, and doing that twice would be worse than doing it once.</p>
+    <dl>
+      <dt>My Recommendation</dt>
+      <dd>Keep <code class="inl">/platform</code> permanently and 301 <code class="inl">/issues/*</code> to it in PR&nbsp;3. The redirect map is small and mechanical (the guide slugs deliberately match the issue slugs), <code class="inl">astro.config.mjs</code> already carries a <code class="inl">redirects</code> block from the donate-path moves, and the word is simply more accurate — a voter looking for what a candidate will actually do is not looking for &ldquo;issues.&rdquo;</dd>
+      <dt>Alternatives to Consider</dt>
+      <dd>Building at <code class="inl">/platform</code> and swapping the guides back onto <code class="inl">/issues</code> at cutover, with <code class="inl">/platform</code> redirecting the other way. Keeps every existing link and every printed piece of literature valid with no redirect at all, at the cost of a URL that undersells the page. Worth taking seriously if any physical material already carries the <code class="inl">/issues</code> address.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q3:</span> Must a plank be translated before it can publish, or should the Spanish pages simply skip untranslated planks?</h3>
+    <p>Today every <code class="inl">_es</code> field on <code class="inl">issues</code> is required, which guarantees the two languages never diverge and also guarantees nothing can be saved half-done. The new collections make <code class="inl">_es</code> optional so drafting is possible at all — but that reopens the question of what <code class="inl">/es/platform/housing-crisis</code> renders when plank three has no Spanish. Falling back to English inside a Spanish page is the one answer that is clearly wrong.</p>
+    <dl>
+      <dt>My Recommendation</dt>
+      <dd>Skip untranslated planks on the Spanish routes, and surface the gap in the CMS rather than on the page — a <code class="inl">summary</code> template on the Planks collection that marks an entry as English-only, so the backlog is visible to whoever is doing the translating. A Spanish reader then sees a shorter but entirely coherent guide, which is far better than a bilingual one, and the English page is never held hostage to translation capacity.</dd>
+      <dt>Alternatives to Consider</dt>
+      <dd>Requiring <code class="inl">_es</code> before <code class="inl">status</code> can be set to <code class="inl">published</code>, enforced in the build rather than the schema so drafting still works. Stronger guarantee, and it keeps the two sites genuinely equal — the right call if Spanish-language voters are a priority audience rather than a courtesy, which is a campaign question and not a technical one.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q4:</span> Is every number going to get a real source, and what renders on the bands that don't?</h3>
+    <p>The whole format rests on an enormous figure being trustworthy. A 13rem <code class="inl">77%</code> with no citation under it is a much bigger claim than the same number buried in a paragraph, and an opponent only has to find one unsourced figure. The existing content has the numbers (45%, 28%, 77%, ~10%) and no URLs for any of them. Partial sourcing is the worst outcome — cited numbers next to bare ones reads as evasion about the bare ones.</p>
+    <dl>
+      <dt>My Recommendation</dt>
+      <dd>Treat a source as a hard requirement for a <em>stat</em> band specifically, and lean on the pull-quote and statement bands for everything else. The schema deliberately supports three hero kinds so this is a real option rather than a compromise: a plank with no defensible figure gets a pull-quote or its own commitment as the hero and loses nothing. That way every number on the site is cited, without the sourcing burden dictating how many bands exist.</dd>
+      <dt>Alternatives to Consider</dt>
+      <dd>Shipping numbers uncited for now and adding footnotes as they are found. Faster to a complete-looking platform, and the schema makes backfilling a source a one-field edit — the risk is that &ldquo;for now&rdquo; survives into October.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q5:</span> How much of the policy detail should sit in the sheet rather than on the band?</h3>
+    <p>The mockups put the commitment, the <code class="inl">why</code> line, the timeline chip and the source on the band, and everything else — the problem prose, the authority note, the full source list — behind the sheet. Push more onto the band and the format loses the density that makes it shareable; push less and the band becomes a slogan with a link under it. The <code class="inl">why</code> line is the hinge: it is what keeps a closed sheet from hiding the argument.</p>
+    <dl>
+      <dt>My Recommendation</dt>
+      <dd>As drawn, with the <code class="inl">why</code> line kept mandatory in the schema. It is the smallest amount of reasoning that makes a band self-contained, so a screenshot of one band is an argument rather than an assertion — and the sheet then genuinely is supporting material rather than the missing half of the page.</dd>
+      <dt>Alternatives to Consider</dt>
+      <dd>Promoting <code class="inl">authority</code> onto the band as a second always-visible line. &ldquo;A Council vote, no ballot measure&rdquo; is the single most distinguishing thing a city-council candidate can say — most platforms promise things the office cannot deliver — and it may be worth the vertical space on the bands where it is strongest.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q6:</span> Do the six illustrations survive as 8% watermarks, or should the bands be purely typographic?</h3>
+    <p>The existing SVGs are distinctive and they are doing real brand work on the current pages, where each one gets a half-hero. In the Field Guide they are reduced to a tinted watermark bleeding off the band edge, which is a large demotion for artwork someone commissioned. The alternative is bands that are pure type and colour, with the illustrations moved to the <code class="inl">/platform</code> index as the guide markers.</p>
+    <dl>
+      <dt>My Recommendation</dt>
+      <dd>Keep them as watermarks and <em>also</em> use them at full size on the index cards. At 8% they add texture and a hint of subject without competing with the numeral, which is the one thing on the band that must win — and the index is where they get to be themselves again, at the size they were drawn for.</dd>
+      <dt>Alternatives to Consider</dt>
+      <dd>Dropping them from the bands entirely. A band of nothing but a 13rem numeral on a flat brand colour is a stronger, more confident poster, and it is closer to how this design language works on Instagram — where it is going to be screenshotted — than anything with a decorative element in the corner.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec">Follow-ups after this plan ships</h2></div>
+
+  <p class="grouplabel">Required</p>
+
+  <div class="f">
+    <h3><span class="fn">F1:</span> Retire the <code class="inl">issues</code> collection and its routes</h3>
+    <dl>
+      <dt>What is this?</dt><dd>Delete <code class="inl">src/content/issues/</code>, the <code class="inl">issues</code> collection from <code class="inl">content.config.ts</code> and from the CMS, and the four <code class="inl">/issues</code> page files, leaving only the redirects.</dd>
+      <dt>Why do this?</dt><dd>Two content models for the same thing is the state this proposal is deliberately passing through, not living in. Leaving both means a future editor can put a policy promise in the wrong place, and every subsequent change to issue content has to ask which system it belongs to.</dd>
+      <dt>Why isn't this in the plan?</dt><dd>Bundling it into PR&nbsp;3 would make that cutover irreversible — the whole reason the old collection survives the cutover untouched is so a bad launch is a single <code class="inl">git revert</code>. This wants to happen after the new pages have been live and unchanged for a few weeks, which is a date, not a dependency.</dd>
+    </dl>
+  </div>
+
+  <div class="f">
+    <h3><span class="fn">F2:</span> Alert on a failed Netlify build</h3>
+    <dl>
+      <dt>What is this?</dt><dd>Turn on Netlify's failed-deploy notification to email or Slack, pointed at whoever is on call for the site.</dd>
+      <dt>Why do this?</dt><dd>A CMS save is a commit to <code class="inl">main</code>, so a content entry that fails Zod validation takes down the <em>entire</em> site's next deploy — not just the page it belongs to. That risk exists today, but this plan meaningfully raises it: two new collections, forty-odd new entries, and non-technical people authoring them. Right now nothing tells anyone; the site just silently stops updating, and the first signal is someone noticing an event never appeared.</dd>
+      <dt>Why isn't this in the plan?</dt><dd>It is a setting in the Netlify dashboard, not a code change — there is nothing for a PR to contain. It should be switched on before PR&nbsp;1's content starts being edited, though.</dd>
+    </dl>
+  </div>
+
+  <p class="grouplabel opt">Optional</p>
+
+  <div class="f">
+    <h3><span class="fn">F3:</span> Tag filter and a printable view on <code class="inl">/platform</code></h3>
+    <dl>
+      <dt>What is this?</dt><dd>Filter chips on the index (cost of living, housing, safety, tech &amp; privacy, food) and a print stylesheet that renders the whole platform as a document.</dd>
+      <dt>Why do this?</dt><dd>An endorsement questionnaire wants one URL containing every promise, and a filtered view is how you answer &ldquo;what is your housing platform&rdquo; without sending six links. The print view is what you hand someone across a table.</dd>
+      <dt>Why to not do this?</dt><dd>Filtering under about fifteen commitments is a control that never changes anything — the unfiltered list already fits on a screen. Build it when the platform crosses that size, not before, or it ships as furniture.</dd>
+    </dl>
+  </div>
+
+  <div class="f">
+    <h3><span class="fn">F4:</span> Read the <code class="inl">plank_detail_opened</code> funnel</h3>
+    <dl>
+      <dt>What is this?</dt><dd>A PostHog view of which planks people actually open, broken down by guide and by language.</dd>
+      <dt>Why do this?</dt><dd>The current pages cannot answer &ldquo;which of these policies do voters care about&rdquo; at all — <code class="inl">issue_viewed</code> is as granular as it gets. Per-plank opens are a genuinely useful signal for what to lead with in canvassing and in email.</dd>
+      <dt>Why to not do this?</dt><dd>It needs traffic before it says anything, and reading a thin funnel is a good way to talk yourself into a conclusion the data does not support. The events ship in PR&nbsp;2 regardless; this is only about whether anyone builds a dashboard for them.</dd>
+    </dl>
+  </div>
+
+  <div class="f">
+    <h3><span class="fn">F5:</span> Revisit Sveltia's editorial workflow</h3>
+    <dl>
+      <dt>What is this?</dt><dd>Turn on <code class="inl">publish_mode: editorial_workflow</code> so unpublished entries live on their own branch with a pull request, instead of relying on a <code class="inl">status</code> field.</dd>
+      <dt>Why do this?</dt><dd>It would make the <code class="inl">status</code> field redundant and give real review before anything reaches <code class="inl">main</code> — which starts to matter a lot the moment more than one person is editing, or a volunteer has CMS access.</dd>
+      <dt>Why to not do this?</dt><dd>It applies to every collection, so the person adding next Tuesday's canvass now has a pull request between them and the website. For a one-editor campaign that is a cost with no matching benefit, and the <code class="inl">status</code> field covers the actual need at a fraction of the friction.</dd>
+    </dl>
+  </div>
+
+  <div class="f">
+    <h3><span class="fn">F6:</span> Generate the sitemap's draft exclusion from content</h3>
+    <dl>
+      <dt>What is this?</dt><dd>Have <code class="inl">astro.config.mjs</code>'s sitemap filter consult the actual draft slugs rather than excluding the whole <code class="inl">/platform</code> tree or nothing at all.</dd>
+      <dt>Why do this?</dt><dd>It closes the wrinkle named in Q1: after cutover, a still-draft guide appears in <code class="inl">sitemap.xml</code> carrying <code class="inl">noindex</code>, which Search Console reports as an excluded URL forever.</dd>
+      <dt>Why to not do this?</dt><dd>The config file would have to read and parse YAML at build time to know which slugs are drafts, which is real machinery in a file that is currently plainly readable — in exchange for removing a Search Console notice that has no effect on anything. Only worth it if drafting alongside a published platform turns out to be the normal state rather than a one-time launch.</dd>
+    </dl>
+  </div>
+</section>
+
+<footer class="block" style="color:var(--ink-2);font-size:.9rem">
+  <p>Companion documents: <a href="./design.html">design.html</a> (mobile and desktop mockups) and <a href="./schema.html">schema.html</a> (the two new collections, field by field).</p>
+</footer>
+
+</div>

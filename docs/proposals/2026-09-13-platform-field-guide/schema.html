@@ -1,0 +1,338 @@
+<title>Guides and Planks</title>
+<meta name="description" content="The two new content collections behind the Field Guide platform pages.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  --paper: #f4f5f9; --card: #ffffff; --ink: #12141c; --ink-2: #545c72;
+  --rule: #dbdfe9; --rule-soft: #e7eaf1; --accent: #1900a8; --flag: #a4560a; --ok: #1c6a45;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+    --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+  --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--f-body);
+  font-size: 16px; line-height: 1.6; margin: 0; padding: 0 1.5rem 6rem;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 60rem; margin: 0 auto; }
+.doc-eyebrow {
+  font-family: var(--f-mono); font-size: .72rem; font-weight: 500; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-2); margin: 0 0 .9rem;
+}
+h1.doc-title {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.3rem);
+  line-height: .98; letter-spacing: -.025em; text-wrap: balance; margin: 0 0 1rem;
+}
+.doc-sub { font-size: 1.12rem; color: var(--ink-2); max-width: 40rem; margin: 0 0 1.5rem; }
+.grounded { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-2); margin: 0; }
+.grounded code { color: var(--ink); }
+h2.sec {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(1.45rem, 3vw, 1.95rem);
+  line-height: 1.05; letter-spacing: -.02em; margin: 0 0 .5rem; text-wrap: balance;
+}
+h3.sub {
+  font-family: var(--f-display); font-weight: 700; font-size: 1.12rem;
+  letter-spacing: -.01em; margin: 2rem 0 .6rem;
+}
+h4.sub2 {
+  font-family: var(--f-mono); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--ink-2); font-weight: 500; margin: 1.6rem 0 .6rem;
+}
+p { margin: 0 0 1rem; max-width: 44rem; }
+.lede { font-size: 1.03rem; color: var(--ink-2); }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+strong { font-weight: 600; }
+section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-top: 3.5rem; }
+.sec-head { display: flex; flex-direction: column; gap: .1rem; margin-bottom: 1.5rem; }
+.sec-num { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .16em; color: var(--accent); font-weight: 700; }
+ul.plain { padding-left: 1.15rem; margin: 0 0 1rem; max-width: 44rem; }
+ul.plain li { margin-bottom: .5rem; }
+code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-soft); padding: .1em .35em; border-radius: 3px; }
+.note { border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem; margin: 1.5rem 0; color: var(--ink-2); font-size: .95rem; }
+.note strong { color: var(--ink); }
+.note p:last-child { margin-bottom: 0; }
+
+/* field tables */
+.tablewrap { overflow-x: auto; margin-bottom: 1.5rem; scrollbar-width: thin; }
+table.f { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 40rem; }
+table.f th, table.f td { text-align: left; padding: .55rem .9rem .55rem 0; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+table.f th {
+  font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--ink-2); font-weight: 500; border-bottom: 1px solid var(--rule); white-space: nowrap;
+}
+table.f td.n { font-family: var(--f-mono); font-size: .82rem; white-space: nowrap; }
+table.f td.t { font-family: var(--f-mono); font-size: .78rem; color: var(--ink-2); white-space: nowrap; }
+table.f td.d { color: var(--ink-2); }
+.req { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+.req.yes { color: var(--flag); }
+.req.no  { color: var(--ink-2); opacity: .75; }
+.es { font-family: var(--f-mono); font-size: .68rem; color: var(--ok); font-weight: 700; letter-spacing: .06em; }
+
+/* code */
+pre {
+  font-family: var(--f-mono); font-size: .8rem; line-height: 1.65; background: var(--card);
+  border: 1px solid var(--rule); border-radius: .6rem; padding: 1.1rem 1.2rem;
+  overflow-x: auto; margin: 0 0 1.5rem; scrollbar-width: thin; tab-size: 2;
+}
+pre .k { color: var(--accent); }
+pre .c { color: var(--ink-2); font-style: italic; }
+pre .s { color: var(--ok); }
+.filename {
+  font-family: var(--f-mono); font-size: .72rem; letter-spacing: .06em; color: var(--ink-2);
+  margin: 0 0 .45rem; display: block;
+}
+.badgerow { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.5rem; }
+.badge {
+  font-family: var(--f-mono); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
+  border: 1px solid var(--rule); border-radius: 99px; padding: .3rem .7rem; color: var(--ink-2);
+}
+.badge b { color: var(--ink); font-weight: 700; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="doc-eyebrow">Schema changes · Gabriel for Denver</p>
+  <h1 class="doc-title">Guides and Planks</h1>
+  <p class="doc-sub">Two new content collections, one new folder each, zero edits to anything already deployed. Both exist so the campaign can write the new platform months before it is switched on.</p>
+  <p class="grounded">Grounded against <code>main</code> @ <code>07970fe</code> — 13 Sept 2026 &nbsp;·&nbsp; <a href="./plan.html">plan.html</a> &nbsp;·&nbsp; <a href="./design.html">design.html</a></p>
+</header>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">01</span><h2 class="sec">Current schema, the slice that matters</h2></div>
+  <p class="lede">Four collections live in <code class="inl">src/content.config.ts</code>: <code class="inl">pages</code>, <code class="inl">issues</code>, <code class="inl">events</code>, <code class="inl">posts</code>. Only <code class="inl">issues</code> is relevant, and only as the thing the new collections are deliberately <em>not</em> modifying.</p>
+
+  <span class="filename">src/content.config.ts — existing, unchanged by this proposal</span>
+<pre><span class="k">const</span> issues = defineCollection({
+  loader: glob({ pattern: <span class="s">'**/*.yml'</span>, base: <span class="s">'./src/content/issues'</span> }),
+  schema: () =&gt; z.object({
+    title, title_es, summary, summary_es, intro, intro_es,   <span class="c">// all z.string(), all required</span>
+    slug: z.string(), lucideIcon: z.string(), order: z.number(),
+    subIssues: z.array(z.object({
+      title, title_es, summary, summary_es,
+      problemsAndSolutions: z.array(z.object({
+        problem, problem_es, solution, solution_es,
+      })),
+    })).optional(),
+  }),
+})</pre>
+
+  <p>Three properties of that shape carry over to the new collections, because they are the repo's conventions and not accidents:</p>
+  <ul class="plain">
+    <li><strong>YAML files with markdown inside string fields</strong>, parsed at render time with <code class="inl">marked.parse()</code> and injected via <code class="inl">set:html</code>. Not MDX, not frontmatter-plus-body.</li>
+    <li><strong>Spanish as an <code class="inl">_es</code> twin on every translatable field.</strong> There is no dictionary and no i18n routing helper — one file holds both languages, and the Spanish pages under <code class="inl">src/pages/es/</code> are hand-authored.</li>
+    <li><strong><code class="inl">slug</code> is an explicit field</strong>, not derived from the filename, and <code class="inl">order</code> is an explicit number, not a date.</li>
+  </ul>
+
+  <p>Two properties deliberately do <em>not</em> carry over. The <code class="inl">_es</code> fields here are all <strong>required</strong>, which means an entry cannot be saved until it is fully translated — workable for six issues written in one sitting, hostile to writing eighteen planks over eight weeks. And the nesting goes two levels deep (<code class="inl">subIssues[].problemsAndSolutions[]</code>), which in Sveltia means a list widget inside a list widget: the single most-complained-about editing surface on the site today, and the reason the content is hard to add to.</p>
+
+  <div class="note">
+    <p><strong>The CMS is half the schema.</strong> <code class="inl">public/admin/config.yml</code> (Sveltia, GitHub backend, committing straight to <code class="inl">main</code>) mirrors every collection field for field. A Zod change without the matching CMS change produces content nobody can edit; a CMS change without the Zod change produces a saved entry that breaks the production build. They ship together, always.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec">New collection: <code style="font-family:var(--f-mono);font-size:.72em">guides</code></h2></div>
+  <p class="lede">One file per issue area, at <code class="inl">src/content/guides/&lt;slug&gt;.yml</code>. Holds everything that is true of the whole guide and nothing that is true of a single promise.</p>
+
+  <div class="badgerow">
+    <span class="badge">folder <b>src/content/guides</b></span>
+    <span class="badge">route <b>/platform/&lt;slug&gt;</b></span>
+    <span class="badge">expected rows <b>6</b></span>
+    <span class="badge">CMS label <b>Field Guides</b></span>
+  </div>
+
+  <div class="tablewrap">
+    <table class="f">
+      <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td class="n">title <span class="es">+_es</span></td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">Display name. &ldquo;Housing Crisis&rdquo;.</td></tr>
+        <tr><td class="n">slug</td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">URL segment. Keep it identical to the filename — the loader's entry id is the filename, and a mismatch is the one way to make the guide unreachable.</td></tr>
+        <tr><td class="n">stance <span class="es">+_es</span></td><td class="t">string (md)</td><td><span class="req yes">yes</span></td><td class="d">The whole issue in one line. &ldquo;Housing is a <strong>human right</strong>, not a commodity.&rdquo; Bold marks the phrase that gets the accent colour in the hero.</td></tr>
+        <tr><td class="n">lucideIcon</td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">A raw lucide export name, e.g. <code class="inl">MapPinHouse</code> — same convention as <code class="inl">issues</code>, resolved by <code class="inl">components/icon.astro</code>.</td></tr>
+        <tr><td class="n">order</td><td class="t">number</td><td><span class="req yes">yes</span></td><td class="d">Position in the index and in &ldquo;2 of 6&rdquo;.</td></tr>
+        <tr><td class="n">status</td><td class="t">'draft' | 'published'</td><td><span class="req yes">yes</span></td><td class="d">Defaults to <code class="inl">draft</code>. Draft guides build, carry <code class="inl">noindex</code>, and appear in no index or nav. See Q1 in the plan.</td></tr>
+        <tr><td class="n">artwork</td><td class="t">image()</td><td><span class="req no">no</span></td><td class="d">The guide's illustration. Replaces the hardcoded slug&rarr;image map currently sitting in two page files.</td></tr>
+        <tr><td class="n">artworkAlt <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">Replaces the hardcoded slug&rarr;alt map next to it.</td></tr>
+        <tr><td class="n">lastReviewed</td><td class="t">date</td><td><span class="req no">no</span></td><td class="d">Renders as &ldquo;Updated 13 Sept 2026&rdquo;. A platform page with no date on it reads as unmaintained.</td></tr>
+        <tr><td class="n">related</td><td class="t">string[]</td><td><span class="req no">no</span></td><td class="d">Other guide slugs, for the cross-link block at the foot. Validated at build against the known slugs.</td></tr>
+        <tr><td class="n">metaDescription <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">Falls back to <code class="inl">stripMarkdown(stance)</code>. Present because a one-line stance sometimes makes a poor search snippet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="sub2">Why a new collection rather than fields on <code class="inl">issues</code></h4>
+  <p>Every field above except <code class="inl">title</code>, <code class="inl">slug</code>, <code class="inl">lucideIcon</code> and <code class="inl">order</code> is new. Adding them to <code class="inl">issues</code> would mean editing the six YAML files that render the live site today, and would mean the CMS form for &ldquo;Issues&rdquo; growing fields that do nothing on the pages actually deployed — which is the specific failure the brief rules out. A guide also outlives the thing it replaces: it carries no <code class="inl">summary</code>, no <code class="inl">intro</code>, and no <code class="inl">subIssues</code>, so it is not a superset of an issue and could not be modelled as one without leaving four dead fields behind forever.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec">New collection: <code style="font-family:var(--f-mono);font-size:.72em">planks</code></h2></div>
+  <p class="lede">One file per promise, at <code class="inl">src/content/planks/&lt;slug&gt;.yml</code>. This is the unit the whole design is built on: one plank is one band, one anchor, one sheet, one CMS entry, one draft flag.</p>
+
+  <div class="badgerow">
+    <span class="badge">folder <b>src/content/planks</b></span>
+    <span class="badge">anchor <b>#plank-&lt;slug&gt;</b></span>
+    <span class="badge">expected rows <b>18&ndash;40</b></span>
+    <span class="badge">CMS label <b>Planks</b></span>
+  </div>
+
+  <div class="tablewrap">
+    <table class="f">
+      <thead><tr><th>Field</th><th>Type</th><th>Req</th><th>What it is</th></tr></thead>
+      <tbody>
+        <tr><td class="n">guide</td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">The slug of the guide this belongs to. Edited as a dropdown, not typed.</td></tr>
+        <tr><td class="n">slug</td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">Short and stable — it is the permalink. <code class="inl">legalize-multi-unit</code>, not the whole sentence.</td></tr>
+        <tr><td class="n">order</td><td class="t">number</td><td><span class="req yes">yes</span></td><td class="d">Position within its guide.</td></tr>
+        <tr><td class="n">status</td><td class="t">'draft' | 'published'</td><td><span class="req yes">yes</span></td><td class="d">Per-plank, not per-guide. This is what lets a guide go live with three planks while two more are still being written.</td></tr>
+        <tr><td class="n">kicker <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">Sub-topic shown above the hero: &ldquo;Zoning&rdquo;, &ldquo;Rent&rdquo;. What the old <code class="inl">subIssues[].title</code> was doing, minus the colour band.</td></tr>
+        <tr><td class="n">statValue</td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">The hero figure. A <em>string</em>, not a number, so <code class="inl">77%</code>, <code class="inl">1 in 3</code> and <code class="inl">$1.2B</code> all work without formatting logic.</td></tr>
+        <tr><td class="n">statCaption <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">What the figure counts. Required in practice whenever <code class="inl">statValue</code> is set — a bare number with no caption is a rumour.</td></tr>
+        <tr><td class="n">pullQuote <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">The alternative hero, for planks with no defensible number.</td></tr>
+        <tr><td class="n">commitment <span class="es">+_es</span></td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">The promise, written as a verb phrase. The only genuinely required piece of content on a plank.</td></tr>
+        <tr><td class="n">why <span class="es">+_es</span></td><td class="t">string</td><td><span class="req yes">yes</span></td><td class="d">One sentence of justification, always visible. This field is what stops the sheet from hiding the argument.</td></tr>
+        <tr><td class="n">detail <span class="es">+_es</span></td><td class="t">string (md)</td><td><span class="req no">no</span></td><td class="d">The sheet prose. The existing <code class="inl">problem</code> text lands here largely as written.</td></tr>
+        <tr><td class="n">authority <span class="es">+_es</span></td><td class="t">string</td><td><span class="req no">no</span></td><td class="d">What Council can actually do: &ldquo;A zoning text amendment — a Council vote.&rdquo; The field that separates a platform from a wish list.</td></tr>
+        <tr><td class="n">timeline</td><td class="t">enum</td><td><span class="req no">no</span></td><td class="d"><code class="inl">day-one</code> | <code class="inl">first-budget</code> | <code class="inl">ordinance</code> | <code class="inl">ballot-referral</code> | <code class="inl">ongoing</code>. Renders as the chip beside the action.</td></tr>
+        <tr><td class="n">sources</td><td class="t">{ label, label_es?, url }[]</td><td><span class="req no">no</span></td><td class="d">Footnotes scoped to this plank — see below.</td></tr>
+        <tr><td class="n">theme</td><td class="t">'ink'|'sky'|'gold'|'paper'</td><td><span class="req no">no</span></td><td class="d">Overrides the automatic rotation for this band. Escape hatch, not the normal path.</td></tr>
+        <tr><td class="n">artwork <span class="es">+Alt, +Alt_es</span></td><td class="t">image(), string</td><td><span class="req no">no</span></td><td class="d">Per-band art. Falls back to the guide's, which is why the format has no per-plank art cost.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="sub2">Sources live on the plank, not the guide</h4>
+  <p>The original sketch put a numbered <code class="inl">sources</code> list at issue level and had commitments cite it by id. That needs id bookkeeping across a file, breaks silently when an id is deleted, and — the real problem — assumes the reader is looking at the whole page. In this design the <strong>band is the shareable unit</strong>: someone screenshots one band, or lands on one plank's anchor. A footnote that lives two thousand pixels away from the claim it supports may as well not exist. Inline <code class="inl">{ label, url }</code> objects per plank cost a little duplication when two planks cite the same study, and remove a whole class of dangling-reference bug.</p>
+
+  <h4 class="sub2">The hero is resolved, not validated</h4>
+  <p>A plank can carry a <code class="inl">statValue</code>, a <code class="inl">pullQuote</code>, or neither. Rather than a Zod <code class="inl">.refine()</code> enforcing exactly one, a pure function picks in priority order and the schema accepts all three shapes:</p>
+
+  <span class="filename">src/lib/platform.ts</span>
+<pre><span class="k">export type</span> PlankHero =
+  | { kind: <span class="s">'stat'</span>; value: string; caption: string }
+  | { kind: <span class="s">'quote'</span>; quote: string }
+  | { kind: <span class="s">'statement'</span>; text: string }
+
+<span class="c">// Deliberately total: every plank resolves to some hero. A Sveltia save</span>
+<span class="c">// commits straight to main, so a schema that can reject an editor's entry</span>
+<span class="c">// is a schema that can take the whole campaign site's build down.</span>
+<span class="k">export function</span> resolveHero(plank: Plank, lang: Lang): PlankHero</pre>
+
+  <p>Falling back to the commitment itself as the hero is not a degraded state — a band whose enormous type <em>is</em> the promise is a perfectly good band, and it is the honest render for a plank that has no number behind it yet.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec">The join, and why it isn't a <code style="font-family:var(--f-mono);font-size:.72em">reference()</code></h2></div>
+  <p class="lede">Astro's <code class="inl">reference('guides')</code> resolves against a collection entry's <strong>id</strong>, which for the <code class="inl">glob</code> loader is the filename minus its extension. This repo's convention is an explicit <code class="inl">slug</code> field that is only conventionally equal to the filename. Binding the join to <code class="inl">reference()</code> quietly makes those two things the same thing forever, and produces an Astro-internal error message when they diverge.</p>
+
+  <p>So <code class="inl">plank.guide</code> is a plain <code class="inl">z.string()</code>, and the join is done explicitly against <code class="inl">guide.data.slug</code> in one place, with an assertion that names the problem in the campaign's own vocabulary:</p>
+
+<pre><span class="k">export function</span> assertGuideRefs(guides: Guide[], planks: Plank[]): <span class="k">void</span> {
+  <span class="k">const</span> known = <span class="k">new</span> Set(guides.map(g =&gt; g.data.slug))
+  <span class="k">const</span> orphans = planks.filter(p =&gt; !known.has(p.data.guide))
+  <span class="k">if</span> (orphans.length === 0) <span class="k">return</span>
+  <span class="k">throw new</span> Error(
+    <span class="s">`Plank(s) point at a guide that doesn't exist: `</span> +
+    orphans.map(p =&gt; <span class="s">`${p.id} -&gt; "${p.data.guide}"`</span>).join(<span class="s">', '</span>) +
+    <span class="s">`. Known guides: ${[...known].join(', ')}`</span>,
+  )
+}</pre>
+
+  <p>The CMS still gives the editor a dropdown rather than a free-text box — Sveltia's <code class="inl">relation</code> widget, configured to search the <code class="inl">guides</code> collection and write its <code class="inl">slug</code>. That the widget writes the value we expect is the one mechanical unknown in this proposal; it is the subject of Spike S1 in the plan.</p>
+
+  <h4 class="sub2">Constraints, enforced in <code class="inl">src/lib/platform.ts</code></h4>
+  <ul class="plain">
+    <li><strong>Every plank points at a real guide</strong> — build fails loudly, as above.</li>
+    <li><strong>Every <code class="inl">related</code> entry points at a real guide</strong> — same treatment.</li>
+    <li><strong>Slugs are unique within their collection</strong> — two guides claiming <code class="inl">housing-crisis</code> would silently give one of them an unreachable route.</li>
+    <li><strong>A published plank cannot sit under a draft guide</strong> — not an error, just filtered: the guide's status wins, so nothing leaks by way of a plank.</li>
+  </ul>
+  <p>There are no database indices here. These are flat YAML files read at build time; eighteen to forty planks is a linear scan measured in microseconds, and any lookup structure would be ceremony.</p>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec">What a filled-in pair looks like</h2></div>
+  <p class="lede">The reference entry, hand-migrated from <code class="inl">src/content/issues/housing-crisis.yml</code>. Every line of prose below already exists in the repo; what changed is which field it sits in.</p>
+
+  <span class="filename">src/content/guides/housing-crisis.yml</span>
+<pre><span class="k">title</span>: Housing Crisis
+<span class="k">title_es</span>: Crisis de Vivienda
+<span class="k">slug</span>: housing-crisis
+<span class="k">stance</span>: Housing is a **human right,** not a commodity.
+<span class="k">stance_es</span>: La vivienda es un **derecho humano,** no una mercancía.
+<span class="k">lucideIcon</span>: MapPinHouse
+<span class="k">order</span>: 2
+<span class="k">status</span>: draft            <span class="c"># flip to `published` at cutover</span>
+<span class="k">artwork</span>: ../../assets/housing-crisis.svg
+<span class="k">artworkAlt</span>: Drawing of houses
+<span class="k">artworkAlt_es</span>: Dibujo de casas
+<span class="k">lastReviewed</span>: 2026-09-13
+<span class="k">related</span>: [homelessness, affordability]</pre>
+
+  <span class="filename">src/content/planks/legalize-multi-unit.yml</span>
+<pre><span class="k">guide</span>: housing-crisis
+<span class="k">slug</span>: legalize-multi-unit
+<span class="k">order</span>: 1
+<span class="k">status</span>: draft
+<span class="k">kicker</span>: Zoning
+<span class="k">kicker_es</span>: Zonificación
+<span class="k">statValue</span>: <span class="s">"77%"</span>
+<span class="k">statCaption</span>: of Denver's residential land bans apartments, condos and townhomes outright.
+<span class="k">statCaption_es</span>: del suelo residencial de Denver prohíbe apartamentos, condominios y casas adosadas.
+<span class="k">commitment</span>: Legalize apartments, condos and townhomes on at least half of Denver's residential land.
+<span class="k">commitment_es</span>: Legalizar apartamentos, condominios y casas adosadas en al menos la mitad del suelo residencial de Denver.
+<span class="k">why</span>: Exclusionary zoning has racist origins. It still sets your rent.
+<span class="k">why_es</span>: La zonificación excluyente tiene orígenes racistas. Todavía fija tu alquiler.
+<span class="k">detail</span>: |-
+  Upwards of 77% of Denver's residential areas prohibit the most
+  affordable types of homes. Apartments, condos and townhomes are
+  widely forbidden.
+<span class="k">authority</span>: A zoning text amendment — a Council vote, no ballot measure required.
+<span class="k">timeline</span>: day-one
+<span class="k">sources</span>:
+  - <span class="k">label</span>: Denver zoning analysis, 2024
+    <span class="k">url</span>: https://…</pre>
+
+  <div class="note">
+    <p><strong>Three planks come out of two sub-issues.</strong> The old <code class="inl">problemsAndSolutions[0].solution</code> under &ldquo;Inclusionary Zoning&rdquo; is a two-bullet list: legalize multi-unit housing on 50% of residential land, <em>and</em> require 30% of new housing to be affordable. Those are two different votes on two different timelines, and the new shape forces them apart — which is the point. A bullet list inside a solution blob is where distinct promises go to hide.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec">Migration</h2></div>
+
+  <h3 class="sub">Backward compatibility</h3>
+  <p>Total, because nothing is modified. <code class="inl">content.config.ts</code> gains two entries in its <code class="inl">collections</code> export; the four existing ones are untouched, as are all six <code class="inl">src/content/issues/*.yml</code> files, <code class="inl">/issues</code>, <code class="inl">/es/issues</code>, and the Issues block in the CMS. The new collections are inert until a route reads them — the first PR ships schema, CMS config and helpers, and renders nothing at all.</p>
+  <p>There is no rolling-deploy concern to sequence around: this is a prerendered Astro site on Netlify, so every deploy is an atomic swap of a static bundle.</p>
+
+  <h3 class="sub">Backfill</h3>
+  <p>By hand, and only once. <code class="inl">housing-crisis</code> is migrated as the reference entry — one guide and three planks — so there is a worked example for the other five to be written against. The remaining content is <strong>authored fresh in the CMS, not converted</strong>, and that is a deliberate choice rather than laziness: the old shape does not decompose into the new one. A wall of <code class="inl">problem</code> prose contains no <code class="inl">commitment</code>, no <code class="inl">why</code> line, no <code class="inl">authority</code>, and no sources; any script claiming to extract them would be inventing them. What the old files genuinely provide is the <code class="inl">detail</code> prose, which is copied across essentially verbatim.</p>
+  <p>This is why locking the schema comes before writing the content. Material written in the current shape has to be taken apart by hand afterwards — that is the expensive path, and it gets more expensive with every issue written.</p>
+
+  <h3 class="sub">Rollback</h3>
+  <p>Delete the two collections from <code class="inl">content.config.ts</code>, the two blocks from <code class="inl">public/admin/config.yml</code>, and the route files. The YAML in <code class="inl">src/content/guides/</code> and <code class="inl">src/content/planks/</code> can stay on disk doing nothing, or be deleted with it. No data in the old collections was ever written to, so there is nothing to restore and no backfill to undo — the worst case is losing drafted platform copy, which lives in git history regardless.</p>
+  <p>After cutover (the third PR) rollback is a slightly bigger deal, because that PR redirects <code class="inl">/issues/*</code> and repoints the nav. Reverting it restores both, and the guides go back to being unlisted pages. The <code class="inl">issues</code> collection is deliberately left in place through that PR rather than deleted, precisely so the revert is a one-commit operation.</p>
+</section>
+
+<footer class="block" style="color:var(--ink-2);font-size:.9rem">
+  <p>Companion documents: <a href="./plan.html">plan.html</a> (approach, PRs, open questions) and <a href="./design.html">design.html</a> (mobile and desktop mockups). Every open decision is numbered in the plan, not here.</p>
+</footer>
+
+</div>
