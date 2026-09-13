@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Issues at Two Speeds — Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=League+Spartan:wght@400;600;700;900&family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
+<style>
+  :root {
+    --paper:        #f6f5f2;
+    --surface:      #ffffff;
+    --surface-2:    #ece9e2;
+    --ink:          #1c1b19;
+    --ink-2:        #55534c;
+    --ink-3:        #8b8880;
+    --rule:         #ddd9d1;
+    --rule-strong:  #1c1b19;
+    --focus:        #1c1b19;
+    --pin:          #7a3b2e;
+    --pin-bg:       #f4e9e4;
+    --ok:           #2f5d42;
+    --ok-bg:        #e9f0ea;
+
+    /* actual campaign tokens, verified in src/styles/global.css — the "screen" mockups
+       below use these, never the document's own palette above */
+    --gfd-primary:   #1900a8;
+    --gfd-secondary: #0646f5;
+    --gfd-tertiary:  #0e005c;
+    --gfd-accent:    #ffc800;
+    --gfd-neutral:   #d5e0ff;
+    --gfd-ink:       #0b0b12;
+    --gfd-white:     #ffffff;
+
+    --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body:    "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-gfd:     "League Spartan", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #161513; --surface: #1e1d1a; --surface-2: #272620;
+      --ink: #ece9e2; --ink-2: #b3afa4; --ink-3: #837f75;
+      --rule: #322f28; --rule-strong: #ece9e2; --focus: #ece9e2;
+      --pin: #e0a898; --pin-bg: #2c211d; --ok: #8fc4a2; --ok-bg: #1c2620;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #161513; --surface: #1e1d1a; --surface-2: #272620;
+    --ink: #ece9e2; --ink-2: #b3afa4; --ink-3: #837f75;
+    --rule: #322f28; --rule-strong: #ece9e2; --focus: #ece9e2;
+    --pin: #e0a898; --pin-bg: #2c211d; --ok: #8fc4a2; --ok-bg: #1c2620;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: clamp(28px,5vw,72px) clamp(16px,4vw,48px) 96px; }
+
+  h1,h2,h3,h4 { font-family: var(--font-display); text-wrap: balance; margin: 0; color: var(--ink); }
+  h1 { font-size: clamp(1.9rem,4.4vw,2.7rem); font-weight: 700; letter-spacing: -0.01em; line-height: 1.05; }
+  h2 { font-size: clamp(1.35rem,2.4vw,1.6rem); font-weight: 700; }
+  h3 { font-size: 1.08rem; font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--pin); }
+  code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); padding: 0.1em 0.4em; border-radius: 3px; }
+
+  .kicker { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink-3); }
+  header.doc { display: flex; flex-direction: column; gap: 14px; padding-bottom: 24px; border-bottom: 3px solid var(--rule-strong); }
+  .docnav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .docnav a { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .lede { font-size: 1.08rem; line-height: 1.55; color: var(--ink-2); max-width: 70ch; }
+
+  section.sec { display: grid; grid-template-columns: 168px minmax(0,1fr); gap: 0 36px; padding-top: 24px; margin-top: 46px; border-top: 1px solid var(--rule); }
+  section.sec > .tag { grid-column: 1; position: sticky; top: 18px; align-self: start; }
+  section.sec > .content { grid-column: 2; display: flex; flex-direction: column; gap: 16px; }
+  section.sec > .content > .prose { max-width: 74ch; display: flex; flex-direction: column; gap: 14px; }
+  @media (max-width: 860px) {
+    section.sec { grid-template-columns: minmax(0,1fr); gap: 10px; }
+    section.sec > .tag { position: static; }
+  }
+
+  .verified { font-size: 0.86rem; color: var(--ink-3); font-style: italic; }
+
+  /* ---- the "screen" — a faithful rendering of the actual site, real campaign tokens ---- */
+  .screens { display: flex; flex-wrap: wrap; gap: 26px; align-items: flex-start; }
+  .screen-cap { display: flex; flex-direction: column; gap: 8px; max-width: 100%; }
+  .screen-cap .t { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+  .screen-cap .d { font-size: 0.85rem; color: var(--ink-3); font-style: italic; }
+
+  .screen {
+    font-family: var(--font-gfd); background: var(--gfd-white); color: var(--gfd-ink);
+    border: 1px solid #b9c0cf; border-radius: 2px;
+    box-shadow: 0 1px 0 rgba(11,11,18,0.06), 0 14px 30px -20px rgba(11,11,18,0.4);
+    overflow: hidden; max-width: 100%; line-height: 1.25;
+  }
+  .screen.phone { width: 336px; }
+  .screen.wide { width: 100%; }
+  .screen p, .screen li, .screen h1, .screen h2, .screen h3 { margin: 0; font-family: var(--font-gfd); }
+  .screen .pad { padding: 18px 17px; }
+  .g-hero { background: linear-gradient(to bottom right, var(--gfd-secondary), var(--gfd-primary)); color: var(--gfd-white); }
+  .g-deep { background: linear-gradient(to bottom right, var(--gfd-primary), var(--gfd-tertiary)); color: var(--gfd-white); }
+  .g-neutral { background: var(--gfd-neutral); color: var(--gfd-ink); }
+
+  .g-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; opacity: 0.78; }
+  .g-h1 { font-size: 27px; font-weight: 900; letter-spacing: -0.02em; line-height: 0.98; }
+  .g-stance { font-size: 16px; font-weight: 600; line-height: 1.28; }
+  .g-body { font-size: 13px; line-height: 1.48; }
+  .g-small { font-size: 11px; line-height: 1.4; }
+
+  .g-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.25); }
+  .g-stat { background: var(--gfd-primary); padding: 10px 9px; display: flex; flex-direction: column; gap: 3px; }
+  .g-stat .v { font-size: 22px; font-weight: 900; letter-spacing: -0.02em; line-height: 1; color: var(--gfd-accent); font-variant-numeric: tabular-nums; }
+  .g-stat .k { font-size: 9px; line-height: 1.3; color: var(--gfd-white); font-weight: 500; }
+  .g-stat sup { font-size: 7.5px; color: var(--gfd-accent); }
+
+  .g-grouplabel { font-size: 9.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gfd-primary); padding-bottom: 5px; border-bottom: 2px solid var(--gfd-primary); }
+  .g-commit { border-bottom: 1px solid rgba(11,11,18,0.13); padding: 14px 0; }
+  .g-commit:last-of-type { border-bottom: 0; }
+  .g-commit-head { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 9px; }
+  .g-commit-n { font-size: 10.5px; font-weight: 800; color: var(--gfd-secondary); padding-top: 4px; font-variant-numeric: tabular-nums; }
+  .g-commit-verb { font-size: 16.5px; font-weight: 800; letter-spacing: -0.015em; line-height: 1.14; }
+  .g-commit-why { font-size: 11.5px; line-height: 1.42; color: #3b4152; margin-top: 5px; }
+
+  .screen details { margin-top: 9px; }
+  .screen summary {
+    list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--gfd-secondary); padding: 4px 8px; border: 1.5px solid var(--gfd-secondary); border-radius: 999px;
+  }
+  .screen summary::-webkit-details-marker { display: none; }
+  .screen summary::after { content: "＋"; font-weight: 700; }
+  .screen details[open] summary::after { content: "－"; }
+  .screen details[open] summary { background: var(--gfd-secondary); color: var(--gfd-white); }
+  .g-detail { margin-top: 10px; padding: 12px; background: #eef2ff; border-left: 3px solid var(--gfd-primary); display: flex; flex-direction: column; gap: 9px; }
+  .g-detail h4 { font-size: 9.5px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gfd-primary); font-weight: 800; }
+  .g-detail p { font-size: 11.5px; line-height: 1.46; }
+  .g-slot { font-family: var(--font-mono); font-size: 10px; line-height: 1.5; color: #5a6178; background: rgba(25,0,168,0.05); border: 1px dashed #8b93ad; padding: 6px 8px; }
+  .g-src span { font-size: 10.5px; color: #3b4152; }
+  .g-src sup { color: var(--gfd-secondary); font-weight: 700; }
+
+  .g-btn { display: inline-block; background: var(--gfd-accent); color: var(--gfd-ink); font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 11px; }
+  .g-btn.ghost { background: transparent; color: var(--gfd-white); border: 1.5px solid var(--gfd-white); }
+  .g-btn.ghost.dark { color: var(--gfd-primary); border-color: var(--gfd-primary); }
+
+  .g-today-h1 { font-size: 28px; font-weight: 700; line-height: 1; text-align: center; }
+  .g-today-p { font-size: 14px; font-weight: 300; line-height: 1.35; }
+  .g-today-li { font-size: 10.5px; line-height: 1.4; }
+  .g-today-h2 { font-size: 17px; font-weight: 600; }
+
+  .g-index-row { display: grid; grid-template-columns: 138px minmax(0,1fr); gap: 15px; padding: 14px 0; border-top: 1px solid rgba(11,11,18,0.13); }
+  .g-index-row:first-of-type { border-top: 0; }
+  .g-index-issue { font-size: 15px; font-weight: 800; letter-spacing: -0.012em; line-height: 1.1; }
+  .g-index-issue span { display: block; font-size: 10.5px; font-weight: 400; color: #4b5266; margin-top: 4px; }
+  .g-index-list { display: flex; flex-direction: column; gap: 6px; }
+  .g-index-list a { font-size: 12.5px; font-weight: 600; line-height: 1.28; text-decoration: none; color: var(--gfd-primary); border-bottom: 1px solid rgba(25,0,168,0.2); align-self: flex-start; }
+
+  .verdicts { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 4px; }
+  .verdicts > div { background: var(--paper); padding: 12px 14px; display: flex; flex-direction: column; gap: 5px; }
+  .verdicts p { font-size: 0.87rem; line-height: 1.5; color: var(--ink-2); }
+
+  .cite { font-size: 0.82rem; color: var(--ink-3); font-family: var(--font-mono); }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="doc">
+    <div class="docnav">
+      <span class="kicker">docs/proposals/2026-09-13-issues-commitment-ledger</span>
+      <a href="./plan.html">← plan.html</a>
+      <a href="./schema.html">→ schema.html</a>
+    </div>
+    <h1>Design: Issues at Two Speeds</h1>
+    <p class="lede">
+      Every mockup below is real content from the live site (<code>src/content/issues/*.yml</code>,
+      confirmed against <code>main</code> @ <code>07970fe</code>) rendered in the campaign's actual
+      colors and typeface (<code>--color-primary</code> etc., <code>src/styles/global.css</code>).
+      This document's own chrome — the neutral text you're reading now — deliberately carries no
+      campaign color, so color inside a bordered "screen" always means "this is what the real site
+      renders."
+    </p>
+  </header>
+
+  <!-- TODAY vs PROPOSED, ONE REAL COMMITMENT -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Today vs. proposed</span></div>
+    <div class="content">
+      <div class="prose">
+        <h2>The commitment already exists — it's just buried</h2>
+        <p>
+          "Inclusionary Zoning," the second sub-issue of Housing Crisis, contains two commitments
+          today, both inside a bulleted <code>solution:</code> field rendered at <code>1.125rem</code>
+          — smaller than the <code>1.5rem</code> paragraph above it. Nothing here changes what's
+          said; it changes what's promoted to the reader's eye first.
+        </p>
+        <p class="verified">Verbatim from <code>src/content/issues/housing-crisis.yml:33-37</code>.</p>
+      </div>
+
+      <div class="screens">
+        <div class="screen-cap">
+          <div class="screen-cap"><span class="t">Today</span><span class="d">as currently rendered — Problem and Solution, equal weight</span></div>
+          <div class="screen phone">
+            <div class="pad g-neutral" style="display:flex;flex-direction:column;gap:13px;">
+              <p class="g-today-h1">Inclusionary Zoning</p>
+              <p class="g-today-p" style="text-align:center;">Policies that require a percentage of new housing to be <strong>affordable</strong> for people with low to moderate incomes.</p>
+              <div style="display:flex;gap:11px;margin-top:6px;">
+                <div style="flex:1;">
+                  <p class="g-today-h2">⚠ Problem</p>
+                  <p class="g-today-p" style="font-weight:300;margin-top:5px;">Upwards of 77% of Denver's residential areas prohibit the most affordable types of homes.</p>
+                </div>
+                <div style="flex:1;">
+                  <p class="g-today-h2">✓ Solution</p>
+                  <ul style="margin:5px 0 0;padding-left:1.05em;">
+                    <li class="g-today-li">Change Denver zoning laws to allow multi-unit housing in at least 50% of all residential areas.</li>
+                    <li class="g-today-li" style="margin-top:4px;">Require 30% of all new housing built to be affordable housing.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-cap">
+          <div class="screen-cap"><span class="t">Proposed</span><span class="d">same two commitments, promoted — collapsed by default (Q1)</span></div>
+          <div class="screen phone">
+            <div class="pad" style="display:flex;flex-direction:column;gap:13px;">
+              <p class="g-grouplabel">Zoning</p>
+              <div class="g-commit">
+                <div class="g-commit-head">
+                  <span class="g-commit-n">02</span>
+                  <div>
+                    <p class="g-commit-verb">Legalize apartments, condos and townhomes on at least half of Denver's residential land.</p>
+                    <p class="g-commit-why">Today, 77% of it bans them outright.<sup style="color:var(--gfd-secondary);font-weight:700;">1</sup></p>
+                    <details>
+                      <summary>The detail</summary>
+                      <div class="g-detail">
+                        <div><h4>The problem</h4><p>Upwards of 77% of Denver's residential areas prohibit the most affordable types of homes. Apartments, condos and townhomes are widely forbidden. Exclusionary zoning has racist origins.</p></div>
+                        <div><h4>What Council can do</h4><p class="g-slot">authority: optional per Q5 — fill in once confirmed</p></div>
+                        <div><h4>Sources</h4><div class="g-src"><span><sup>1</sup> [ pending — see Q2 ]</span></div></div>
+                      </div>
+                    </details>
+                  </div>
+                </div>
+              </div>
+              <div class="g-commit">
+                <div class="g-commit-head">
+                  <span class="g-commit-n">03</span>
+                  <div>
+                    <p class="g-commit-verb">Require 30% of all new housing built to be affordable.</p>
+                    <p class="g-commit-why">Today's requirement is roughly 10%, measured against a median income about half of Denver falls below.</p>
+                    <details><summary>The detail</summary><div class="g-detail"><p class="g-slot">problem · authority · timeline · sources</p></div></details>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ISSUE PAGE AT REST -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Detail page</span></div>
+    <div class="content">
+      <div class="prose">
+        <h2>The whole issue, at rest, in one thumb-scroll</h2>
+        <p>
+          Housing Crisis's two sub-issues, both migrated. The stat tiles pull two real numbers
+          already in the copy today (<code>housing-crisis.yml:13</code>) — currently stated in
+          prose, promoted here to the hero because they're the strongest, most checkable material
+          on the page. The band colors from today's full-bleed sections are gone; a thin rule and
+          a group label do the same separating job in a fraction of the height.
+        </p>
+      </div>
+
+      <div class="screens">
+        <div class="screen-cap">
+          <div class="screen-cap"><span class="t">Housing Crisis — phone, at rest</span><span class="d">stance, stats, both sub-issues, foot exit — no scrolling required to see the shape</span></div>
+          <div class="screen phone">
+            <div class="g-hero pad" style="display:flex;flex-direction:column;gap:11px;">
+              <p class="g-eyebrow">← Issues · 2 of 6</p>
+              <p class="g-h1">Housing<br>Crisis</p>
+              <p class="g-stance">Housing is a <span style="color:var(--gfd-accent);">human right</span>, not a commodity.</p>
+              <p class="g-small" style="opacity:0.85;">2 commitments · sourced Sept 2026</p>
+            </div>
+            <div class="g-stats">
+              <div class="g-stat"><span class="v">45%</span><span class="k">rent increase, past 10 yrs<sup>1</sup></span></div>
+              <div class="g-stat"><span class="v">28%</span><span class="k">income increase, same period<sup>1</sup></span></div>
+              <div class="g-stat"><span class="v">77%</span><span class="k">of land where apartments are banned<sup>2</sup></span></div>
+            </div>
+            <div class="pad" style="display:flex;flex-direction:column;gap:14px;">
+              <p class="g-grouplabel">The rent is too damn high</p>
+              <div class="g-commit">
+                <div class="g-commit-head">
+                  <span class="g-commit-n">01</span>
+                  <div>
+                    <p class="g-commit-verb">Require all new housing to be affordable for Denver's actual income distribution.</p>
+                    <p class="g-commit-why">Rent rose at nearly twice the rate of income over the last decade.<sup style="color:var(--gfd-secondary);font-weight:700;">1</sup></p>
+                    <details><summary>The detail</summary><div class="g-detail"><p class="g-slot">problem · authority · timeline · sources</p></div></details>
+                  </div>
+                </div>
+              </div>
+              <div class="g-commit">
+                <div class="g-commit-head">
+                  <span class="g-commit-n">02</span>
+                  <div>
+                    <p class="g-commit-verb">Stabilize existing rents to match household income distributions.</p>
+                    <p class="g-commit-why">Roughly half of Denver households fall below the median income the current 10% affordability requirement is measured against.</p>
+                    <details><summary>The detail</summary><div class="g-detail"><p class="g-slot">problem · authority · timeline · sources</p></div></details>
+                  </div>
+                </div>
+              </div>
+              <p class="g-grouplabel">Zoning</p>
+              <div class="g-commit">
+                <div class="g-commit-head">
+                  <span class="g-commit-n">03</span>
+                  <div>
+                    <p class="g-commit-verb">Legalize apartments, condos and townhomes on at least half of Denver's residential land.</p>
+                    <p class="g-commit-why">Today, 77% of it bans them outright.<sup style="color:var(--gfd-secondary);font-weight:700;">2</sup></p>
+                    <details><summary>The detail</summary><div class="g-detail"><p class="g-slot">problem · authority · timeline · sources</p></div></details>
+                  </div>
+                </div>
+              </div>
+              <div class="g-commit">
+                <div class="g-commit-head">
+                  <span class="g-commit-n">04</span>
+                  <div>
+                    <p class="g-commit-verb">Require 30% of all new housing built to be affordable.</p>
+                    <p class="g-commit-why">Today's requirement is roughly 10%.</p>
+                    <details><summary>The detail</summary><div class="g-detail"><p class="g-slot">problem · authority · timeline · sources</p></div></details>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="g-neutral pad" style="display:flex;flex-direction:column;gap:8px;">
+              <p class="g-grouplabel" style="border-color:var(--gfd-primary);">Where this connects</p>
+              <p class="g-body"><strong style="color:var(--gfd-primary);">Homelessness →</strong> housing-first only works if there is housing.</p>
+              <p class="g-body"><strong style="color:var(--gfd-primary);">Affordability →</strong> rent is the largest line in most Denver budgets.</p>
+            </div>
+            <div class="g-deep pad" style="display:flex;flex-direction:column;gap:11px;">
+              <p class="g-stance">Agree with these four?</p>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <span class="g-btn">Donate</span>
+                <span class="g-btn ghost">Volunteer</span>
+                <span class="g-btn ghost">Share this page</span>
+              </div>
+              <p class="g-small" style="opacity:0.8;">Next: Criminal Injustice →</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:230px;">
+          <div class="verdicts">
+            <div><span class="kicker">Scroller</span><p>Reads eight bold lines and three numbers — the entire housing platform, done in under thirty seconds.</p></div>
+            <div><span class="kicker">Deep diver</span><p>Taps any row, or hits "expand all," and gets the full mechanism and sources. Every commitment has its own stable anchor.</p></div>
+            <div><span class="kicker">Fixes finding #7</span><p>The "where this connects" and donate/volunteer/share blocks replace today's dead end at the last bullet — see PR 4 of 4.</p></div>
+            <div><span class="kicker">Fixes finding #3</span><p>Problem and Solution no longer share equal visual weight — the commitment leads, the mechanism sits behind a tap.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDEX PAGE -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Index page</span></div>
+    <div class="content">
+      <div class="prose">
+        <h2><code>/issues</code>, rebuilt as a table of contents</h2>
+        <p>
+          Today <code>/issues</code> renders the same <code>WhatWillITackle</code> grid already on
+          the homepage (finding #7) — a reader who already knows the six issue names gets nothing
+          new. This replaces it with every commitment headline, grouped by issue, using the six
+          real issue titles confirmed in the content collection. Tag filtering (F2) is deliberately
+          not shown here — it's deferred until commitment count justifies it.
+        </p>
+      </div>
+      <div class="screen wide">
+        <div class="g-hero pad" style="display:flex;flex-direction:column;gap:9px;">
+          <p class="g-h1" style="font-size:24px;">Everything I'd do in office</p>
+          <p class="g-body" style="opacity:0.9;max-width:52ch;">36 commitments across 6 issues. Read the full issue for the problem, the mechanism, and the sources behind each one.</p>
+        </div>
+        <div class="pad" style="display:flex;flex-direction:column;gap:4px;">
+          <div class="g-index-row">
+            <div class="g-index-issue">Housing Crisis<span>A human right, not a commodity.</span></div>
+            <div class="g-index-list">
+              <a href="#">Require all new housing to be affordable for Denver's actual income distribution</a>
+              <a href="#">Legalize apartments, condos and townhomes on half of Denver's residential land</a>
+              <a href="#">Require 30% of all new housing built to be affordable</a>
+            </div>
+          </div>
+          <div class="g-index-row">
+            <div class="g-index-issue">Criminal Injustice<span>The police investigating the police doesn't work.</span></div>
+            <div class="g-index-list">
+              <a href="#">Trigger a citizen-run investigative body for police misconduct</a>
+              <a href="#">Expand the STAR program to a 24-hour non-police crisis response</a>
+              <a href="#">Reduce default punishments for non-violent offenses to citations</a>
+            </div>
+          </div>
+          <div class="g-index-row">
+            <div class="g-index-issue">Big Tech<span>They're not trying to save us.</span></div>
+            <div class="g-index-list">
+              <a href="#">Ban warrantless license-plate tracking of Denver drivers</a>
+              <a href="#">Require a warrant before police query plate-reader history</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALTERNATIVE DIRECTIONS, LOW-FIDELITY -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Considered, not built</span></div>
+    <div class="content">
+      <div class="prose">
+        <h2>What the rejected directions would have looked like</h2>
+        <p>
+          Rough sketches, not full mockups — see <a href="./plan.html">plan.html</a>'s Alternatives
+          section for the reasoning. Included so a reviewer can see what was actually weighed, not
+          just read a verdict.
+        </p>
+      </div>
+      <div class="screens">
+        <div class="screen-cap">
+          <div class="screen-cap"><span class="t">Field Guide (B)</span><span class="d">one giant stat per full-bleed band — kept only its stat-tile hero</span></div>
+          <div class="screen phone" style="width:230px;">
+            <div class="g-deep pad" style="display:flex;flex-direction:column;gap:9px;padding-block:22px;">
+              <p class="g-eyebrow" style="color:var(--gfd-accent);opacity:1;">Housing · Zoning</p>
+              <p style="font-size:56px;font-weight:900;letter-spacing:-0.04em;line-height:0.85;color:var(--gfd-accent);">77%</p>
+              <p class="g-body" style="font-weight:600;">of Denver's residential land bans apartments.</p>
+              <span class="g-btn ghost" style="font-size:10px;align-self:flex-start;">Read the detail →</span>
+            </div>
+          </div>
+        </div>
+        <div class="screen-cap">
+          <div class="screen-cap"><span class="t">Platform Index (C) as the issue page</span><span class="d">filterable, all-issues list — right shape, wrong page (see plan.html)</span></div>
+          <div class="screen phone" style="width:230px;">
+            <div class="pad" style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;flex-wrap:wrap;gap:5px;">
+                <span style="font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--gfd-primary);color:var(--gfd-white);">All 36</span>
+                <span style="font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;border:1.5px solid var(--gfd-primary);color:var(--gfd-primary);">Housing</span>
+                <span style="font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;border:1.5px solid var(--gfd-primary);color:var(--gfd-primary);">Safety</span>
+              </div>
+              <p class="g-body" style="color:var(--ink-3, #888);font-style:italic;">— cold as a first impression for a reader with no context yet —</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

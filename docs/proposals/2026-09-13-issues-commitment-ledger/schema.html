@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Issues at Two Speeds — Schema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
+<style>
+  :root {
+    --paper:        #f6f5f2;
+    --surface:      #ffffff;
+    --surface-2:    #ece9e2;
+    --ink:          #1c1b19;
+    --ink-2:        #55534c;
+    --ink-3:        #8b8880;
+    --rule:         #ddd9d1;
+    --rule-strong:  #1c1b19;
+    --focus:        #1c1b19;
+    --pin:          #7a3b2e;
+    --pin-bg:       #f4e9e4;
+    --add:          #2f5d42;
+    --add-bg:       #e9f0ea;
+
+    --font-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --font-body:    "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #161513; --surface: #1e1d1a; --surface-2: #272620;
+      --ink: #ece9e2; --ink-2: #b3afa4; --ink-3: #837f75;
+      --rule: #322f28; --rule-strong: #ece9e2; --focus: #ece9e2;
+      --pin: #e0a898; --pin-bg: #2c211d; --add: #8fc4a2; --add-bg: #1c2620;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #161513; --surface: #1e1d1a; --surface-2: #272620;
+    --ink: #ece9e2; --ink-2: #b3afa4; --ink-3: #837f75;
+    --rule: #322f28; --rule-strong: #ece9e2; --focus: #ece9e2;
+    --pin: #e0a898; --pin-bg: #2c211d; --add: #8fc4a2; --add-bg: #1c2620;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: clamp(28px,5vw,72px) clamp(16px,4vw,48px) 96px; }
+
+  h1,h2,h3,h4 { font-family: var(--font-display); text-wrap: balance; margin: 0; color: var(--ink); }
+  h1 { font-size: clamp(1.9rem,4.4vw,2.7rem); font-weight: 700; letter-spacing: -0.01em; line-height: 1.05; }
+  h2 { font-size: clamp(1.35rem,2.4vw,1.6rem); font-weight: 700; }
+  h3 { font-size: 1.08rem; font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--pin); }
+  code { font-family: var(--font-mono); font-size: 0.86em; background: var(--surface-2); padding: 0.1em 0.4em; border-radius: 3px; }
+
+  .kicker { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.11em; text-transform: uppercase; color: var(--ink-3); }
+  header.doc { display: flex; flex-direction: column; gap: 14px; padding-bottom: 24px; border-bottom: 3px solid var(--rule-strong); }
+  .docnav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+  .docnav a { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .lede { font-size: 1.08rem; line-height: 1.55; color: var(--ink-2); max-width: 68ch; }
+
+  section.sec { display: grid; grid-template-columns: 168px minmax(0,1fr); gap: 0 36px; padding-top: 24px; margin-top: 46px; border-top: 1px solid var(--rule); }
+  section.sec > .tag { grid-column: 1; position: sticky; top: 18px; align-self: start; }
+  section.sec > .content { grid-column: 2; display: flex; flex-direction: column; gap: 15px; max-width: 78ch; }
+  @media (max-width: 860px) {
+    section.sec { grid-template-columns: minmax(0,1fr); gap: 10px; }
+    section.sec > .tag { position: static; }
+  }
+
+  .code-block {
+    font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.65;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 6px;
+    padding: 18px 20px; overflow-x: auto; white-space: pre; color: var(--ink-2);
+  }
+  .code-block .kw { color: var(--pin); }
+  .code-block .add { background: var(--add-bg); color: var(--add); display: inline-block; width: 100%; margin: 0 -20px; padding: 0 20px; }
+  .code-block .cmt { color: var(--ink-3); font-style: italic; }
+
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.85rem; color: var(--ink-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .swatch.add { background: var(--add-bg); border: 1px solid var(--add); }
+  .swatch.keep { background: var(--surface-2); border: 1px solid var(--rule); }
+
+  .table-wrap { overflow-x: auto; }
+  table.fields { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  table.fields th, table.fields td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  table.fields th { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  table.fields td.req { font-family: var(--font-mono); font-size: 0.75rem; }
+  .req-yes { color: var(--pin); }
+  .req-no { color: var(--ink-3); }
+
+  .migr { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; border-top: 1px dashed var(--rule); }
+  .migr:first-of-type { border-top: none; padding-top: 0; }
+  .migr h4 { font-size: 1rem; }
+  .migr p { color: var(--ink-2); font-size: 0.95rem; line-height: 1.55; }
+
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="doc">
+    <div class="docnav">
+      <span class="kicker">docs/proposals/2026-09-13-issues-commitment-ledger</span>
+      <a href="./plan.html">← plan.html</a>
+      <a href="./design.html">→ design.html</a>
+    </div>
+    <h1>Schema changes: Issues at Two Speeds</h1>
+    <p class="lede">
+      Every change below is additive to <code>src/content.config.ts</code>'s <code>issues</code>
+      collection. Nothing existing is removed in this plan — see
+      <a href="./plan.html#q5">plan.html</a> for the one field, <code>problemsAndSolutions</code>,
+      that becomes optional rather than deleted.
+    </p>
+  </header>
+
+  <!-- CURRENT SCHEMA -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Current</span></div>
+    <div class="content">
+      <h2>Current schema (relevant slice)</h2>
+      <p>
+        <code>src/content.config.ts:18-50</code>, verified against <code>main</code> @
+        <code>07970fe</code>. Astro content collection backed by
+        <code>src/content/issues/*.yml</code>, one file per issue. Localization is handled by an
+        <code>_es</code>-suffixed twin of every translatable string field on this same collection —
+        not a separate per-locale collection, not a <code>[lang]</code> route param.
+      </p>
+      <div class="code-block">const issues = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/issues' }),
+  schema: () =&gt;
+    z.object({
+      title: z.string(),
+      title_es: z.string(),
+      summary: z.string(),
+      summary_es: z.string(),
+      intro: z.string(),
+      intro_es: z.string(),
+      slug: z.string(),
+      lucideIcon: z.string(),
+      order: z.number(),
+      subIssues: z.array(z.object({
+        title: z.string(),
+        title_es: z.string(),
+        summary: z.string(),
+        summary_es: z.string(),
+        problemsAndSolutions: z.array(z.object({
+          problem: z.string(),
+          problem_es: z.string(),
+          solution: z.string(),
+          solution_es: z.string(),
+        })),
+      })).optional(),
+    }),
+})</div>
+    </div>
+  </section>
+
+  <!-- PROPOSED CHANGES -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Proposed</span></div>
+    <div class="content">
+      <h2>Proposed changes</h2>
+      <p>No new tables — this is one collection gaining fields. Additions highlighted below.</p>
+      <div class="legend">
+        <span><span class="swatch add"></span> new field</span>
+        <span><span class="swatch keep"></span> unchanged</span>
+      </div>
+      <div class="code-block">const issues = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/issues' }),
+  schema: () =&gt;
+    z.object({
+      title: z.string(),
+      title_es: z.string(),
+      summary: z.string(),
+      summary_es: z.string(),
+      intro: z.string(),
+      intro_es: z.string(),
+      slug: z.string(),
+      lucideIcon: z.string(),
+      order: z.number(),
+<span class="add">
+      stance: z.string().optional(),           // one line, the whole issue's position
+      stance_es: z.string().optional(),
+      tags: z.array(z.string()).optional(),    // for the F2 index filter, later
+      related: z.array(z.string()).optional(), // other issue slugs, for the PR-4 foot block
+      lastUpdated: z.coerce.date().optional(),
+      stats: z.array(z.object({
+        value: z.string(),                     // "77%" — kept as a string, not a number,
+        label: z.string(),                     //   so "1 in 6" or "$1,000/mo" also fit
+        label_es: z.string(),
+        source: z.number().optional(),         // references sources[].id below
+      })).optional(),
+      sources: z.array(z.object({
+        id: z.number(),
+        label: z.string(),
+        url: z.string().url(),
+      })).optional(),
+</span>
+      subIssues: z.array(z.object({
+        title: z.string(),
+        title_es: z.string(),
+        summary: z.string(),
+        summary_es: z.string(),
+<span class="add">        problemsAndSolutions: z.array(z.object({           // now optional — unread once a
+          problem: z.string(),                              // sub-issue has migrated, kept
+          problem_es: z.string(),                           // for one release as a rollback
+          solution: z.string(),                             // path (see F4)
+          solution_es: z.string(),
+        })).optional(),
+
+        commitments: z.array(z.object({
+          commitment: z.string(),         // the only required field per row
+          commitment_es: z.string(),
+          why: z.string().optional(),     // one line, always visible
+          why_es: z.string().optional(),
+          problem: z.string().optional(), // existing prose, unchanged in meaning
+          problem_es: z.string().optional(),
+          authority: z.string().optional(),   // governing mechanism — see plan.html Q5
+          authority_es: z.string().optional(),
+          timeline: z.enum(['day-one', 'first-budget', 'ballot-referral']).optional(),
+          sources: z.array(z.number()).optional(), // ids into the issue-level sources[] above
+        })).optional(),
+</span>      })).optional(),
+    }),
+})</div>
+
+      <h3 style="margin-top:6px;">Why nothing here is a new table</h3>
+      <p>
+        Every addition is a field on the existing <code>issues</code> collection, at either the
+        issue level (<code>stance</code>, <code>stats</code>, <code>sources</code>, ...) or nested
+        inside the existing <code>subIssues</code> array (<code>commitments</code>). Astro content
+        collections are file-backed YAML, not a relational database — there's no join or foreign
+        key to design, just a Zod shape that either validates or doesn't at build time. A
+        commitment's <code>sources</code> array holds numeric ids that resolve against the
+        <em>same issue's</em> <code>sources</code> list, not a global registry, because every
+        current statistic in the content is issue-specific and there's no present need for a
+        source to be shared across issues.
+      </p>
+
+      <h3 style="margin-top:6px;">Required vs. optional, per new field</h3>
+      <div class="table-wrap">
+        <table class="fields">
+          <thead><tr><th>Field</th><th>Required?</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><code>commitment</code> / <code>commitment_es</code></td><td class="req req-yes">Required</td><td>Without it there's no row to render — this is the one field a migrated commitment can't omit.</td></tr>
+            <tr><td><code>why</code>, <code>authority</code>, <code>timeline</code>, <code>sources</code></td><td class="req req-no">Optional</td><td>Per plan.html <a href="./plan.html#q5">Q5</a> — a commitment can ship with just its statement and grow depth over time as authority/sources get confirmed, rather than blocking on all four being ready at once.</td></tr>
+            <tr><td><code>stance</code>, <code>stats</code>, <code>sources</code> (issue-level)</td><td class="req req-no">Optional</td><td>Lets PR 1 of 4 migrate one issue without every other issue needing these fields yet.</td></tr>
+            <tr><td><code>tags</code>, <code>related</code></td><td class="req req-no">Optional</td><td>Not read by any template until PR 4 of 4; adding them earlier costs nothing and lets content authors fill them in as they migrate each issue.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIGRATION STRATEGY -->
+  <section class="sec">
+    <div class="tag"><span class="kicker">Rollout</span></div>
+    <div class="content">
+      <h2>Migration strategy</h2>
+
+      <div class="migr">
+        <h4>Backward compatibility</h4>
+        <p>
+          Fully additive — <code>problemsAndSolutions</code> stays valid and <code>commitments</code>
+          is optional, so the schema itself never forces a "both shapes must exist" state. In
+          practice, PR 3 of 4 migrates all 6 issues' content in the same PR that ships the new
+          template, so production never actually renders a mix of old- and new-shape sub-issues;
+          the optionality exists for safety during that PR's own review, not as a long-lived dual
+          rendering path.
+        </p>
+      </div>
+
+      <div class="migr">
+        <h4>Backfill</h4>
+        <p>
+          This is content work, not a script. Each of the 14 existing <code>problemsAndSolutions</code>
+          entries needs its solution bullets split into individual <code>commitments</code> — 36
+          bullets in total, already counted directly against <code>main</code>. The <code>problem</code>
+          text can carry over largely as-is; <code>commitment</code> and <code>why</code> need new,
+          purpose-written copy for every row, and <code>authority</code>/<code>timeline</code>/
+          <code>sources</code> need real research per <a href="./plan.html#q5">plan.html Q5</a> and
+          <a href="./plan.html#q2">Q2</a>. Budget this as the bulk of PR 3 of 4's actual effort, not
+          as an afterthought to the template work.
+        </p>
+      </div>
+
+      <div class="migr">
+        <h4>Rollback</h4>
+        <p>
+          Because the schema change is additive and Astro content collections are just YAML files
+          under git, reverting PR 3 of 4's commit reverts both the template and the content back to
+          the last known-good state in one step — no separate data migration to undo. This is also
+          the reasoning behind <a href="./plan.html#f4">F4</a>: <code>problemsAndSolutions</code>
+          stays in the schema and in git history for one full release after the ledger ships, so a
+          revert has somewhere to land even after content has been rewritten in place.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
