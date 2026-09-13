@@ -1,130 +1,122 @@
 ---
-// The behaviour that promotes an open plank <details> into a fixed sheet.
-// Lives in its own component so the English and Spanish guide pages share one
-// implementation — the index.astro/es.astro duplication is exactly what
-// produced the analytics and anchor drift PR #8 had to go back and repair.
+// Behaviour that promotes an open plank <details> into a fixed sheet.
+//
+// One component so both language pages share an implementation: duplicating
+// this across two near-identical page files is the shape that produced the
+// analytics and anchor drift PR #8 had to go back and repair.
+//
+// Deliberately a bundled <script> rather than the `is:inline` the rest of the
+// repo uses. Inline scripts can't import, and the inert bookkeeping below is
+// the most error-prone logic on the page — it has already shipped wrong once.
+// Keeping it in src/lib/sheet.ts means it is covered by jsdom unit tests in CI
+// instead of only by someone opening two panels in the right order.
 ---
 
-<script is:inline>
+<script>
+  import { applySheetInert } from '../../lib/sheet'
+
   // The panels are <details> elements and work on their own: with JS off they
   // are ordinary inline disclosures that print and are read by crawlers. This
   // only promotes an open one into a fixed sheet, keeps the URL in step so the
   // state is shareable, and closes it the ways a sheet is expected to close.
-  ;(function () {
-    var root = document.documentElement
+  const root = document.documentElement
 
-    function anyOpen() {
-      return document.querySelector('details.plank-detail[open]')
+  const openSheet = () =>
+    document.querySelector<HTMLDetailsElement>('details.plank-detail[open]')
+
+  function syncHash(details: Element | null) {
+    const url = details ? `#${details.id}` : location.pathname + location.search
+    history.replaceState(null, '', url)
+  }
+
+  function closeAll() {
+    for (const details of document.querySelectorAll<HTMLDetailsElement>(
+      'details.plank-detail[open]',
+    )) {
+      details.open = false
     }
+  }
 
-    function syncHash(details) {
-      var url = details ? '#' + details.id : location.pathname + location.search
-      history.replaceState(null, '', url)
-    }
-
-    function closeAll() {
-      document
-        .querySelectorAll('details.plank-detail[open]')
-        .forEach(function (details) {
-          details.open = false
-        })
-    }
-
-    // Everything outside the open sheet is marked inert, so a keyboard user
-    // can't tab into content the scrim is covering. Walking up from <details>
-    // rather than the panel keeps the summary and scrim themselves reachable.
-    function setInertOutside(node, on) {
-      var element = node
-      while (element && element !== document.body) {
-        var parent = element.parentElement
-        if (!parent) return
-        Array.prototype.forEach.call(parent.children, function (sibling) {
-          if (sibling !== element) sibling.inert = on
-        })
-        element = parent
-      }
-    }
-
-    function promote(details) {
-      var panel = details.querySelector('.plank-detail__panel')
-      if (!panel) return
-      panel.setAttribute('role', 'dialog')
-      panel.setAttribute('aria-modal', 'true')
-      panel.setAttribute('aria-labelledby', details.id + '-title')
-      setInertOutside(details, true)
-    }
-
-    function demote(details) {
-      var panel = details.querySelector('.plank-detail__panel')
-      if (!panel) return
+  function setDialogRole(details: Element, on: boolean) {
+    const panel = details.querySelector('.plank-detail__panel')
+    if (!panel) return
+    if (!on) {
       panel.removeAttribute('role')
       panel.removeAttribute('aria-modal')
       panel.removeAttribute('aria-labelledby')
-      setInertOutside(details, false)
+      return
     }
+    panel.setAttribute('role', 'dialog')
+    panel.setAttribute('aria-modal', 'true')
+    panel.setAttribute('aria-labelledby', `${details.id}-title`)
+  }
 
-    // `toggle` does not bubble, so this listens in the capture phase.
-    document.addEventListener(
-      'toggle',
-      function (event) {
-        var details = event.target
-        if (
-          !details ||
-          !details.classList ||
-          !details.classList.contains('plank-detail')
-        )
-          return
-
-        if (details.open) {
-          document
-            .querySelectorAll('details.plank-detail[open]')
-            .forEach(function (other) {
-              if (other !== details) other.open = false
-            })
-          root.classList.add('sheet-open')
-          promote(details)
-          syncHash(details)
-          window.posthog?.capture('plank_detail_opened', {
-            guide_slug: details.dataset.guideSlug,
-            plank_slug: details.dataset.plankSlug,
-            lang: document.documentElement.lang,
-          })
-          var heading = details.querySelector('h3')
-          if (heading) {
-            heading.setAttribute('tabindex', '-1')
-            heading.focus({ preventScroll: true })
-          }
-        } else {
-          demote(details)
-          if (!anyOpen()) {
-            root.classList.remove('sheet-open')
-            syncHash(null)
-          }
-          // Closing hides the focused heading, which would otherwise drop
-          // focus to <body> and lose the reader's place in the scroll.
-          var summary = details.querySelector('summary')
-          if (summary) summary.focus({ preventScroll: true })
-        }
-      },
-      true,
-    )
-
-    document.addEventListener('click', function (event) {
-      if (event.target.closest('[data-plank-close]')) closeAll()
-    })
-
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape' && anyOpen()) closeAll()
-    })
-
-    // Arriving on a permalink opens that plank rather than leaving the reader
-    // scrolled to a closed disclosure. CSS.escape must not see the leading
-    // '#' — it would escape it and produce a selector that matches nothing.
-    if (location.hash) {
-      var target = document.querySelector(
-        'details.plank-detail#' + CSS.escape(location.hash.slice(1)),
+  // `toggle` does not bubble, so this listens in the capture phase.
+  document.addEventListener(
+    'toggle',
+    (event) => {
+      const details = event.target
+      if (
+        !(details instanceof HTMLDetailsElement) ||
+        !details.classList.contains('plank-detail')
       )
-      if (target) target.open = true
-    }
-  })()
+        return
+
+      if (details.open) {
+        for (const other of document.querySelectorAll<HTMLDetailsElement>(
+          'details.plank-detail[open]',
+        )) {
+          if (other !== details) other.open = false
+        }
+        root.classList.add('sheet-open')
+        setDialogRole(details, true)
+        syncHash(details)
+        window.posthog?.capture('plank_detail_opened', {
+          guide_slug: details.dataset.guideSlug,
+          plank_slug: details.dataset.plankSlug,
+          lang: root.lang,
+        })
+        const heading = details.querySelector<HTMLElement>('h3')
+        if (heading) {
+          heading.setAttribute('tabindex', '-1')
+          heading.focus({ preventScroll: true })
+        }
+      } else {
+        setDialogRole(details, false)
+        // Only wind the page back up once nothing is open. Closing because
+        // another panel opened must not steal focus back out of the new one.
+        if (!openSheet()) {
+          root.classList.remove('sheet-open')
+          syncHash(null)
+          details
+            .querySelector<HTMLElement>('summary')
+            ?.focus({ preventScroll: true })
+        }
+      }
+
+      // Always recomputed from what is open now, never applied as a delta —
+      // see src/lib/sheet.ts for why that distinction matters.
+      applySheetInert(openSheet())
+    },
+    true,
+  )
+
+  document.addEventListener('click', (event) => {
+    if ((event.target as Element | null)?.closest('[data-plank-close]'))
+      closeAll()
+  })
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && openSheet()) closeAll()
+  })
+
+  // Arriving on a permalink opens that plank rather than leaving the reader
+  // scrolled to a closed disclosure. CSS.escape must not see the leading '#'
+  // — it would escape it and produce a selector that matches nothing.
+  if (location.hash) {
+    const target = document.querySelector<HTMLDetailsElement>(
+      `details.plank-detail#${CSS.escape(location.hash.slice(1))}`,
+    )
+    if (target) target.open = true
+  }
 </script>
