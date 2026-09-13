@@ -32,14 +32,25 @@ To learn more about the folder structure of an Astro project, refer to [our guid
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
+| Command              | Action                                                  |
+| :------------------- | :------------------------------------------------------ |
+| `bun install`        | Install dependencies                                     |
+| `bun run dev`        | Start the dev server at `localhost:4321`                 |
+| `bun run build`      | Build the production site to `./dist/`                   |
+| `bun run test`       | Run the test suite once                                  |
+| `bun run test:watch` | Run the tests in watch mode                              |
+| `bun run lint`       | Lint with Biome                                          |
+| `bun run format`     | Format with Biome, plus Prettier for `.astro` files      |
+| `bun astro ...`      | Run Astro CLI commands, e.g. `astro add`, `astro check`  |
+
+> Use `bun run <script>`, not `bun <script>`. `bun test` and `bun build` are
+> Bun's own built-in test runner and bundler — they shadow the package scripts
+> of the same name and quietly do something else. `bun test` reports failures
+> in tests that pass under Vitest; `bun build` just asks for an entrypoint.
+
+There is no `preview` command worth documenting: `astro preview` exists as a
+script, but the Netlify adapter doesn't support it. Preview a build on a
+Netlify deploy preview instead.
 
 ## 👀 Want to learn more?
 
