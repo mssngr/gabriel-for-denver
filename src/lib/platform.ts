@@ -361,6 +361,18 @@ export function selectPublished<G extends Entry<Guide>, P extends Entry<Plank>>(
 }
 
 /**
+ * Whether a guide's page shows the plank rail beside its bands. A single plank
+ * has nothing to move between, so it gets no rail.
+ *
+ * Both the rail and the bands' desktop left gutter follow this, so the gutter
+ * only exists when there is a rail to clear. Deciding it in two places is how
+ * the rail first shipped sitting on top of the text.
+ */
+export function showsPlankRail(plankCount: number): boolean {
+  return plankCount > 1
+}
+
+/**
  * The id a plank's detail panel carries, and the anchor its permalink points
  * at. Namespaced so it can't collide with a section heading's own anchor, and
  * re-slugified because `slug` is free text an editor types — a permalink has
