@@ -1,0 +1,111 @@
+---
+import type { Lang } from '../../lib/platform'
+import { localized } from '../../lib/platform'
+import type { GuideEntry } from '../../lib/platform-content'
+import ShareButton from './share-button.astro'
+
+interface Props {
+  plankCount: number
+  related: { guide: GuideEntry; reason?: string }[]
+  next?: GuideEntry
+  lang: Lang
+  shareTitle: string
+  shareUrl: string
+}
+
+const { plankCount, related, next, lang, shareTitle, shareUrl } = Astro.props
+
+const t =
+  lang === 'es'
+    ? {
+        agree:
+          plankCount === 1
+            ? '¿De acuerdo con esto?'
+            : `¿De acuerdo con estos ${plankCount}?`,
+        donate: 'Donar',
+        donateHref: '/es/donate',
+        volunteer: 'Voluntario',
+        volunteerHref: '/es/get-involved/volunteer',
+        next: 'Siguiente',
+        base: '/es/platform',
+      }
+    : {
+        agree:
+          plankCount === 1
+            ? 'Agree with this?'
+            : `Agree with these ${plankCount}?`,
+        donate: 'Donate',
+        donateHref: '/donate',
+        volunteer: 'Volunteer',
+        volunteerHref: '/get-involved/volunteer',
+        next: 'Next',
+        base: '/platform',
+      }
+
+const titleOf = (entry: GuideEntry) =>
+  localized(entry.data, 'title', lang) ?? entry.data.title
+const hrefOf = (entry: GuideEntry) => `${t.base}/${entry.data.slug}`
+
+// Two columns only when there's something to put in the second: with no
+// cross-links and no next guide, an empty column would just push the buttons
+// into half the width for nothing.
+const hasExits = related.length > 0 || next !== undefined
+const outlineButton = 'btn border-[1.5px] border-white/45 text-lg!'
+---
+
+<section
+  class:list={[
+    'bg-tertiary text-white px-6 py-16 md:px-12 md:py-20',
+    hasExits && 'md:grid md:grid-cols-2 md:gap-16 md:items-start',
+  ]}
+>
+  <div>
+    <h2 class="text-3xl md:text-4xl mb-6 text-balance">{t.agree}</h2>
+    <div class="flex flex-wrap items-center gap-3">
+      <a class="btn bg-accent text-tertiary text-lg!" href={t.donateHref}
+        >{t.donate}</a
+      >
+      <a class={outlineButton} href={t.volunteerHref}>{t.volunteer}</a>
+      <ShareButton
+        title={shareTitle}
+        url={shareUrl}
+        lang={lang}
+        class={outlineButton}
+      />
+    </div>
+  </div>
+  {
+    hasExits && (
+      <ul class="list-none pl-0 mt-10 border-t border-white/20 pt-5 font-light md:mt-0 md:border-t-0 md:border-l md:pt-1 md:pl-10">
+        {related.map(({ guide, reason }) => (
+          <li class="mt-2 text-lg first:mt-0">
+            <a class="no-underline group" href={hrefOf(guide)}>
+              <b class="font-semibold">{titleOf(guide)}</b>
+              {reason && (
+                <>
+                  {' '}
+                  &rarr;{' '}
+                  <span class="underline decoration-white/50 underline-offset-3 group-hover:decoration-white">
+                    {reason}
+                  </span>
+                </>
+              )}
+            </a>
+          </li>
+        ))}
+        {next && (
+          <li
+            class:list={['text-lg', related.length > 0 ? 'mt-5' : 'first:mt-0']}
+          >
+            <a
+              class="underline decoration-white/50 underline-offset-3 hover:decoration-white"
+              href={hrefOf(next)}
+            >
+              {`${t.next}: ${titleOf(next)}`} &rarr;
+            </a>
+          </li>
+        )}
+      </ul>
+    )
+  }
+</section>

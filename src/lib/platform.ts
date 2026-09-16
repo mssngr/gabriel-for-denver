@@ -20,10 +20,11 @@ export type BandTheme = (typeof BAND_THEMES)[number]
 
 /**
  * The rotation bands cycle through when a plank doesn't name its own theme.
- * Ink is the workhorse; sky and gold alternate as the light beats so a long
- * guide doesn't read as a two-stripe zebra.
+ * Three beats, so a three-plank guide shows every colour — the earlier
+ * ink, sky, ink, gold rotation only reached gold on a fourth plank. Adjacent
+ * bands still never share a colour, since every beat differs from the next.
  */
-export const BAND_ROTATION: readonly BandTheme[] = ['ink', 'sky', 'ink', 'gold']
+export const BAND_ROTATION: readonly BandTheme[] = ['ink', 'sky', 'gold']
 
 export const TIMELINES = [
   'day-one',
@@ -43,6 +44,27 @@ const TIMELINE_LABELS: Record<Timeline, Record<Lang, string>> = {
   'ballot-referral': { en: 'Ballot referral', es: 'Medida electoral' },
   ongoing: { en: 'Ongoing', es: 'Continuo' },
 }
+
+const relatedLinkObject = z.object({
+  guide: z.string(),
+  reason: z.string().optional(),
+  reason_es: z.string().optional(),
+})
+export type RelatedLink = z.infer<typeof relatedLinkObject>
+
+/**
+ * A cross-link to another guide, with an optional one-line reason.
+ *
+ * Still accepts the plain slug the CMS used to store here. An editor with the
+ * old admin page open could save that shape after this deploys, and a Sveltia
+ * save goes straight to main — rejecting it would stop the whole site
+ * building. Both shapes normalize to the object.
+ */
+const relatedLink = z
+  .union([z.string(), relatedLinkObject])
+  .transform(
+    (link): RelatedLink => (typeof link === 'string' ? { guide: link } : link),
+  )
 
 const publishStatus = z.enum(['draft', 'published'])
 export type PublishStatus = z.infer<typeof publishStatus>
@@ -64,7 +86,7 @@ export const guideSchema = z.object({
   artworkAlt: z.string().optional(),
   artworkAlt_es: z.string().optional(),
   lastReviewed: z.coerce.date().optional(),
-  related: z.array(z.string()).optional(),
+  related: z.array(relatedLink).optional(),
   metaDescription: z.string().optional(),
   metaDescription_es: z.string().optional(),
 })
@@ -226,8 +248,8 @@ export function assertGuideRefs(
       .map(plank => `${plank.id} -> "${plank.data.guide}"`),
     ...guides.flatMap(guide =>
       (guide.data.related ?? [])
-        .filter(slug => !known.has(slug))
-        .map(slug => `${guide.id} -> "${slug}"`),
+        .filter(link => !known.has(link.guide))
+        .map(link => `${guide.id} -> "${link.guide}"`),
     ),
   ]
   if (broken.length === 0) return
@@ -333,18 +355,44 @@ export function planksForPage<E extends Entry<Plank>>(
  * same reason: a published page is public, so it must not hand a reader a link
  * into an unlisted, `noindex` draft. A draft guide is already a private
  * preview, so there its cross-links resolve to whatever they name.
+ *
+ * The reason is read strictly in the page's language, with no English
+ * fallback. It's a sentence, not a title, so English on the Spanish page would
+ * be a visible slip, whereas a link with no reason still reads fine.
  */
 export function relatedGuides<G extends Entry<Guide>>(
   guides: G[],
   guide: Guide,
-): G[] {
+  lang: Lang,
+): { guide: G; reason?: string }[] {
   const visible =
     guide.status === 'draft'
       ? guides
       : guides.filter(entry => entry.data.status === 'published')
-  return (guide.related ?? [])
-    .map(slug => visible.find(entry => entry.data.slug === slug))
-    .filter(entry => entry !== undefined)
+  return (guide.related ?? []).flatMap(link => {
+    const target = visible.find(entry => entry.data.slug === link.guide)
+    if (!target) return []
+    const reason = lang === 'es' ? link.reason_es : link.reason
+    return [{ guide: target, reason }]
+  })
+}
+
+/**
+ * The guide a reader moves on to from this one: the published guide with the
+ * next highest `order`. Drafts are never a destination, so a published page
+ * can't point into an unlisted preview. No wrap-around from the last guide —
+ * "next" back to the first reads as a loop, not progress.
+ */
+export function nextGuide<G extends Entry<Guide>>(
+  guides: G[],
+  guide: Guide,
+): G | undefined {
+  return guides
+    .filter(
+      entry =>
+        entry.data.status === 'published' && entry.data.order > guide.order,
+    )
+    .sort(byOrder)[0]
 }
 
 /**
@@ -412,6 +460,32 @@ export function plankLabel(plank: Plank, index: number, lang: Lang): string {
 /** How a plank's timeline reads on the page, e.g. "Day one" for `day-one`. */
 export function timelineLabel(timeline: Timeline, lang: Lang): string {
   return TIMELINE_LABELS[timeline][lang]
+}
+
+export type Source = NonNullable<Plank['sources']>[number]
+
+/**
+ * A source's label in the page's language. Falls back to the original, unlike a
+ * related-guide reason: a source label is usually the document's own title,
+ * which is often correct untranslated — the same reason nested twins sit
+ * outside the translation gate.
+ */
+export function sourceLabel(source: Source, lang: Lang): string {
+  return (lang === 'es' && source.label_es) || source.label
+}
+
+/**
+ * The footnote on a plank's band: its first source. The band is the unit a
+ * reader screenshots or links to, so the claim on it carries its own citation;
+ * the full list stays in the detail panel.
+ */
+export function leadSource(
+  plank: Plank,
+  lang: Lang,
+): { label: string; url: string } | undefined {
+  const first = plank.sources?.[0]
+  if (!first) return undefined
+  return { label: sourceLabel(first, lang), url: first.url }
 }
 
 /**

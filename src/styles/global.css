@@ -121,6 +121,9 @@
     --band-figure: var(--color-accent);
     --band-hair: rgb(255 255 255 / 0.3);
     --band-mute: rgb(255 255 255 / 0.78);
+    --band-action-bg: var(--color-accent);
+    --band-action-fg: var(--color-tertiary);
+    --band-action-border: var(--color-accent);
   }
 
   .band-sky {
@@ -129,6 +132,9 @@
     --band-figure: var(--color-primary);
     --band-hair: rgb(14 0 92 / 0.22);
     --band-mute: rgb(14 0 92 / 0.72);
+    --band-action-bg: transparent;
+    --band-action-fg: currentColor;
+    --band-action-border: currentColor;
   }
 
   .band-gold {
@@ -137,6 +143,9 @@
     --band-figure: var(--color-tertiary);
     --band-hair: rgb(26 19 5 / 0.25);
     --band-mute: rgb(26 19 5 / 0.75);
+    --band-action-bg: var(--color-tertiary);
+    --band-action-fg: #fff;
+    --band-action-border: var(--color-tertiary);
   }
 
   .band-paper {
@@ -145,6 +154,9 @@
     --band-figure: var(--color-primary);
     --band-hair: rgb(11 13 21 / 0.14);
     --band-mute: rgb(11 13 21 / 0.66);
+    --band-action-bg: transparent;
+    --band-action-fg: currentColor;
+    --band-action-border: currentColor;
   }
 
   .band-figure {
@@ -155,6 +167,14 @@
   }
   .band-rule {
     border-color: var(--band-hair);
+  }
+
+  /* The band's action row puts the panel's <details> in a flex row beside the
+     timeline chip and the source. With JS off, opening it expands the panel
+     inline, so it takes the whole row rather than being squeezed into a flex
+     item. With JS on, the panel is a fixed sheet and the row stays as it is. */
+  html:not(.sheet-open) .plank-detail[open] {
+    flex-basis: 100%;
   }
 
   /* The detail panel ships as a <details>, so with JS off it is an ordinary

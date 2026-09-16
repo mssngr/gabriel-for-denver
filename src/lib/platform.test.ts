@@ -5,11 +5,13 @@ import {
   assertUniqueSlugs,
   bandTheme,
   guideMetaDescription,
+  leadSource,
   GUIDE_TRANSLATABLE_FIELDS,
   type Entry,
   type Guide,
   guideSchema,
   localized,
+  nextGuide,
   type Plank,
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
@@ -65,18 +67,25 @@ function makePlank({
 }
 
 describe('bandTheme', () => {
-  it('cycles ink, sky, ink, gold across the first four bands', () => {
-    const themes = [0, 1, 2, 3].map(index => bandTheme(index))
-    expect(themes).toEqual(['ink', 'sky', 'ink', 'gold'])
+  it('cycles ink, sky, gold across the first three bands', () => {
+    const themes = [0, 1, 2].map(index => bandTheme(index))
+    expect(themes).toEqual(['ink', 'sky', 'gold'])
+  })
+
+  // The earlier ink, sky, ink, gold rotation meant gold only ever appeared on
+  // a fourth plank, so a three-plank guide showed two colours, not three.
+  it('gives a three-plank guide all three colours', () => {
+    const themes = new Set([0, 1, 2].map(index => bandTheme(index)))
+    expect(themes.size).toBe(3)
   })
 
   // Regression test for the bug this replaces: the band colour on
   // src/pages/issues/[id].astro is a ternary chain that runs out at index 2,
   // so a fourth section renders on bare white. A modulo cannot run out.
   it('keeps cycling past the end of the rotation', () => {
-    expect(bandTheme(4)).toBe('ink')
-    expect(bandTheme(7)).toBe('gold')
-    expect(bandTheme(40)).toBe('ink')
+    expect(bandTheme(3)).toBe('ink')
+    expect(bandTheme(5)).toBe('gold')
+    expect(bandTheme(40)).toBe('sky')
   })
 
   it('lets a plank override the rotation', () => {
@@ -183,7 +192,7 @@ describe('assertGuideRefs', () => {
   })
 
   it('catches a related-guide link that points nowhere', () => {
-    const guide = makeGuide({ related: ['homelessness'] })
+    const guide = makeGuide({ related: [{ guide: 'homelessness' }] })
     expect(() => assertGuideRefs([guide], [])).toThrow(
       /housing-crisis -> "homelessness"/,
     )
@@ -367,6 +376,19 @@ describe('schemas', () => {
     expect(guideSchema.parse(withoutStatus).status).toBe('draft')
   })
 
+  // The CMS used to store related guides as a plain list of slugs. An editor
+  // with the old admin page still open could save that shape after this
+  // deploys, and a schema that rejected it would take the whole build down.
+  it('still accepts related guides saved as plain slugs', () => {
+    const withLegacyRelated = {
+      ...makeGuide().data,
+      related: ['affordability'],
+    }
+    expect(guideSchema.parse(withLegacyRelated).related).toEqual([
+      { guide: 'affordability' },
+    ])
+  })
+
   it('accepts a plank written entirely in English', () => {
     const plank = makePlank({ commitment_es: undefined, why_es: undefined })
     expect(() => plankSchema.parse(plank.data)).not.toThrow()
@@ -458,37 +480,147 @@ describe('planksForPage', () => {
 
 describe('relatedGuides', () => {
   const housing = makeGuide()
-  const draft = makeGuide({ id: 'homelessness', slug: 'homelessness', status: 'draft' })
+  const draft = makeGuide({
+    id: 'homelessness',
+    slug: 'homelessness',
+    status: 'draft',
+  })
   const live = makeGuide({ id: 'affordability', slug: 'affordability' })
   const all = [housing, draft, live]
+  const slugs = (links: { guide: Entry<Guide> }[]) =>
+    links.map(link => link.guide.data.slug)
 
   // The same leak planksForPage prevents, one level up: a public page must not
   // hand a reader a link into an unlisted, noindexed draft.
   it('drops draft guides from a published guide’s cross-links', () => {
-    const guide = makeGuide({ related: ['homelessness', 'affordability'] }).data
-    expect(relatedGuides(all, guide).map(entry => entry.data.slug)).toEqual([
-      'affordability',
-    ])
+    const guide = makeGuide({
+      related: [{ guide: 'homelessness' }, { guide: 'affordability' }],
+    }).data
+    expect(slugs(relatedGuides(all, guide, 'en'))).toEqual(['affordability'])
   })
 
   it('keeps drafts when the linking guide is itself a draft preview', () => {
     const guide = makeGuide({
       status: 'draft',
-      related: ['homelessness', 'affordability'],
+      related: [{ guide: 'homelessness' }, { guide: 'affordability' }],
     }).data
-    expect(relatedGuides(all, guide).map(entry => entry.data.slug)).toEqual([
+    expect(slugs(relatedGuides(all, guide, 'en'))).toEqual([
       'homelessness',
       'affordability',
     ])
   })
 
   it('ignores a related slug that matches no guide', () => {
-    const guide = makeGuide({ related: ['nope'] }).data
-    expect(relatedGuides(all, guide)).toEqual([])
+    const guide = makeGuide({ related: [{ guide: 'nope' }] }).data
+    expect(relatedGuides(all, guide, 'en')).toEqual([])
   })
 
   it('returns nothing when a guide names no related guides', () => {
-    expect(relatedGuides(all, makeGuide().data)).toEqual([])
+    expect(relatedGuides(all, makeGuide().data, 'en')).toEqual([])
+  })
+
+  it('carries the one-line reason for the page’s language', () => {
+    const guide = makeGuide({
+      related: [
+        {
+          guide: 'affordability',
+          reason: 'rent is the largest line in most Denver budgets',
+          reason_es:
+            'el alquiler es el mayor gasto en la mayoría de los presupuestos',
+        },
+      ],
+    }).data
+    expect(relatedGuides(all, guide, 'en')[0].reason).toBe(
+      'rent is the largest line in most Denver budgets',
+    )
+    expect(relatedGuides(all, guide, 'es')[0].reason).toBe(
+      'el alquiler es el mayor gasto en la mayoría de los presupuestos',
+    )
+  })
+
+  // A reason is a sentence, not a title, so English text on the Spanish page
+  // would be a visible slip. Showing the link without a reason reads fine.
+  it('leaves the reason off the Spanish page rather than showing English', () => {
+    const guide = makeGuide({
+      related: [{ guide: 'affordability', reason: 'rent is the largest line' }],
+    }).data
+    expect(relatedGuides(all, guide, 'es')[0].reason).toBeUndefined()
+  })
+})
+
+describe('nextGuide', () => {
+  const at = (
+    slug: string,
+    order: number,
+    status: Guide['status'] = 'published',
+  ) => makeGuide({ id: slug, slug, order, status })
+
+  it('links to the published guide that comes next in order', () => {
+    const guides = [
+      at('big-tech', 3),
+      at('housing-crisis', 2),
+      at('affordability', 1),
+    ]
+    expect(nextGuide(guides, at('housing-crisis', 2).data)?.data.slug).toBe(
+      'big-tech',
+    )
+  })
+
+  it('skips a draft guide sitting in between', () => {
+    const guides = [at('homelessness', 3, 'draft'), at('big-tech', 4)]
+    expect(nextGuide(guides, at('housing-crisis', 2).data)?.data.slug).toBe(
+      'big-tech',
+    )
+  })
+
+  // No wrap-around: from the last guide, "next" back to the first reads as a
+  // loop rather than progress, and the hero already links back to the index.
+  it('has no next guide after the last published one', () => {
+    const guides = [at('affordability', 1), at('housing-crisis', 2)]
+    expect(nextGuide(guides, at('housing-crisis', 2).data)).toBeUndefined()
+  })
+})
+
+describe('leadSource', () => {
+  const source = (overrides = {}) => ({
+    label: 'Denver zoning analysis, 2024',
+    url: 'https://example.org/zoning',
+    ...overrides,
+  })
+
+  it('uses a plank’s first source as its band footnote', () => {
+    const plank = makePlank({
+      sources: [
+        source(),
+        source({ label: 'Second study', url: 'https://example.org/2' }),
+      ],
+    }).data
+    expect(leadSource(plank, 'en')).toEqual({
+      label: 'Denver zoning analysis, 2024',
+      url: 'https://example.org/zoning',
+    })
+  })
+
+  it('gives no footnote to a plank with no sources', () => {
+    expect(leadSource(makePlank().data, 'en')).toBeUndefined()
+  })
+
+  it('uses the Spanish label on the Spanish page when there is one', () => {
+    const plank = makePlank({
+      sources: [
+        source({ label_es: 'Análisis de zonificación de Denver, 2024' }),
+      ],
+    }).data
+    expect(leadSource(plank, 'es')?.label).toBe(
+      'Análisis de zonificación de Denver, 2024',
+    )
+  })
+
+  // Unlike a related-guide reason, a source label is usually a document's own
+  // title, which is often correct untranslated — so it falls back to English.
+  it('keeps the original label on the Spanish page when it was not translated', () => {
+    const plank = makePlank({ sources: [source()] }).data
+    expect(leadSource(plank, 'es')?.label).toBe('Denver zoning analysis, 2024')
   })
 })
 

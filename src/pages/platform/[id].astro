@@ -1,11 +1,13 @@
 ---
-import { ArrowLeft } from '@lucide/astro'
-import { marked } from 'marked'
 import Band from '../../components/platform/band.astro'
+import GuideCta from '../../components/platform/guide-cta.astro'
+import GuideHero from '../../components/platform/guide-hero.astro'
 import PlankRail from '../../components/platform/plank-rail.astro'
 import SheetBehavior from '../../components/platform/sheet-behavior.astro'
 import {
   guideMetaDescription,
+  localized,
+  nextGuide,
   relatedGuides,
   showsPlankRail,
 } from '../../lib/platform'
@@ -27,28 +29,19 @@ const planks = await getPlanks(guide)
 const besideRail = showsPlankRail(planks.length)
 const guides = await getGuides()
 const published = guides.filter((entry) => entry.data.status === 'published')
-const position = published.findIndex(
-  (entry) => entry.data.slug === guide.data.slug,
-)
+// 1-based place among published guides; 0 for a draft, which has no place.
+const position =
+  published.findIndex((entry) => entry.data.slug === guide.data.slug) + 1
 
-const title = guide.data.title
-const stance = marked.parse(guide.data.stance)
-const isDraft = guide.data.status === 'draft'
-
-const related = relatedGuides(guides, guide.data)
-
-const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  timeZone: 'UTC',
-})
+const title = localized(guide.data, 'title', lang) ?? guide.data.title
+const pageTitle = `${title} | Gabriel for Denver`
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href
 ---
 
 <Layout
-  title={`${title} | Gabriel for Denver`}
+  title={pageTitle}
   description={guideMetaDescription(guide.data, lang)}
-  noindex={isDraft}
+  noindex={guide.data.status === 'draft'}
   heroGradient
 >
   <script
@@ -62,32 +55,14 @@ const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
     })
   </script>
 
-  <section slot="hero" class="px-6 pb-16 md:px-12 md:pb-24">
-    <a href="/platform" class="link inline-flex items-center gap-1 mb-8">
-      <ArrowLeft class="size-4" />The platform
-    </a>
-    <p class="text-xs tracking-[0.2em] uppercase font-semibold opacity-75 mb-2">
-      Platform{position >= 0 && ` · ${position + 1} of ${published.length}`}
-    </p>
-    <h1>{title}</h1>
-    <div
-      class="hero-highlight max-w-[26ch] font-light [&_strong]:font-bold [&_p]:text-2xl md:[&_p]:text-3xl [&_p]:leading-tight"
-      set:html={stance}
-    />
-    <div
-      class="flex flex-wrap items-center gap-3 mt-6 text-xs tracking-wider uppercase font-medium opacity-80"
-    >
-      {
-        isDraft && (
-          <span class="rounded-full bg-accent text-tertiary px-3 pt-1 pb-0.5 font-bold tracking-widest">
-            Draft — not published
-          </span>
-        )
-      }
-      <span>{planks.length} {planks.length === 1 ? 'plank' : 'planks'}</span>
-      {updated && <span>Updated {updated}</span>}
-    </div>
-  </section>
+  <GuideHero
+    slot="hero"
+    guide={guide}
+    lang={lang}
+    position={position}
+    publishedCount={published.length}
+    plankCount={planks.length}
+  />
 
   <main class="flex flex-col">
     <PlankRail planks={planks} lang={lang}>
@@ -104,32 +79,14 @@ const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
       }
     </PlankRail>
 
-    <section class="bg-tertiary text-white px-6 py-16 md:px-12 md:py-20">
-      <h2 class="text-3xl md:text-4xl mb-6 text-balance">
-        Agree with {planks.length === 1 ? 'this' : `these ${planks.length}`}?
-      </h2>
-      <div class="flex flex-wrap gap-3">
-        <a class="btn bg-accent text-tertiary text-lg!" href="/donate">Donate</a
-        >
-        <a
-          class="btn border-[1.5px] border-white/45 text-lg!"
-          href="/get-involved/volunteer">Volunteer</a
-        >
-      </div>
-      {
-        related.length > 0 && (
-          <ul class="list-none pl-0 mt-10 border-t border-white/20 pt-5 font-light">
-            {related.map((entry) => (
-              <li class="mt-2 text-lg">
-                <a class="link" href={`/platform/${entry.data.slug}`}>
-                  {entry.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        )
-      }
-    </section>
+    <GuideCta
+      plankCount={planks.length}
+      related={relatedGuides(guides, guide.data, lang)}
+      next={nextGuide(guides, guide.data)}
+      lang={lang}
+      shareTitle={pageTitle}
+      shareUrl={pageUrl}
+    />
   </main>
 
   <SheetBehavior />

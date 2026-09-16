@@ -259,14 +259,37 @@ collections:
       - {
           label: Related Guides,
           name: related,
-          widget: relation,
-          collection: guides,
-          multiple: true,
+          widget: list,
           required: false,
-          value_field: "{{fields.slug}}",
-          display_fields: ["{{fields.title}} — {{fields.status}}"],
-          search_fields: [title, slug],
-          hint: Cross-links shown at the foot of the page.,
+          summary: "{{fields.guide}} — {{fields.reason}}",
+          hint: Cross-links shown at the foot of the page, each with an optional
+            one-line reason. A reason with no Spanish version is left off the
+            Spanish page rather than shown in English.,
+          fields:
+            [
+              {
+                label: Guide,
+                name: guide,
+                widget: relation,
+                collection: guides,
+                value_field: "{{fields.slug}}",
+                display_fields: ["{{fields.title}} — {{fields.status}}"],
+                search_fields: [title, slug],
+              },
+              {
+                label: Reason,
+                name: reason,
+                widget: string,
+                required: false,
+                hint: 'e.g. "housing-first only works if there is housing"',
+              },
+              {
+                label: Reason (Spanish),
+                name: reason_es,
+                widget: string,
+                required: false,
+              },
+            ],
         }
       - {
           label: Meta Description,
