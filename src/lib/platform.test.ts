@@ -14,12 +14,15 @@ import {
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
   plankAnchor,
+  plankLabel,
   relatedGuides,
   planksForGuide,
   planksForPage,
   resolveHero,
   selectPublished,
   showsPlankRail,
+  TIMELINES,
+  timelineLabel,
 } from './platform'
 
 function makeGuide({
@@ -503,5 +506,52 @@ describe('showsPlankRail', () => {
 
   it('shows no rail for a guide with no planks yet', () => {
     expect(showsPlankRail(0)).toBe(false)
+  })
+})
+
+describe('plankLabel', () => {
+  // Built as one string on purpose. Written as two adjacent expressions in the
+  // template, Prettier moved them onto separate lines and Astro dropped the
+  // space between them, so the live panel read "PLANK01".
+  it('numbers the plank and names its sub-topic', () => {
+    const plank = makePlank({ kicker: 'Zoning' }).data
+    expect(plankLabel(plank, 0, 'en')).toBe('Plank 01 · Zoning')
+  })
+
+  it('leaves the separator off when a plank has no sub-topic', () => {
+    expect(plankLabel(makePlank().data, 2, 'en')).toBe('Plank 03')
+  })
+
+  it('uses the Spanish word and sub-topic on the Spanish page', () => {
+    const plank = makePlank({
+      kicker: 'Zoning',
+      kicker_es: 'Zonificación',
+    }).data
+    expect(plankLabel(plank, 0, 'es')).toBe('Punto 01 · Zonificación')
+  })
+
+  it('pads single digits and stops padding at ten', () => {
+    expect(plankLabel(makePlank().data, 8, 'en')).toBe('Plank 09')
+    expect(plankLabel(makePlank().data, 9, 'en')).toBe('Plank 10')
+  })
+})
+
+describe('timelineLabel', () => {
+  it('reads as words rather than the stored slug', () => {
+    expect(timelineLabel('day-one', 'en')).toBe('Day one')
+  })
+
+  it('translates the label on the Spanish page', () => {
+    expect(timelineLabel('day-one', 'es')).toBe('Primer día')
+  })
+
+  // A timeline added to the schema without a proper label would surface on
+  // the page as a raw slug again, which is exactly the bug this replaces.
+  it.each(TIMELINES)('gives %s a real label in both languages', timeline => {
+    for (const lang of ['en', 'es'] as const) {
+      const label = timelineLabel(timeline, lang)
+      expect(label).not.toBe(timeline)
+      expect(label).not.toMatch(/^[a-z]+(-[a-z]+)+$/)
+    }
   })
 })
