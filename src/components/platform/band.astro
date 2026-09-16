@@ -9,9 +9,11 @@ interface Props {
   guideTitle: string
   index: number
   lang: Lang
+  /** Whether the plank rail sits beside this band on desktop. See `showsPlankRail`. */
+  besideRail: boolean
 }
 
-const { plank, guideTitle, index, lang } = Astro.props
+const { plank, guideTitle, index, lang, besideRail } = Astro.props
 
 const theme: BandTheme = bandTheme(index, plank.data.theme)
 const hero = resolveHero(plank.data, lang)
@@ -32,7 +34,10 @@ const showsCommitmentTwice = hero.kind === 'statement'
 
 <section
   class:list={[
-    'band flex flex-col justify-center px-6 py-20 md:px-12 md:py-28 min-h-[36rem] md:min-h-[44rem]',
+    'band flex flex-col justify-center px-6 py-20 md:pr-12 md:py-28 min-h-[36rem] md:min-h-[44rem]',
+    // 6.5rem clears the rail (its right edge sits at 4.25rem), matching the
+    // band padding in design.html. Without a rail, line up with the hero.
+    besideRail ? 'md:pl-26' : 'md:pl-12',
     `band-${theme}`,
   ]}
   data-plank={plank.data.slug}

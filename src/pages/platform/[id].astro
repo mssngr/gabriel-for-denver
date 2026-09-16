@@ -4,7 +4,11 @@ import { marked } from 'marked'
 import Band from '../../components/platform/band.astro'
 import PlankRail from '../../components/platform/plank-rail.astro'
 import SheetBehavior from '../../components/platform/sheet-behavior.astro'
-import { guideMetaDescription, relatedGuides } from '../../lib/platform'
+import {
+  guideMetaDescription,
+  relatedGuides,
+  showsPlankRail,
+} from '../../lib/platform'
 import { getGuides, getPlanks } from '../../lib/platform-content'
 import Layout from '../../layouts/default.astro'
 
@@ -20,6 +24,7 @@ const { guide } = Astro.props
 const lang = 'en' as const
 
 const planks = await getPlanks(guide)
+const besideRail = showsPlankRail(planks.length)
 const guides = await getGuides()
 const published = guides.filter((entry) => entry.data.status === 'published')
 const position = published.findIndex(
@@ -66,7 +71,7 @@ const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
     </p>
     <h1>{title}</h1>
     <div
-      class="hero-highlight max-w-[26ch] font-light [&_p]:text-2xl md:[&_p]:text-3xl [&_p]:leading-tight"
+      class="hero-highlight max-w-[26ch] font-light [&_strong]:font-bold [&_p]:text-2xl md:[&_p]:text-3xl [&_p]:leading-tight"
       set:html={stance}
     />
     <div
@@ -85,12 +90,19 @@ const updated = guide.data.lastReviewed?.toLocaleDateString('en-US', {
   </section>
 
   <main class="flex flex-col">
-    <PlankRail planks={planks} lang={lang} />
-    {
-      planks.map((plank, index) => (
-        <Band plank={plank} guideTitle={title} index={index} lang={lang} />
-      ))
-    }
+    <PlankRail planks={planks} lang={lang}>
+      {
+        planks.map((plank, index) => (
+          <Band
+            plank={plank}
+            guideTitle={title}
+            index={index}
+            lang={lang}
+            besideRail={besideRail}
+          />
+        ))
+      }
+    </PlankRail>
 
     <section class="bg-tertiary text-white px-6 py-16 md:px-12 md:py-20">
       <h2 class="text-3xl md:text-4xl mb-6 text-balance">

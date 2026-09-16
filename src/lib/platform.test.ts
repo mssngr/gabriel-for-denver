@@ -19,6 +19,7 @@ import {
   planksForPage,
   resolveHero,
   selectPublished,
+  showsPlankRail,
 } from './platform'
 
 function makeGuide({
@@ -485,5 +486,22 @@ describe('relatedGuides', () => {
 
   it('returns nothing when a guide names no related guides', () => {
     expect(relatedGuides(all, makeGuide().data)).toEqual([])
+  })
+})
+
+describe('showsPlankRail', () => {
+  // The rail and the bands' left gutter that clears it both follow this one
+  // rule, so they can't disagree the way the rail and the content padding did
+  // when the rail first shipped over the text.
+  it('shows no rail for a guide with a single plank, since there is nothing to move between', () => {
+    expect(showsPlankRail(1)).toBe(false)
+  })
+
+  it('shows the rail as soon as there are two planks to move between', () => {
+    expect(showsPlankRail(2)).toBe(true)
+  })
+
+  it('shows no rail for a guide with no planks yet', () => {
+    expect(showsPlankRail(0)).toBe(false)
   })
 })
