@@ -25,13 +25,24 @@ export type BandTheme = (typeof BAND_THEMES)[number]
  */
 export const BAND_ROTATION: readonly BandTheme[] = ['ink', 'sky', 'ink', 'gold']
 
-const TIMELINES = [
+export const TIMELINES = [
   'day-one',
   'first-budget',
   'ordinance',
   'ballot-referral',
   'ongoing',
 ] as const
+export type Timeline = (typeof TIMELINES)[number]
+
+// Keyed by the enum, so the type checker refuses a new timeline value until it
+// has wording in both languages — the stored slug is never shown to a reader.
+const TIMELINE_LABELS: Record<Timeline, Record<Lang, string>> = {
+  'day-one': { en: 'Day one', es: 'Primer día' },
+  'first-budget': { en: 'First budget', es: 'Primer presupuesto' },
+  ordinance: { en: 'Ordinance', es: 'Ordenanza' },
+  'ballot-referral': { en: 'Ballot referral', es: 'Medida electoral' },
+  ongoing: { en: 'Ongoing', es: 'Continuo' },
+}
 
 const publishStatus = z.enum(['draft', 'published'])
 export type PublishStatus = z.infer<typeof publishStatus>
@@ -380,6 +391,27 @@ export function showsPlankRail(plankCount: number): boolean {
  */
 export function plankAnchor(slug: string): string {
   return `plank-${slugify(slug)}`
+}
+
+/**
+ * The label above a plank's commitment in its detail panel: "Plank 01 ·
+ * Zoning", or just "Plank 03" when the plank has no sub-topic.
+ *
+ * One string rather than separate template expressions. Written as adjacent
+ * expressions, a formatter can move them onto separate lines, and Astro then
+ * drops the whitespace between them — which is how the panel came to read
+ * "PLANK01".
+ */
+export function plankLabel(plank: Plank, index: number, lang: Lang): string {
+  const word = lang === 'es' ? 'Punto' : 'Plank'
+  const number = String(index + 1).padStart(2, '0')
+  const kicker = localized(plank, 'kicker', lang)
+  return kicker ? `${word} ${number} · ${kicker}` : `${word} ${number}`
+}
+
+/** How a plank's timeline reads on the page, e.g. "Day one" for `day-one`. */
+export function timelineLabel(timeline: Timeline, lang: Lang): string {
+  return TIMELINE_LABELS[timeline][lang]
 }
 
 /**
