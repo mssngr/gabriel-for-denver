@@ -1,12 +1,12 @@
 ---
 import { Image } from 'astro:assets'
-import { getCollection } from 'astro:content'
 import { marked } from 'marked'
+import { getPosts } from '../../../lib/posts-content'
 import { stripMarkdown } from '../../../lib/seo'
 import Espanol from '../../../layouts/espanol.astro'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts')
+  const posts = await getPosts()
   return posts.map((post) => ({
     params: { slug: post.data.slug },
     props: { post },

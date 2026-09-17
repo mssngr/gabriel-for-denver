@@ -16,8 +16,15 @@ const pages = defineCollection({
     }),
 })
 
+// `generateId` pins the id to the filename, same as `guides`/`planks` below —
+// `issues` also keys its entries off a `slug` field, so it's exposed to the
+// same silent-collision risk `idFromFilename` closes off.
 const issues = defineCollection({
-  loader: glob({ pattern: '**/*.yml', base: './src/content/issues' }),
+  loader: glob({
+    pattern: '**/*.yml',
+    base: './src/content/issues',
+    generateId: ({ entry }) => idFromFilename(entry),
+  }),
   schema: () =>
     z.object({
       title: z.string(),
@@ -96,8 +103,14 @@ const events = defineCollection({
     }),
 })
 
+// `generateId` pins the id to the filename, for the same reason as `issues`
+// above — `posts` also keys its entries off a `slug` field.
 const posts = defineCollection({
-  loader: glob({ pattern: '**/*.yml', base: './src/content/posts' }),
+  loader: glob({
+    pattern: '**/*.yml',
+    base: './src/content/posts',
+    generateId: ({ entry }) => idFromFilename(entry),
+  }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
