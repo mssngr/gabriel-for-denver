@@ -84,9 +84,16 @@ const showsCommitmentTwice = hero.kind === 'statement'
         // Shown exactly as typed. Not every pull quote is a quotation, so
         // editors add their own quotation marks when one is.
         hero.kind === 'quote' && (
-          <p class="band-figure font-bold leading-none tracking-tight text-4xl md:text-6xl max-w-[13ch] text-balance">
-            {hero.quote}
-          </p>
+          <>
+            <p class="band-figure font-bold leading-none tracking-tight text-4xl md:text-6xl max-w-[13ch] text-balance">
+              {hero.quote}
+            </p>
+            {hero.caption && (
+              <p class="mt-4 max-w-[20ch] text-xl md:text-2xl font-light leading-tight">
+                – {hero.caption}
+              </p>
+            )}
+          </>
         )
       }
       {

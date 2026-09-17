@@ -101,10 +101,13 @@ export const plankSchema = z.object({
   // A string, not a number, so "77%", "1 in 3" and "$1.2B" all work without
   // any formatting logic deciding what a figure is supposed to look like.
   statValue: z.string().optional(),
-  statCaption: z.string().optional(),
-  statCaption_es: z.string().optional(),
   pullQuote: z.string().optional(),
   pullQuote_es: z.string().optional(),
+  // Shared by whichever hero above is in play: what the figure counts, or
+  // who said the quote, e.g. "A Denver Police Officer". A number with no
+  // caption is a rumour; a quote is fine standing on its own.
+  caption: z.string().optional(),
+  caption_es: z.string().optional(),
   commitment: z.string(),
   commitment_es: z.string().optional(),
   why: z.string(),
@@ -202,7 +205,7 @@ type TranslatableKey<T> = {
 
 export type PlankHero =
   | { kind: 'stat'; value: string; caption: string }
-  | { kind: 'quote'; quote: string }
+  | { kind: 'quote'; quote: string; caption?: string }
   | { kind: 'statement'; text: string }
 
 /**
@@ -211,17 +214,18 @@ export type PlankHero =
  * schema that can reject an editor's entry is a schema that can take the whole
  * site's next build down. A plank with no figure and no quote falls back to
  * its own commitment set large, which is a perfectly good band.
+ *
+ * `caption` is a single field shared by both hero kinds — what the figure
+ * counts, or who said the quote — since only one of them is ever the hero at
+ * once.
  */
 export function resolveHero(plank: Plank, lang: Lang): PlankHero {
+  const caption = localized(plank, 'caption', lang)
   if (plank.statValue) {
-    return {
-      kind: 'stat',
-      value: plank.statValue,
-      caption: localized(plank, 'statCaption', lang) ?? '',
-    }
+    return { kind: 'stat', value: plank.statValue, caption: caption ?? '' }
   }
   const quote = localized(plank, 'pullQuote', lang)
-  if (quote) return { kind: 'quote', quote }
+  if (quote) return { kind: 'quote', quote, caption }
   return {
     kind: 'statement',
     text: localized(plank, 'commitment', lang) ?? plank.commitment,
