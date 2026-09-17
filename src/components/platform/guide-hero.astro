@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets'
+import { ArrowLeft } from '@lucide/astro'
+import { marked } from 'marked'
+import type { Lang } from '../../lib/platform'
+import { localized } from '../../lib/platform'
+import type { GuideEntry } from '../../lib/platform-content'
+
+interface Props {
+  guide: GuideEntry
+  lang: Lang
+  /** This guide's 1-based place among published guides, or 0 for a draft. */
+  position: number
+  publishedCount: number
+  plankCount: number
+}
+
+const { guide, lang, position, publishedCount, plankCount } = Astro.props
+
+const t =
+  lang === 'es'
+    ? {
+        back: 'La plataforma',
+        backHref: '/es/platform',
+        eyebrow: 'Plataforma',
+        of: 'de',
+        draft: 'Borrador — sin publicar',
+        plank: 'punto',
+        planks: 'puntos',
+        updated: 'Actualizado',
+        locale: 'es-US',
+      }
+    : {
+        back: 'The platform',
+        backHref: '/platform',
+        eyebrow: 'Platform',
+        of: 'of',
+        draft: 'Draft — not published',
+        plank: 'plank',
+        planks: 'planks',
+        updated: 'Updated',
+        locale: 'en-US',
+      }
+
+const title = localized(guide.data, 'title', lang) ?? guide.data.title
+// The stance's width cap goes on its paragraph, not on the wrapper around it:
+// `ch` is measured in the element's own font, and the wrapper is 16px while
+// the stance is 30px, which squeezed the column to about half its width.
+const stance = marked.parse(
+  localized(guide.data, 'stance', lang) ?? guide.data.stance,
+)
+const isDraft = guide.data.status === 'draft'
+const artwork = guide.data.artwork
+// Blank alt marks the illustration decorative, which is right when it only
+// restates the title printed beside it. Falling back to the title instead
+// would make a screen reader announce the heading twice. The CMS hint on
+// Artwork Alt Text tells editors this, so a blank is a choice, not an accident.
+const artworkAlt = localized(guide.data, 'artworkAlt', lang) ?? ''
+const eyebrow =
+  position > 0
+    ? `${t.eyebrow} · ${position} ${t.of} ${publishedCount}`
+    : t.eyebrow
+const plankCountLabel = `${plankCount} ${plankCount === 1 ? t.plank : t.planks}`
+const updated = guide.data.lastReviewed?.toLocaleDateString(t.locale, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+})
+---
+
+<section
+  class:list={[
+    'px-6 pb-16 md:px-12 md:pb-24',
+    // The illustration gets its own 22rem column on desktop, per design.html.
+    // Without one, the text keeps the full width rather than leaving a gap.
+    artwork &&
+      'md:grid md:grid-cols-[minmax(0,1fr)_22rem] md:gap-12 md:items-center',
+  ]}
+>
+  <div>
+    <a href={t.backHref} class="link inline-flex items-center gap-1 mb-8">
+      <ArrowLeft class="size-4" />{t.back}
+    </a>
+    <p class="text-xs tracking-[0.2em] uppercase font-semibold opacity-75 mb-2">
+      {eyebrow}
+    </p>
+    <h1 class="md:text-[4.25rem] md:leading-[0.95]">{title}</h1>
+    <div
+      class="hero-highlight font-light [&_strong]:font-bold [&_p]:max-w-[26ch] [&_p]:text-2xl md:[&_p]:text-3xl [&_p]:leading-tight"
+      set:html={stance}
+    />
+    <div
+      class="flex flex-wrap items-center gap-3 mt-6 text-xs tracking-wider uppercase font-medium opacity-80"
+    >
+      {
+        isDraft && (
+          <span class="rounded-full bg-accent text-tertiary px-3 pt-1 pb-0.5 font-bold tracking-widest">
+            {t.draft}
+          </span>
+        )
+      }
+      <span>{plankCountLabel}</span>
+      {updated && <span>{`${t.updated} ${updated}`}</span>}
+    </div>
+  </div>
+  {
+    artwork && (
+      <Image
+        src={artwork}
+        alt={artworkAlt}
+        class="hidden md:block w-full h-auto"
+      />
+    )
+  }
+</section>

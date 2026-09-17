@@ -20,6 +20,10 @@
   // only promotes an open one into a fixed sheet, keeps the URL in step so the
   // state is shareable, and closes it the ways a sheet is expected to close.
   const root = document.documentElement
+  // Tells global.css that this script is handling the panels, so an open one
+  // is styled as a sheet from its very first frame. See the comment on the
+  // sheet rules there for why this can't wait for the `toggle` event.
+  root.classList.add('js-sheet')
 
   const openSheet = () =>
     document.querySelector<HTMLDetailsElement>('details.plank-detail[open]')
@@ -51,55 +55,63 @@
     panel.setAttribute('aria-labelledby', `${details.id}-title`)
   }
 
+  function onToggle(details: HTMLDetailsElement) {
+    if (details.open) {
+      for (const other of document.querySelectorAll<HTMLDetailsElement>(
+        'details.plank-detail[open]',
+      )) {
+        if (other !== details) other.open = false
+      }
+      root.classList.add('sheet-open')
+      setDialogRole(details, true)
+      syncHash(details)
+      window.posthog?.capture('plank_detail_opened', {
+        guide_slug: details.dataset.guideSlug,
+        plank_slug: details.dataset.plankSlug,
+        lang: root.lang,
+      })
+      const heading = details.querySelector<HTMLElement>('h3')
+      if (heading) {
+        heading.setAttribute('tabindex', '-1')
+        heading.focus({ preventScroll: true })
+      }
+    } else {
+      setDialogRole(details, false)
+      // Only wind the page back up once nothing is open. Closing because
+      // another panel opened must not steal focus back out of the new one.
+      if (!openSheet()) {
+        root.classList.remove('sheet-open')
+        syncHash(null)
+        details
+          .querySelector<HTMLElement>('summary')
+          ?.focus({ preventScroll: true })
+      }
+    }
+
+    // Always recomputed from what is open now, never applied as a delta —
+    // see src/lib/sheet.ts for why that distinction matters.
+    applySheetInert(openSheet())
+  }
+
   // `toggle` does not bubble, so this listens in the capture phase.
   document.addEventListener(
     'toggle',
     (event) => {
       const details = event.target
       if (
-        !(details instanceof HTMLDetailsElement) ||
-        !details.classList.contains('plank-detail')
+        details instanceof HTMLDetailsElement &&
+        details.classList.contains('plank-detail')
       )
-        return
-
-      if (details.open) {
-        for (const other of document.querySelectorAll<HTMLDetailsElement>(
-          'details.plank-detail[open]',
-        )) {
-          if (other !== details) other.open = false
-        }
-        root.classList.add('sheet-open')
-        setDialogRole(details, true)
-        syncHash(details)
-        window.posthog?.capture('plank_detail_opened', {
-          guide_slug: details.dataset.guideSlug,
-          plank_slug: details.dataset.plankSlug,
-          lang: root.lang,
-        })
-        const heading = details.querySelector<HTMLElement>('h3')
-        if (heading) {
-          heading.setAttribute('tabindex', '-1')
-          heading.focus({ preventScroll: true })
-        }
-      } else {
-        setDialogRole(details, false)
-        // Only wind the page back up once nothing is open. Closing because
-        // another panel opened must not steal focus back out of the new one.
-        if (!openSheet()) {
-          root.classList.remove('sheet-open')
-          syncHash(null)
-          details
-            .querySelector<HTMLElement>('summary')
-            ?.focus({ preventScroll: true })
-        }
-      }
-
-      // Always recomputed from what is open now, never applied as a delta —
-      // see src/lib/sheet.ts for why that distinction matters.
-      applySheetInert(openSheet())
+        onToggle(details)
     },
     true,
   )
+
+  // A panel opened before this script ran has already fired its `toggle`, so
+  // nothing heard it. `.js-sheet` now styles it as a sheet, so give it the rest
+  // of a sheet's setup too: dialog role, focus, inert background, the hash.
+  const openedEarly = openSheet()
+  if (openedEarly) onToggle(openedEarly)
 
   document.addEventListener('click', (event) => {
     if ((event.target as Element | null)?.closest('[data-plank-close]'))

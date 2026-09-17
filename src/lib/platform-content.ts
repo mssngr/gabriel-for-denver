@@ -3,6 +3,7 @@ import {
   assertGuideRefs,
   assertTranslated,
   assertUniqueSlugs,
+  byOrder,
   GUIDE_TRANSLATABLE_FIELDS,
   PLANK_TRANSLATABLE_FIELDS,
   planksForPage,
@@ -54,7 +55,7 @@ function loadPlatform() {
  */
 export async function getGuides(): Promise<GuideEntry[]> {
   const { guides } = await loadPlatform()
-  return [...guides].sort((a, b) => a.data.order - b.data.order)
+  return [...guides].sort(byOrder)
 }
 
 /** The planks that render on one guide's page. See `planksForPage`. */

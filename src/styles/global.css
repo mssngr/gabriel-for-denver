@@ -121,6 +121,9 @@
     --band-figure: var(--color-accent);
     --band-hair: rgb(255 255 255 / 0.3);
     --band-mute: rgb(255 255 255 / 0.78);
+    --band-action-bg: var(--color-accent);
+    --band-action-fg: var(--color-tertiary);
+    --band-action-border: var(--color-accent);
   }
 
   .band-sky {
@@ -129,6 +132,9 @@
     --band-figure: var(--color-primary);
     --band-hair: rgb(14 0 92 / 0.22);
     --band-mute: rgb(14 0 92 / 0.72);
+    --band-action-bg: transparent;
+    --band-action-fg: currentColor;
+    --band-action-border: currentColor;
   }
 
   .band-gold {
@@ -137,6 +143,9 @@
     --band-figure: var(--color-tertiary);
     --band-hair: rgb(26 19 5 / 0.25);
     --band-mute: rgb(26 19 5 / 0.75);
+    --band-action-bg: var(--color-tertiary);
+    --band-action-fg: #fff;
+    --band-action-border: var(--color-tertiary);
   }
 
   .band-paper {
@@ -145,6 +154,9 @@
     --band-figure: var(--color-primary);
     --band-hair: rgb(11 13 21 / 0.14);
     --band-mute: rgb(11 13 21 / 0.66);
+    --band-action-bg: transparent;
+    --band-action-fg: currentColor;
+    --band-action-border: currentColor;
   }
 
   .band-figure {
@@ -157,15 +169,30 @@
     border-color: var(--band-hair);
   }
 
+  /* The band's action row puts the panel's <details> in a flex row beside the
+     timeline chip and the source. With JS off, opening it expands the panel
+     inline, so it takes the whole row rather than being squeezed into a flex
+     item. With JS on, the panel is a fixed sheet and the row stays as it is. */
+  html:not(.js-sheet) .plank-detail[open] {
+    flex-basis: 100%;
+  }
+
   /* The detail panel ships as a <details>, so with JS off it is an ordinary
-     inline disclosure that prints and is read by crawlers. The script in
-     platform/[id].astro adds `.sheet-open` to <html>, which is the only thing
-     that turns it into a fixed panel. */
+     inline disclosure that prints and is read by crawlers.
+
+     With JS, the sheet styles key off `.js-sheet`, which sheet-behavior.astro
+     puts on <html> as soon as it loads, plus the details' own [open]. Not off
+     `.sheet-open`: that class is added by the `toggle` handler, and `toggle`
+     fires a task after [open] changes. Measured with a real click, that gap
+     painted one frame of the no-JS layout — the panel inline and the action
+     row at full width — before the sheet appeared. [open] and `.js-sheet` are
+     both in place for the very first frame. `.sheet-open` still drives the
+     scroll lock, where a frame's delay can't be seen. */
   html.sheet-open body {
     overflow: hidden;
   }
 
-  html.sheet-open .plank-detail[open] .plank-detail__panel {
+  html.js-sheet .plank-detail[open] .plank-detail__panel {
     position: fixed;
     inset: auto 0 0 0;
     height: 86%;
@@ -185,7 +212,7 @@
     display: none;
   }
 
-  html.sheet-open .plank-detail[open] .plank-detail__scrim {
+  html.js-sheet .plank-detail[open] .plank-detail__scrim {
     display: block;
     position: fixed;
     inset: 0;
@@ -194,7 +221,7 @@
   }
 
   @media (min-width: 768px) {
-    html.sheet-open .plank-detail[open] .plank-detail__panel {
+    html.js-sheet .plank-detail[open] .plank-detail__panel {
       inset: 0 0 0 auto;
       width: min(36rem, 44%);
       height: 100%;

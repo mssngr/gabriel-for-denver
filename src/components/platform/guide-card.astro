@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets'
 import { marked } from 'marked'
 import type { Lang } from '../../lib/platform'
 import { localized } from '../../lib/platform'
@@ -15,6 +16,9 @@ const { guide, planks, lang } = Astro.props
 
 const title = localized(guide.data, 'title', lang) ?? guide.data.title
 const stance = localized(guide.data, 'stance', lang) ?? guide.data.stance
+const artwork = guide.data.artwork
+// Blank means decorative, as in guide-hero.astro, which explains why.
+const artworkAlt = localized(guide.data, 'artworkAlt', lang) ?? ''
 const href =
   lang === 'es'
     ? `/es/platform/${guide.data.slug}`
@@ -23,8 +27,19 @@ const href =
 
 <article class="border border-black/15 rounded-2xl p-6 text-black bg-base">
   <a href={href} class="no-underline">
+    {
+      /* The issue's illustration at full card width (Q6). The small icon only
+         stands in for a guide that has no artwork yet. */
+      artwork && (
+        <Image
+          src={artwork}
+          alt={artworkAlt}
+          class="w-full h-auto rounded-xl mb-5"
+        />
+      )
+    }
     <h2 class="inline-flex items-center gap-2 text-2xl">
-      <Icon name={guide.data.lucideIcon} class="size-7" />
+      {!artwork && <Icon name={guide.data.lucideIcon} class="size-7" />}
       {title}
     </h2>
   </a>

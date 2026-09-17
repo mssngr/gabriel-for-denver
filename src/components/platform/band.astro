@@ -1,6 +1,12 @@
 ---
 import type { BandTheme, Lang } from '../../lib/platform'
-import { bandTheme, localized, resolveHero } from '../../lib/platform'
+import {
+  bandTheme,
+  leadSource,
+  localized,
+  resolveHero,
+  timelineLabel,
+} from '../../lib/platform'
 import type { PlankEntry } from '../../lib/platform-content'
 import Sheet from './sheet.astro'
 
@@ -21,6 +27,11 @@ const kicker = localized(plank.data, 'kicker', lang)
 const commitment =
   localized(plank.data, 'commitment', lang) ?? plank.data.commitment
 const why = localized(plank.data, 'why', lang) ?? plank.data.why
+// The timeline chip and the lead source sit on the band itself, not only in
+// the detail panel, because the band is what gets screenshotted and linked:
+// the claim on it should carry its own citation (Q5, "as drawn").
+const timeline = plank.data.timeline && timelineLabel(plank.data.timeline, lang)
+const source = leadSource(plank.data, lang)
 
 const t =
   lang === 'es'
@@ -110,8 +121,25 @@ const showsCommitmentTwice = hero.kind === 'statement'
       >
         {why}
       </p>
-      <div class="mt-7">
+      <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3">
         <Sheet plank={plank} lang={lang} index={index} />
+        {
+          timeline && (
+            <span class="band-rule band-mute border rounded-full text-[0.66rem] tracking-[0.14em] uppercase font-bold px-2.5 pt-1.5 pb-1">
+              {timeline}
+            </span>
+          )
+        }
+        {
+          source && (
+            <a
+              class="band-mute text-xs tracking-wide underline underline-offset-3"
+              href={source.url}
+            >
+              {source.label}
+            </a>
+          )
+        }
       </div>
     </div>
   </div>

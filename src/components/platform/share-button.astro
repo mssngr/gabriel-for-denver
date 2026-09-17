@@ -1,0 +1,87 @@
+---
+import type { Lang } from '../../lib/platform'
+
+interface Props {
+  title: string
+  url: string
+  lang: Lang
+  class?: string
+}
+
+const { title, url, lang, class: className = '' } = Astro.props
+
+const t =
+  lang === 'es'
+    ? {
+        share: 'Compartir',
+        copied: 'Enlace copiado',
+        unavailable: 'Copia el enlace de la barra de direcciones',
+      }
+    : {
+        share: 'Share',
+        copied: 'Link copied',
+        unavailable: 'Copy the link from your address bar',
+      }
+---
+
+<span class="inline-flex items-center gap-3" data-share>
+  <button
+    type="button"
+    class={className}
+    data-share-title={title}
+    data-share-url={url}
+    data-share-copied={t.copied}
+    data-share-unavailable={t.unavailable}
+  >
+    {t.share}
+  </button>
+  <span role="status" aria-live="polite" class="text-sm font-medium"></span>
+</span>
+
+<script>
+  import { sharePage } from '../../lib/share'
+
+  // Bundled rather than `is:inline` so it can import the tested helper; see
+  // sheet-behavior.astro for the same reasoning.
+  const clearTimers = new WeakMap<HTMLElement, number>()
+
+  document.addEventListener('click', async (event) => {
+    const button = (event.target as Element | null)?.closest<HTMLButtonElement>(
+      '[data-share-url]',
+    )
+    if (!button) return
+    const status = button
+      .closest('[data-share]')
+      ?.querySelector<HTMLElement>('[role="status"]')
+
+    const outcome = await sharePage(
+      {
+        title: button.dataset.shareTitle ?? document.title,
+        url: button.dataset.shareUrl ?? location.href,
+      },
+      {
+        share: navigator.share ? navigator.share.bind(navigator) : undefined,
+        clipboard: navigator.clipboard,
+      },
+    )
+
+    // The native sheet is its own feedback, and a cancel needs none.
+    const message =
+      outcome === 'copied'
+        ? button.dataset.shareCopied
+        : outcome === 'unavailable'
+          ? button.dataset.shareUnavailable
+          : ''
+    if (!status || !message) return
+    status.textContent = message
+    // A second click restarts the timer rather than clearing the new message
+    // early on the first click's schedule.
+    window.clearTimeout(clearTimers.get(status))
+    clearTimers.set(
+      status,
+      window.setTimeout(() => {
+        status.textContent = ''
+      }, 3000),
+    )
+  })
+</script>
