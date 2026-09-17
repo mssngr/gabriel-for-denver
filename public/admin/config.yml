@@ -371,7 +371,8 @@ collections:
           name: pullQuote,
           widget: text,
           required: false,
-          hint: Used as the hero only when there is no statistic.,
+          hint: "Used as the hero only when there is no statistic. Shown exactly as
+            typed, so add quotation marks yourself when it really is a quote.",
         }
       - {
           label: Pull Quote (Spanish),
