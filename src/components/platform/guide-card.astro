@@ -25,8 +25,11 @@ const href =
     : `/platform/${guide.data.slug}`
 ---
 
-<article class="border border-black/15 rounded-2xl p-6 text-black bg-base">
-  <a href={href} class="no-underline">
+<article>
+  <a
+    href={href}
+    class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-base no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+  >
     {
       /* The issue's illustration at full card width (Q6). The small icon only
          stands in for a guide that has no artwork yet. */
@@ -42,26 +45,26 @@ const href =
       {!artwork && <Icon name={guide.data.lucideIcon} class="size-7" />}
       {title}
     </h2>
+    <div
+      class="mt-1 font-light text-black/70 [&_strong]:font-bold [&_p]:text-base"
+      set:html={marked.parse(stance)}
+    />
+    {
+      planks.length > 0 && (
+        <ul class="list-none pl-0 mt-4 border-t border-black/10">
+          {planks.map((plank, index) => (
+            <li class="flex gap-3 items-baseline py-2.5 border-b border-black/5 last:border-b-0">
+              <b class="text-primary text-xs tracking-wider shrink-0">
+                {String(index + 1).padStart(2, '0')}
+              </b>
+              <span class="text-base leading-snug">
+                {localized(plank.data, 'commitment', lang) ??
+                  plank.data.commitment}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </a>
-  <div
-    class="mt-1 font-light text-black/70 [&_strong]:font-bold [&_p]:text-base"
-    set:html={marked.parse(stance)}
-  />
-  {
-    planks.length > 0 && (
-      <ul class="list-none pl-0 mt-4 border-t border-black/10">
-        {planks.map((plank, index) => (
-          <li class="flex gap-3 items-baseline py-2.5 border-b border-black/5 last:border-b-0">
-            <b class="text-primary text-xs tracking-wider shrink-0">
-              {String(index + 1).padStart(2, '0')}
-            </b>
-            <span class="text-base leading-snug">
-              {localized(plank.data, 'commitment', lang) ??
-                plank.data.commitment}
-            </span>
-          </li>
-        ))}
-      </ul>
-    )
-  }
 </article>
