@@ -260,6 +260,23 @@ export function assertGuideRefs(
 }
 
 /**
+ * The id a content entry gets, derived from its filename rather than a
+ * frontmatter field. Passed as `generateId` to `glob()` in `content.config.ts`
+ * for every collection `assertUniqueSlugs` checks.
+ *
+ * The loader's own default reads the `slug` field when one is present, which
+ * means two files that happen to share a slug also share an id — the loader
+ * silently keeps whichever one it processes last and drops the other before
+ * `getCollection` ever returns. `assertUniqueSlugs` can't catch a collision it
+ * never sees. Deriving the id from the filename instead means two files can
+ * never collide, so both survive into `assertUniqueSlugs` and a real slug
+ * clash actually fails the build instead of quietly losing a route.
+ */
+export function idFromFilename(entryPath: string): string {
+  return entryPath.replace(/\.[^./]+$/, '')
+}
+
+/**
  * Fails the build when two entries claim the same slug. Nothing errors on its
  * own if they do — one of them just quietly loses its route, or its planks,
  * to the other.

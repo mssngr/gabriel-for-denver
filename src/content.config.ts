@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
-import { guideSchema, plankSchema } from './lib/platform'
+import { guideSchema, idFromFilename, plankSchema } from './lib/platform'
 
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/pages' }),
@@ -54,15 +54,27 @@ const issues = defineCollection({
 // from `issues` on purpose so the new material can be written and previewed
 // without touching what /issues renders today. Field definitions live in
 // src/lib/platform.ts so the same shapes can be unit tested.
+// `generateId` on both loaders below pins each entry's id to its filename
+// instead of the glob loader's default, which reads the `slug` field when
+// present. That default is what let two files silently share an id — see
+// `idFromFilename` in src/lib/platform.ts.
 const guides = defineCollection({
-  loader: glob({ pattern: '**/*.yml', base: './src/content/guides' }),
+  loader: glob({
+    pattern: '**/*.yml',
+    base: './src/content/guides',
+    generateId: ({ entry }) => idFromFilename(entry),
+  }),
   // `image()` is only available inside this callback, so artwork is the one
   // field that can't live alongside the rest of the schema.
   schema: ({ image }) => guideSchema.extend({ artwork: image().optional() }),
 })
 
 const planks = defineCollection({
-  loader: glob({ pattern: '**/*.yml', base: './src/content/planks' }),
+  loader: glob({
+    pattern: '**/*.yml',
+    base: './src/content/planks',
+    generateId: ({ entry }) => idFromFilename(entry),
+  }),
   schema: () => plankSchema,
 })
 

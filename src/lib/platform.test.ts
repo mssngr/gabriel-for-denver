@@ -5,6 +5,7 @@ import {
   assertUniqueSlugs,
   bandTheme,
   guideMetaDescription,
+  idFromFilename,
   leadSource,
   GUIDE_TRANSLATABLE_FIELDS,
   type Entry,
@@ -227,6 +228,33 @@ describe('assertUniqueSlugs', () => {
     ]
     expect(() => assertUniqueSlugs('guides', guides)).toThrow(
       /housing-crisis.*housing, housing-2/s,
+    )
+  })
+})
+
+describe('idFromFilename', () => {
+  // The default id a bare glob() loader assigns reads the `slug` field when
+  // present, so two files sharing a slug also share an id — the loader keeps
+  // one and silently drops the other before assertUniqueSlugs ever runs.
+  // Deriving the id from the filename instead means two files can never
+  // collide, whatever their `slug` field says.
+  it('strips the extension off a flat filename', () => {
+    expect(idFromFilename('legalize-multi-unit.yml')).toBe(
+      'legalize-multi-unit',
+    )
+  })
+
+  it('strips only the last extension, keeping a dot inside the name', () => {
+    expect(idFromFilename('my.plank.yml')).toBe('my.plank')
+  })
+
+  it('keeps a nested path intact, extension aside', () => {
+    expect(idFromFilename('sub/dir/plank.yml')).toBe('sub/dir/plank')
+  })
+
+  it('gives two entries with the same slug two different ids', () => {
+    expect(idFromFilename('legalize-multi-unit.yml')).not.toBe(
+      idFromFilename('dbc0055c2a96.yml'),
     )
   })
 })
