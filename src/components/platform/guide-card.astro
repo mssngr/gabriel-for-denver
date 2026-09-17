@@ -38,13 +38,15 @@ const href =
     class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-base no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
   >
     {
-      /* The issue's illustration at full card width (Q6). The small icon only
-         stands in for a guide that has no artwork yet. */
+      /* The issue's illustration at full card width, cropped to a square so
+         a tall/portrait piece of art doesn't blow out the card's height
+         (Q6). The small icon only stands in for a guide that has no artwork
+         yet. */
       artwork && (
         <Image
           src={artwork}
           alt={artworkAlt}
-          class="w-full h-auto rounded-xl mb-5"
+          class="w-full aspect-square object-cover rounded-xl mb-5"
         />
       )
     }
