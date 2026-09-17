@@ -1,8 +1,8 @@
 title: Housing For All
 title_es: Vivienda Para Todos
 slug: housing-for-all
-stance: Housing is a **human right,** as enshrined by the UN in 1946 and ratified by the United States.
-stance_es: La vivienda es un **derecho humano,** tal como lo consagró la ONU en 1946 y fue ratificado por Estados Unidos.
+stance: '**Housing is a human right,** as enshrined by the UN in 1946 and ratified by the United States.'
+stance_es: '**La vivienda es un derecho humano,** tal como lo consagró la ONU en 1946 y fue ratificado por Estados Unidos.'
 lucideIcon: HouseHeart
 order: 5
 status: published
