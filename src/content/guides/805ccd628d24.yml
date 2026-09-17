@@ -1,0 +1,19 @@
+title: Housing For All
+title_es: Vivienda Para Todos
+slug: housing-for-all
+stance: Housing is a **human right,** as enshrined by the UN in 1946 and ratified by the United States.
+stance_es: La vivienda es un **derecho humano,** tal como lo consagró la ONU en 1946 y fue ratificado por Estados Unidos.
+lucideIcon: HouseHeart
+order: 5
+status: published
+artwork: /src/assets/images/homelessness.svg
+artworkAlt: Drawing of woman alone
+artworkAlt_es: Dibujo de una mujer sola
+lastReviewed: 2026-09-17
+related:
+  - guide: affordable-housing
+    reason: '"Housing For All" only works if there is housing.'
+    reason_es: '"Vivienda para todos" solo funciona si hay vivienda.'
+  - guide: accountable-public-safety
+    reason: The unhoused population often are caught up in the legal system for crimes of poverty.
+    reason_es: La población sin hogar suele verse atrapada en el sistema legal por delitos de pobreza.
