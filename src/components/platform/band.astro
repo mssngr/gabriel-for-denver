@@ -41,6 +41,10 @@ const t =
 // A statement band already leads with the commitment, so repeating it under
 // "I will" would print the same sentence twice on the same screen.
 const showsCommitmentTwice = hero.kind === 'statement'
+
+// Shared by both hero kinds' caption, so a style tweak only happens once.
+const CAPTION_CLASS =
+  'mt-4 max-w-[20ch] text-xl md:text-2xl font-light leading-tight'
 ---
 
 <section
@@ -72,11 +76,7 @@ const showsCommitmentTwice = hero.kind === 'statement'
             <span class="band-figure block font-bold leading-[0.82] tracking-tighter text-[6.5rem] md:text-[13rem]">
               {hero.value}
             </span>
-            {hero.caption && (
-              <p class="mt-4 max-w-[20ch] text-xl md:text-2xl font-light leading-tight">
-                {hero.caption}
-              </p>
-            )}
+            {hero.caption && <p class={CAPTION_CLASS}>{hero.caption}</p>}
           </>
         )
       }
@@ -88,11 +88,7 @@ const showsCommitmentTwice = hero.kind === 'statement'
             <p class="band-figure font-bold leading-none tracking-tight text-4xl md:text-6xl max-w-[13ch] text-balance">
               {hero.quote}
             </p>
-            {hero.caption && (
-              <p class="mt-4 max-w-[20ch] text-xl md:text-2xl font-light leading-tight">
-                – {hero.caption}
-              </p>
-            )}
+            {hero.caption && <p class={CAPTION_CLASS}>– {hero.caption}</p>}
           </>
         )
       }

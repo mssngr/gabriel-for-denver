@@ -155,6 +155,20 @@ describe('resolveHero', () => {
     })
   })
 
+  it('reads the pull-quote caption in Spanish on the Spanish page', () => {
+    const plank = makePlank({
+      pullQuote: "You can't get a breath of fresh air without us knowing.",
+      pullQuote_es: 'No puedes respirar aire fresco sin que lo sepamos.',
+      caption: 'A Denver Police Officer',
+      caption_es: 'Un oficial de la policía de Denver',
+    }).data
+    expect(resolveHero(plank, 'es')).toEqual({
+      kind: 'quote',
+      quote: 'No puedes respirar aire fresco sin que lo sepamos.',
+      caption: 'Un oficial de la policía de Denver',
+    })
+  })
+
   it('falls back to the commitment itself when there is neither', () => {
     expect(resolveHero(makePlank().data, 'en')).toEqual({
       kind: 'statement',
