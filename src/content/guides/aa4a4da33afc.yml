@@ -1,0 +1,16 @@
+title: Accountable Public Safety
+title_es: Seguridad Pública Responsable
+slug: accountable-public-safety
+stance: Law enforcement should be **by the people and for the people.** Not against the people.
+stance_es: La aplicación de la ley debe ser **por el pueblo y para el pueblo.** No en contra del pueblo.
+lucideIcon: Siren
+order: 4
+status: published
+artwork: /src/assets/images/injustice.svg
+artworkAlt: A drawing of a head in a cage
+artworkAlt_es: Un dibujo de una cabeza en una jaula
+lastReviewed: 2026-09-17
+related:
+  - guide: humans-before-ai
+    reason: Indiscriminate usage of AI tools has lead to police overreach.
+    reason_es: El uso indiscriminado de herramientas de IA ha provocado abusos policiales.
