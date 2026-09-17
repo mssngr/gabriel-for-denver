@@ -190,6 +190,9 @@ collections:
     create: true
     icon: menu_book
     identifier_field: slug
+    # A generated id, not the Slug field — see the Planks collection below for
+    # why the two must never be the same thing.
+    slug: "{{uuid_short}}"
     summary: "{{title}} — {{status}}"
     sortable_fields: [order, title, status]
     description: One issue area. The promises inside it live under Planks.
@@ -205,8 +208,8 @@ collections:
           label: Slug,
           name: slug,
           widget: string,
-          hint: "Used in the URL: /platform/your-slug. Keep it identical to the
-            filename.",
+          hint: "Used in the URL: /platform/your-slug. The filename is a
+            generated id and is unrelated — change this freely.",
         }
       - {
           label: Stance,
@@ -316,6 +319,9 @@ collections:
     create: true
     icon: flag
     identifier_field: slug
+    # A generated id, not the Slug field — see the `guide` field's comment
+    # below for why the two must never be the same thing.
+    slug: "{{uuid_short}}"
     summary: "{{commitment}}"
     sortable_fields: [order, slug, status]
     view_groups:
@@ -324,8 +330,9 @@ collections:
     description: One promise = one band on a Field Guide page.
     fields:
       # `{{fields.slug}}` is the guide's slug FIELD. `{{slug}}` would be the
-      # entry slug — the filename — which is the coupling this join exists to
-      # avoid. See docs/proposals/2026-09-13-platform-field-guide/ (Spike S1).
+      # entry slug — the filename, now a generated id with no relation to any
+      # field — which is the coupling this join exists to avoid. See
+      # docs/proposals/2026-09-13-platform-field-guide/ (Spike S1).
       - {
           label: Field Guide,
           name: guide,
