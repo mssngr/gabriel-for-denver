@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets'
-import { marked } from 'marked'
+import { Marked } from 'marked'
 import type { Lang } from '../../lib/platform'
 import { localized } from '../../lib/platform'
 import type { GuideEntry, PlankEntry } from '../../lib/platform-content'
@@ -16,6 +16,12 @@ const { guide, planks, lang } = Astro.props
 
 const title = localized(guide.data, 'title', lang) ?? guide.data.title
 const stance = localized(guide.data, 'stance', lang) ?? guide.data.stance
+// The card's whole content sits inside one link (see the <a> below), so a
+// markdown link in `stance` would render as an invalid nested <a> and break
+// click-through for that card. Render links as plain text instead.
+const stanceHtml = new Marked({
+  renderer: { link: ({ text }) => text },
+}).parse(stance)
 const artwork = guide.data.artwork
 // Blank means decorative, as in guide-hero.astro, which explains why.
 const artworkAlt = localized(guide.data, 'artworkAlt', lang) ?? ''
@@ -28,6 +34,7 @@ const href =
 <article>
   <a
     href={href}
+    aria-label={title}
     class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-base no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
   >
     {
@@ -47,7 +54,7 @@ const href =
     </h2>
     <div
       class="mt-1 font-light text-black/70 [&_strong]:font-bold [&_p]:text-base"
-      set:html={marked.parse(stance)}
+      set:html={stanceHtml}
     />
     {
       planks.length > 0 && (
