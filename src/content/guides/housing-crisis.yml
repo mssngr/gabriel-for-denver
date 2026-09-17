@@ -6,7 +6,7 @@ stance_es: La vivienda es un **derecho humano,** no una mercancía.
 lucideIcon: MapPinHouse
 order: 0
 status: published
-artwork: ../../assets/housing-crisis.svg
+artwork: /src/assets/images/housing-crisis.svg
 artworkAlt: Drawing of houses
 artworkAlt_es: Dibujo de casas
 lastReviewed: 2026-09-17
