@@ -122,8 +122,8 @@ describe('resolveHero', () => {
   it('leads with the statistic when a plank has one', () => {
     const plank = makePlank({
       statValue: '77%',
-      statCaption: "of Denver's residential land bans apartments.",
-      statCaption_es: 'del suelo residencial de Denver prohíbe apartamentos.',
+      caption: "of Denver's residential land bans apartments.",
+      caption_es: 'del suelo residencial de Denver prohíbe apartamentos.',
     }).data
     expect(resolveHero(plank, 'en')).toEqual({
       kind: 'stat',
@@ -139,6 +139,33 @@ describe('resolveHero', () => {
     expect(resolveHero(plank, 'en')).toEqual({
       kind: 'quote',
       quote: 'Rent went up 45%. Paychecks went up 28%.',
+      caption: undefined,
+    })
+  })
+
+  it('gives the pull-quote its caption too, e.g. who said it', () => {
+    const plank = makePlank({
+      pullQuote: "You can't get a breath of fresh air without us knowing.",
+      caption: 'A Denver Police Officer',
+    }).data
+    expect(resolveHero(plank, 'en')).toEqual({
+      kind: 'quote',
+      quote: "You can't get a breath of fresh air without us knowing.",
+      caption: 'A Denver Police Officer',
+    })
+  })
+
+  it('reads the pull-quote caption in Spanish on the Spanish page', () => {
+    const plank = makePlank({
+      pullQuote: "You can't get a breath of fresh air without us knowing.",
+      pullQuote_es: 'No puedes respirar aire fresco sin que lo sepamos.',
+      caption: 'A Denver Police Officer',
+      caption_es: 'Un oficial de la policía de Denver',
+    }).data
+    expect(resolveHero(plank, 'es')).toEqual({
+      kind: 'quote',
+      quote: 'No puedes respirar aire fresco sin que lo sepamos.',
+      caption: 'Un oficial de la policía de Denver',
     })
   })
 
@@ -156,7 +183,7 @@ describe('resolveHero', () => {
   it('prefers the statistic when a plank carries both a stat and a quote', () => {
     const plank = makePlank({
       statValue: '30%',
-      statCaption: 'of new housing, required to be affordable.',
+      caption: 'of new housing, required to be affordable.',
       pullQuote: 'Ten percent is not a policy.',
     }).data
     expect(resolveHero(plank, 'en').kind).toBe('stat')
@@ -165,8 +192,8 @@ describe('resolveHero', () => {
   it('reads Spanish captions on the Spanish page', () => {
     const plank = makePlank({
       statValue: '77%',
-      statCaption: "of Denver's residential land bans apartments.",
-      statCaption_es: 'del suelo residencial de Denver prohíbe apartamentos.',
+      caption: "of Denver's residential land bans apartments.",
+      caption_es: 'del suelo residencial de Denver prohíbe apartamentos.',
     }).data
     expect(resolveHero(plank, 'es')).toEqual({
       kind: 'stat',
@@ -338,11 +365,11 @@ describe('assertTranslated', () => {
   it('gates every plank field the schema gives a Spanish twin', () => {
     expect([...PLANK_TRANSLATABLE_FIELDS].sort()).toEqual([
       'authority',
+      'caption',
       'commitment',
       'detail',
       'kicker',
       'pullQuote',
-      'statCaption',
       'why',
     ])
   })

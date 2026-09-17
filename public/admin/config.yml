@@ -387,19 +387,6 @@ collections:
             Leave blank to use a pull-quote instead.',
         }
       - {
-          label: Statistic Caption,
-          name: statCaption,
-          widget: text,
-          required: false,
-          hint: What the figure counts. A number with no caption is a rumour.,
-        }
-      - {
-          label: Statistic Caption (Spanish),
-          name: statCaption_es,
-          widget: text,
-          required: false,
-        }
-      - {
           label: Pull Quote,
           name: pullQuote,
           widget: text,
@@ -410,6 +397,21 @@ collections:
       - {
           label: Pull Quote (Spanish),
           name: pullQuote_es,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Caption,
+          name: caption,
+          widget: text,
+          required: false,
+          hint: 'Goes under whichever hero above is used. For a statistic, what
+            the figure counts — a number with no caption is a rumour. For a pull
+            quote, who said it, e.g. "A Denver Police Officer".',
+        }
+      - {
+          label: Caption (Spanish),
+          name: caption_es,
           widget: text,
           required: false,
         }
