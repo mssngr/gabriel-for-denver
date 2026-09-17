@@ -368,6 +368,19 @@ describe('planksForGuide', () => {
       planksForGuide(planks, 'housing-crisis').map(plank => plank.data.slug),
     ).toEqual(['a', 'b'])
   })
+
+  // Giving two planks the same position is an easy slip when editing by hand.
+  // Breaking the tie by slug keeps the order the same on every build rather
+  // than whatever order the content loader happened to return.
+  it('breaks a tie in order by slug, whatever order the planks arrive in', () => {
+    const planks = [
+      makePlank({ id: 'zoning', slug: 'zoning', order: 1 }),
+      makePlank({ id: 'rent', slug: 'rent', order: 1 }),
+    ]
+    expect(
+      planksForGuide(planks, 'housing-crisis').map(plank => plank.data.slug),
+    ).toEqual(['rent', 'zoning'])
+  })
 })
 
 describe('schemas', () => {
@@ -575,6 +588,22 @@ describe('nextGuide', () => {
 
   // No wrap-around: from the last guide, "next" back to the first reads as a
   // loop rather than progress, and the hero already links back to the index.
+  // Two guides sharing an `order` used to skip each other entirely, because
+  // "next" only looked for a strictly higher order.
+  it('moves between guides that share an order, in slug order', () => {
+    const guides = [
+      at('housing-crisis', 3),
+      at('big-tech', 2),
+      at('affordability', 2),
+    ]
+    expect(nextGuide(guides, at('affordability', 2).data)?.data.slug).toBe(
+      'big-tech',
+    )
+    expect(nextGuide(guides, at('big-tech', 2).data)?.data.slug).toBe(
+      'housing-crisis',
+    )
+  })
+
   it('has no next guide after the last published one', () => {
     const guides = [at('affordability', 1), at('housing-crisis', 2)]
     expect(nextGuide(guides, at('housing-crisis', 2).data)).toBeUndefined()

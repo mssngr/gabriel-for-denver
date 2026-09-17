@@ -319,8 +319,25 @@ export function assertTranslated<T extends { status: PublishStatus }>(
   )
 }
 
-const byOrder = <T extends { data: { order: number } }>(a: T, b: T) =>
-  a.data.order - b.data.order
+/**
+ * Display order: `order`, then `slug`. The slug tie-break means two entries
+ * accidentally given the same `order` — an easy slip in the CMS — sort the same
+ * way on every build, instead of in whatever order the loader returned them.
+ * A plain comparison rather than `localeCompare`, so it can't vary by locale.
+ */
+function compareOrder(
+  a: { order: number; slug: string },
+  b: { order: number; slug: string },
+): number {
+  if (a.order !== b.order) return a.order - b.order
+  if (a.slug === b.slug) return 0
+  return a.slug < b.slug ? -1 : 1
+}
+
+export const byOrder = <T extends { data: { order: number; slug: string } }>(
+  a: T,
+  b: T,
+): number => compareOrder(a.data, b.data)
 
 /** That guide's planks, whatever their status, in the order they're shown. */
 export function planksForGuide<E extends Entry<Plank>>(
@@ -378,10 +395,11 @@ export function relatedGuides<G extends Entry<Guide>>(
 }
 
 /**
- * The guide a reader moves on to from this one: the published guide with the
- * next highest `order`. Drafts are never a destination, so a published page
- * can't point into an unlisted preview. No wrap-around from the last guide —
- * "next" back to the first reads as a loop, not progress.
+ * The guide a reader moves on to from this one: the first published guide that
+ * comes after it in display order (`byOrder`, so guides sharing an `order`
+ * still lead from one to the next). Drafts are never a destination, so a
+ * published page can't point into an unlisted preview. No wrap-around from the
+ * last guide — "next" back to the first reads as a loop, not progress.
  */
 export function nextGuide<G extends Entry<Guide>>(
   guides: G[],
@@ -390,7 +408,8 @@ export function nextGuide<G extends Entry<Guide>>(
   return guides
     .filter(
       entry =>
-        entry.data.status === 'published' && entry.data.order > guide.order,
+        entry.data.status === 'published' &&
+        compareOrder(entry.data, guide) > 0,
     )
     .sort(byOrder)[0]
 }

@@ -17,6 +17,7 @@ const { guide, planks, lang } = Astro.props
 const title = localized(guide.data, 'title', lang) ?? guide.data.title
 const stance = localized(guide.data, 'stance', lang) ?? guide.data.stance
 const artwork = guide.data.artwork
+// Blank means decorative, as in guide-hero.astro, which explains why.
 const artworkAlt = localized(guide.data, 'artworkAlt', lang) ?? ''
 const href =
   lang === 'es'

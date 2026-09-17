@@ -51,6 +51,10 @@ const stance = marked.parse(
 )
 const isDraft = guide.data.status === 'draft'
 const artwork = guide.data.artwork
+// Blank alt marks the illustration decorative, which is right when it only
+// restates the title printed beside it. Falling back to the title instead
+// would make a screen reader announce the heading twice. The CMS hint on
+// Artwork Alt Text tells editors this, so a blank is a choice, not an accident.
 const artworkAlt = localized(guide.data, 'artworkAlt', lang) ?? ''
 const eyebrow =
   position > 0

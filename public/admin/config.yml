@@ -238,6 +238,9 @@ collections:
           name: artworkAlt,
           widget: string,
           required: false,
+          hint: "Describe the illustration for screen readers. Left blank, it is
+            treated as decorative and skipped by screen readers, which suits an
+            illustration that only restates the guide's title.",
         }
       - {
           label: Artwork Alt Text (Spanish),
@@ -261,7 +264,7 @@ collections:
           name: related,
           widget: list,
           required: false,
-          summary: "{{fields.guide}} — {{fields.reason}}",
+          summary: "{{fields.guide}}",
           hint: Cross-links shown at the foot of the page, each with an optional
             one-line reason. A reason with no Spanish version is left off the
             Spanish page rather than shown in English.,
