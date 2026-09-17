@@ -1,0 +1,12 @@
+title: Food Security
+title_es: Seguridad Alimentaria
+slug: food-security
+stance: '**Eating healthy** should be accessible to to all, not just the wealthy.'
+stance_es: '**Comer sano** debe ser accesible para todos, no solo para los ricos.'
+lucideIcon: Apple
+order: 3
+status: published
+artwork: /src/assets/images/food-security.svg
+artworkAlt: A food container full of money
+artworkAlt_es: Un recipiente de comida lleno de dinero
+lastReviewed: 2026-09-17
