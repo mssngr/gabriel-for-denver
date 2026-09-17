@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets'
-import { getCollection } from 'astro:content'
+import { getPosts } from '../../lib/posts-content'
 import { stripMarkdown } from '../../lib/seo'
 import Layout from '../../layouts/default.astro'
 
-const posts = (await getCollection('posts')).sort(
+const posts = (await getPosts()).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 )
 

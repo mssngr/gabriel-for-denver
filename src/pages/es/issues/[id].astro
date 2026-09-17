@@ -1,6 +1,5 @@
 ---
 import { Image } from 'astro:assets'
-import { getCollection } from 'astro:content'
 import { ArrowLeft } from '@lucide/astro'
 import { marked } from 'marked'
 import affordability from '../../../assets/affordability.svg'
@@ -12,12 +11,13 @@ import injustice from '../../../assets/injustice.svg'
 import AnchorHeading from '../../../components/anchor-heading.astro'
 import CopyLinkToast from '../../../components/copy-link-toast.astro'
 import ProblemSolution from '../../../components/problem-solution/es.astro'
+import { getIssues } from '../../../lib/issues-content'
 import { stripMarkdown } from '../../../lib/seo'
 import { slugify } from '../../../lib/slug'
 import Espanol from '../../../layouts/espanol.astro'
 
 export async function getStaticPaths() {
-  const issues = await getCollection('issues')
+  const issues = await getIssues()
   return issues.map((issue) => ({
     params: { id: issue.data.slug },
     props: { issue },
