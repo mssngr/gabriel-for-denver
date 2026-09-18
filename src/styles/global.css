@@ -7,6 +7,13 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
+  /* Not a Tailwind theme token (see @theme inline below) — daisyUI doesn't
+     read a bare `base` token itself either, this just backs the plain
+     `var(--color-base)` references elsewhere in this file (body background,
+     .band-paper, the sheet panel). Registering it as a theme token instead
+     would generate a `text-base` *color* utility that collides with
+     Tailwind's own `text-base` *font-size* utility — see global.test.ts. */
+  --color-base: #fff;
   --color-primary: #1900a8;
   --color-secondary: #0646f5;
   --color-accent: #ffc800;
@@ -17,7 +24,6 @@
   --font-sans: var(--font-league-spartan);
   --font-league-spartan: var(--font-league-spartan);
   --font-edu-sa-hand: var(--font-edu-sa-hand);
-  --color-base: #fff;
   --color-tertiary: #0e005c;
   --color-quaternary: #6e93fa;
 }
