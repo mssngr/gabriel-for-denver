@@ -482,8 +482,8 @@ export function plankAnchor(slug: string): string {
 }
 
 /**
- * The label above a plank's commitment in its detail panel: "Plank 01 ·
- * Zoning", or just "Plank 03" when the plank has no sub-topic.
+ * The label above a plank's commitment in its detail panel: "Action 01 ·
+ * Zoning", or just "Action 03" when the plank has no sub-topic.
  *
  * One string rather than separate template expressions. Written as adjacent
  * expressions, a formatter can move them onto separate lines, and Astro then
@@ -491,7 +491,7 @@ export function plankAnchor(slug: string): string {
  * "PLANK01".
  */
 export function plankLabel(plank: Plank, index: number, lang: Lang): string {
-  const word = lang === 'es' ? 'Punto' : 'Plank'
+  const word = lang === 'es' ? 'Acción' : 'Action'
   const number = String(index + 1).padStart(2, '0')
   const kicker = localized(plank, 'kicker', lang)
   return kicker ? `${word} ${number} · ${kicker}` : `${word} ${number}`
@@ -503,29 +503,55 @@ export function timelineLabel(timeline: Timeline, lang: Lang): string {
 }
 
 /**
- * How many promises a guide carries, e.g. "3 promises" — the line above a
- * card's list on the platform index.
+ * How many actions a guide carries, e.g. "3 actions" — the line above a
+ * card's list on the platform index, and the count in a guide's meta row.
  *
- * "Promise" rather than "plank": the index speaks to a reader arriving cold,
- * where a guide's detail page can afford the campaign's own vocabulary.
+ * "Action", never "promise", and never the CMS's own word "plank". A council
+ * member proposes, champions and votes; they cannot single-handedly deliver
+ * an outcome, so language that reads as a guarantee would misrepresent the
+ * job. Everything a reader sees says action; `plank` stays the name of the
+ * content model, in the CMS and in this file.
  */
-export function promiseCount(count: number, lang: Lang): string {
+export function actionCount(count: number, lang: Lang): string {
   const word =
     lang === 'es'
       ? count === 1
-        ? 'promesa'
-        : 'promesas'
+        ? 'acción'
+        : 'acciones'
       : count === 1
-        ? 'promise'
-        : 'promises'
+        ? 'action'
+        : 'actions'
   return `${count} ${word}`
 }
 
 /**
- * The platform index's eyebrow, e.g. "4 promises across 6 issues".
+ * The heading on a guide's closing call to action: "Agree with these 3?",
+ * "Agree with this?" for a single action, and a different ask entirely for a
+ * guide whose actions are still being written.
  *
- * Null before the first promise is published: the line sits above the page's
- * title, where "0 promises" would undersell a platform that is simply still
+ * That last case used to read "Agree with these 0?". Hiding the section
+ * instead was worse than it sounded — it took the donate, volunteer and share
+ * buttons off the page with it — so the ask changes rather than vanishing.
+ */
+export function ctaHeading(plankCount: number, lang: Lang): string {
+  if (plankCount === 0) {
+    return lang === 'es'
+      ? '¿Quieres que esto también se arregle?'
+      : 'Want this fixed too?'
+  }
+  if (plankCount === 1) {
+    return lang === 'es' ? '¿De acuerdo con esto?' : 'Agree with this?'
+  }
+  return lang === 'es'
+    ? `¿De acuerdo con estas ${plankCount}?`
+    : `Agree with these ${plankCount}?`
+}
+
+/**
+ * The platform index's eyebrow, e.g. "4 actions across 6 issues".
+ *
+ * Null before the first action is published: the line sits above the page's
+ * title, where "0 actions" would undersell a platform that is simply still
  * being written.
  */
 export function platformSummary(
@@ -534,13 +560,13 @@ export function platformSummary(
   lang: Lang,
 ): string | null {
   if (plankCount === 0) return null
-  const promises = promiseCount(plankCount, lang)
+  const actions = actionCount(plankCount, lang)
   const issues =
     lang === 'es'
       ? `${guideCount} ${guideCount === 1 ? 'tema' : 'temas'}`
       : `${guideCount} ${guideCount === 1 ? 'issue' : 'issues'}`
   const joiner = lang === 'es' ? 'en' : 'across'
-  return `${promises} ${joiner} ${issues}`
+  return `${actions} ${joiner} ${issues}`
 }
 
 export type Source = NonNullable<Plank['sources']>[number]

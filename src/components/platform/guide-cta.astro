@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../../lib/platform'
-import { localized } from '../../lib/platform'
+import { ctaHeading, localized } from '../../lib/platform'
 import type { GuideEntry } from '../../lib/platform-content'
 import ShareButton from './share-button.astro'
 
@@ -18,10 +18,6 @@ const { plankCount, related, next, lang, shareTitle, shareUrl } = Astro.props
 const t =
   lang === 'es'
     ? {
-        agree:
-          plankCount === 1
-            ? '¿De acuerdo con esto?'
-            : `¿De acuerdo con estos ${plankCount}?`,
         donate: 'Donar',
         donateHref: '/es/donate',
         volunteer: 'Voluntario',
@@ -30,10 +26,6 @@ const t =
         base: '/es/platform',
       }
     : {
-        agree:
-          plankCount === 1
-            ? 'Agree with this?'
-            : `Agree with these ${plankCount}?`,
         donate: 'Donate',
         donateHref: '/donate',
         volunteer: 'Volunteer',
@@ -41,6 +33,10 @@ const t =
         next: 'Next',
         base: '/platform',
       }
+
+// Tested in src/lib/platform.ts: the wording has three cases, and the
+// zero-action one exists because this section stays on a guide that has none.
+const heading = ctaHeading(plankCount, lang)
 
 const titleOf = (entry: GuideEntry) =>
   localized(entry.data, 'title', lang) ?? entry.data.title
@@ -60,12 +56,14 @@ const outlineButton = 'btn border-[1.5px] border-white/45 text-lg!'
   ]}
 >
   <div>
-    <h2 class="text-3xl md:text-4xl mb-6 text-balance">{t.agree}</h2>
+    <h2 class="text-3xl md:text-4xl mb-6 text-balance">{heading}</h2>
     <div class="flex flex-wrap items-center gap-3">
-      <a class="btn bg-accent text-tertiary text-lg!" href={t.donateHref}
-        >{t.donate}</a
-      >
-      <a class={outlineButton} href={t.volunteerHref}>{t.volunteer}</a>
+      <a class="btn bg-accent text-tertiary text-lg!" href={t.donateHref}>
+        {t.donate}
+      </a>
+      <a class={outlineButton} href={t.volunteerHref}>
+        {t.volunteer}
+      </a>
       <ShareButton
         title={shareTitle}
         url={shareUrl}
