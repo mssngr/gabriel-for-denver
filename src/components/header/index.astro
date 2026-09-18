@@ -12,6 +12,9 @@ import logoDesktop from '../../assets/gfd-logo.svg'
 import NavMarker from './nav-marker.astro'
 
 const currentPath = Astro.url.pathname
+const isPlatformActive = currentPath.includes('/platform')
+const isWhyMeActive = currentPath.includes('/why-me')
+const isGetInvolvedActive = currentPath.includes('/get-involved')
 
 // A current nav item is marked with an underline (NavMarker), a separate
 // element from the link/summary rather than a border on it — both so it
@@ -51,22 +54,17 @@ const navItemClasses = (active: boolean) =>
       class="menu px-1 font-semibold flex flex-col items-center gap-4 lg:flex-row lg:menu-horizontal"
     >
       <li class="relative">
-        <a
-          class={navItemClasses(currentPath.includes('/platform'))}
-          href="/platform">Platform</a
+        <a class={navItemClasses(isPlatformActive)} href="/platform">Platform</a
         >
-        <NavMarker active={currentPath.includes('/platform')} />
+        <NavMarker active={isPlatformActive} />
       </li>
       <li class="relative">
-        <a
-          class={navItemClasses(currentPath.includes('/why-me'))}
-          href="/why-me">Why me?</a
-        >
-        <NavMarker active={currentPath.includes('/why-me')} />
+        <a class={navItemClasses(isWhyMeActive)} href="/why-me">Why me?</a>
+        <NavMarker active={isWhyMeActive} />
       </li>
       <li class="relative">
         <details>
-          <summary class={navItemClasses(currentPath.includes('/get-involved'))}
+          <summary class={navItemClasses(isGetInvolvedActive)}
             >Get involved</summary
           >
           <ul
@@ -95,7 +93,7 @@ const navItemClasses = (active: boolean) =>
             </li>
           </ul>
         </details>
-        <NavMarker active={currentPath.includes('/get-involved')} />
+        <NavMarker active={isGetInvolvedActive} />
       </li>
       <li>
         <a class="btn btn-accent" href="/donate">Donate</a>

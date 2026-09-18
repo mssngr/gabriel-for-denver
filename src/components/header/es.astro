@@ -12,6 +12,9 @@ import logoDesktop from '../../assets/gfd-logo.svg'
 import NavMarker from './nav-marker.astro'
 
 const currentPath = Astro.url.pathname
+const isPlatformActive = currentPath.includes('/es/platform')
+const isWhyMeActive = currentPath.includes('/es/why-me')
+const isGetInvolvedActive = currentPath.includes('/es/get-involved')
 
 // A current nav item is marked with an underline (NavMarker), a separate
 // element from the link/summary rather than a border on it — both so it
@@ -51,23 +54,20 @@ const navItemClasses = (active: boolean) =>
       class="menu px-1 font-semibold flex flex-col items-center gap-4 lg:flex-row lg:menu-horizontal"
     >
       <li class="relative">
-        <a
-          class={navItemClasses(currentPath.includes('/platform'))}
-          href="/es/platform">Plataforma</a
+        <a class={navItemClasses(isPlatformActive)} href="/es/platform"
+          >Plataforma</a
         >
-        <NavMarker active={currentPath.includes('/platform')} />
+        <NavMarker active={isPlatformActive} />
       </li>
       <li class="relative">
-        <a
-          class={navItemClasses(currentPath.includes('/es/why-me'))}
-          href="/es/why-me">¿Por qué yo?</a
+        <a class={navItemClasses(isWhyMeActive)} href="/es/why-me"
+          >¿Por qué yo?</a
         >
-        <NavMarker active={currentPath.includes('/es/why-me')} />
+        <NavMarker active={isWhyMeActive} />
       </li>
       <li class="relative">
         <details>
-          <summary
-            class={navItemClasses(currentPath.includes('/es/get-involved'))}
+          <summary class={navItemClasses(isGetInvolvedActive)}
             >Involúcrate</summary
           >
           <ul
@@ -96,7 +96,7 @@ const navItemClasses = (active: boolean) =>
             </li>
           </ul>
         </details>
-        <NavMarker active={currentPath.includes('/es/get-involved')} />
+        <NavMarker active={isGetInvolvedActive} />
       </li>
       <li>
         <a class="btn btn-accent" href="/es/donate">Donar</a>
