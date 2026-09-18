@@ -79,6 +79,10 @@ jobs:
                 exit 0
               fi
               echo "$push_log"
+              # Matching GitHub's wording is a cosmetic dependency, not a
+              # correctness one: if it ever changes, this misreports as a race
+              # and the remedy (re-run) is the same either way -- and the raw
+              # push output is echoed above regardless.
               if printf '%s' "$push_log" | grep -q "Required status check"; then
                 blocked_by="checks"
                 echo "Tests have not passed on this commit yet (attempt $attempt)."

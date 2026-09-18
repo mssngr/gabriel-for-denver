@@ -18,22 +18,34 @@ the command.
 
 ## CI
 
-`.github/workflows/test.yml` runs `bun run test` then `bun run build` on every
-PR into `main` and every push to `content`. Its job is named **test**, and that
-is a **required status check on `main`** — the name is load-bearing, so renaming
-the job without updating the ruleset silently un-gates the branch.
+The suite itself lives in `.github/actions/suite` — `bun run test` then
+`bun run build` — so that everything which needs to ask "does this tree pass?"
+asks it the same way.
 
-Requiring it has two consequences worth knowing before you push:
+`.github/workflows/test.yml` runs it on every PR into `main` and every push to
+`content`. Its job is named **test**, and that is a **required status check on
+`main`**. That name is load-bearing, and it fails *closed*: rename the job
+without updating the ruleset and every push to `main` is rejected for a check
+that can never report — the daily publish included. It does not quietly stop
+protecting the branch, it stops the branch working.
+
+Requiring it has three consequences worth knowing before you push:
 
 - **`main` no longer accepts a direct push** unless that exact commit already
-  has a passing `test` run. Ordinary code changes go through a PR.
+  has a passing `test` status. Ordinary code changes go through a PR.
 - **`content` pushes are checked for this reason.** publish-content.yml
   fast-forwards `main` to a `content` commit, and GitHub lets a direct push
   through only when the commit being pushed already carries a passing check.
-  That is why the workflow triggers on `content` and not just on PRs; drop
-  that trigger and the daily publish stops working.
+  Drop that trigger and the daily publish stops working.
+- **sync-content.yml runs the suite itself and reports the result.** GitHub
+  starts no workflow run for a push made with `GITHUB_TOKEN`, so the merge
+  commits that workflow creates are invisible to `test.yml` — and a commit
+  with no `test` status can never be fast-forwarded onto `main`. Nothing would
+  ever come along to check it later, so that would stall publishing for good
+  rather than briefly. It posts the status through the statuses API, which
+  satisfies the same required check a check run does.
 
-The side benefit is that a CMS entry that fails its Zod schema now fails CI on
+The side benefit is that a CMS entry failing its Zod schema now fails CI on
 `content` at save time, rather than only surfacing as a stalled publish.
 
 ## Development

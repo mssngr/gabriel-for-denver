@@ -17,6 +17,9 @@ concurrency:
 
 permissions:
   contents: write
+  # This workflow reports the suite result on the commit it creates; see the
+  # steps below for why nothing else can.
+  statuses: write
 
 jobs:
   sync:
@@ -28,6 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Bring content up to date with main
+        id: sync
         run: |
           set -euo pipefail
 
@@ -71,7 +75,12 @@ jobs:
                      "git checkout content && git merge main"
                 exit 1
               }
-              git push origin content && exit 0
+              git push origin content && {
+                # Hand the merge commit to the steps below. They only run when
+                # this is set, so the fast-forward cases above skip them.
+                echo "merged_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+                exit 0
+              }
             fi
 
             echo "Push rejected, likely a concurrent CMS commit. Retrying."
@@ -80,3 +89,40 @@ jobs:
 
           echo "::error::Could not sync content after 3 attempts."
           exit 1
+
+      # GitHub deliberately starts no workflow run for a push made with
+      # GITHUB_TOKEN, so test.yml never sees the merge commit pushed above --
+      # and without a `test` status, publish-content.yml can never fast-forward
+      # `main` onto it. That is not a delayed publish, it is a permanently
+      # stuck one, since nothing would ever come along to check that SHA.
+      # So run the same suite here, against the merged tree, and say what
+      # happened. `continue-on-error` is what lets a failure be reported as a
+      # failure rather than just ending the job.
+      - id: suite
+        if: steps.sync.outputs.merged_sha != ''
+        continue-on-error: true
+        uses: ./.github/actions/suite
+
+      - name: Report the suite result on the merge commit
+        if: steps.sync.outputs.merged_sha != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.sync.outputs.merged_sha }}
+          OUTCOME: ${{ steps.suite.outcome }}
+        run: |
+          set -euo pipefail
+
+          if [ "$OUTCOME" = success ]; then state=success; else state=failure; fi
+
+          gh api "repos/${GITHUB_REPOSITORY}/statuses/${SHA}" \
+            -f state="$state" \
+            -f context=test \
+            -f description="Run by sync-content: a GITHUB_TOKEN push starts no workflow" \
+            -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            >/dev/null
+
+          echo "Reported test=$state on $SHA"
+
+          # Fail the run when the suite failed, so this surfaces as a red run
+          # rather than only as a status on a commit nobody is looking at.
+          [ "$state" = success ]
