@@ -3,6 +3,7 @@ import { Image } from 'astro:assets'
 import meAndMicala from '../assets/me-and-micala.jpg'
 import Endorsements from '../components/endorsements/index.astro'
 import MyBackground from '../components/my-background/index.astro'
+import TopicActions from '../components/platform/topic-actions.astro'
 import Layout from '../layouts/default.astro'
 ---
 
@@ -40,42 +41,8 @@ import Layout from '../layouts/default.astro'
         plan to hit the ground running, writing and championing legislation for
         several key issues.
       </p>
-      <h2 class="text-center underline">Social Justice</h2>
-      <p class="max-w-xl mx-auto">
-        Affordability doesn't mean much if it isn't evenly applied. First, and
-        foremost, we need to address inequalities in our great city. I plan to
-        bring legislation on:
-        <ul class="mt-2 mb-16 max-w-md mx-auto">
-          <li>A citizen-ran body to investigate Denver Police misconduct</li>
-          <li>Large expansion of the STAR program</li>
-          <li>Alternative sentencing for non-violent offenses</li>
-          <li>Alternatives to fees for civil and traffic citations</li>
-          <li>Ending unhoused encampment sweeps</li>
-          <li>Eliminating warrantless AI surveillance of all Denver drivers</li>
-          <li>Banning new data centers built in Denver</li>
-        </ul>
-      </p>
-      <h2 class="text-center underline">Affordability</h2>
-      <p class="max-w-xl mx-auto">
-        It's easy to dream about a better future when rent is paid, food is in
-        the fridge, and your car has gas in the tank. If we want to live in the
-        city of our dreams, we have to be able to afford it. I will bring
-        legislation for:
-        <ul class="mt-2 mb-16 max-w-md mx-auto">
-          <li>Expanded universal Pre-K</li>
-          <li>Publicly owned utilities</li>
-          <li>New affordable housing requirements for developers</li>
-          <li>A tax on vacant rental units</li>
-          <li>Expanded multi-unit residential zoning</li>
-          <li>Food forests and gardens in all of our parks</li>
-          <li>Improvement of RTD reliability</li>
-          <li>
-            A requirement of out-of-state companies moving in to hire a portion
-            of their workforce from locals
-          </li>
-        </ul>
-      </p>
-      <p class="text-center">
+      <TopicActions lang="en" />
+      <p class="text-center mt-16">
         You can read more about my plans <a href="/platform" class="link"
           >here.</a
         >

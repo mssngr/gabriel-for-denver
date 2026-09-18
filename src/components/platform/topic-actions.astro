@@ -1,0 +1,80 @@
+---
+import { CircleCheck } from '@lucide/astro'
+import type { Lang } from '../../lib/platform'
+import {
+  actionCount,
+  localized,
+  platformSummary,
+  topicsWithActions,
+} from '../../lib/platform'
+import { getPublishedPlatform } from '../../lib/platform-content'
+import Icon from '../icon.astro'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+
+// The same guides and planks that back /platform, condensed instead of
+// repeated: a quick-scan summary rather than a second copy of that page's
+// stance paragraphs and artwork.
+const { guides, planks } = await getPublishedPlatform()
+const topics = topicsWithActions(guides, planks)
+// topics.length, not guides.length: a guide published with no planks yet
+// drops out of the grid below, so the eyebrow should count only the topics
+// actually shown under it.
+const summary = platformSummary(planks.length, topics.length, lang)
+---
+
+{
+  summary && (
+    <p class="text-center text-xs tracking-[0.2em] uppercase font-semibold text-primary mb-10">
+      {summary}
+    </p>
+  )
+}
+<div class="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+  {
+    topics.map(({ guide, planks: guidePlanks }) => {
+      const title = localized(guide.data, 'title', lang) ?? guide.data.title
+      const href =
+        lang === 'es'
+          ? `/es/platform/${guide.data.slug}`
+          : `/platform/${guide.data.slug}`
+      return (
+        <div>
+          <h2 class="text-lg leading-tight">
+            <a
+              href={href}
+              class="inline-flex items-center gap-2 no-underline hover:underline underline-offset-4"
+            >
+              <Icon
+                name={guide.data.lucideIcon}
+                class="size-5 shrink-0 text-primary"
+              />
+              {title}
+            </a>
+          </h2>
+          <p class="text-xs tracking-[0.16em] uppercase font-semibold text-primary/70 mt-1 mb-3">
+            {actionCount(guidePlanks.length, lang)}
+          </p>
+          <ul class="list-none pl-0 m-0 space-y-2.5">
+            {guidePlanks.map((plank) => (
+              <li class="flex gap-2.5 items-start text-sm leading-snug">
+                <CircleCheck
+                  class="size-4 shrink-0 mt-0.5 text-primary"
+                  aria-hidden="true"
+                />
+                <span>
+                  {localized(plank.data, 'commitment', lang) ??
+                    plank.data.commitment}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    })
+  }
+</div>
