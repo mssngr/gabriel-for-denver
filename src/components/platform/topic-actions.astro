@@ -34,7 +34,7 @@ const summary = platformSummary(planks.length, topics.length, lang)
     </p>
   )
 }
-<div class="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
   {
     topics.map(({ guide, planks: guidePlanks }) => {
       const title = localized(guide.data, 'title', lang) ?? guide.data.title
@@ -43,37 +43,41 @@ const summary = platformSummary(planks.length, topics.length, lang)
           ? `/es/platform/${guide.data.slug}`
           : `/platform/${guide.data.slug}`
       return (
-        <div>
-          <h2 class="text-lg leading-tight">
-            <a
-              href={href}
-              class="inline-flex items-center gap-2 no-underline hover:underline underline-offset-4"
-            >
+        <article>
+          {/* Same raised, whole-card link treatment as guide-card.astro,
+              scaled down — a "mini card" of the same pattern rather than a
+              new one. */}
+          <a
+            href={href}
+            aria-label={title}
+            class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-base no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <h2 class="inline-flex items-center gap-2 text-lg leading-tight">
               <Icon
                 name={guide.data.lucideIcon}
                 class="size-5 shrink-0 text-primary"
               />
               {title}
-            </a>
-          </h2>
-          <p class="text-xs tracking-[0.16em] uppercase font-semibold text-primary/70 mt-1 mb-3">
-            {actionCount(guidePlanks.length, lang)}
-          </p>
-          <ul class="list-none pl-0 m-0 space-y-2.5">
-            {guidePlanks.map((plank) => (
-              <li class="flex gap-2.5 items-start text-sm leading-snug">
-                <CircleCheck
-                  class="size-4 shrink-0 mt-0.5 text-primary"
-                  aria-hidden="true"
-                />
-                <span>
-                  {localized(plank.data, 'commitment', lang) ??
-                    plank.data.commitment}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
+            </h2>
+            <p class="text-xs tracking-[0.16em] uppercase font-semibold text-primary/70 mt-1 mb-3">
+              {actionCount(guidePlanks.length, lang)}
+            </p>
+            <ul class="list-none pl-0 m-0 space-y-2.5">
+              {guidePlanks.map((plank) => (
+                <li class="flex gap-2.5 items-start text-sm leading-snug">
+                  <CircleCheck
+                    class="size-4 shrink-0 mt-0.5 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    {localized(plank.data, 'commitment', lang) ??
+                      plank.data.commitment}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </a>
+        </article>
       )
     })
   }
