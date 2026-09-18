@@ -1,36 +1,37 @@
 import { describe, expect, it } from 'vitest'
 import {
+  actionCount,
   assertGuideRefs,
   assertTranslated,
   assertUniqueSlugs,
   bandTheme,
+  ctaHeading,
+  currentPageUrl,
+  type Entry,
+  GUIDE_TRANSLATABLE_FIELDS,
+  type Guide,
   guideMetaDescription,
+  guideSchema,
   idFromFilename,
   leadSource,
-  GUIDE_TRANSLATABLE_FIELDS,
-  type Entry,
-  type Guide,
-  guideSchema,
   localized,
   nextGuide,
-  type Plank,
   PLANK_TRANSLATABLE_FIELDS,
-  plankSchema,
+  type Plank,
   plankAnchor,
-  currentPageUrl,
-  plankUrl,
-  actionCount,
-  ctaHeading,
   plankLabel,
-  platformSummary,
-  relatedGuides,
+  plankSchema,
   planksForGuide,
   planksForPage,
+  plankUrl,
+  platformSummary,
+  relatedGuides,
   resolveHero,
   selectPublished,
   showsPlankRail,
   TIMELINES,
   timelineLabel,
+  topicsWithActions,
 } from './platform'
 
 function makeGuide({
@@ -440,6 +441,47 @@ describe('planksForGuide', () => {
     expect(
       planksForGuide(planks, 'housing-crisis').map(plank => plank.data.slug),
     ).toEqual(['rent', 'zoning'])
+  })
+})
+
+describe('topicsWithActions', () => {
+  // Ordering is the caller's job (getGuides() already hands over sorted
+  // guides), so this only has to prove the guides come back in the order
+  // they went in, each carrying just its own planks.
+  it('pairs each guide with its own planks, preserving guide order', () => {
+    const guides = [
+      makeGuide({ id: 'big-tech', slug: 'big-tech', order: 0 }),
+      makeGuide({ id: 'housing-crisis', slug: 'housing-crisis', order: 1 }),
+    ]
+    const planks = [
+      makePlank({ id: 'zoning', slug: 'zoning', guide: 'housing-crisis' }),
+      makePlank({
+        id: 'surveillance',
+        slug: 'surveillance',
+        guide: 'big-tech',
+      }),
+    ]
+    const topics = topicsWithActions(guides, planks)
+    expect(topics.map(topic => topic.guide.data.slug)).toEqual([
+      'big-tech',
+      'housing-crisis',
+    ])
+    expect(topics[0].planks.map(plank => plank.data.slug)).toEqual([
+      'surveillance',
+    ])
+  })
+
+  // A topic nobody has committed an action to yet has nothing for a reader to
+  // scan, so it shouldn't leave a heading with an empty list under it.
+  it('drops a guide with no planks', () => {
+    const guides = [makeGuide({ slug: 'housing-crisis' })]
+    expect(topicsWithActions(guides, [])).toEqual([])
+  })
+
+  it('ignores a plank belonging to a different guide', () => {
+    const guides = [makeGuide({ slug: 'housing-crisis' })]
+    const planks = [makePlank({ guide: 'big-tech' })]
+    expect(topicsWithActions(guides, planks)).toEqual([])
   })
 })
 

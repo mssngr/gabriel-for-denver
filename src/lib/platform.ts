@@ -368,6 +368,26 @@ export function planksForGuide<E extends Entry<Plank>>(
   return planks.filter(plank => plank.data.guide === guideSlug).sort(byOrder)
 }
 
+export type Topic<G extends Entry<Guide>, P extends Entry<Plank>> = {
+  guide: G
+  planks: P[]
+}
+
+/**
+ * Guides paired with their planks, restricted to guides that have at least
+ * one — for a summary that scans the whole platform at a glance (the
+ * why-me page), a topic nobody has committed an action to yet has nothing
+ * worth showing under its heading.
+ */
+export function topicsWithActions<
+  G extends Entry<Guide>,
+  P extends Entry<Plank>,
+>(guides: G[], planks: P[]): Topic<G, P>[] {
+  return guides
+    .map(guide => ({ guide, planks: planksForGuide(planks, guide.data.slug) }))
+    .filter(topic => topic.planks.length > 0)
+}
+
 /**
  * The planks that render on a guide's own page.
  *
@@ -486,7 +506,10 @@ export function plankAnchor(slug: string): string {
  * `Astro.site` combined, the way every platform page and its detail panels
  * build the link they share.
  */
-export function currentPageUrl(pathname: string, site: URL | undefined): string {
+export function currentPageUrl(
+  pathname: string,
+  site: URL | undefined,
+): string {
   return new URL(pathname, site).href
 }
 
