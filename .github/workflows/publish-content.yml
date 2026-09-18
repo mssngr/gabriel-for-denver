@@ -40,23 +40,37 @@ jobs:
             exit 0
           fi
 
-          git fetch --no-tags origin content:refs/remotes/origin/content
+          # `main` can advance under us mid-run (a PR merging in the same
+          # window), which both invalidates the check below and rejects the
+          # push. sync-content.yml reconciles that within a few seconds, so
+          # re-read the refs and try again rather than failing a publish over
+          # a race -- a dispatched "publish now" has no next run to save it.
+          for attempt in 1 2 3; do
+            git fetch --no-tags --force origin \
+              main:refs/remotes/origin/main \
+              content:refs/remotes/origin/content
 
-          ahead=$(git rev-list --count origin/main..origin/content)
-          if [ "$ahead" -eq 0 ]; then
-            echo "No unpublished edits. Skipping: no deploy, no credits."
-            exit 0
-          fi
+            ahead=$(git rev-list --count origin/main..origin/content)
+            if [ "$ahead" -eq 0 ]; then
+              echo "No unpublished edits. Skipping: no deploy, no credits."
+              exit 0
+            fi
 
-          # sync-content.yml keeps `content` a descendant of `main`, so
-          # publishing is always a fast-forward. If it somehow isn't, stop --
-          # better a failed run than an unreviewed force-push to production.
-          if ! git merge-base --is-ancestor origin/main origin/content; then
-            echo "::error::content has diverged from main; reconcile by hand."
-            exit 1
-          fi
+            if git merge-base --is-ancestor origin/main origin/content; then
+              echo "Publishing $ahead commit(s) to production:"
+              git log --oneline origin/main..origin/content
+              # Only ever a fast-forward. A rejection means main just moved.
+              git push origin "$(git rev-parse origin/content):refs/heads/main" && exit 0
+              echo "Push rejected -- main moved. Re-reading (attempt $attempt)."
+            else
+              echo "main is ahead of content; waiting for sync-content (attempt $attempt)."
+            fi
 
-          echo "Publishing $ahead commit(s) to production:"
-          git log --oneline origin/main..origin/content
+            if [ "$attempt" -lt 3 ]; then sleep 15; fi
+          done
 
-          git push origin "$(git rev-parse origin/content):refs/heads/main"
+          echo "::error::content is not a fast-forward of main after 3 attempts."\
+               "sync-content.yml normally reconciles this automatically, so check"\
+               "whether that workflow failed (a merge conflict needs hands), then"\
+               "re-run this one."
+          exit 1

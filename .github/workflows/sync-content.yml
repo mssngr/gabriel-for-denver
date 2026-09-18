@@ -58,7 +58,15 @@ jobs:
               # Unpublished edits exist and main moved: merge main into content.
               echo "Merging main into content (attempt $attempt)."
               git checkout -B content origin/content
-              git merge --no-edit origin/main
+              # A real conflict is not a race, so it is not worth retrying --
+              # but it does need to say so, or the run fails with raw merge
+              # output and no hint that a human has to reconcile it.
+              git merge --no-edit origin/main || {
+                echo "::error::main conflicts with content -- a code change and a"\
+                     "CMS edit touched the same file. Reconcile by hand:"\
+                     "git checkout content && git merge main"
+                exit 1
+              }
               git push origin content && exit 0
             fi
 
