@@ -1,5 +1,5 @@
 /**
- * Sharing a guide page from its call-to-action section.
+ * Sharing a link to a guide page or one of its planks.
  *
  * Uses the native share sheet where the browser has one (most phones), and
  * copies the link otherwise. Kept free of the DOM and the global `navigator`

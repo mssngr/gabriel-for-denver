@@ -1,14 +1,18 @@
 ---
+import { Share2 } from '@lucide/astro'
 import { marked } from 'marked'
 import type { Lang } from '../../lib/platform'
 import {
+  currentPageUrl,
   localized,
   plankAnchor,
   plankLabel,
+  plankUrl,
   sourceLabel,
   timelineLabel,
 } from '../../lib/platform'
 import type { PlankEntry } from '../../lib/platform-content'
+import ShareButton from './share-button.astro'
 
 interface Props {
   plank: PlankEntry
@@ -45,6 +49,14 @@ const commitment =
   localized(plank.data, 'commitment', lang) ?? plank.data.commitment
 const sources = plank.data.sources ?? []
 const label = plankLabel(plank.data, index, lang)
+
+// A plank has no route of its own — this is the same guide-page URL built
+// in src/pages/platform/[id].astro.
+const pageUrl = currentPageUrl(Astro.url.pathname, Astro.site)
+const shareUrl = plankUrl(pageUrl, plank.data.slug)
+const shareTitle = `${commitment} | Gabriel for Denver`
+const iconButtonClass =
+  'shrink-0 size-9 rounded-full border-[1.5px] border-black/25 grid place-items-center cursor-pointer'
 ---
 
 <details
@@ -74,25 +86,35 @@ const label = plankLabel(plank.data, index, lang)
           {commitment}
         </h3>
       </div>
-      <button
-        type="button"
-        class="shrink-0 size-9 rounded-full border-[1.5px] border-black/25 grid place-items-center cursor-pointer"
-        aria-label={t.close}
-        data-plank-close
-      >
-        <svg
-          class="size-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          aria-hidden="true"
-          focusable="false"
+      <div class="flex items-center gap-2">
+        <ShareButton
+          title={shareTitle}
+          url={shareUrl}
+          lang={lang}
+          class={iconButtonClass}
         >
-          <path d="M6 6l12 12M18 6L6 18"></path>
-        </svg>
-      </button>
+          <Share2 class="size-4" aria-hidden="true" focusable="false" />
+        </ShareButton>
+        <button
+          type="button"
+          class={iconButtonClass}
+          aria-label={t.close}
+          data-plank-close
+        >
+          <svg
+            class="size-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M6 6l12 12M18 6L6 18"></path>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <div class="flex flex-col gap-7 pt-6">

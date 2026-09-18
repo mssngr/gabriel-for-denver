@@ -482,6 +482,24 @@ export function plankAnchor(slug: string): string {
 }
 
 /**
+ * The absolute URL of the page currently being rendered — `Astro.url` and
+ * `Astro.site` combined, the way every platform page and its detail panels
+ * build the link they share.
+ */
+export function currentPageUrl(pathname: string, site: URL | undefined): string {
+  return new URL(pathname, site).href
+}
+
+/**
+ * The direct link to a plank's own detail panel: the guide page's URL plus
+ * that plank's anchor, so a reader who opens it lands with the panel already
+ * open (see sheet-behavior.astro's `location.hash` handling on load).
+ */
+export function plankUrl(pageUrl: string, slug: string): string {
+  return `${pageUrl}#${plankAnchor(slug)}`
+}
+
+/**
  * The label above a plank's commitment in its detail panel: "Action 01 ·
  * Zoning", or just "Action 03" when the plank has no sub-topic.
  *

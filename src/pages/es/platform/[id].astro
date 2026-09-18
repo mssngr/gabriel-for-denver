@@ -5,6 +5,7 @@ import GuideHero from '../../../components/platform/guide-hero.astro'
 import PlankRail from '../../../components/platform/plank-rail.astro'
 import SheetBehavior from '../../../components/platform/sheet-behavior.astro'
 import {
+  currentPageUrl,
   guideMetaDescription,
   localized,
   nextGuide,
@@ -35,7 +36,7 @@ const position =
 
 const title = localized(guide.data, 'title', lang) ?? guide.data.title
 const pageTitle = `${title} | Gabriel for Denver`
-const pageUrl = new URL(Astro.url.pathname, Astro.site).href
+const pageUrl = currentPageUrl(Astro.url.pathname, Astro.site)
 ---
 
 <Espanol
