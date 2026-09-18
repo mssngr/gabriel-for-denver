@@ -43,7 +43,11 @@ jobs:
               continue
             fi
 
-            git fetch --no-tags --force origin content:refs/remotes/origin/content
+            git fetch --no-tags --force origin content:refs/remotes/origin/content || {
+              echo "::error::Could not read content from origin."\
+                   "Was the branch deleted while this ran?"
+              exit 1
+            }
 
             if git merge-base --is-ancestor origin/main origin/content; then
               echo "content already contains main; nothing to do."

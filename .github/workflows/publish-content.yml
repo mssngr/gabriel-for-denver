@@ -42,13 +42,19 @@ jobs:
 
           # `main` can advance under us mid-run (a PR merging in the same
           # window), which both invalidates the check below and rejects the
-          # push. sync-content.yml reconciles that within a few seconds, so
-          # re-read the refs and try again rather than failing a publish over
-          # a race -- a dispatched "publish now" has no next run to save it.
-          for attempt in 1 2 3; do
+          # push. sync-content.yml reconciles that, so re-read the refs and try
+          # again rather than failing a publish over a race -- a dispatched
+          # "publish now" has no next run to save it. The waits get longer
+          # because what we are waiting on is another workflow run: usually
+          # seconds, but minutes if its runner is queued.
+          for attempt in 1 2 3 4; do
             git fetch --no-tags --force origin \
               main:refs/remotes/origin/main \
-              content:refs/remotes/origin/content
+              content:refs/remotes/origin/content || {
+              echo "::error::Could not read main and content from origin."\
+                   "Was the content branch deleted while this ran?"
+              exit 1
+            }
 
             ahead=$(git rev-list --count origin/main..origin/content)
             if [ "$ahead" -eq 0 ]; then
@@ -66,11 +72,18 @@ jobs:
               echo "main is ahead of content; waiting for sync-content (attempt $attempt)."
             fi
 
-            if [ "$attempt" -lt 3 ]; then sleep 15; fi
+            case "$attempt" in
+              1) sleep 15 ;;
+              2) sleep 30 ;;
+              3) sleep 60 ;;
+            esac
           done
 
-          echo "::error::content is not a fast-forward of main after 3 attempts."\
-               "sync-content.yml normally reconciles this automatically, so check"\
-               "whether that workflow failed (a merge conflict needs hands), then"\
-               "re-run this one."
+          # Most likely a slow runner, not a broken branch -- say so in that
+          # order, or this sends someone hunting for a conflict that isn't there.
+          echo "::error::content is still not a fast-forward of main after ~105s."\
+               "Usually sync-content.yml simply has not run yet: check whether its"\
+               "run for the latest main commit is queued or still going, and just"\
+               "re-run this workflow once it finishes. If instead it FAILED, it hit"\
+               "a merge conflict, and that needs reconciling by hand."
           exit 1
