@@ -1,7 +1,6 @@
 ---
 import { Image } from 'astro:assets'
 import {
-  ArrowRight,
   CalendarDays,
   Globe,
   Menu,
@@ -10,14 +9,12 @@ import {
   X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-logo.svg'
-import { isCurrentSection } from '../../lib/nav'
-import { getPublishedPlatform } from '../../lib/platform-content'
-import Icon from '../icon.astro'
 
 const currentPath = Astro.url.pathname
-// The nav lists the platform itself, so a guide added in the CMS shows up
-// here without anyone editing this file.
-const { guides } = await getPublishedPlatform()
+
+// A current nav item is marked with an underline rather than a color change.
+const navItemClasses = (active: boolean) =>
+  `text-3xl lg:text-2xl border-b-2 pb-1 ${active ? 'border-accent font-black' : 'border-transparent'}`
 ---
 
 <div
@@ -50,52 +47,20 @@ const { guides } = await getPublishedPlatform()
       class="menu px-1 font-semibold flex flex-col items-center gap-4 lg:flex-row lg:menu-horizontal"
     >
       <li>
-        <details>
-          <summary
-            class={`text-3xl lg:text-2xl ${currentPath.includes('/platform') ? 'text-accent font-black' : ''}`}
-            >Platform</summary
-          >
-          <ul
-            class="bg-base-100 text-base-content p-2 z-10 lg:w-max lg:whitespace-nowrap"
-          >
-            {
-              guides.map((guide) => (
-                <li>
-                  <a
-                    href={`/platform/${guide.data.slug}`}
-                    class={
-                      isCurrentSection(
-                        currentPath,
-                        `/platform/${guide.data.slug}`,
-                      )
-                        ? 'text-primary font-black'
-                        : ''
-                    }
-                  >
-                    <Icon name={guide.data.lucideIcon} />
-                    {guide.data.title}
-                  </a>
-                </li>
-              ))
-            }
-            <li>
-              <a href="/platform" class="inline-flex items-center"
-                >See All <ArrowRight class="size-4" /></a
-              >
-            </li>
-          </ul>
-        </details>
+        <a
+          class={navItemClasses(currentPath.includes('/platform'))}
+          href="/platform">Platform</a
+        >
       </li>
       <li>
         <a
-          class={`text-3xl lg:text-2xl ${currentPath.includes('/why-me') ? 'text-accent font-black' : ''}`}
+          class={navItemClasses(currentPath.includes('/why-me'))}
           href="/why-me">Why me?</a
         >
       </li>
       <li>
         <details>
-          <summary
-            class={`text-3xl lg:text-2xl ${currentPath.includes('/get-involved') ? 'text-accent font-black' : ''}`}
+          <summary class={navItemClasses(currentPath.includes('/get-involved'))}
             >Get involved</summary
           >
           <ul
