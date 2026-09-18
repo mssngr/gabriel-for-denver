@@ -17,6 +17,7 @@ import {
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
   plankAnchor,
+  currentPageUrl,
   plankUrl,
   actionCount,
   ctaHeading,
@@ -490,6 +491,17 @@ describe('plankAnchor', () => {
     expect(plankAnchor('Legalize Multi Unit!')).toBe(
       'plank-legalize-multi-unit',
     )
+  })
+})
+
+describe('currentPageUrl', () => {
+  it('combines the path with the configured site into an absolute url', () => {
+    expect(
+      currentPageUrl(
+        '/platform/housing',
+        new URL('https://gabrielfordenver.com'),
+      ),
+    ).toBe('https://gabrielfordenver.com/platform/housing')
   })
 })
 

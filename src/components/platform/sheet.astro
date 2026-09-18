@@ -3,6 +3,7 @@ import { Share2 } from '@lucide/astro'
 import { marked } from 'marked'
 import type { Lang } from '../../lib/platform'
 import {
+  currentPageUrl,
   localized,
   plankAnchor,
   plankLabel,
@@ -49,9 +50,9 @@ const commitment =
 const sources = plank.data.sources ?? []
 const label = plankLabel(plank.data, index, lang)
 
-// Astro.url reflects the page this sheet is rendered on, same as the pageUrl
-// built in src/pages/platform/[id].astro — a plank has no route of its own.
-const pageUrl = new URL(Astro.url.pathname, Astro.site).href
+// A plank has no route of its own — this is the same guide-page URL built
+// in src/pages/platform/[id].astro.
+const pageUrl = currentPageUrl(Astro.url.pathname, Astro.site)
 const shareUrl = plankUrl(pageUrl, plank.data.slug)
 const shareTitle = `${commitment} | Gabriel for Denver`
 const iconButtonClass =
