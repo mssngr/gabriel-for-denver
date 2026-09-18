@@ -5,9 +5,12 @@ name: Publish content
 # one production deploy (15 Netlify credits) instead of one per save.
 on:
   schedule:
-    # Hourly. GitHub runs scheduled workflows on a best-effort basis and can
-    # delay them by several minutes, so treat this as "about hourly".
-    - cron: '0 * * * *'
+    # Once a day, 12:17 UTC -- early morning in Denver, so a day's edits are
+    # live before traffic picks up. Cron is always UTC and ignores DST (so this
+    # drifts between 6:17am MDT and 5:17am MST), and GitHub runs scheduled jobs
+    # on a best-effort basis, delaying them under load; the offset minute dodges
+    # the top-of-hour rush. Use the workflow_dispatch button to publish sooner.
+    - cron: '17 12 * * *'
   workflow_dispatch:
 
 # One batch at a time. A run that arrives mid-publish waits and then picks up
