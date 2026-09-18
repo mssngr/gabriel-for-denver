@@ -43,6 +43,7 @@ const pageUrl = new URL(Astro.url.pathname, Astro.site).href
   description={guideMetaDescription(guide.data, lang)}
   noindex={guide.data.status === 'draft'}
   heroGradient
+  tightHero
 >
   <script
     is:inline

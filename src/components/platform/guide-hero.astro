@@ -71,7 +71,11 @@ const updated = guide.data.lastReviewed?.toLocaleDateString(t.locale, {
 
 <section
   class:list={[
-    'px-6 pb-16 md:px-12 md:pb-24',
+    // Shallow bottom padding, with `tightHero` on the page trimming the
+    // gradient's own. On a phone the illustration is hidden, so anything
+    // deeper leaves a screen of empty blue under the stance and the first
+    // plank reads as the end of the page.
+    'px-6 pb-10 md:px-12 md:pb-14',
     // The illustration gets its own 22rem column on desktop, per design.html.
     // Without one, the text keeps the full width rather than leaving a gap.
     artwork &&
