@@ -18,6 +18,7 @@
   --font-sans: var(--font-league-spartan);
   --font-league-spartan: var(--font-league-spartan);
   --font-edu-sa-hand: var(--font-edu-sa-hand);
+  --color-base: #fff;
   --color-tertiary: #0e005c;
   --color-quaternary: #6e93fa;
 }
