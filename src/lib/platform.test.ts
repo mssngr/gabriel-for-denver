@@ -803,6 +803,14 @@ describe('platformSummary', () => {
     expect(platformSummary(1, 1, 'es')).toBe('1 promesa en 1 tema')
   })
 
+  // Each half has to pluralize off its own count. Matched counts alone can't
+  // catch a summary that pluralizes "issues" from the promise total.
+  it('pluralizes each half independently', () => {
+    expect(platformSummary(1, 6, 'en')).toBe('1 promise across 6 issues')
+    expect(platformSummary(6, 1, 'en')).toBe('6 promises across 1 issue')
+    expect(platformSummary(1, 6, 'es')).toBe('1 promesa en 6 temas')
+  })
+
   // The summary sits above the page's title as its eyebrow, so an empty
   // platform is better off with no eyebrow at all than with "0 promises".
   it('has nothing to say before the first promise is published', () => {
