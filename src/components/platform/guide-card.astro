@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets'
 import { Marked } from 'marked'
 import type { Lang } from '../../lib/platform'
-import { localized } from '../../lib/platform'
+import { localized, promiseCount } from '../../lib/platform'
 import type { GuideEntry, PlankEntry } from '../../lib/platform-content'
 import Icon from '../icon.astro'
 
@@ -38,17 +38,9 @@ const href =
     class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-base no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
   >
     {
-      /* The issue's illustration at full card width, cropped to a square so
-         a tall/portrait piece of art doesn't blow out the card's height
-         (Q6). The small icon only stands in for a guide that has no artwork
-         yet. */
-      artwork && (
-        <Image
-          src={artwork}
-          alt={artworkAlt}
-          class="w-full aspect-square object-cover rounded-xl mb-5"
-        />
-      )
+      /* Words first, illustration second. Leading with the art made the index
+         read as a gallery: on a phone the first card filled the screen with a
+         drawing, and on a laptop every card's title sat below the fold. */
     }
     <h2 class="inline-flex items-center gap-2 text-2xl">
       {!artwork && <Icon name={guide.data.lucideIcon} class="size-7" />}
@@ -59,20 +51,39 @@ const href =
       set:html={stanceHtml}
     />
     {
+      /* Cropped to a square so a tall/portrait piece of art doesn't blow out
+         the card's height (Q6). The small icon above only stands in for a
+         guide that has no artwork yet. */
+      artwork && (
+        <Image
+          src={artwork}
+          alt={artworkAlt}
+          class="w-full aspect-square object-cover rounded-xl mt-5"
+        />
+      )
+    }
+    {
       planks.length > 0 && (
-        <ul class="list-none pl-0 mt-4 border-t border-black/10">
-          {planks.map((plank, index) => (
-            <li class="flex gap-3 items-baseline py-2.5 border-b border-black/5 last:border-b-0">
-              <b class="text-primary text-xs tracking-wider shrink-0">
-                {String(index + 1).padStart(2, '0')}
-              </b>
-              <span class="text-base leading-snug">
-                {localized(plank.data, 'commitment', lang) ??
-                  plank.data.commitment}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div class="mt-5 border-t border-black/10 pt-3">
+          {/* The count says there is something under the artwork, which the
+              list alone can't do until the reader has scrolled to it. */}
+          <p class="text-xs tracking-[0.18em] uppercase font-semibold text-primary mb-1">
+            {promiseCount(planks.length, lang)}
+          </p>
+          <ul class="list-none pl-0 m-0">
+            {planks.map((plank, index) => (
+              <li class="flex gap-3 items-baseline py-2.5 border-b border-black/5 last:border-b-0">
+                <b class="text-primary text-xs tracking-wider shrink-0">
+                  {String(index + 1).padStart(2, '0')}
+                </b>
+                <span class="text-base leading-snug">
+                  {localized(plank.data, 'commitment', lang) ??
+                    plank.data.commitment}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       )
     }
   </a>

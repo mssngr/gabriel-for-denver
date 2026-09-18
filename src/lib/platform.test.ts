@@ -18,6 +18,8 @@ import {
   plankSchema,
   plankAnchor,
   plankLabel,
+  platformSummary,
+  promiseCount,
   relatedGuides,
   planksForGuide,
   planksForPage,
@@ -769,5 +771,50 @@ describe('timelineLabel', () => {
       expect(label).not.toBe(timeline)
       expect(label).not.toMatch(/^[a-z]+(-[a-z]+)+$/)
     }
+  })
+})
+
+describe('promiseCount', () => {
+  it('counts the promises in words, not just digits', () => {
+    expect(promiseCount(3, 'en')).toBe('3 promises')
+  })
+
+  it('drops the plural for a single promise', () => {
+    expect(promiseCount(1, 'en')).toBe('1 promise')
+  })
+
+  it('translates the count on the Spanish page', () => {
+    expect(promiseCount(3, 'es')).toBe('3 promesas')
+    expect(promiseCount(1, 'es')).toBe('1 promesa')
+  })
+})
+
+describe('platformSummary', () => {
+  it('states how many promises span how many issues', () => {
+    expect(platformSummary(4, 6, 'en')).toBe('4 promises across 6 issues')
+  })
+
+  it('translates the summary on the Spanish page', () => {
+    expect(platformSummary(4, 6, 'es')).toBe('4 promesas en 6 temas')
+  })
+
+  it('reads as singular when there is one of each', () => {
+    expect(platformSummary(1, 1, 'en')).toBe('1 promise across 1 issue')
+    expect(platformSummary(1, 1, 'es')).toBe('1 promesa en 1 tema')
+  })
+
+  // Each half has to pluralize off its own count. Matched counts alone can't
+  // catch a summary that pluralizes "issues" from the promise total.
+  it('pluralizes each half independently', () => {
+    expect(platformSummary(1, 6, 'en')).toBe('1 promise across 6 issues')
+    expect(platformSummary(6, 1, 'en')).toBe('6 promises across 1 issue')
+    expect(platformSummary(1, 6, 'es')).toBe('1 promesa en 6 temas')
+  })
+
+  // The summary sits above the page's title as its eyebrow, so an empty
+  // platform is better off with no eyebrow at all than with "0 promises".
+  it('has nothing to say before the first promise is published', () => {
+    expect(platformSummary(0, 6, 'en')).toBeNull()
+    expect(platformSummary(0, 0, 'es')).toBeNull()
   })
 })

@@ -12,6 +12,8 @@ interface Props {
   image?: string
   noindex?: boolean
   heroGradient?: boolean
+  /** See default.astro: trims the gradient's bottom padding for a short hero. */
+  tightHero?: boolean
   fullGradient?: boolean
 }
 
@@ -21,6 +23,7 @@ const {
   image = '/og-image.jpg',
   noindex = false,
   heroGradient = false,
+  tightHero = false,
   fullGradient = false,
 } = Astro.props
 
@@ -70,7 +73,7 @@ const esURL = new URL(alternatePath(Astro.url.pathname, 'es'), Astro.site)
       class:list={[
         heroGradient &&
           'bg-[linear-gradient(to_bottom_right,var(--color-secondary),var(--color-primary))] text-white',
-        heroGradient && !fullGradient && 'pb-32',
+        heroGradient && !fullGradient && (tightHero ? 'pb-8' : 'pb-32'),
       ]}
     >
       <Header />
