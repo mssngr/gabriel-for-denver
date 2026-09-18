@@ -1,0 +1,19 @@
+---
+// The current-page indicator: a plain rectangle, not a border on the link
+// itself, so it stays straight regardless of the link's own rounded hover
+// background.
+interface Props {
+  active: boolean
+}
+
+const { active } = Astro.props
+---
+
+{
+  active && (
+    <span
+      class="pointer-events-none absolute inset-x-0 -bottom-2 h-1 bg-accent"
+      aria-hidden="true"
+    />
+  )
+}

@@ -9,12 +9,16 @@ import {
   X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-logo.svg'
+import NavMarker from './nav-marker.astro'
 
 const currentPath = Astro.url.pathname
 
-// A current nav item is marked with an underline rather than a color change.
+// A current nav item is marked with an underline (NavMarker), a separate
+// element from the link/summary rather than a border on it — both so it
+// isn't clipped by the dropdown's `overflow: hidden` and so it doesn't
+// curve with the link's rounded hover background.
 const navItemClasses = (active: boolean) =>
-  `text-3xl lg:text-2xl border-b-2 pb-1 ${active ? 'border-accent font-black' : 'border-transparent'}`
+  `text-3xl lg:text-2xl ${active ? 'font-black' : ''}`
 ---
 
 <div
@@ -46,19 +50,21 @@ const navItemClasses = (active: boolean) =>
     <ul
       class="menu px-1 font-semibold flex flex-col items-center gap-4 lg:flex-row lg:menu-horizontal"
     >
-      <li>
+      <li class="relative">
         <a
           class={navItemClasses(currentPath.includes('/platform'))}
           href="/platform">Platform</a
         >
+        <NavMarker active={currentPath.includes('/platform')} />
       </li>
-      <li>
+      <li class="relative">
         <a
           class={navItemClasses(currentPath.includes('/why-me'))}
           href="/why-me">Why me?</a
         >
+        <NavMarker active={currentPath.includes('/why-me')} />
       </li>
-      <li>
+      <li class="relative">
         <details>
           <summary class={navItemClasses(currentPath.includes('/get-involved'))}
             >Get involved</summary
@@ -89,6 +95,7 @@ const navItemClasses = (active: boolean) =>
             </li>
           </ul>
         </details>
+        <NavMarker active={currentPath.includes('/get-involved')} />
       </li>
       <li>
         <a class="btn btn-accent" href="/donate">Donate</a>
