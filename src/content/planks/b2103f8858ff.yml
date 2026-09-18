@@ -4,8 +4,10 @@ order: 0
 status: published
 kicker: Police Misconduct
 kicker_es: Mala Conducta Policial
-pullQuote: The police investigating the police is like you auditing your own taxes. It doesn't work.
-pullQuote_es: Que la policía investigue a la policía es como si tú mismo audituras tus impuestos. No funciona.
+pullQuote: The police investigating the police is like you auditing your own taxes.
+pullQuote_es: Que la policía investigue a la policía es como si tú mismo audituras tus impuestos.
+caption: It doesn't work.
+caption_es: No funciona.
 commitment: Require that police misconduct is investigated by a citizen-ran body.
 commitment_es: Exigir que la mala conducta policial sea investigada por un organismo dirigido por ciudadanos.
 why: Misconduct is currently handled by the officer's supervisor in the form of “mandatory training.”
