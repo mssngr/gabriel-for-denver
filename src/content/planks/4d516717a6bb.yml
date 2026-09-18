@@ -1,0 +1,30 @@
+guide: humans-before-ai
+slug: data-centers
+order: 1
+status: published
+kicker: Data Centers
+kicker_es: Centros de Datos
+statValue: 800,000
+statCaption: gallons of water per day is how much the new CoreSite data center in the Elyria-Swansea neighborhood will use.
+statCaption_es: galones de agua por día es la cantidad que utilizará el nuevo centro de datos de CoreSite en el vecindario de Elyria-Swansea.
+commitment: Ban data centers in Denver city limits.
+commitment_es: Prohibir los centros de datos dentro de los límites de la ciudad de Denver.
+why: Water is precious to our state's changing ecology. Data centers' greedy usage of water does not align with our goals as a city.
+why_es: El agua es preciosa para la cambiante ecología de nuestro estado. El consumo desmedido de agua por parte de los centros de datos no se alinea con nuestros objetivos como ciudad.
+detail: |-
+  Denver is home to **46 data centers** in its city limits. The ecological impacts are many, including:
+
+  - The massive amounts of fossil fuels burnt to power them
+  - The heat islands they create around them
+  - The millions of gallons of water they use each month
+  - The unstudied effects of infrasound they produce
+detail_es: |-
+  Denver alberga 46 centros de datos dentro de los límites de su ciudad. Los impactos ecológicos son numerosos, e incluyen:
+
+  - La enorme cantidad de combustibles fósiles quemados para alimentarlos
+  - Las islas de calor que generan a su alrededor
+  - Los millones de galones de agua que consumen cada mes
+  - Los efectos no estudiados del infrasonido que producen
+authority: Pass an ordinance banning data centers that don't adhere to strict ecological requirements. The technology already exists to make data centers zero-water and carbon-neutral. These are the only types of data centers we should build in Denver.
+authority_es: Aprobar una ordenanza que prohíba los centros de datos que no cumplan con estrictos requisitos ecológicos. La tecnología ya existe para que los centros de datos sean de cero emisiones de agua y neutros en carbono. Estos son los únicos tipos de centros de datos que deberíamos construir en Denver.
+timeline: ordinance
