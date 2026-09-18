@@ -1,0 +1,29 @@
+name: Suite
+description: Install dependencies, run the unit tests, and build the site.
+
+# Shared so that test.yml and sync-content.yml cannot drift apart. They run this
+# for different reasons -- one gates a PR, the other certifies a commit GitHub
+# will not start a workflow for -- but "did this tree pass" has to mean the same
+# thing in both, or the required check on main means nothing.
+runs:
+  using: composite
+  steps:
+    - uses: oven-sh/setup-bun@v2
+      with:
+        # Pinned rather than `latest`: this gates the daily publish, so an
+        # upstream bun release that broke it would also stop content going out.
+        # Bump deliberately, with the suite as the proof.
+        bun-version: 1.3.13
+
+    - run: bun install --frozen-lockfile
+      shell: bash
+
+    - run: bun run test
+      shell: bash
+
+    # Per AGENTS.md this is the step that catches content-schema errors nothing
+    # else does -- the failure where one bad CMS entry stops the whole site
+    # updating. It needs no secrets: every code path that reads one degrades to
+    # empty when the key is absent.
+    - run: bun run build
+      shell: bash

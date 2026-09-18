@@ -16,6 +16,38 @@ twenty minutes.
 There is no working `preview`: the script exists but the Netlify adapter refuses
 the command.
 
+## CI
+
+The suite itself lives in `.github/actions/suite` — `bun run test` then
+`bun run build` — so that everything which needs to ask "does this tree pass?"
+asks it the same way.
+
+`.github/workflows/test.yml` runs it on every PR into `main` and every push to
+`content`. Its job is named **test**, and that is a **required status check on
+`main`**. That name is load-bearing, and it fails *closed*: rename the job
+without updating the ruleset and every push to `main` is rejected for a check
+that can never report — the daily publish included. It does not quietly stop
+protecting the branch, it stops the branch working.
+
+Requiring it has three consequences worth knowing before you push:
+
+- **`main` no longer accepts a direct push** unless that exact commit already
+  has a passing `test` status. Ordinary code changes go through a PR.
+- **`content` pushes are checked for this reason.** publish-content.yml
+  fast-forwards `main` to a `content` commit, and GitHub lets a direct push
+  through only when the commit being pushed already carries a passing check.
+  Drop that trigger and the daily publish stops working.
+- **sync-content.yml runs the suite itself and reports the result.** GitHub
+  starts no workflow run for a push made with `GITHUB_TOKEN`, so the merge
+  commits that workflow creates are invisible to `test.yml` — and a commit
+  with no `test` status can never be fast-forwarded onto `main`. Nothing would
+  ever come along to check it later, so that would stall publishing for good
+  rather than briefly. It posts the status through the statuses API, which
+  satisfies the same required check a check run does.
+
+The side benefit is that a CMS entry failing its Zod schema now fails CI on
+`content` at save time, rather than only surfacing as a stalled publish.
+
 ## Development
 
 `astro` isn't on `PATH`, so run it through Bun. When starting the dev server, use background mode:
@@ -117,7 +149,8 @@ So CMS saves are batched rather than published one at a time. Sveltia
   preview URL for proofreading an edit immediately after saving it.
 - `.github/workflows/publish-content.yml` fast-forwards `main` to `content` once
   a day (12:17 UTC), turning a day of saves into one paid production deploy. It
-  also has a **Run workflow** button for publishing sooner.
+  also has a **Run workflow** button for publishing sooner. It will not publish
+  a commit whose tests have not passed — see CI above.
 - `.github/workflows/sync-content.yml` brings `content` up to date whenever code
   lands on `main`, so the preview reflects current code and `main` stays an
   ancestor of `content` — which is what keeps publishing a fast-forward rather

@@ -1,0 +1,38 @@
+name: Test
+
+# Gates every PR into `main`, and every push to `content`.
+#
+# That second trigger is load-bearing, not incidental. publish-content.yml
+# fast-forwards `main` to a `content` commit, and a required status check lets
+# a direct push through only when that exact commit already carries a passing
+# run. Testing PRs alone would leave content commits unchecked and block the
+# daily publish outright.
+#
+# It does not cover everything on its own: GitHub starts no workflow run for a
+# push made with GITHUB_TOKEN, so the merge commits sync-content.yml creates
+# arrive here invisibly. That workflow runs the same suite itself and reports
+# the result -- see AGENTS.md, CI.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [content]
+
+# A burst of CMS saves pushes to `content` repeatedly; only the newest commit is
+# ever published, so superseded runs are wasted work.
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # The job name is the status-check context required on `main`. Renaming it
+  # means updating the ruleset in the same change.
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/suite
