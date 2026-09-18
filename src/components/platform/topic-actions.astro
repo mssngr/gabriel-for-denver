@@ -42,6 +42,10 @@ const summary = platformSummary(planks.length, topics.length, lang)
         lang === 'es'
           ? `/es/platform/${guide.data.slug}`
           : `/platform/${guide.data.slug}`
+      // The card's accessible name names the action count too, not just the
+      // topic — unlike guide-card.astro's full card, this one's main content
+      // *is* the action list, which a bare topic name wouldn't hint at.
+      const cardLabel = `${title}, ${actionCount(guidePlanks.length, lang)}`
       return (
         <article>
           {/* Same raised, whole-card link treatment as guide-card.astro,
@@ -49,7 +53,7 @@ const summary = platformSummary(planks.length, topics.length, lang)
               new one. */}
           <a
             href={href}
-            aria-label={title}
+            aria-label={cardLabel}
             class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-base no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             <h2 class="inline-flex items-center gap-2 text-lg leading-tight">
