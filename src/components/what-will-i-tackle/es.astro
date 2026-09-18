@@ -1,46 +1,22 @@
 ---
-import { ArrowRight } from '@lucide/astro'
-import { marked } from 'marked'
-import { getIssues } from '../../lib/issues-content'
-import Issue from '../issue.astro'
+import GuideCard from '../platform/guide-card.astro'
+import { planksForGuide } from '../../lib/platform'
+import { getPublishedPlatform } from '../../lib/platform-content'
 
-const allIssues = await getIssues()
-const sortedIssues = allIssues.sort((a, b) => a.data.order - b.data.order)
+// See index.astro: the home page shows the platform's own cards rather than a
+// second list of the same subjects.
+const { guides, planks } = await getPublishedPlatform()
 ---
 
 <h1 class="text-center mb-16!">¿Qué voy a enfrentar?</h1>
-<div class="flex flex-wrap gap-16 justify-center">
+<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
   {
-    sortedIssues.map((issue) => {
-      const summary = marked.parse(issue.data.summary_es)
-      return (
-        <Issue icon={issue.data.lucideIcon} title={issue.data.title_es}>
-          <Fragment set:html={summary} />
-          <br />
-          <a
-            class="link font-medium text-2xl issue-read-more"
-            href={`/es/issues/${issue.data.slug}`}
-            data-issue-slug={issue.data.slug}
-            data-issue-title={issue.data.title_es}
-          >
-            Leer Más
-            <ArrowRight class="size-6 inline-block align-middle ml-2" />
-          </a>
-        </Issue>
-      )
-    })
+    guides.map((guide) => (
+      <GuideCard
+        guide={guide}
+        planks={planksForGuide(planks, guide.data.slug)}
+        lang="es"
+      />
+    ))
   }
 </div>
-
-<script is:inline>
-  document.addEventListener('click', function (event) {
-    var link = event.target.closest('.issue-read-more')
-    if (link) {
-      window.posthog?.capture('issue_read_more_clicked', {
-        issue_slug: link.dataset.issueSlug,
-        issue_title: link.dataset.issueTitle,
-        lang: 'es',
-      })
-    }
-  })
-</script>

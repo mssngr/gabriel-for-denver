@@ -1,23 +1,23 @@
 ---
 import { Image } from 'astro:assets'
 import {
-  Apple,
   ArrowRight,
   CalendarDays,
-  Coins,
-  DatabaseZap,
   Globe,
-  HouseHeart,
-  MapPinHouse,
   Menu,
   MessageCircle,
-  Siren,
   Users,
   X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-logo.svg'
+import { isCurrentSection } from '../../lib/nav'
+import { getPublishedPlatform } from '../../lib/platform-content'
+import Icon from '../icon.astro'
 
 const currentPath = Astro.url.pathname
+// The nav lists the platform itself, so a guide added in the CMS shows up
+// here without anyone editing this file.
+const { guides } = await getPublishedPlatform()
 ---
 
 <div
@@ -52,56 +52,34 @@ const currentPath = Astro.url.pathname
       <li>
         <details>
           <summary
-            class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-accent font-black' : ''}`}
-            >Issues</summary
+            class={`text-3xl lg:text-2xl ${currentPath.includes('/platform') ? 'text-accent font-black' : ''}`}
+            >Platform</summary
           >
           <ul
             class="bg-base-100 text-base-content p-2 z-10 lg:w-max lg:whitespace-nowrap"
           >
+            {
+              guides.map((guide) => (
+                <li>
+                  <a
+                    href={`/platform/${guide.data.slug}`}
+                    class={
+                      isCurrentSection(
+                        currentPath,
+                        `/platform/${guide.data.slug}`,
+                      )
+                        ? 'text-primary font-black'
+                        : ''
+                    }
+                  >
+                    <Icon name={guide.data.lucideIcon} />
+                    {guide.data.title}
+                  </a>
+                </li>
+              ))
+            }
             <li>
-              <a
-                href="/issues/affordability"
-                class={`${currentPath.includes('/issues/affordability') ? 'text-primary font-black' : ''}`}
-                ><Coins />Affordability</a
-              >
-            </li>
-            <li>
-              <a
-                href="/issues/housing-crisis"
-                class={`${currentPath.includes('/issues/housing-crisis') ? 'text-primary font-black' : ''}`}
-                ><MapPinHouse />Housing Crisis</a
-              >
-            </li>
-            <li>
-              <a
-                href="/issues/criminal-injustice"
-                class={`${currentPath.includes('/issues/criminal-injustice') ? 'text-primary font-black' : ''}`}
-                ><Siren />Criminal Injustice</a
-              >
-            </li>
-            <li>
-              <a
-                href="/issues/food-security"
-                class={`${currentPath.includes('/issues/food-security') ? 'text-primary font-black' : ''}`}
-                ><Apple />Food Security</a
-              >
-            </li>
-            <li>
-              <a
-                href="/issues/homelessness"
-                class={`${currentPath.includes('/issues/homelessness') ? 'text-primary font-black' : ''}`}
-                ><HouseHeart />Homelessness</a
-              >
-            </li>
-            <li>
-              <a
-                href="/issues/big-tech"
-                class={`${currentPath.includes('/issues/big-tech') ? 'text-primary font-black' : ''}`}
-                ><DatabaseZap />Big Tech</a
-              >
-            </li>
-            <li>
-              <a href="/issues" class="inline-flex items-center"
+              <a href="/platform" class="inline-flex items-center"
                 >See All <ArrowRight class="size-4" /></a
               >
             </li>

@@ -1,23 +1,24 @@
 ---
 import { Image } from 'astro:assets'
 import {
-  Apple,
   ArrowRight,
   CalendarDays,
-  Coins,
-  DatabaseZap,
   Globe,
-  HouseHeart,
-  MapPinHouse,
   Menu,
   MessageCircle,
-  Siren,
   Users,
   X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-logo.svg'
+import { localized } from '../../lib/platform'
+import { isCurrentSection } from '../../lib/nav'
+import { getPublishedPlatform } from '../../lib/platform-content'
+import Icon from '../icon.astro'
 
 const currentPath = Astro.url.pathname
+// The nav lists the platform itself, so a guide added in the CMS shows up
+// here without anyone editing this file.
+const { guides } = await getPublishedPlatform()
 ---
 
 <div
@@ -52,57 +53,35 @@ const currentPath = Astro.url.pathname
       <li>
         <details>
           <summary
-            class={`text-3xl lg:text-2xl ${currentPath.includes('/issues') ? 'text-accent font-black' : ''}`}
-            >Retos</summary
+            class={`text-3xl lg:text-2xl ${currentPath.includes('/platform') ? 'text-accent font-black' : ''}`}
+            >Plataforma</summary
           >
           <ul
             class="bg-base-100 text-base-content p-2 z-10 lg:w-max lg:whitespace-nowrap"
           >
+            {
+              guides.map((guide) => (
+                <li>
+                  <a
+                    href={`/es/platform/${guide.data.slug}`}
+                    class={
+                      isCurrentSection(
+                        currentPath,
+                        `/es/platform/${guide.data.slug}`,
+                      )
+                        ? 'text-primary font-black'
+                        : ''
+                    }
+                  >
+                    <Icon name={guide.data.lucideIcon} />
+                    {localized(guide.data, 'title', 'es') ?? guide.data.title}
+                  </a>
+                </li>
+              ))
+            }
             <li>
-              <a
-                href="/es/issues/affordability"
-                class={`${currentPath.includes('/es/issues/affordability') ? 'text-primary font-black' : ''}`}
-                ><Coins />Asequibilidad</a
-              >
-            </li>
-            <li>
-              <a
-                href="/es/issues/housing-crisis"
-                class={`${currentPath.includes('/es/issues/housing-crisis') ? 'text-primary font-black' : ''}`}
-                ><MapPinHouse />Crisis de Vivienda</a
-              >
-            </li>
-            <li>
-              <a
-                href="/es/issues/criminal-injustice"
-                class={`${currentPath.includes('/es/issues/criminal-injustice') ? 'text-primary font-black' : ''}`}
-                ><Siren />Injusticia Penal</a
-              >
-            </li>
-            <li>
-              <a
-                href="/es/issues/food-security"
-                class={`${currentPath.includes('/es/issues/food-security') ? 'text-primary font-black' : ''}`}
-                ><Apple />Seguridad Alimentaria</a
-              >
-            </li>
-            <li>
-              <a
-                href="/es/issues/homelessness"
-                class={`${currentPath.includes('/es/issues/homelessness') ? 'text-primary font-black' : ''}`}
-                ><HouseHeart />Personas sin Hogar</a
-              >
-            </li>
-            <li>
-              <a
-                href="/es/issues/big-tech"
-                class={`${currentPath.includes('/es/issues/big-tech') ? 'text-primary font-black' : ''}`}
-                ><DatabaseZap />Grandes Tecnológicas</a
-              >
-            </li>
-            <li>
-              <a href="/es/issues" class="inline-flex items-center"
-                >Ver Todos <ArrowRight class="size-4" /></a
+              <a href="/es/platform" class="inline-flex items-center"
+                >Ver todas <ArrowRight class="size-4" /></a
               >
             </li>
           </ul>

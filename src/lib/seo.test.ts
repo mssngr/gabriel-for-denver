@@ -51,4 +51,16 @@ describe('alternatePath', () => {
     expect(alternatePath('/', 'es')).toBe('/es')
     expect(alternatePath('/es', 'en')).toBe('/')
   })
+
+  // Every page carries both hreflang tags, so a path that doesn't survive the
+  // round trip points search engines at a URL that doesn't exist.
+  it.each([
+    '/',
+    '/platform',
+    '/platform/affordable-housing',
+    '/issues/housing-crisis',
+    '/get-involved/volunteer',
+  ])('round-trips %s through Spanish and back', path => {
+    expect(alternatePath(alternatePath(path, 'es'), 'en')).toBe(path)
+  })
 })
