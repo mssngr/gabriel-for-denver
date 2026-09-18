@@ -290,7 +290,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
 
   <div class="item">
     <span class="item__no">PR 3 of 5</span>
-    <h3>Cut over: nav, redirects, and a content-driven sitemap</h3>
+    <h3>Cut over: nav, redirects, and a content-driven sitemap <span style="font-family:var(--f-mono);font-size:.58em;letter-spacing:.1em;color:var(--ok);vertical-align:.2em">&#10003; DONE</span></h3>
     <dl>
       <dt>Goal</dt>
       <dd>Make <code>/platform</code> the campaign's platform, permanently (Q2). Flip guide and plank statuses to <code>published</code>, add the nav entries to both headers, 301 <code>/issues/*</code> and <code>/es/issues/*</code> to their new homes, and set the CMS Issues collection to <code>create: false, delete: false</code> so nobody adds to a surface that is no longer the destination. Also replaces the whole-tree sitemap exclusion with one driven by the actual draft slugs (F6), so a guide still in draft after cutover is genuinely absent from <code>sitemap.xml</code> rather than listed-but-<code>noindex</code>.</dd>
@@ -300,6 +300,10 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
       <dd>First coverage for <code>alternatePath()</code>, which now has to round-trip a route shape it has never been exercised against. A table test asserting every old issue slug has a redirect target that resolves to a real guide slug — the failure mode here is a silent 404 on a URL that has been shared for a year. And a test for the draft-slug reader feeding the sitemap filter, since a bug there fails open and publishes a draft to Google.</dd>
       <dt>Depends on</dt>
       <dd>PR 2 of 5, <em>and on the content actually being written.</em> This should sit open until Gabriel says the platform reads the way he wants it to.</dd>
+      <dt>Shipped in</dt>
+      <dd><a href="https://github.com/mssngr/gabriel-for-denver/pull/29">PR #29</a> — 18 Sept 2026.</dd>
+      <dt>Deviations</dt>
+      <dd><strong>The home-page grid came forward from PR&nbsp;4.</strong> Leaving <code>what-will-i-tackle</code> on the old issues would have meant the home page and the platform listing different subjects, every home link passing through a 301, for however many weeks PR&nbsp;4 waits — so at Gabriel's direction it now renders <code>guide-card.astro</code>, and <code>issue.astro</code> plus its <code>.home-issues</code> rule went with it. PR&nbsp;4 is corrected below to match. <strong>No status flips:</strong> all six guides and eighteen actions were already published through the CMS before this PR, so the item's content half was already done. <strong><code>alternatePath()</code> already had platform coverage</strong> from PR&nbsp;2, so what was actually missing — and added — is a round-trip case across five route shapes. Also touched <code>src/lib/redirects.ts</code> and <code>src/lib/sitemap.ts</code> (new, so the redirect map and the draft-slug reader are testable rather than buried in <code>astro.config.mjs</code>), and <code>src/pages/why-me.astro</code> and its Spanish twin, which still linked to <code>/issues</code>.</dd>
     </dl>
   </div>
 
@@ -308,11 +312,11 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <h3>Retire the <code class="inl">issues</code> collection and its routes</h3>
     <dl>
       <dt>Goal</dt>
-      <dd>Remove the second content model, leaving only the redirects. Two content models for the same thing is a state to pass through, not to live in — while both exist, a future editor can file a policy promise in the wrong place. The real work here is not deletion: <code>what-will-i-tackle</code> renders the issue grid on the <em>home page</em>, so that component has to be repointed at <code>guides</code> before anything can be removed, which is exactly why this is its own PR and not a tail on PR&nbsp;3.</dd>
+      <dd>Remove the second content model, leaving only the redirects. Two content models for the same thing is a state to pass through, not to live in — while both exist, a future editor can file a policy promise in the wrong place. <em>Corrected after PR&nbsp;3 shipped:</em> the reason this was its own PR — <code>what-will-i-tackle</code> rendering the issue grid on the <em>home page</em> — no longer applies, since that component was repointed at <code>guides</code> in PR&nbsp;3. What is left here is deletion, and the deliberate wait below is now the only reason it is a separate PR.</dd>
       <dt>Touches</dt>
-      <dd><code>src/components/what-will-i-tackle/index.astro</code> and <code>es.astro</code> (repoint at <code>guides</code>, or replace with <code>guide-card.astro</code>) · <code>src/pages/index.astro</code> and <code>src/pages/es/index.astro</code> · then delete <code>src/content/issues/</code>, the <code>issues</code> collection from <code>content.config.ts</code> and from the CMS, <code>src/pages/issues/</code>, <code>src/pages/es/issues/</code>, and any component left with no importer (<code>issue.astro</code>, <code>problem-solution/</code>) — each confirmed unreferenced before it goes</dd>
+      <dd>Delete <code>src/content/issues/</code>, the <code>issues</code> collection from <code>content.config.ts</code> and from the CMS, <code>src/lib/issues-content.ts</code>, <code>src/pages/issues/</code>, <code>src/pages/es/issues/</code>, the <code>issues</code> entry under CMS Pages, and any component left with no importer (<code>problem-solution/</code>) — each confirmed unreferenced before it goes. <code>what-will-i-tackle</code>, both <code>index.astro</code> pages and <code>issue.astro</code> are no longer part of this item; they shipped in PR&nbsp;3.</dd>
       <dt>Tests</dt>
-      <dd>The home-page grid's data source moving from <code>issues</code> to <code>guides</code> is the part that can regress silently, so the selector it uses gets covered in <code>src/lib/platform.test.ts</code>: published guides only, correct order, Spanish titles present. A build-level check that no module still imports the deleted collection.</dd>
+      <dd>The home-page grid's data source already moved in PR&nbsp;3, and the selector behind it (<code>selectPublished</code>, ordering, Spanish titles) is covered in <code>src/lib/platform.test.ts</code>. What remains for this item is a build-level check that no module still imports the deleted collection.</dd>
       <dt>Depends on</dt>
       <dd>PR 3 of 5, plus a deliberate wait — this should land after the new pages have been live and unchanged for a few weeks, so that reverting the cutover stays a one-command operation for as long as it might plausibly be needed.</dd>
     </dl>
