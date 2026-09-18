@@ -50,9 +50,10 @@ and `src/lib/instagram.test.ts` first:
 
 ## Content and the CMS
 
-The Deploys section below is the constraint that matters most here: a CMS save
-is a production deploy, and a schema that can reject an editor's entry is a
-schema that can stop the whole site from building. So:
+The Deploys section below is the constraint that matters most here: a schema
+that can reject an editor's entry is a schema that can stop the whole site from
+building, and because saves are batched, a bad entry can sit unnoticed until the
+daily publish fails. So:
 
 - **Prefer permissive Zod schemas.** Validate at the point of entry instead —
   Sveltia's `select`, `pattern` and `required` options catch a bad value in the
@@ -104,21 +105,39 @@ Consult these guides before working on related tasks:
 
 ## Deploys
 
-The site is hosted on Netlify and deploys from `main`.
+The site is hosted on Netlify and deploys from `main`. Netlify bills **15 credits
+per production deploy** and meters no build minutes, so the cost of a deploy is
+the deploy itself — moving the build elsewhere would save nothing, and the only
+lever that matters is deploying less often.
 
-Sveltia CMS (`public/admin/config.yml`) uses a GitHub backend on `backend.branch: main`
-with no editorial workflow, so **every CMS save is a direct commit to `main` and a
-production deploy** — there is no pull request between an editor and production.
+So CMS saves are batched rather than published one at a time. Sveltia
+(`public/admin/config.yml`) commits to **`content`**, not `main`:
+
+- `content` gets a Netlify **branch deploy**, which costs 0 credits. That is the
+  preview URL for proofreading an edit immediately after saving it.
+- `.github/workflows/publish-content.yml` fast-forwards `main` to `content` once
+  a day (12:17 UTC), turning a day of saves into one paid production deploy. It
+  also has a **Run workflow** button for publishing sooner.
+- `.github/workflows/sync-content.yml` brings `content` up to date whenever code
+  lands on `main`, so the preview reflects current code and `main` stays an
+  ancestor of `content` — which is what keeps publishing a fast-forward rather
+  than a merge into production.
+
+There is still no editorial workflow and no pull request between an editor and
+production; the gap is now time, not review.
 
 Content is validated by Zod schemas in `src/content.config.ts`. A single entry that
 fails validation fails the *whole build*, not just its own page, so the site silently
-stops updating until it is fixed.
+stops updating until it is fixed. Batching makes catching this *earlier* cheaper and
+*later* more costly: the `content` branch deploy fails as soon as the bad entry is
+saved, but if nobody looks, the daily publish is what stalls.
 
 The signal for that is Netlify's **Deploy failed** notification, which emails whoever
 is configured under Site configuration → Notifications → Deploy notifications. That
 is a dashboard setting rather than code, so nothing in this repo enforces it or can
 tell you whether it is on — confirm it is before relying on it, because an
-unannounced failed build is otherwise completely silent.
+unannounced failed build is otherwise completely silent. Note it must cover branch
+deploys, not just production, or a broken `content` build is invisible until publish.
 
-If content changes stop appearing on the live site, check the Netlify deploy log
-first.
+If content changes stop appearing on the live site, check whether the daily
+**Publish content** workflow ran, then the Netlify deploy log.
