@@ -152,11 +152,16 @@ collections:
               name: photoAltText_es,
               widget: string,
             }
-  - label: Issues
+  # Retired: /issues now redirects to the platform below, so a new issue here
+  # would have no page to appear on. Kept readable, and editable, only until
+  # PR 4 of docs/proposals/2026-09-13-platform-field-guide/ deletes it — which
+  # is also what makes the cutover revertible in the meantime.
+  - label: Issues (retired — edit the Platform instead)
     name: issues
     folder: src/content/issues
     extension: yml
-    create: true
+    create: false
+    delete: false
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Title (Spanish), name: title_es, widget: string }

@@ -37,11 +37,13 @@ const content = page?.data && marked.parse(page.data.content_es)
   </section>
   <main class="px-8 md:px-16 flex flex-col">
     <section
-      class="home-issues w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black [&_.w-2xs]:w-80"
+      class="w-[calc(100% + 2rem)] bg-neutral px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-black"
     >
       <WhatWillITackle />
     </section>
-    <section class="w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white">
+    <section
+      class="w-[calc(100% + 2rem)] bg-[linear-gradient(to_bottom_right,var(--color-primary),var(--color-tertiary))] px-8 md:px-16 py-32 -mx-8 md:-mx-16 text-white"
+    >
       <h1 class="text-center mb-16!">¿Por qué yo?</h1>
       <MyBackground />
       <p class="mx-auto mt-16 text-center">

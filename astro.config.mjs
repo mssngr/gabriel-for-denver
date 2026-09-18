@@ -3,25 +3,18 @@ import netlify from '@astrojs/netlify'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
+import { issueRedirects } from './src/lib/redirects'
+import { includeInSitemap, readDraftGuideSlugs } from './src/lib/sitemap'
+
+// Read once at config time: `astro:content` isn't available here, and the
+// filter below runs per page.
+const draftGuideSlugs = readDraftGuideSlugs()
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://gabrielfordenver.com',
   integrations: [
-    sitemap({
-      filter: page => {
-        const { pathname } = new URL(page)
-        return (
-          !/\/(admin|thank-you|404)\/?$/.test(pathname) &&
-          !/(^|\/)posts(\/|$)/.test(pathname) &&
-          // The platform is unlisted until cutover: every guide is still a
-          // draft, and a draft carries noindex anyway. PR 3 of the plan in
-          // docs/proposals/2026-09-13-platform-field-guide/ replaces this
-          // whole-tree exclusion with one driven by the actual draft slugs.
-          !/(^|\/)platform(\/|$)/.test(pathname)
-        )
-      },
-    }),
+    sitemap({ filter: page => includeInSitemap(page, draftGuideSlugs) }),
   ],
   vite: {
     plugins: [tailwindcss()],
@@ -58,6 +51,9 @@ export default defineConfig({
     defaultLocale: 'en',
   },
   redirects: {
+    // The platform replaced /issues. These take priority over the pages that
+    // still build from src/pages/issues/, which PR 4 removes.
+    ...issueRedirects(),
     '/get-involved/donate': '/donate',
     '/get-involved/donate/thank-you': '/donate/thank-you',
     '/es/get-involved/donate': '/es/donate',
