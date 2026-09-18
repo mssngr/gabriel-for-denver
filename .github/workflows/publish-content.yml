@@ -1,0 +1,103 @@
+name: Publish content
+
+# CMS edits land on `content`, which Netlify branch-deploys for free. This job
+# fast-forwards `main` to `content` on a schedule, so a burst of CMS saves costs
+# one production deploy (15 Netlify credits) instead of one per save.
+on:
+  schedule:
+    # Once a day, 12:17 UTC -- early morning in Denver, so a day's edits are
+    # live before traffic picks up. Cron is always UTC and ignores DST (so this
+    # drifts between 6:17am MDT and 5:17am MST), and GitHub runs scheduled jobs
+    # on a best-effort basis, delaying them under load; the offset minute dodges
+    # the top-of-hour rush. Use the workflow_dispatch button to publish sooner.
+    - cron: '17 12 * * *'
+  workflow_dispatch:
+
+# One batch at a time. A run that arrives mid-publish waits and then picks up
+# whatever landed in the meantime, rather than racing this one.
+concurrency:
+  group: publish-content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Fast-forward main to content
+        run: |
+          set -euo pipefail
+
+          if ! git ls-remote --exit-code --heads origin content >/dev/null 2>&1; then
+            echo "No content branch yet; nothing to publish."
+            exit 0
+          fi
+
+          # `main` can advance under us mid-run (a PR merging in the same
+          # window), which both invalidates the check below and rejects the
+          # push. sync-content.yml reconciles that, so re-read the refs and try
+          # again rather than failing a publish over a race -- a dispatched
+          # "publish now" has no next run to save it. The waits get longer
+          # because what we are waiting on is another workflow run: usually
+          # seconds, but minutes if its runner is queued.
+          # Why the most recent attempt did not publish, so the message at the
+          # end can name the actual cause rather than the likeliest one.
+          blocked_by=""
+
+          for attempt in 1 2 3 4; do
+            git fetch --no-tags --force origin \
+              main:refs/remotes/origin/main \
+              content:refs/remotes/origin/content || {
+              echo "::error::Could not read main and content from origin --"\
+                   "a network error, or the content branch was deleted"\
+                   "while this ran."
+              exit 1
+            }
+
+            ahead=$(git rev-list --count origin/main..origin/content)
+            if [ "$ahead" -eq 0 ]; then
+              echo "No unpublished edits. Skipping: no deploy, no credits."
+              exit 0
+            fi
+
+            if git merge-base --is-ancestor origin/main origin/content; then
+              echo "Publishing $ahead commit(s) to production:"
+              git log --oneline origin/main..origin/content
+              # Only ever a fast-forward. A rejection means main just moved.
+              git push origin "$(git rev-parse origin/content):refs/heads/main" && exit 0
+              blocked_by="traffic"
+              echo "Push rejected -- main moved. Re-reading (attempt $attempt)."
+            else
+              blocked_by="sync"
+              echo "main is ahead of content; waiting for sync-content (attempt $attempt)."
+            fi
+
+            case "$attempt" in
+              1) sleep 15 ;;
+              2) sleep 30 ;;
+              3) sleep 60 ;;
+            esac
+          done
+
+          # Both states end here, and they need opposite advice -- guessing at
+          # one sends someone to inspect a workflow that did nothing wrong.
+          if [ "$blocked_by" = traffic ]; then
+            echo "::error::Could not fast-forward main after ~105s: commits kept"\
+                 "landing on main faster than this run could publish it (see the"\
+                 "'Push rejected' lines above). Nothing is wrong with content or"\
+                 "sync-content.yml -- just re-run this workflow."
+          else
+            echo "::error::content is still not a fast-forward of main after ~105s."\
+                 "Usually sync-content.yml simply has not run yet: check whether its"\
+                 "run for the latest main commit is queued or still going, and just"\
+                 "re-run this workflow once it finishes. If instead it FAILED, it hit"\
+                 "a merge conflict, and that needs reconciling by hand."
+          fi
+          exit 1

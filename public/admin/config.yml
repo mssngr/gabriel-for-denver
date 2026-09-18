@@ -2,7 +2,11 @@
 backend:
   name: github
   repo: mssngr/gabriel-for-denver
-  branch: main
+  # Edits land on `content`, not `main`. Netlify branch-deploys `content` for
+  # free so you can proofread immediately; .github/workflows/publish-content.yml
+  # fast-forwards `main` once a day, batching the day's saves into one paid
+  # production deploy. Run the "Publish content" action to push a batch early.
+  branch: content
   # No base_url, so sign-in goes through Netlify's OAuth provider, configured
   # under Site configuration → Access & security → OAuth.
   commit_messages:

@@ -1,0 +1,82 @@
+name: Sync content branch
+
+# When code lands on `main`, bring `content` up to date so that:
+#   1. the free `content` branch deploy previews CMS edits against current code
+#   2. `main` stays an ancestor of `content`, keeping publish a fast-forward
+#
+# Note: publish-content.yml pushes with GITHUB_TOKEN, which by design does not
+# trigger this workflow. That's fine -- after a fast-forward publish the two
+# branches are already identical.
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: sync-content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Bring content up to date with main
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # The CMS may commit to `content` while this runs; a rejected push
+          # just means we need to redo the merge on top of what it wrote.
+          for attempt in 1 2 3; do
+            if ! git ls-remote --exit-code --heads origin content >/dev/null 2>&1; then
+              echo "Creating content branch at main."
+              git push origin "refs/remotes/origin/main:refs/heads/content" && exit 0
+              continue
+            fi
+
+            git fetch --no-tags --force origin content:refs/remotes/origin/content || {
+              echo "::error::Could not read content from origin -- a network"\
+                   "error, or the branch was deleted while this ran."
+              exit 1
+            }
+
+            if git merge-base --is-ancestor origin/main origin/content; then
+              echo "content already contains main; nothing to do."
+              exit 0
+            fi
+
+            if git merge-base --is-ancestor origin/content origin/main; then
+              # No unpublished edits -- just move content up to main.
+              echo "Fast-forwarding content to main (attempt $attempt)."
+              git push origin "refs/remotes/origin/main:refs/heads/content" && exit 0
+            else
+              # Unpublished edits exist and main moved: merge main into content.
+              echo "Merging main into content (attempt $attempt)."
+              git checkout -B content origin/content
+              # A real conflict is not a race, so it is not worth retrying --
+              # but it does need to say so, or the run fails with raw merge
+              # output and no hint that a human has to reconcile it.
+              git merge --no-edit origin/main || {
+                echo "::error::main conflicts with content -- a code change and a"\
+                     "CMS edit touched the same file. Reconcile by hand:"\
+                     "git checkout content && git merge main"
+                exit 1
+              }
+              git push origin content && exit 0
+            fi
+
+            echo "Push rejected, likely a concurrent CMS commit. Retrying."
+            sleep 5
+          done
+
+          echo "::error::Could not sync content after 3 attempts."
+          exit 1
