@@ -44,8 +44,8 @@ jobs:
             fi
 
             git fetch --no-tags --force origin content:refs/remotes/origin/content || {
-              echo "::error::Could not read content from origin."\
-                   "Was the branch deleted while this ran?"
+              echo "::error::Could not read content from origin -- a network"\
+                   "error, or the branch was deleted while this ran."
               exit 1
             }
 
