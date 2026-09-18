@@ -21,7 +21,10 @@ const { lang } = Astro.props
 // stance paragraphs and artwork.
 const { guides, planks } = await getPublishedPlatform()
 const topics = topicsWithActions(guides, planks)
-const summary = platformSummary(planks.length, guides.length, lang)
+// topics.length, not guides.length: a guide published with no planks yet
+// drops out of the grid below, so the eyebrow should count only the topics
+// actually shown under it.
+const summary = platformSummary(planks.length, topics.length, lang)
 ---
 
 {
@@ -41,7 +44,7 @@ const summary = platformSummary(planks.length, guides.length, lang)
           : `/platform/${guide.data.slug}`
       return (
         <div>
-          <h3 class="text-lg leading-tight">
+          <h2 class="text-lg leading-tight">
             <a
               href={href}
               class="inline-flex items-center gap-2 no-underline hover:underline underline-offset-4"
@@ -52,7 +55,7 @@ const summary = platformSummary(planks.length, guides.length, lang)
               />
               {title}
             </a>
-          </h3>
+          </h2>
           <p class="text-xs tracking-[0.16em] uppercase font-semibold text-primary/70 mt-1 mb-3">
             {actionCount(guidePlanks.length, lang)}
           </p>

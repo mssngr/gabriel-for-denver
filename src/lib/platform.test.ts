@@ -469,6 +469,7 @@ describe('topicsWithActions', () => {
     expect(topics[0].planks.map(plank => plank.data.slug)).toEqual([
       'surveillance',
     ])
+    expect(topics[1].planks.map(plank => plank.data.slug)).toEqual(['zoning'])
   })
 
   // A topic nobody has committed an action to yet has nothing for a reader to
