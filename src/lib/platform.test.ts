@@ -17,9 +17,9 @@ import {
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
   plankAnchor,
+  actionCount,
   plankLabel,
   platformSummary,
-  promiseCount,
   relatedGuides,
   planksForGuide,
   planksForPage,
@@ -733,11 +733,11 @@ describe('plankLabel', () => {
   // space between them, so the live panel read "PLANK01".
   it('numbers the plank and names its sub-topic', () => {
     const plank = makePlank({ kicker: 'Zoning' }).data
-    expect(plankLabel(plank, 0, 'en')).toBe('Plank 01 · Zoning')
+    expect(plankLabel(plank, 0, 'en')).toBe('Action 01 · Zoning')
   })
 
   it('leaves the separator off when a plank has no sub-topic', () => {
-    expect(plankLabel(makePlank().data, 2, 'en')).toBe('Plank 03')
+    expect(plankLabel(makePlank().data, 2, 'en')).toBe('Action 03')
   })
 
   it('uses the Spanish word and sub-topic on the Spanish page', () => {
@@ -745,12 +745,12 @@ describe('plankLabel', () => {
       kicker: 'Zoning',
       kicker_es: 'Zonificación',
     }).data
-    expect(plankLabel(plank, 0, 'es')).toBe('Punto 01 · Zonificación')
+    expect(plankLabel(plank, 0, 'es')).toBe('Acción 01 · Zonificación')
   })
 
   it('pads single digits and stops padding at ten', () => {
-    expect(plankLabel(makePlank().data, 8, 'en')).toBe('Plank 09')
-    expect(plankLabel(makePlank().data, 9, 'en')).toBe('Plank 10')
+    expect(plankLabel(makePlank().data, 8, 'en')).toBe('Action 09')
+    expect(plankLabel(makePlank().data, 9, 'en')).toBe('Action 10')
   })
 })
 
@@ -774,46 +774,46 @@ describe('timelineLabel', () => {
   })
 })
 
-describe('promiseCount', () => {
-  it('counts the promises in words, not just digits', () => {
-    expect(promiseCount(3, 'en')).toBe('3 promises')
+describe('actionCount', () => {
+  it('counts the actions in words, not just digits', () => {
+    expect(actionCount(3, 'en')).toBe('3 actions')
   })
 
-  it('drops the plural for a single promise', () => {
-    expect(promiseCount(1, 'en')).toBe('1 promise')
+  it('drops the plural for a single action', () => {
+    expect(actionCount(1, 'en')).toBe('1 action')
   })
 
   it('translates the count on the Spanish page', () => {
-    expect(promiseCount(3, 'es')).toBe('3 promesas')
-    expect(promiseCount(1, 'es')).toBe('1 promesa')
+    expect(actionCount(3, 'es')).toBe('3 acciones')
+    expect(actionCount(1, 'es')).toBe('1 acción')
   })
 })
 
 describe('platformSummary', () => {
   it('states how many promises span how many issues', () => {
-    expect(platformSummary(4, 6, 'en')).toBe('4 promises across 6 issues')
+    expect(platformSummary(4, 6, 'en')).toBe('4 actions across 6 issues')
   })
 
   it('translates the summary on the Spanish page', () => {
-    expect(platformSummary(4, 6, 'es')).toBe('4 promesas en 6 temas')
+    expect(platformSummary(4, 6, 'es')).toBe('4 acciones en 6 temas')
   })
 
   it('reads as singular when there is one of each', () => {
-    expect(platformSummary(1, 1, 'en')).toBe('1 promise across 1 issue')
-    expect(platformSummary(1, 1, 'es')).toBe('1 promesa en 1 tema')
+    expect(platformSummary(1, 1, 'en')).toBe('1 action across 1 issue')
+    expect(platformSummary(1, 1, 'es')).toBe('1 acción en 1 tema')
   })
 
   // Each half has to pluralize off its own count. Matched counts alone can't
   // catch a summary that pluralizes "issues" from the promise total.
   it('pluralizes each half independently', () => {
-    expect(platformSummary(1, 6, 'en')).toBe('1 promise across 6 issues')
-    expect(platformSummary(6, 1, 'en')).toBe('6 promises across 1 issue')
-    expect(platformSummary(1, 6, 'es')).toBe('1 promesa en 6 temas')
+    expect(platformSummary(1, 6, 'en')).toBe('1 action across 6 issues')
+    expect(platformSummary(6, 1, 'en')).toBe('6 actions across 1 issue')
+    expect(platformSummary(1, 6, 'es')).toBe('1 acción en 6 temas')
   })
 
   // The summary sits above the page's title as its eyebrow, so an empty
-  // platform is better off with no eyebrow at all than with "0 promises".
-  it('has nothing to say before the first promise is published', () => {
+  // platform is better off with no eyebrow at all than with "0 actions".
+  it('has nothing to say before the first action is published', () => {
     expect(platformSummary(0, 6, 'en')).toBeNull()
     expect(platformSummary(0, 0, 'es')).toBeNull()
   })

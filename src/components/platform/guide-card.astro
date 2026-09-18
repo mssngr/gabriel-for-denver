@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets'
 import { Marked } from 'marked'
 import type { Lang } from '../../lib/platform'
-import { localized, promiseCount } from '../../lib/platform'
+import { actionCount, localized } from '../../lib/platform'
 import type { GuideEntry, PlankEntry } from '../../lib/platform-content'
 import Icon from '../icon.astro'
 
@@ -68,7 +68,7 @@ const href =
           {/* The count says there is something under the artwork, which the
               list alone can't do until the reader has scrolled to it. */}
           <p class="text-xs tracking-[0.18em] uppercase font-semibold text-primary mb-1">
-            {promiseCount(planks.length, lang)}
+            {actionCount(planks.length, lang)}
           </p>
           <ul class="list-none pl-0 m-0">
             {planks.map((plank, index) => (

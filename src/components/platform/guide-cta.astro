@@ -53,59 +53,71 @@ const hasExits = related.length > 0 || next !== undefined
 const outlineButton = 'btn border-[1.5px] border-white/45 text-lg!'
 ---
 
-<section
-  class:list={[
-    'bg-tertiary text-white px-6 py-16 md:px-12 md:py-20',
-    hasExits && 'md:grid md:grid-cols-2 md:gap-16 md:items-start',
-  ]}
->
-  <div>
-    <h2 class="text-3xl md:text-4xl mb-6 text-balance">{t.agree}</h2>
-    <div class="flex flex-wrap items-center gap-3">
-      <a class="btn bg-accent text-tertiary text-lg!" href={t.donateHref}
-        >{t.donate}</a
-      >
-      <a class={outlineButton} href={t.volunteerHref}>{t.volunteer}</a>
-      <ShareButton
-        title={shareTitle}
-        url={shareUrl}
-        lang={lang}
-        class={outlineButton}
-      />
-    </div>
-  </div>
-  {
-    hasExits && (
-      <ul class="list-none pl-0 mt-10 border-t border-white/20 pt-5 font-light md:mt-0 md:border-t-0 md:border-l md:pt-1 md:pl-10">
-        {related.map(({ guide, reason }) => (
-          <li class="mt-2 text-lg first:mt-0">
-            <a class="no-underline group" href={hrefOf(guide)}>
-              <b class="font-semibold">{titleOf(guide)}</b>
-              {reason && (
-                <>
-                  {' '}
-                  &rarr;{' '}
-                  <span class="underline decoration-white/50 underline-offset-3 group-hover:decoration-white">
-                    {reason}
-                  </span>
-                </>
-              )}
-            </a>
-          </li>
-        ))}
-        {next && (
-          <li
-            class:list={['text-lg', related.length > 0 ? 'mt-5' : 'first:mt-0']}
-          >
-            <a
-              class="underline decoration-white/50 underline-offset-3 hover:decoration-white"
-              href={hrefOf(next)}
+{
+  /* Nothing to agree with yet. A guide whose actions are still being written
+     asked "Agree with these 0?", which reads as a mistake and is a poor ask
+     either way; the section returns with the guide's first action. */
+}
+{
+  plankCount > 0 && (
+    <section
+      class:list={[
+        'bg-tertiary text-white px-6 py-16 md:px-12 md:py-20',
+        hasExits && 'md:grid md:grid-cols-2 md:gap-16 md:items-start',
+      ]}
+    >
+      <div>
+        <h2 class="text-3xl md:text-4xl mb-6 text-balance">{t.agree}</h2>
+        <div class="flex flex-wrap items-center gap-3">
+          <a class="btn bg-accent text-tertiary text-lg!" href={t.donateHref}>
+            {t.donate}
+          </a>
+          <a class={outlineButton} href={t.volunteerHref}>
+            {t.volunteer}
+          </a>
+          <ShareButton
+            title={shareTitle}
+            url={shareUrl}
+            lang={lang}
+            class={outlineButton}
+          />
+        </div>
+      </div>
+      {hasExits && (
+        <ul class="list-none pl-0 mt-10 border-t border-white/20 pt-5 font-light md:mt-0 md:border-t-0 md:border-l md:pt-1 md:pl-10">
+          {related.map(({ guide, reason }) => (
+            <li class="mt-2 text-lg first:mt-0">
+              <a class="no-underline group" href={hrefOf(guide)}>
+                <b class="font-semibold">{titleOf(guide)}</b>
+                {reason && (
+                  <>
+                    {' '}
+                    &rarr;{' '}
+                    <span class="underline decoration-white/50 underline-offset-3 group-hover:decoration-white">
+                      {reason}
+                    </span>
+                  </>
+                )}
+              </a>
+            </li>
+          ))}
+          {next && (
+            <li
+              class:list={[
+                'text-lg',
+                related.length > 0 ? 'mt-5' : 'first:mt-0',
+              ]}
             >
-              {`${t.next}: ${titleOf(next)}`} &rarr;
-            </a>
-          </li>
-        )}
-      </ul>
-    )
-  }
-</section>
+              <a
+                class="underline decoration-white/50 underline-offset-3 hover:decoration-white"
+                href={hrefOf(next)}
+              >
+                {`${t.next}: ${titleOf(next)}`} &rarr;
+              </a>
+            </li>
+          )}
+        </ul>
+      )}
+    </section>
+  )
+}

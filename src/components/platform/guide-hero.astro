@@ -3,7 +3,7 @@ import { Image } from 'astro:assets'
 import { ArrowLeft } from '@lucide/astro'
 import { marked } from 'marked'
 import type { Lang } from '../../lib/platform'
-import { localized } from '../../lib/platform'
+import { actionCount, localized } from '../../lib/platform'
 import type { GuideEntry } from '../../lib/platform-content'
 
 interface Props {
@@ -25,8 +25,6 @@ const t =
         eyebrow: 'Plataforma',
         of: 'de',
         draft: 'Borrador — sin publicar',
-        plank: 'punto',
-        planks: 'puntos',
         updated: 'Actualizado',
         locale: 'es-US',
       }
@@ -36,8 +34,6 @@ const t =
         eyebrow: 'Platform',
         of: 'of',
         draft: 'Draft — not published',
-        plank: 'plank',
-        planks: 'planks',
         updated: 'Updated',
         locale: 'en-US',
       }
@@ -60,7 +56,12 @@ const eyebrow =
   position > 0
     ? `${t.eyebrow} · ${position} ${t.of} ${publishedCount}`
     : t.eyebrow
-const plankCountLabel = `${plankCount} ${plankCount === 1 ? t.plank : t.planks}`
+// Shared with the index cards, so a guide's own count can't drift from the
+// one printed on the card that links to it. Nothing at all while a guide is
+// still being written, for the same reason the index card shows no count and
+// the CTA stays away: "0 actions" reads as a broken page rather than an
+// unfinished one.
+const plankCountLabel = plankCount > 0 ? actionCount(plankCount, lang) : null
 const updated = guide.data.lastReviewed?.toLocaleDateString(t.locale, {
   year: 'numeric',
   month: 'long',
@@ -104,7 +105,7 @@ const updated = guide.data.lastReviewed?.toLocaleDateString(t.locale, {
           </span>
         )
       }
-      <span>{plankCountLabel}</span>
+      {plankCountLabel && <span>{plankCountLabel}</span>}
       {updated && <span>{`${t.updated} ${updated}`}</span>}
     </div>
   </div>
