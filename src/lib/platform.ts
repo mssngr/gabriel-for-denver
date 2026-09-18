@@ -525,6 +525,29 @@ export function actionCount(count: number, lang: Lang): string {
 }
 
 /**
+ * The heading on a guide's closing call to action: "Agree with these 3?",
+ * "Agree with this?" for a single action, and a different ask entirely for a
+ * guide whose actions are still being written.
+ *
+ * That last case used to read "Agree with these 0?". Hiding the section
+ * instead was worse than it sounded — it took the donate, volunteer and share
+ * buttons off the page with it — so the ask changes rather than vanishing.
+ */
+export function ctaHeading(plankCount: number, lang: Lang): string {
+  if (plankCount === 0) {
+    return lang === 'es'
+      ? '¿Quieres que esto también se arregle?'
+      : 'Want this fixed too?'
+  }
+  if (plankCount === 1) {
+    return lang === 'es' ? '¿De acuerdo con esto?' : 'Agree with this?'
+  }
+  return lang === 'es'
+    ? `¿De acuerdo con estas ${plankCount}?`
+    : `Agree with these ${plankCount}?`
+}
+
+/**
  * The platform index's eyebrow, e.g. "4 actions across 6 issues".
  *
  * Null before the first action is published: the line sits above the page's

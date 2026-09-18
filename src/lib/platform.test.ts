@@ -18,6 +18,7 @@ import {
   plankSchema,
   plankAnchor,
   actionCount,
+  ctaHeading,
   plankLabel,
   platformSummary,
   relatedGuides,
@@ -816,5 +817,25 @@ describe('platformSummary', () => {
   it('has nothing to say before the first action is published', () => {
     expect(platformSummary(0, 6, 'en')).toBeNull()
     expect(platformSummary(0, 0, 'es')).toBeNull()
+  })
+})
+
+describe('ctaHeading', () => {
+  it('asks whether the reader agrees, counting the actions', () => {
+    expect(ctaHeading(3, 'en')).toBe('Agree with these 3?')
+    expect(ctaHeading(3, 'es')).toBe('¿De acuerdo con estas 3?')
+  })
+
+  it('drops the count for a guide with one action', () => {
+    expect(ctaHeading(1, 'en')).toBe('Agree with this?')
+    expect(ctaHeading(1, 'es')).toBe('¿De acuerdo con esto?')
+  })
+
+  // A guide whose actions are still being written used to ask "Agree with
+  // these 0?", which reads as a bug. The ask changes rather than disappearing:
+  // hiding the section took the donate, volunteer and share buttons with it.
+  it('asks something answerable when there are no actions yet', () => {
+    expect(ctaHeading(0, 'en')).toBe('Want this fixed too?')
+    expect(ctaHeading(0, 'es')).toBe('¿Quieres que esto también se arregle?')
   })
 })
