@@ -1,8 +1,17 @@
 ---
 import * as icons from '@lucide/astro'
+import { resolveIcon } from '../lib/icons'
 
 const props = Astro.props
-const Icon = icons[props.name]
+// `lucideIcon` is free text in the CMS, and the header draws one icon per
+// guide on every page, so a typo would otherwise fail the whole build rather
+// than one page. See src/lib/icons.ts.
+const Icon = resolveIcon(props.name, icons)
+if (!Icon) {
+  console.warn(
+    `[icon] No Lucide icon named "${props.name}" — rendering nothing. Check the Lucide Icon field on the entry that sets it.`,
+  )
+}
 ---
 
-<Icon {...props} />
+{Icon && <Icon {...props} />}

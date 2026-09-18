@@ -23,6 +23,21 @@ const issueSlugs = slugsIn('src/content/issues')
 const guideSlugs = slugsIn('src/content/guides')
 
 describe('ISSUE_TO_PLATFORM', () => {
+  // Written out rather than derived, because everything else here would pass
+  // just as happily on a table where two issues point at each other's guides:
+  // both targets are real slugs, both languages still mirror. These are 301s
+  // on URLs shared for a year, so the pairing itself gets pinned by hand.
+  it('sends each issue where the campaign said it should go', () => {
+    expect(ISSUE_TO_PLATFORM).toEqual({
+      affordability: '/platform',
+      'housing-crisis': '/platform/affordable-housing',
+      'criminal-injustice': '/platform/accountable-public-safety',
+      'food-security': '/platform/food-security',
+      homelessness: '/platform/housing-for-all',
+      'big-tech': '/platform/humans-before-ai',
+    })
+  })
+
   // The failure this guards against is a silent 404 on a URL that has been
   // shared for a year: an issue with no entry here keeps building its own
   // page until PR 4 deletes the route, and then simply 404s.

@@ -11,6 +11,7 @@ import {
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-logo.svg'
 import { localized } from '../../lib/platform'
+import { isCurrentSection } from '../../lib/nav'
 import { getPublishedPlatform } from '../../lib/platform-content'
 import Icon from '../icon.astro'
 
@@ -64,7 +65,10 @@ const { guides } = await getPublishedPlatform()
                   <a
                     href={`/es/platform/${guide.data.slug}`}
                     class={
-                      currentPath.includes(`/platform/${guide.data.slug}`)
+                      isCurrentSection(
+                        currentPath,
+                        `/es/platform/${guide.data.slug}`,
+                      )
                         ? 'text-primary font-black'
                         : ''
                     }
