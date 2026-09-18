@@ -17,6 +17,7 @@ import {
   PLANK_TRANSLATABLE_FIELDS,
   plankSchema,
   plankAnchor,
+  plankUrl,
   actionCount,
   ctaHeading,
   plankLabel,
@@ -489,6 +490,20 @@ describe('plankAnchor', () => {
     expect(plankAnchor('Legalize Multi Unit!')).toBe(
       'plank-legalize-multi-unit',
     )
+  })
+})
+
+describe('plankUrl', () => {
+  it('appends the plank anchor to the guide page url', () => {
+    expect(
+      plankUrl('https://gabrielfordenver.com/platform/housing', 'co-living'),
+    ).toBe('https://gabrielfordenver.com/platform/housing#plank-co-living')
+  })
+
+  it('normalizes a slug an editor typed loosely, same as plankAnchor', () => {
+    expect(
+      plankUrl('https://gabrielfordenver.com/platform/housing', 'Co Living!'),
+    ).toBe('https://gabrielfordenver.com/platform/housing#plank-co-living')
   })
 })
 

@@ -28,12 +28,13 @@ const t =
   <button
     type="button"
     class={className}
+    aria-label={t.share}
     data-share-title={title}
     data-share-url={url}
     data-share-copied={t.copied}
     data-share-unavailable={t.unavailable}
   >
-    {t.share}
+    <slot>{t.share}</slot>
   </button>
   <span role="status" aria-live="polite" class="text-sm font-medium"></span>
 </span>
