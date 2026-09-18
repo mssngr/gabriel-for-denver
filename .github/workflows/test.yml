@@ -1,0 +1,47 @@
+name: Test
+
+# Gates every PR into `main`, and every push to `content`.
+#
+# That second trigger is load-bearing, not incidental. publish-content.yml
+# fast-forwards `main` to a `content` commit, and a required status check lets
+# a direct push through only when that exact commit already carries a passing
+# run. Testing PRs alone would leave every content commit unchecked and block
+# the daily publish outright.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [content]
+
+# A burst of CMS saves pushes to `content` repeatedly; only the newest commit
+# is ever published, so superseded runs are wasted work.
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          # Pinned rather than `latest`: this check gates the daily publish, so
+          # an upstream bun release that broke CI would also stop content from
+          # going out. Bump deliberately, with the suite as the proof.
+          bun-version: 1.3.13
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun run test
+
+      # Per AGENTS.md this is the step that catches content-schema errors
+      # nothing else does -- the failure where one bad CMS entry stops the
+      # whole site updating. It needs no secrets: every code path that reads
+      # one degrades to empty when the key is absent.
+      - run: bun run build

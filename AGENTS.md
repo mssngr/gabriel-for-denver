@@ -16,6 +16,26 @@ twenty minutes.
 There is no working `preview`: the script exists but the Netlify adapter refuses
 the command.
 
+## CI
+
+`.github/workflows/test.yml` runs `bun run test` then `bun run build` on every
+PR into `main` and every push to `content`. Its job is named **test**, and that
+is a **required status check on `main`** — the name is load-bearing, so renaming
+the job without updating the ruleset silently un-gates the branch.
+
+Requiring it has two consequences worth knowing before you push:
+
+- **`main` no longer accepts a direct push** unless that exact commit already
+  has a passing `test` run. Ordinary code changes go through a PR.
+- **`content` pushes are checked for this reason.** publish-content.yml
+  fast-forwards `main` to a `content` commit, and GitHub lets a direct push
+  through only when the commit being pushed already carries a passing check.
+  That is why the workflow triggers on `content` and not just on PRs; drop
+  that trigger and the daily publish stops working.
+
+The side benefit is that a CMS entry that fails its Zod schema now fails CI on
+`content` at save time, rather than only surfacing as a stalled publish.
+
 ## Development
 
 `astro` isn't on `PATH`, so run it through Bun. When starting the dev server, use background mode:
@@ -117,7 +137,8 @@ So CMS saves are batched rather than published one at a time. Sveltia
   preview URL for proofreading an edit immediately after saving it.
 - `.github/workflows/publish-content.yml` fast-forwards `main` to `content` once
   a day (12:17 UTC), turning a day of saves into one paid production deploy. It
-  also has a **Run workflow** button for publishing sooner.
+  also has a **Run workflow** button for publishing sooner. It will not publish
+  a commit whose tests have not passed — see CI above.
 - `.github/workflows/sync-content.yml` brings `content` up to date whenever code
   lands on `main`, so the preview reflects current code and `main` stays an
   ancestor of `content` — which is what keeps publishing a fast-forward rather
