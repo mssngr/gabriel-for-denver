@@ -790,7 +790,7 @@ describe('actionCount', () => {
 })
 
 describe('platformSummary', () => {
-  it('states how many promises span how many issues', () => {
+  it('states how many actions span how many issues', () => {
     expect(platformSummary(4, 6, 'en')).toBe('4 actions across 6 issues')
   })
 

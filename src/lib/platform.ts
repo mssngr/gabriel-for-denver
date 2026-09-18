@@ -482,7 +482,7 @@ export function plankAnchor(slug: string): string {
 }
 
 /**
- * The label above a plank's commitment in its detail panel: "Plank 01 ·
+ * The label above a plank's commitment in its detail panel: "Action 01 ·
  * Zoning", or just "Action 03" when the plank has no sub-topic.
  *
  * One string rather than separate template expressions. Written as adjacent
