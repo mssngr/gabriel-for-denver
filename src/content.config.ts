@@ -11,8 +11,11 @@ const pages = defineCollection({
       heading_es: z.string(),
       content: z.string(),
       content_es: z.string(),
-      photoAltText: z.string(),
-      photoAltText_es: z.string(),
+      // Optional because not every page has a photo to describe: the platform
+      // index is all cards. The pages that do have one still set it, and each
+      // reads it with a `|| null` fallback already.
+      photoAltText: z.string().optional(),
+      photoAltText_es: z.string().optional(),
     }),
 })
 

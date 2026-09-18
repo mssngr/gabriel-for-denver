@@ -502,6 +502,47 @@ export function timelineLabel(timeline: Timeline, lang: Lang): string {
   return TIMELINE_LABELS[timeline][lang]
 }
 
+/**
+ * How many promises a guide carries, e.g. "3 promises" — the line above a
+ * card's list on the platform index.
+ *
+ * "Promise" rather than "plank": the index speaks to a reader arriving cold,
+ * where a guide's detail page can afford the campaign's own vocabulary.
+ */
+export function promiseCount(count: number, lang: Lang): string {
+  const word =
+    lang === 'es'
+      ? count === 1
+        ? 'promesa'
+        : 'promesas'
+      : count === 1
+        ? 'promise'
+        : 'promises'
+  return `${count} ${word}`
+}
+
+/**
+ * The platform index's eyebrow, e.g. "4 promises across 6 issues".
+ *
+ * Null before the first promise is published: the line sits above the page's
+ * title, where "0 promises" would undersell a platform that is simply still
+ * being written.
+ */
+export function platformSummary(
+  plankCount: number,
+  guideCount: number,
+  lang: Lang,
+): string | null {
+  if (plankCount === 0) return null
+  const promises = promiseCount(plankCount, lang)
+  const issues =
+    lang === 'es'
+      ? `${guideCount} ${guideCount === 1 ? 'tema' : 'temas'}`
+      : `${guideCount} ${guideCount === 1 ? 'issue' : 'issues'}`
+  const joiner = lang === 'es' ? 'en' : 'across'
+  return `${promises} ${joiner} ${issues}`
+}
+
 export type Source = NonNullable<Plank['sources']>[number]
 
 /**

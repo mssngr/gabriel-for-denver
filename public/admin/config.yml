@@ -60,6 +60,28 @@ collections:
               name: photoAltText_es,
               widget: string,
             }
+      - label: Platform
+        name: platform
+        file: src/content/pages/platform.yml
+        fields:
+          - { label: Heading, name: heading, widget: string }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - {
+              label: Content,
+              name: content,
+              widget: richtext,
+              hint:
+                "The intro above the issue cards. The promise and issue counts
+                above the heading are generated, so leave those to the site.",
+            }
+          - {
+              label: Content (Spanish),
+              name: content_es,
+              widget: richtext,
+              hint:
+                "La introducción sobre las tarjetas de temas. Los conteos de
+                promesas y temas se generan solos.",
+            }
       - label: Events
         name: events
         file: src/content/pages/events.yml

@@ -1,31 +1,45 @@
 ---
+import { getEntry } from 'astro:content'
+import { marked } from 'marked'
 import GuideCard from '../../../components/platform/guide-card.astro'
-import { planksForGuide } from '../../../lib/platform'
+import { planksForGuide, platformSummary } from '../../../lib/platform'
 import { getPublishedPlatform } from '../../../lib/platform-content'
 import Espanol from '../../../layouts/espanol.astro'
 
 const lang = 'es' as const
 const { guides, planks } = await getPublishedPlatform()
-const total = planks.length
+const page = await getEntry('pages', 'platform')
+const intro = page?.data && marked.parse(page.data.content_es)
+const summary = platformSummary(planks.length, guides.length, lang)
 ---
 
 <Espanol
   title="La plataforma | Gabriel por Denver"
   description="Cada promesa que Gabriel Konkle está haciendo, en todos los temas."
   heroGradient
+  tightHero
 >
-  <section slot="hero" class="px-6 pb-16 md:px-12 md:pb-24">
-    <h1>Todo lo que haría en el cargo</h1>
-    <p class="max-w-[44ch] font-light text-2xl leading-tight">
-      {
-        total === 0
-          ? 'La plataforma se está escribiendo. Vuelve pronto.'
-          : `${total} ${total === 1 ? 'promesa' : 'promesas'} en ${guides.length} ${guides.length === 1 ? 'tema' : 'temas'}. Léelas todas aquí, o abre una guía.`
-      }
-    </p>
+  <section slot="hero" class="px-6 pt-6 pb-10 md:px-12 md:pt-10 md:pb-14">
+    {
+      summary && (
+        <p class="text-xs tracking-[0.2em] uppercase font-semibold opacity-75 mb-2">
+          {summary}
+        </p>
+      )
+    }
+    <h1>{page?.data.heading_es}</h1>
+    {
+      /* The width cap goes on each paragraph, not this wrapper: `ch` is
+         measured in the element's own font size, and the wrapper's is half
+         the intro's. */
+    }
+    <div
+      class="font-light [&_strong]:font-bold [&_p]:max-w-[44ch] [&_p]:text-2xl [&_p]:leading-tight [&_p+p]:mt-4"
+      set:html={intro}
+    />
   </section>
 
-  <main class="px-6 py-16 md:px-12 md:py-20">
+  <main class="px-6 pt-10 pb-16 md:px-12 md:pt-12 md:pb-20">
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {
         guides.map((guide) => (
