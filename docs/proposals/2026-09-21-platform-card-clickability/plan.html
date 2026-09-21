@@ -1,0 +1,304 @@
+<title>Pressable Guide Cards</title>
+<meta name="description" content="Making the platform guide cards read as clickable with an arrow, a labelled footer and resting depth, in one PR.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  --paper: #f4f5f9; --card: #ffffff; --ink: #12141c; --ink-2: #545c72;
+  --rule: #dbdfe9; --rule-soft: #e7eaf1; --accent: #1900a8; --flag: #a4560a; --ok: #1c6a45;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+    --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+  --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--f-body);
+  font-size: 16px; line-height: 1.62; margin: 0; padding: 0 1.5rem 6rem;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 58rem; margin: 0 auto; }
+.doc-eyebrow { font-family: var(--f-mono); font-size: .72rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); margin: 3rem 0 .9rem; }
+h1.doc-title { font-family: var(--f-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.3rem); line-height: .98; letter-spacing: -.025em; text-wrap: balance; margin: 0 0 1rem; }
+.doc-sub { font-size: 1.12rem; color: var(--ink-2); max-width: 40rem; margin: 0 0 1.5rem; }
+.grounded { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-2); margin: 0; }
+.grounded code { color: var(--ink); }
+h2.sec { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.45rem, 3vw, 1.95rem); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 .5rem; text-wrap: balance; }
+h3.sub { font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; margin: 2rem 0 .5rem; }
+p { margin: 0 0 1rem; max-width: 44rem; }
+.lede { font-size: 1.03rem; color: var(--ink-2); }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+strong { font-weight: 600; }
+section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-top: 3.5rem; }
+ul.plain { padding-left: 1.15rem; margin: 0 0 1rem; max-width: 44rem; }
+ul.plain li { margin-bottom: .55rem; }
+code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-soft); padding: .1em .35em; border-radius: 3px; }
+.note { border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem; margin: 1.5rem 0; color: var(--ink-2); font-size: .95rem; }
+.note strong { color: var(--ink); }
+.note p:last-child { margin-bottom: 0; }
+
+.facts { margin: 0 0 1rem; display: grid; grid-template-columns: max-content minmax(0,1fr); gap: .5rem 1.25rem; font-size: .95rem; max-width: 46rem; }
+.facts dt { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); padding-top: .25rem; }
+.facts dd { margin: 0; color: var(--ink-2); }
+.facts dd strong { color: var(--ink); }
+@media (max-width: 34rem) { .facts { grid-template-columns: 1fr; gap: .1rem; } .facts dd { margin-bottom: .6rem; } }
+
+.alt { border-top: 1px solid var(--rule-soft); padding: 1.1rem 0 .3rem; }
+.alt:first-of-type { border-top: 0; }
+.alt h3 { margin: 0 0 .35rem; font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; }
+.alt .verdict { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--flag); }
+.alt .verdict.part { color: var(--ok); }
+.alt p { font-size: .95rem; color: var(--ink-2); margin-bottom: .5rem; }
+.alt p strong { color: var(--ink); }
+
+.item { background: var(--card); border: 1px solid var(--rule); border-radius: .7rem; padding: 1.2rem 1.3rem; margin-bottom: 1rem; }
+.item__no { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; color: var(--accent); display: block; margin-bottom: .3rem; }
+.item h3 { font-family: var(--f-display); font-weight: 700; font-size: 1.12rem; margin: 0 0 .8rem; letter-spacing: -.01em; text-wrap: balance; }
+.item dl { margin: 0; display: grid; grid-template-columns: 6.5rem minmax(0,1fr); gap: .45rem 1rem; font-size: .92rem; }
+.item dt { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); padding-top: .2rem; }
+.item dd { margin: 0; color: var(--ink-2); }
+.item dd strong { color: var(--ink); }
+.item dd code { font-family: var(--f-mono); font-size: .84em; color: var(--ink); }
+@media (max-width: 34rem) { .item dl { grid-template-columns: 1fr; gap: .1rem .5rem; } .item dd { margin-bottom: .6rem; } }
+
+.q { border-top: 1px solid var(--rule); padding-top: 1.6rem; margin-top: 1.8rem; }
+.q:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.q h3 { font-family: var(--f-display); font-weight: 800; font-size: 1.14rem; line-height: 1.25; margin: 0 0 .7rem; letter-spacing: -.015em; text-wrap: balance; }
+.q h3 .qn { color: var(--accent); font-family: var(--f-mono); font-size: .85em; margin-right: .35rem; }
+.q > p { font-size: .97rem; }
+.q dl { margin: 1rem 0 0; font-size: .95rem; }
+.q dt { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--ink); margin-bottom: .25rem; }
+.q dd { margin: 0 0 1rem; color: var(--ink-2); max-width: 44rem; }
+.q dd strong { color: var(--ink); }
+
+.grouplabel { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--flag); margin: 2.2rem 0 1rem; }
+.grouplabel.opt { color: var(--ink-2); }
+.f { border-left: 2px solid var(--rule); padding-left: 1.1rem; margin-bottom: 1.4rem; }
+.f h3 { font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; margin: 0 0 .6rem; }
+.f h3 .fn { color: var(--accent); font-family: var(--f-mono); font-size: .85em; margin-right: .3rem; }
+.f dl { margin: 0; font-size: .93rem; }
+.f dt { font-weight: 600; color: var(--ink); display: inline; }
+.f dd { display: inline; margin: 0; color: var(--ink-2); }
+.f dd::after { content: ""; display: block; height: .5rem; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="doc-eyebrow">Proposal · Gabriel for Denver</p>
+  <h1 class="doc-title">Pressable Guide Cards</h1>
+  <p class="doc-sub">The platform cards are handsome, but nothing on them says they lead anywhere. Add an arrow beside the title, a labelled footer and a little depth, so a visitor who has never been told to click one still does.</p>
+  <p class="grounded">Grounded against <code>main</code> @ <code>548fdf4</code> — 21 Sept 2026 &nbsp;·&nbsp; <a href="./design.html">design.html</a> &nbsp;·&nbsp; no <code>schema.html</code>: nothing here touches content or the data model</p>
+</header>
+
+<section class="block">
+  <h2 class="sec">Summary</h2>
+  <p>Each guide card on <code class="inl">/platform</code>, the home page and <code class="inl">/issues</code> (and their Spanish twins) is a single link, but it looks like a finished summary: a faint grey hairline, no arrow, no verb, and every action already listed on the face. The only hint is a 4px lift on hover, which needs a pointer and never appears on a phone. This proposal adds three signifiers to the one shared component: a filled arrow chip beside the title, a full-width footer reading &ldquo;Read the full guide&rdquo;, and a shadow and brand-tinted border at rest, with hover, pressed and focus states to match. The condensed cards on <code class="inl">/why-me</code> get the chip and the depth. It is one PR, no new dependency and no content change, and it fixes six page routes at once.</p>
+</section>
+
+<section class="block">
+  <h2 class="sec">What the investigation found</h2>
+  <dl class="facts">
+    <dt>One component</dt><dd><code class="inl">guide-card.astro</code> renders every card on <code class="inl">/platform</code>, <code class="inl">/es/platform</code> and, through <code class="inl">what-will-i-tackle</code>, on <code class="inl">/</code>, <code class="inl">/es</code>, <code class="inl">/issues</code> and <code class="inl">/es/issues</code>. <code class="inl">topic-actions.astro</code> is a smaller copy of the same idea on <code class="inl">/why-me</code> and <code class="inl">/es/why-me</code>. Those are the only two files using the raised-card classes.</dd>
+    <dt>Rest state</dt><dd><code class="inl">border-black/15</code> composites to #d9d9d9 on white, a contrast of <strong>1.4:1</strong>. No shadow, no arrow, no label. Tinted borders and shadows are what tell people a box is an object.</dd>
+    <dt>Only cue</dt><dd><code class="inl">hover:-translate-y-1</code> and <code class="inl">active:-translate-y-1</code>. Tailwind v4 emits the <code class="inl">hover:</code> variant inside <code class="inl">@media (hover:hover)</code> (checked in the built CSS), so on a phone the lift only shows as the finger goes down, after the decision to tap has been made.</dd>
+    <dt>Phone size</dt><dd>At 375px wide each card measures <strong>716 to 740px</strong> tall (measured on the dev server). A cue at the bottom is most of a screen away when the card first appears.</dd>
+    <dt>Already complete</dt><dd>The card lists all of a guide's actions, so it reads as the whole story. The guide page holds the reasoning, the evidence and the timeline, and nothing on the card hints at that.</dd>
+    <dt>House idiom</dt><dd>On the guide pages, the control that opens more is a bordered pill ending in an arrow: &ldquo;Read the policy &rarr;&rdquo; in <code class="inl">sheet.astro</code>. The cards are the outlier.</dd>
+    <dt>History</dt><dd>#17 made the whole card the link and added the lift; #35 copied that treatment to the <code class="inl">/why-me</code> mini cards. The lift was meant as the affordance. It is a good state for a card already known to be clickable, and that is a different job from telling a first-time visitor.</dd>
+  </dl>
+
+  <h3 class="sub">Prior art</h3>
+  <ul class="plain">
+    <li>Nielsen Norman Group defines a card as &ldquo;a snapshot-like display intended to encourage users to click to view more details&rdquo; (<a href="https://www.nngroup.com/articles/cards-component/">Cards: UI-Component Definition</a>), so a card with nothing that invites the click fails at its own job.</li>
+    <li>NN/g's <a href="https://www.nngroup.com/articles/clickable-elements/">Beyond Blue Links</a> finds that flat design removed most of the cues people used to read clickability. Its recommendations: keep buttons rectangular with rounded corners, make an image, its text and its icon one target, and don't lean on an arrow alone, which it calls a less effective cue than a label.</li>
+    <li>Card accessibility guidance recommends layering cues: a chevron or arrow, a visible action phrase, and hover states, none of them alone (Berkeley's <a href="https://dap.berkeley.edu/web-a11y-basics/accessible-card-ui-component-patterns">accessible card patterns</a>; the same conclusion appears in most of the card-design write-ups I found).</li>
+    <li>Heydon Pickering's <a href="https://inclusive-components.design/cards/">Inclusive Components: Cards</a> puts the link on the heading and stretches it over the card with a pseudo-element. This codebase already made a different choice: the whole card is one <code class="inl">&lt;a&gt;</code> with an <code class="inl">aria-label</code>. The proposal keeps that choice, because changing link structure is a separate decision from changing looks, and the footer works inside either.</li>
+  </ul>
+</section>
+
+<section class="block">
+  <h2 class="sec">Chosen approach</h2>
+  <p class="lede">Three signifiers in one component, each covering a case the others miss, so nobody has to be told the card is clickable.</p>
+
+  <h3 class="sub">1. An arrow chip at the end of the title row</h3>
+  <p>A 36px filled primary circle holding a right arrow (<code class="inl">ArrowRight</code> from <code class="inl">@lucide/astro</code>, already a dependency). It is the one cue on screen the instant a card appears, including on the 720px phone cards. It is <code class="inl">aria-hidden</code>, so it changes nothing for a screen reader.</p>
+
+  <h3 class="sub">2. A footer that names the action</h3>
+  <p>A full-width strip pinned to the card's bottom edge with <code class="inl">mt-auto</code>, so the strips line up across a row of unequal cards. It reads &ldquo;Read the full guide &rarr;&rdquo;. This is the cue NN/g says an arrow can't be: a verb. It is a <code class="inl">&lt;span&gt;</code> inside the existing link, so there is still one link and one tab stop per card and no nested-anchor problem (the component already strips markdown links out of the stance text for exactly that reason).</p>
+
+  <h3 class="sub">3. Depth and a tinted edge at rest, with a full state set</h3>
+  <p>The border changes from black at 15% (1.4:1) to primary at 50% (3.4:1), and a soft primary-tinted shadow lifts the card off the page. Hover keeps the existing 4px lift and adds a deeper shadow, a solid primary border, both arrows sliding right and the footer darkening to <code class="inl">tertiary</code>. Pressed settles the card back and darkens the footer, which is the one state a touch user sees. Reduced-motion users get the colour and shadow changes without the movement, which the card doesn't handle today.</p>
+
+  <h3 class="sub">Why this rather than something smaller or bigger</h3>
+  <p>The footer is the piece doing the work that the current card lacks: it says what happens. The chip is there because the footer is off-screen on a phone when the card first appears. Depth is there because the footer alone still leaves a card that looks flat until read to the bottom. Each is a few lines, and none needs JavaScript. The cost is one PR touching four files and no ongoing maintenance beyond what the existing card already has.</p>
+
+  <h3 class="sub">Shared styling and where the logic goes</h3>
+  <p>The raised-card class string is currently duplicated in <code class="inl">guide-card.astro</code> and <code class="inl">topic-actions.astro</code> with a comment saying they match. The PR moves it to one <code class="inl">@utility card-link</code> in <code class="inl">global.css</code>, following the existing <code class="inl">@utility btn</code>, so the two can't drift again. Astro components can't be tested here (see <code class="inl">AGENTS.md</code>), so the copy goes into two small pure functions in <code class="inl">src/lib/platform.ts</code>, <code class="inl">guideCardCta(lang)</code> and <code class="inl">guideCardLabel(title, lang)</code>, next to <code class="inl">actionCount</code>, with tests beside the existing ones. <code class="inl">global.test.ts</code> already compiles the stylesheet to check one utility; it gets a second case checking that the card's hover styles sit inside <code class="inl">@media (hover:hover)</code>, so a touch device can never be left with a stuck raised card.</p>
+</section>
+
+<section class="block">
+  <h2 class="sec">Alternatives considered</h2>
+
+  <div class="alt">
+    <h3>Strengthen the hover and shadow only</h3>
+    <p class="verdict">Not chosen</p>
+    <p>Cheapest option: a bigger lift and a shadow. It is a hidden affordance, invisible until a pointer is already over the card, and it does nothing on touch, where the reporter's confusion is most likely to happen. Depth is kept as one of the three cues, not the lead.</p>
+  </div>
+  <div class="alt">
+    <h3>An arrow icon alone</h3>
+    <p class="verdict part">Kept as part of the chosen approach</p>
+    <p>The smallest change, and NN/g's own findings list arrows among the weaker cues when used alone. As a chip beside the title, it earns its place by being the cue visible at the top of a tall card.</p>
+  </div>
+  <div class="alt">
+    <h3>Underlined, coloured title</h3>
+    <p class="verdict">Not chosen</p>
+    <p>The classic link signifier. On a 30px semibold title, repeated across six cards, it adds noise to a grid that is otherwise calm, and it leaves the lower two thirds of the card looking inert. It also competes with the chip for the same job.</p>
+  </div>
+  <div class="alt">
+    <h3>Footer button only</h3>
+    <p class="verdict">Not chosen alone</p>
+    <p>Names the action but sits 700px down on a phone. Kept, paired with the chip.</p>
+  </div>
+  <div class="alt">
+    <h3>Expand the card in place</h3>
+    <p class="verdict">Not chosen</p>
+    <p>An accordion matches the word &ldquo;expandable&rdquo;, but a guide is a whole page: a hero, one band per action, statistics, sources and a share sheet. Folding that into a card loses the URL people share and the <code class="inl">platform_guide_viewed</code> event, and gives up the print and no-JS behaviour the field-guide proposal built on purpose.</p>
+  </div>
+  <div class="alt">
+    <h3>A first-visit coach mark</h3>
+    <p class="verdict">Not chosen</p>
+    <p>&ldquo;Tap a card to read more&rdquo; needs JavaScript and stored state, is missed by anyone who doesn't see it first, and teaches the page instead of fixing it.</p>
+  </div>
+  <div class="alt">
+    <h3>Make each action row its own link into that policy</h3>
+    <p class="verdict">Not chosen here; kept as F2</p>
+    <p>An unusual option: a tap on &ldquo;Legalize congregational housing&rdquo; opens that policy's sheet directly (<code class="inl">#plank-&lt;slug&gt;</code> already does this natively). It can't be done inside a single <code class="inl">&lt;a&gt;</code>, it means restructuring to the stretched-link pattern, and it adds 18 tab stops. It also doesn't tell a reader the card as a whole is clickable, which is the actual problem.</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2 class="sec">Design</h2>
+  <p>See <a href="./design.html">design.html</a> for before and after cards with real copy, the numbered signifiers, all four states, the solid and tinted footer, the phone fold, the <code class="inl">/why-me</code> mini card and the Spanish footer. The cards in it respond to hover. Two decisions are not obvious from looking: the footer stays at the bottom, not under the stance, so it doesn't split the words from the artwork (the chip covers the top instead), and the mini cards skip the footer because their whole content is already the action list.</p>
+</section>
+
+<section class="block">
+  <h2 class="sec">Phases, PRs, and Spikes</h2>
+  <p class="lede">One PR. It passes both tests: it is one idea (&ldquo;make these cards look clickable&rdquo;), and the app is coherent before and after. There is no schema, no migration, no risky path and no real unknown that reasoning can't settle, so no Spike.</p>
+
+  <div class="item">
+    <span class="item__no">PR 1 of 1</span>
+    <h3>Make the guide cards look clickable</h3>
+    <dl>
+      <dt>Goal</dt><dd>Add the arrow chip, the &ldquo;Read the full guide&rdquo; footer and resting depth to <code>GuideCard</code>, and the chip and depth to the <code>/why-me</code> mini cards, in both languages, with one shared style. Lands with before and after screenshots at 320, 375, 768 and 1024px.</dd>
+      <dt>Touches</dt><dd><code>src/components/platform/guide-card.astro</code> (link becomes <code>flex flex-col overflow-hidden</code>, body padding moves inward, footer added, <code>aria-label</code> from the new helper); <code>src/components/platform/topic-actions.astro</code> (chip, shared utility); <code>src/styles/global.css</code> (<code>@utility card-link</code>); <code>src/lib/platform.ts</code> (<code>guideCardCta</code>, <code>guideCardLabel</code>).</dd>
+      <dt>Tests</dt><dd><code>src/lib/platform.test.ts</code>: the English and Spanish footer text; the label contains both the title and the footer text, in that order (WCAG 2.5.3, Label in Name). <code>src/styles/global.test.ts</code>: <code>card-link</code>'s lift is inside <code>@media (hover:hover)</code>; its reduced-motion rule removes the movement. Then <code>bun run build</code>, and a manual pass through the states on a phone-width viewport.</dd>
+      <dt>Depends on</dt><dd>none. Q1 to Q4 are settled before or during review; the recommendations are the defaults.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="block">
+  <h2 class="sec">Open questions &amp; risks</h2>
+
+  <div class="q">
+    <h3><span class="qn">Q1:</span> Should the footer strip be solid primary or a pale tint that turns solid on hover?</h3>
+    <p>Solid is unmistakable and echoes the blue hero above the grid; tinted is calmer beside six colourful illustrations. This is the one purely visual call in the plan, and the mockup shows both. It matters because the whole point is that the cards must be obviously clickable, and a tint is a weaker signifier at a glance.</p>
+    <dl>
+      <dt>My Recommendation</dt><dd>Solid primary (13.1:1 with white text). If the six blue strips feel heavy in the real page, fall back to the tint (primary on #d5e0ff is 9.9:1), which is a one-class change.</dd>
+      <dt>Alternatives to Consider</dt><dd>Tinted at rest, solid on hover and press. Or solid only on the first card in a row, which I would avoid: unequal cards are exactly what the row alignment is trying to prevent.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q2:</span> What should the footer say, in English and in Spanish?</h3>
+    <p>Words matter more than the arrow, and the site is careful with its vocabulary (it says &ldquo;action&rdquo;, never &ldquo;promise&rdquo;). The platform page's own intro calls these &ldquo;guides&rdquo;, while the sheet says &ldquo;Read the policy&rdquo;. The Spanish label has to fit the narrowest three-column card, about 293px at 1024px. I can write Spanish, but this is campaign copy read by voters, and I shouldn't be the only reviewer.</p>
+    <dl>
+      <dt>My Recommendation</dt><dd>&ldquo;Read the full guide&rdquo; and &ldquo;Leer la gu&iacute;a completa&rdquo;. It matches the intro's word, tells a reader there is more than the card shows, and fits at that width (see the last mockup). Have a Spanish speaker on the campaign confirm the wording before merge.</dd>
+      <dt>Alternatives to Consider</dt><dd>&ldquo;See the reasoning&rdquo; (says what the guide adds, but is vaguer about what happens on tap). &ldquo;See the full plan&rdquo; (friendlier, but &ldquo;plan&rdquo; blurs with the site's use of &ldquo;actions&rdquo;). A generic &ldquo;Learn more&rdquo; is what this label is meant to improve on.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q3:</span> Should the link's accessible name become &ldquo;Title, Read the full guide&rdquo; instead of just the title?</h3>
+    <p>The link's <code class="inl">aria-label</code> is the bare title today, so that screen readers don't recite the whole card. Now the card shows a visible label, and WCAG 2.5.3 (Label in Name) says the accessible name should contain visible label text, so that a voice-control user who says &ldquo;click read the full guide&rdquo; gets the card they mean. Leaving the bare title breaks that for every card.</p>
+    <dl>
+      <dt>My Recommendation</dt><dd><code class="inl">${title}, ${cta}</code>, built by <code class="inl">guideCardLabel</code>. It matches the mini card's existing <code class="inl">${title}, ${count}</code> shape and keeps the announcement short. The mini card's label stays as it is, since it gets no footer.</dd>
+      <dt>Alternatives to Consider</dt><dd>Drop <code class="inl">aria-label</code> and let the full content name the link. It satisfies 2.5.3 trivially but reads the stance and every action aloud on each card, and is the verbosity the label was added to avoid.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q4:</span> Should the <code class="inl">/why-me</code> mini cards get the footer strip too, or only the chip and depth?</h3>
+    <p>They link to the same guides with the same faint border, so they have the same problem. But their content is the action list, in a compact card, and a footer would add about 3.5rem to each.</p>
+    <dl>
+      <dt>My Recommendation</dt><dd>Chip and depth only. The compact card keeps its density, and the chip plus tinted edge is enough to break the &ldquo;finished summary&rdquo; look there.</dd>
+      <dt>Alternatives to Consider</dt><dd>Same footer as the big card, for strict consistency. Reasonable if the two are ever seen side by side; today they sit on different pages.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q5:</span> Should we pull a click-through baseline from PostHog before this merges?</h3>
+    <p>&ldquo;Not everyone knows they can click&rdquo; is a real observation, but I can't tell from the code how many visitors it costs. <code class="inl">platform_guide_viewed</code> fires on every guide page, and PostHog autocapture is on by default (the init in <code class="inl">posthog.astro</code> doesn't disable it), so guide views per index view is measurable today without new code. Without a before-number, a later &ldquo;did it help?&rdquo; can only be guessed at. I don't know this site's traffic; if it is low, an A/B test would not reach significance on a campaign timeline.</p>
+    <dl>
+      <dt>My Recommendation</dt><dd>Take the last 30 days of index-to-guide rate for <code class="inl">/platform</code> and the home page section now (about ten minutes in PostHog), merge the PR, and compare after two to four weeks. No A/B split.</dd>
+      <dt>Alternatives to Consider</dt><dd>Skip the baseline and judge by feedback alone. Or add a dedicated click event first (F3) so each of the six surfaces can be told apart.</dd>
+    </dl>
+  </div>
+
+  <div class="q">
+    <h3><span class="qn">Q6:</span> Should other card-like links on the site get this treatment in the same change?</h3>
+    <p>Only the two components above use the raised-card classes, so they are the whole scope of the reported problem. I did not audit the rest of the site (event listings, blog posts, the related-guides links at the foot of a guide page) for the same &ldquo;doesn't look clickable&rdquo; issue, and I'd rather say so than assume they are fine.</p>
+    <dl>
+      <dt>My Recommendation</dt><dd>No. Ship the platform cards, which are the reported problem and the highest-traffic path, and treat any other surface as its own small proposal if someone reports it.</dd>
+      <dt>Alternatives to Consider</dt><dd>A quick audit pass of the rest of the site first, if there's a suspicion others look the same.</dd>
+    </dl>
+  </div>
+
+  <h3 class="sub">Follow-ups after this plan ships</h3>
+
+  <p class="grouplabel">Required</p>
+  <div class="f">
+    <h3><span class="fn">F1:</span> Compare click-through to the baseline two to four weeks after it ships.</h3>
+    <dl>
+      <dt>What is this?</dt><dd>Read the same PostHog numbers as Q5's baseline and note the change.</dd>
+      <dt>Why do this?</dt><dd>The premise, that visitors miss the click, is only inferred. If the number doesn't move, the next options in the list above (a stronger title cue, or the per-action links in F2) should be tried instead of assuming the job is done.</dd>
+      <dt>Why isn't this in the plan?</dt><dd>It needs weeks of traffic on the shipped change. There is nothing to compare against until then.</dd>
+    </dl>
+  </div>
+
+  <p class="grouplabel opt">Optional</p>
+  <div class="f">
+    <h3><span class="fn">F2:</span> Let each action row on a card link straight to its policy.</h3>
+    <dl>
+      <dt>What is this?</dt><dd>Restructure the card to the stretched-link pattern so every listed action is its own target, opening that policy's sheet on the guide page.</dd>
+      <dt>Why do this?</dt><dd>It shortens the path for the visitor who came for one specific policy, and it makes the list itself look tappable.</dd>
+      <dt>Why to not do this?</dt><dd>It changes the card's link structure and adds 18 tab stops across the index. It adds a second job to a card that has to look clickable first, and nobody has asked for it. Worth revisiting only if F1 says the whole-card fix wasn't enough.</dd>
+    </dl>
+  </div>
+  <div class="f">
+    <h3><span class="fn">F3:</span> Add a <code class="inl">guide_card_clicked</code> event with a <code class="inl">surface</code> property.</h3>
+    <dl>
+      <dt>What is this?</dt><dd>A small inline capture, like the one in <code class="inl">sheet-behavior.astro</code>, recording which surface (index, home, issues, why-me) a card was clicked on.</dd>
+      <dt>Why do this?</dt><dd>Autocapture can count clicks but can't tell the six surfaces apart cleanly.</dd>
+      <dt>Why to not do this?</dt><dd>Autocapture plus <code class="inl">platform_guide_viewed</code> probably answers the real question already, and every new event has to be kept in <code class="inl">.posthog-events.json</code>. Not worth it unless Q5's numbers turn out too blunt.</dd>
+    </dl>
+  </div>
+</section>
+
+</div>

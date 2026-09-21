@@ -1,0 +1,358 @@
+<title>Cards That Look Pressable</title>
+<meta name="description" content="Static mockups of the platform guide cards today and with a visible arrow, a button-shaped footer and resting depth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&family=League+Spartan:wght@300;400;600;700&display=swap">
+
+<style>
+:root {
+  --paper: #f4f5f9; --card: #ffffff; --ink: #12141c; --ink-2: #545c72;
+  --rule: #dbdfe9; --rule-soft: #e7eaf1; --accent: #1900a8; --flag: #a4560a; --ok: #1c6a45;
+  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+    --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b0d13; --card: #13161f; --ink: #e9ebf3; --ink-2: #99a1b8;
+  --rule: #262b38; --rule-soft: #1c202b; --accent: #8fa8ff; --flag: #e0a35e; --ok: #5fc79b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--f-body);
+  font-size: 16px; line-height: 1.62; margin: 0; padding: 0 1.5rem 6rem;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 62rem; margin: 0 auto; }
+.doc-eyebrow { font-family: var(--f-mono); font-size: .72rem; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); margin: 3rem 0 .9rem; }
+h1.doc-title { font-family: var(--f-display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.3rem); line-height: .98; letter-spacing: -.025em; text-wrap: balance; margin: 0 0 1rem; }
+.doc-sub { font-size: 1.12rem; color: var(--ink-2); max-width: 40rem; margin: 0 0 1.5rem; }
+.grounded { font-family: var(--f-mono); font-size: .76rem; color: var(--ink-2); margin: 0; }
+.grounded code { color: var(--ink); }
+h2.sec { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 .5rem; text-wrap: balance; }
+p { margin: 0 0 1rem; max-width: 44rem; }
+a.doc { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a.doc:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-soft); padding: .1em .35em; border-radius: 3px; }
+section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-top: 3.5rem; }
+.lede { color: var(--ink-2); }
+.cap { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--ink-2); margin: 0 0 .6rem; }
+.cap.new { color: var(--accent); }
+.cap.old { color: var(--flag); }
+
+/* ---- the stage: always the site's own light ground, whatever the doc theme ---- */
+.stage {
+  --b-primary: #1900a8; --b-tertiary: #0e005c; --b-neutral: #d5e0ff; --b-accent: #ffc800;
+  background: #fff; color: #000; border: 1px solid var(--rule); border-radius: .9rem;
+  padding: 1.5rem; font-family: "League Spartan", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+@media (max-width: 46rem) { .pair { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---- the card, both versions ---- */
+.gc {
+  display: flex; flex-direction: column; height: 100%; cursor: pointer; text-decoration: none;
+  background: #fff; color: #000; border-radius: 1rem; overflow: hidden;
+  transition: transform .2s ease-out, box-shadow .2s ease-out, border-color .2s ease-out;
+  line-height: 1.2;
+}
+.gc:focus-visible, .gc.is-focus { outline: 2px solid var(--b-primary); outline-offset: 2px; }
+.gc__body { padding: 1.5rem; flex: 1; }
+.gc h3 { font-size: 1.5rem; font-weight: 600; line-height: 1; margin: 0; }
+.gc .stance { font-size: 1rem; font-weight: 300; color: rgb(0 0 0 / .7); margin: .25rem 0 0; line-height: 1.33; max-width: none; }
+.gc .stance b { font-weight: 700; }
+.gc .art { aspect-ratio: 1; border-radius: .75rem; margin-top: 1.25rem; background: #f2cd52; display: grid; place-items: center; overflow: hidden; }
+.gc .art svg { width: 62%; }
+.gc .acts { margin-top: 1.25rem; border-top: 1px solid rgb(0 0 0 / .1); padding-top: .75rem; }
+.gc .count { font-size: .75rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: var(--b-primary); margin: 0 0 .25rem; line-height: 1.33; max-width: none; }
+.gc ul { list-style: none; padding: 0; margin: 0; }
+.gc li { display: flex; gap: .75rem; align-items: baseline; padding: .625rem 0; border-bottom: 1px solid rgb(0 0 0 / .05); font-size: 1rem; line-height: 1.25; }
+.gc li:last-child { border-bottom: 0; }
+.gc li b { color: var(--b-primary); font-size: .75rem; letter-spacing: .05em; flex: none; }
+
+/* today */
+.gc--old { border: 1px solid rgb(0 0 0 / .15); }
+.gc--old .gc__body { padding: 1.5rem; }
+.gc--old:hover, .gc--old.is-hover { transform: translateY(-4px); }
+.gc--old.is-press { transform: translateY(-4px); }
+
+/* proposed */
+.gc--new {
+  border: 1px solid rgb(25 0 168 / .5);
+  box-shadow: 0 1px 2px rgb(14 0 92 / .14), 0 10px 22px -10px rgb(14 0 92 / .32);
+}
+.gc--new .head { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
+.chip {
+  flex: none; width: 2.25rem; height: 2.25rem; border-radius: 999px; display: grid; place-items: center;
+  background: var(--b-primary); color: #fff; margin-top: -.15rem; transition: transform .2s ease-out;
+}
+.chip svg, .foot svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1rem 1.5rem .9rem; font-size: 1.125rem; font-weight: 600; line-height: 1.2;
+  background: var(--b-primary); color: #fff; transition: background-color .2s ease-out, color .2s ease-out;
+}
+.foot svg { transition: transform .2s ease-out; }
+.foot--tint { background: var(--b-neutral); color: var(--b-primary); }
+.gc--new:hover, .gc--new.is-hover {
+  transform: translateY(-4px); border-color: var(--b-primary);
+  box-shadow: 0 2px 4px rgb(14 0 92 / .16), 0 18px 34px -12px rgb(14 0 92 / .45);
+}
+.gc--new:hover .chip, .gc--new.is-hover .chip { transform: translateX(3px); }
+.gc--new:hover .foot svg, .gc--new.is-hover .foot svg { transform: translateX(4px); }
+.gc--new:hover .foot, .gc--new.is-hover .foot { background: var(--b-tertiary); color: #fff; }
+.gc--new:hover .foot--tint, .gc--new.is-hover .foot--tint { background: var(--b-primary); }
+.gc--new.is-press {
+  transform: translateY(-1px); border-color: var(--b-primary);
+  box-shadow: 0 1px 2px rgb(14 0 92 / .16), 0 6px 14px -8px rgb(14 0 92 / .4);
+}
+.gc--new.is-press .foot { background: var(--b-tertiary); color: #fff; }
+.gc--new.is-press .foot--tint { background: var(--b-primary); }
+@media (prefers-reduced-motion: reduce) {
+  .gc, .chip, .foot, .foot svg { transition: none; }
+  .gc--new:hover, .gc--new.is-hover, .gc--old:hover { transform: none; }
+  .gc--new:hover .chip, .gc--new:hover .foot svg { transform: none; }
+}
+
+/* short card, for the state grids */
+.gc--short .gc__body { padding: 1.25rem 1.5rem; }
+.gc--short .acts { margin-top: .9rem; }
+
+/* mini card (why-me) */
+.mini { display: flex; flex-direction: column; height: 100%; cursor: pointer; background: #fff; border-radius: 1rem; padding: 1.5rem; line-height: 1.2; transition: transform .2s ease-out, box-shadow .2s ease-out, border-color .2s ease-out; }
+.mini--old { border: 1px solid rgb(0 0 0 / .15); }
+.mini--old:hover { transform: translateY(-4px); }
+.mini--new { border: 1px solid rgb(25 0 168 / .5); box-shadow: 0 1px 2px rgb(14 0 92 / .14), 0 10px 22px -10px rgb(14 0 92 / .32); }
+.mini--new:hover { transform: translateY(-4px); border-color: var(--b-primary); box-shadow: 0 2px 4px rgb(14 0 92 / .16), 0 18px 34px -12px rgb(14 0 92 / .45); }
+.mini--new:hover .chip { transform: translateX(3px); }
+.mini .mh { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.mini h3 { display: inline-flex; align-items: center; gap: .5rem; font-size: 1.125rem; font-weight: 600; line-height: 1.1; margin: 0; }
+.mini h3 svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: var(--b-primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.mini .chip { width: 1.75rem; height: 1.75rem; margin-top: 0; }
+.mini .chip svg { width: .95rem; height: .95rem; stroke: #fff; }
+.mini .count { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: rgb(25 0 168 / .7); margin: .25rem 0 .75rem; max-width: none; line-height: 1.3; }
+.mini ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .625rem; }
+.mini li { display: flex; gap: .625rem; align-items: flex-start; font-size: .875rem; line-height: 1.3; }
+.mini li svg { width: 1rem; height: 1rem; flex: none; margin-top: .1rem; fill: none; stroke: var(--b-primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* callouts */
+.anatomy { display: grid; grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); gap: 2rem; align-items: start; }
+@media (max-width: 52rem) { .anatomy { grid-template-columns: minmax(0, 1fr); } }
+.pin { position: absolute; width: 1.5rem; height: 1.5rem; border-radius: 99px; background: #ffc800; color: #0e005c; font: 700 .8rem/1.5rem var(--f-mono); text-align: center; box-shadow: 0 0 0 2px #fff, 0 2px 6px rgb(0 0 0 / .3); z-index: 2; }
+.relwrap { position: relative; }
+.legend { margin: 0; padding: 0; list-style: none; display: grid; gap: 1.25rem; }
+.legend li { display: grid; grid-template-columns: 1.75rem minmax(0, 1fr); gap: .75rem; font-size: .95rem; color: var(--ink-2); }
+.legend li b.n { width: 1.5rem; height: 1.5rem; border-radius: 99px; background: var(--accent); color: var(--paper); font: 700 .75rem/1.5rem var(--f-mono); text-align: center; }
+.legend strong { color: var(--ink); display: block; font-family: var(--f-display); font-size: 1rem; margin-bottom: .1rem; }
+
+/* phone */
+.phonewrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+.phone { width: 300px; max-width: 100%; background: #fff; border: 8px solid #1c202b; border-radius: 1.8rem; overflow: hidden; position: relative; height: 560px; }
+.phone .scr { padding: 1rem .75rem 0; }
+.fold { position: absolute; left: 0; right: 0; bottom: 0; height: 2.6rem; background: linear-gradient(to top, #fff 30%, rgb(255 255 255 / 0)); }
+.foldtag { position: absolute; left: .75rem; right: .75rem; bottom: .6rem; font: 700 .62rem/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: #a4560a; text-align: center; }
+.measure { flex: 1; min-width: 15rem; }
+.measure dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: .35rem 1rem; font-size: .92rem; }
+.measure dt { font-family: var(--f-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); padding-top: .25rem; }
+.measure dd { margin: 0; color: var(--ink-2); }
+.measure dd strong { color: var(--ink); }
+
+.narrow { max-width: 19rem; }
+.note { border-left: 2px solid var(--accent); padding: .1rem 0 .1rem 1rem; margin: 1.5rem 0 0; color: var(--ink-2); font-size: .95rem; }
+.note strong { color: var(--ink); }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="doc-eyebrow">Proposal · Gabriel for Denver</p>
+  <h1 class="doc-title">Cards That Look Pressable</h1>
+  <p class="doc-sub">Static mockups of the platform guide cards as they are today and as proposed. The cards on this page respond to hover, so move a pointer over them.</p>
+  <p class="grounded">Companion to <a class="doc" href="./plan.html">plan.html</a> &nbsp;·&nbsp; the mockups reproduce the site's real tokens (<code class="inl">primary</code> #1900a8, <code class="inl">tertiary</code> #0e005c, <code class="inl">neutral</code> #d5e0ff) and League Spartan</p>
+</header>
+
+<!-- 1 -->
+<section class="block">
+  <h2 class="sec">Before and after</h2>
+  <p class="lede">Same card, same content, same real copy from the Affordable Housing guide. The differences are the arrow beside the title, the footer, and the depth at rest.</p>
+  <div class="stage">
+    <div class="pair">
+      <div>
+        <p class="cap old">Today</p>
+        <a class="gc gc--old" role="link" tabindex="0">
+          <div class="gc__body">
+            <h3>Affordable Housing</h3>
+            <p class="stance">In the past 10 years, rent has increased at almost <b>twice the rate as income</b> in Denver. We are in a crisis.</p>
+            <div class="art"><svg viewBox="0 0 120 100" aria-hidden="true"><rect x="14" y="40" width="34" height="50" fill="#3d6bb0" stroke="#1a2440" stroke-width="3"/><path d="M10 42 L31 8 L52 42Z" fill="#a98ad1" stroke="#1a2440" stroke-width="3"/><rect x="58" y="52" width="40" height="38" fill="#3d6bb0" stroke="#1a2440" stroke-width="3"/><path d="M54 54 L78 26 L102 54Z" fill="#e58a3a" stroke="#1a2440" stroke-width="3"/><rect x="25" y="58" width="10" height="12" fill="#f2cd52" stroke="#c0392b" stroke-width="2"/><rect x="72" y="66" width="10" height="12" fill="#f2cd52" stroke="#c0392b" stroke-width="2"/></svg></div>
+            <div class="acts">
+              <p class="count">3 actions</p>
+              <ul>
+                <li><b>01</b><span>Amend Blueprint Denver to allow for rezoning of exclusionary residential zones.</span></li>
+                <li><b>02</b><span>Legalize congregational housing in Denver.</span></li>
+                <li><b>03</b><span>Fine owners leaving rental units vacant for 6 months, or longer.</span></li>
+              </ul>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div>
+        <p class="cap new">Proposed</p>
+        <a class="gc gc--new" role="link" tabindex="0" aria-label="Affordable Housing, Read the full guide">
+          <div class="gc__body">
+            <div class="head">
+              <h3>Affordable Housing</h3>
+              <span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+            <p class="stance">In the past 10 years, rent has increased at almost <b>twice the rate as income</b> in Denver. We are in a crisis.</p>
+            <div class="art"><svg viewBox="0 0 120 100" aria-hidden="true"><rect x="14" y="40" width="34" height="50" fill="#3d6bb0" stroke="#1a2440" stroke-width="3"/><path d="M10 42 L31 8 L52 42Z" fill="#a98ad1" stroke="#1a2440" stroke-width="3"/><rect x="58" y="52" width="40" height="38" fill="#3d6bb0" stroke="#1a2440" stroke-width="3"/><path d="M54 54 L78 26 L102 54Z" fill="#e58a3a" stroke="#1a2440" stroke-width="3"/><rect x="25" y="58" width="10" height="12" fill="#f2cd52" stroke="#c0392b" stroke-width="2"/><rect x="72" y="66" width="10" height="12" fill="#f2cd52" stroke="#c0392b" stroke-width="2"/></svg></div>
+            <div class="acts">
+              <p class="count">3 actions</p>
+              <ul>
+                <li><b>01</b><span>Amend Blueprint Denver to allow for rezoning of exclusionary residential zones.</span></li>
+                <li><b>02</b><span>Legalize congregational housing in Denver.</span></li>
+                <li><b>03</b><span>Fine owners leaving rental units vacant for 6 months, or longer.</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <p class="note"><strong>Why the old card reads as finished.</strong> It already lists every action, so nothing on it suggests there is more behind it. Its only cue is the 4px lift on hover, which needs a pointer to already be over the card and never happens on a phone.</p>
+</section>
+
+<!-- 2 -->
+<section class="block">
+  <h2 class="sec">The three signifiers</h2>
+  <p class="lede">Each one covers a case the others miss, so all three ship together.</p>
+  <div class="anatomy">
+    <div class="stage relwrap" style="padding: 1rem;">
+      <span class="pin" style="top: 1.6rem; right: 1.55rem;">1</span>
+      <span class="pin" style="bottom: 1.35rem; left: 1.35rem;">2</span>
+      <span class="pin" style="top: 42%; right: .4rem;">3</span>
+      <a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto">
+        <div class="gc__body">
+          <div class="head">
+            <h3>Universal Childcare</h3>
+            <span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+          <p class="stance">It shouldn't cost someone's <b>entire salary</b> just to care for their young children.</p>
+          <div class="acts">
+            <p class="count">3 actions</p>
+            <ul>
+              <li><b>01</b><span>Make preschool free for all 3 &amp; 4 year olds.</span></li>
+              <li><b>02</b><span>Introduce a ballot measure to stabilize infant &amp; toddler care in Denver.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+    </div>
+    <ol class="legend">
+      <li><b class="n">1</b><div><strong>Arrow chip beside the title</strong>The one cue that is on screen the moment a card appears, including on a phone where the footer is a screen away. A filled primary circle, so it reads as a control rather than an icon. It is decorative to a screen reader, so the link's name doesn't change for it.</div></li>
+      <li><b class="n">2</b><div><strong>A footer that says what happens</strong>A full-width strip pinned to the bottom of the card, saying "Read the full guide" with an arrow. This is the cue that names the action. It is a <code class="inl">&lt;span&gt;</code> inside the existing single link, not a second link, so the markup stays valid and there is still one tab stop per card.</div></li>
+      <li><b class="n">3</b><div><strong>Resting depth and a primary-tinted edge</strong>A soft shadow and a border that is the brand blue at 50%, about 3.4:1 against white instead of today's 1.4:1. Hover deepens the shadow, firms the border to solid primary, nudges both arrows right and darkens the footer.</div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="block">
+  <h2 class="sec">States</h2>
+  <p class="lede">Rest, hover, pressed and keyboard focus. On a touch screen there is no hover, so pressed is the one state a finger ever sees; it deepens the footer and settles the card back down so the tap registers.</p>
+  <div class="stage">
+    <div class="pair">
+      <div><p class="cap">Rest</p>
+        <a class="gc gc--new gc--short" role="link" tabindex="0"><div class="gc__body"><div class="head"><h3>Food Security</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="stance">Eating healthy should be <b>accessible to all,</b> not just the wealthy.</p></div><div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a></div>
+      <div><p class="cap">Hover</p>
+        <a class="gc gc--new gc--short is-hover" role="link" tabindex="0"><div class="gc__body"><div class="head"><h3>Food Security</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="stance">Eating healthy should be <b>accessible to all,</b> not just the wealthy.</p></div><div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a></div>
+      <div><p class="cap">Pressed</p>
+        <a class="gc gc--new gc--short is-press" role="link" tabindex="0"><div class="gc__body"><div class="head"><h3>Food Security</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="stance">Eating healthy should be <b>accessible to all,</b> not just the wealthy.</p></div><div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a></div>
+      <div><p class="cap">Keyboard focus</p>
+        <a class="gc gc--new gc--short is-focus" role="link" tabindex="0"><div class="gc__body"><div class="head"><h3>Food Security</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="stance">Eating healthy should be <b>accessible to all,</b> not just the wealthy.</p></div><div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a></div>
+    </div>
+  </div>
+  <p class="note"><strong>Reduced motion.</strong> The card currently has no <code class="inl">prefers-reduced-motion</code> handling for its lift. The proposal adds it: colour and shadow still change, but nothing moves.</p>
+</section>
+
+<!-- 4 -->
+<section class="block">
+  <h2 class="sec">Footer: solid or tinted</h2>
+  <p class="lede">The one look that is a matter of taste rather than of clickability, so it is left as an open question (Q1 in the plan). Solid is recommended; tinted is the calmer fallback if six solid strips feel heavy next to the artwork.</p>
+  <div class="stage">
+    <div class="pair">
+      <div><p class="cap new">Solid primary (recommended)</p>
+        <a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto"><div class="gc__body"><div class="head"><h3>Accountable Public Safety</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="stance">Law enforcement should be <b>by the people and for the people.</b> Not against the people.</p></div><div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a></div>
+      <div><p class="cap">Tinted, solid on hover</p>
+        <a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto"><div class="gc__body"><div class="head"><h3>Accountable Public Safety</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="stance">Law enforcement should be <b>by the people and for the people.</b> Not against the people.</p></div><div class="foot foot--tint"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a></div>
+    </div>
+    <p style="font-size:.85rem; color: rgb(0 0 0 / .6); margin: 1rem 0 0; max-width:none;">Contrast: white on primary 13.1:1; primary on the tinted neutral 9.9:1. Both clear AA for the footer text with room to spare.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="block">
+  <h2 class="sec">Why two cues, on a phone</h2>
+  <p class="lede">At 375px wide each card is 716 to 740px tall, measured on the running site. When a card scrolls into view the reader sees its top, and the footer is most of a screen further down.</p>
+  <div class="phonewrap">
+    <div class="phone" role="img" aria-label="A phone screen showing the top of a card: the title with its arrow chip, the stance and the start of the artwork. The footer is below the fold.">
+      <div class="scr">
+        <a class="gc gc--new" role="link" tabindex="-1" style="height:auto; pointer-events:none;">
+          <div class="gc__body" style="padding: 1.1rem;">
+            <div class="head"><h3>Affordable Housing</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+            <p class="stance">In the past 10 years, rent has increased at almost <b>twice the rate as income</b> in Denver. We are in a crisis.</p>
+            <div class="art"><svg viewBox="0 0 120 100" aria-hidden="true"><rect x="14" y="40" width="34" height="50" fill="#3d6bb0" stroke="#1a2440" stroke-width="3"/><path d="M10 42 L31 8 L52 42Z" fill="#a98ad1" stroke="#1a2440" stroke-width="3"/><rect x="58" y="52" width="40" height="38" fill="#3d6bb0" stroke="#1a2440" stroke-width="3"/><path d="M54 54 L78 26 L102 54Z" fill="#e58a3a" stroke="#1a2440" stroke-width="3"/></svg></div>
+          </div>
+        </a>
+      </div>
+      <div class="fold"></div>
+      <div class="foldtag">Footer is below the fold</div>
+    </div>
+    <div class="measure">
+      <dl>
+        <dt>Card height</dt><dd><strong>716 to 740px</strong> at 375px wide, six cards on <code class="inl">/platform</code></dd>
+        <dt>Screen</dt><dd>About 812px tall, less the browser's own bars</dd>
+        <dt>Arrow chip</dt><dd>On screen the moment the title is</dd>
+        <dt>Footer</dt><dd>Reached after the artwork and the action list. It is what tells a reader who has read that far what to do next.</dd>
+      </dl>
+      <p class="note" style="margin-top:1.25rem;"><strong>The footer is not moved up.</strong> Putting a button directly under the stance would put it first on a phone, but it would sit between the words and the artwork and split the card in two. The footer stays where a reader finishes; the chip does the work at the top.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="block">
+  <h2 class="sec">The mini card on /why-me</h2>
+  <p class="lede">The condensed topic cards on the "Why me?" page link to the same guides with the same hairline treatment, so they have the same problem. They get the resting depth and a small arrow chip. They do not get a footer: their content is already the action list, and a strip would double the height of a compact card.</p>
+  <div class="stage">
+    <div class="pair">
+      <div><p class="cap old">Today</p>
+        <a class="mini mini--old" role="link" tabindex="0"><div class="mh"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>Affordable Housing</h3></div><p class="count">3 actions</p><ul><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Amend Blueprint Denver to allow for rezoning of exclusionary residential zones.</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Legalize congregational housing in Denver.</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Fine owners leaving rental units vacant for 6 months, or longer.</span></li></ul></a></div>
+      <div><p class="cap new">Proposed</p>
+        <a class="mini mini--new" role="link" tabindex="0" aria-label="Affordable Housing, 3 actions"><div class="mh"><h3><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>Affordable Housing</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><p class="count">3 actions</p><ul><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Amend Blueprint Denver to allow for rezoning of exclusionary residential zones.</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Legalize congregational housing in Denver.</span></li><li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Fine owners leaving rental units vacant for 6 months, or longer.</span></li></ul></a></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="block">
+  <h2 class="sec">Spanish</h2>
+  <p class="lede">The same components render <code class="inl">/es/platform</code>, the Spanish home page and <code class="inl">/es/issues</code>, so the footer needs a Spanish label that fits. At the narrowest three-column width (about 293px per card at 1024px) the longer label still fits on one line.</p>
+  <div class="stage">
+    <div class="narrow" style="width: 18.3rem; max-width: 100%;">
+      <a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto" aria-label="Vivienda Asequible, Leer la guía completa"><div class="gc__body"><div class="head"><h3>Vivienda Asequible</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div><div class="acts" style="margin-top:.75rem"><p class="count">3 acciones</p></div></div><div class="foot"><span>Leer la guía completa</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div></a>
+    </div>
+  </div>
+</section>
+
+</div>
