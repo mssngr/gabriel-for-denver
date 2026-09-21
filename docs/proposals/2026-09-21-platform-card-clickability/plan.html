@@ -233,7 +233,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <h3>Make each action row its own link into that policy</h3>
     <dl>
       <dt>Goal</dt><dd>Restructure both card components to the stretched-link pattern: a heading link to the guide, covering the card, and each action row a real link to <code>#plank-&lt;slug&gt;</code> above it. Row chevron, tint and underline, card-level hover stepping aside while a row is hovered, separate focus rings. Lands with a keyboard and screen-reader pass and a check that a row opens the right sheet in both languages.</dd>
-      <dt>Touches</dt><dd><code>src/components/platform/guide-card.astro</code> and <code>topic-actions.astro</code> (article, heading link with <code>::after</code>, row links via <code>plankUrl</code>, footer <code>aria-hidden</code>); <code>src/styles/global.css</code> (<code>card-link</code> gains the <code>:has()</code> step-aside and row styles).</dd>
+      <dt>Touches</dt><dd><code>src/components/platform/guide-card.astro</code> and <code>topic-actions.astro</code> (article, heading link with <code>::after</code>, row links via <code>plankUrl</code>, footer <code>aria-hidden</code>); <code>src/styles/global.css</code> (<code>card-link</code> gains the <code>:has()</code> step-aside and row styles, and the mini-card rows about 6px more vertical padding, Q9).</dd>
       <dt>Tests</dt><dd><code>src/lib/platform.test.ts</code>: <code>plankUrl</code> with a relative English and Spanish guide path (<code>/es/platform/...#plank-...</code>). <code>src/styles/global.test.ts</code>: the card's lift is excluded while a row is hovered. Manual: tab order is title then rows; <code>bun run build</code>.</dd>
       <dt>Depends on</dt><dd>PR 1 of 3</dd>
     </dl>
@@ -315,38 +315,42 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
   </div>
 
   <div class="q">
-    <h3><span class="qn">Q7:</span> When someone taps an action row, should the guide page open with that policy's sheet already open, or scroll to the policy's band with the sheet closed?</h3>
+    <h3><span class="qn">Q7:</span> When someone taps an action row, should the guide page open with that policy's sheet already open, or scroll to the policy's band with the sheet closed?<span class="tag ok">&#10003; Answered</span></h3>
     <p>Rows now lead somewhere specific, so what the reader sees on arrival is a real decision. Opening the sheet uses existing behaviour: a <code class="inl">#plank-&lt;slug&gt;</code> hash opens the panel on load and fires <code class="inl">plank_detail_opened</code>, and the anchor is guaranteed to exist (see the Deep links finding). The cost is that the sheet covers the page, and the reader hasn't yet seen the band's headline statistic or quote until they close it.</p>
     <dl>
       <dt>My Recommendation</dt><dd>Open the sheet. The card row already showed the commitment as a headline, so the sheet's reasoning and sources are the natural next step, and it needs no new code or anchors.</dd>
       <dt>Alternatives to Consider</dt><dd>Scroll to the band with the sheet closed, so the reader sees the statistic first and chooses to read on. That needs a second anchor scheme on the bands and gives up the <code class="inl">plank_detail_opened</code> signal for these arrivals.</dd>
+      <dt>Answer</dt><dd class="answer">Open the sheet on arrival, per the recommendation. Confirmed in chat, 21 Sept 2026. It uses the existing <code class="inl">#plank-&lt;slug&gt;</code> handling, so PR 2 of 3 needs no new anchors.</dd>
     </dl>
   </div>
 
   <div class="q">
-    <h3><span class="qn">Q8:</span> Should each action row show a chevron at rest, or only a tint and underline on hover?</h3>
+    <h3><span class="qn">Q8:</span> Should each action row show a chevron at rest, or only a tint and underline on hover?<span class="tag ok">&#10003; Answered</span></h3>
     <p>The problem being fixed is that people don't know things are clickable, and a hover-only cue is invisible on a phone. A chevron on every row adds 18 small icons across the index and makes each card busier.</p>
     <dl>
       <dt>My Recommendation</dt><dd>Chevron at rest, as in the mockup. Discoverability on touch is the whole reason for this change, and a small muted chevron is the least noisy cue that works without hover.</dd>
       <dt>Alternatives to Consider</dt><dd>Hover-only tint and underline, with no chevron, if the chevrons make the cards feel cluttered once real. Rows would then rely on the card's other cues to suggest they are tappable.</dd>
+      <dt>Answer</dt><dd class="answer">Chevron at rest on every row, per the recommendation. Confirmed in chat, 21 Sept 2026.</dd>
     </dl>
   </div>
 
   <div class="q">
-    <h3><span class="qn">Q9:</span> Should the action rows on the <code class="inl">/why-me</code> mini cards be links too?</h3>
+    <h3><span class="qn">Q9:</span> Should the action rows on the <code class="inl">/why-me</code> mini cards be links too?<span class="tag ok">&#10003; Answered</span></h3>
     <p>Q4 kept the mini cards' visuals small (chip and depth, no footer), but F2 brought rows in scope without saying which cards. A reader who learns on <code class="inl">/platform</code> that rows are links would reasonably expect the same on <code class="inl">/why-me</code>, whose rows are the entire content. The rows there are small text lines about 20 to 36px tall, so they need padding to be comfortable touch targets, which makes each card slightly taller.</p>
     <dl>
       <dt>My Recommendation</dt><dd>Yes, the same structure and behaviour as the big card, with about 6px of extra vertical padding per row. One behaviour to learn across the site is worth a slightly taller card.</dd>
       <dt>Alternatives to Consider</dt><dd>Leave mini-card rows as plain text and link only the card. It keeps the compact card compact, at the cost of the two cards behaving differently.</dd>
+      <dt>Answer</dt><dd class="answer">Yes: the mini-card rows are links, with the same structure and about 6px of extra vertical padding per row, per the recommendation. Confirmed in chat, 21 Sept 2026. PR 2 of 3 covers both card components.</dd>
     </dl>
   </div>
 
   <div class="q">
-    <h3><span class="qn">Q10:</span> Should <code class="inl">guide_card_clicked</code> also cover the <code class="inl">/why-me</code> cards and open-in-new-tab clicks?</h3>
+    <h3><span class="qn">Q10:</span> Should <code class="inl">guide_card_clicked</code> also cover the <code class="inl">/why-me</code> cards and open-in-new-tab clicks?<span class="tag ok">&#10003; Answered</span></h3>
     <p>You asked for a click event on &ldquo;each of these six surfaces&rdquo;. The guide cards live on six routes: <code class="inl">/platform</code>, <code class="inl">/</code> and <code class="inl">/issues</code>, each in English and Spanish. F3, which you also brought into scope, named <code class="inl">/why-me</code> as well, and it adds two more routes, eight in all. I read &ldquo;six&rdquo; as the guide-card routes and kept why-me because F3 listed it; if you meant to leave it out, that is the answer to this question. Separately, a plain <code class="inl">click</code> listener misses middle-click and ctrl-click, which is how someone opens a card in a new tab.</p>
     <dl>
       <dt>My Recommendation</dt><dd>Include why-me (its <code class="inl">surface</code> value is <code class="inl">why-me</code>, so it can be filtered out in PostHog at no cost) and count <code class="inl">auxclick</code> as well as <code class="inl">click</code>. A card opened in a new tab is still a card that worked.</dd>
       <dt>Alternatives to Consider</dt><dd>Exclude why-me if the six are all that matter, or count plain clicks only for simplicity. The latter under-counts people who open guides in tabs.</dd>
+      <dt>Answer</dt><dd class="answer">Include <code class="inl">/why-me</code> and count <code class="inl">auxclick</code> as well as <code class="inl">click</code>, per the recommendation. Confirmed in chat, 21 Sept 2026. So <code class="inl">/why-me</code> stays in: eight routes in all, and PR 3 of 3 sends the event from each.</dd>
     </dl>
   </div>
 

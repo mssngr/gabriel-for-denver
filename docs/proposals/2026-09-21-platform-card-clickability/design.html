@@ -137,6 +137,8 @@ section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-t
 .gc--new li:hover span, .gc--new li.is-hover span, .mini--new li:hover span { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .gc--new li:hover::after, .gc--new li.is-hover::after, .mini--new li:hover::after { transform: translateX(3px); }
 .gc--new li:focus-visible, .gc--new li.is-focus { outline: 2px solid var(--b-primary); outline-offset: -2px; }
+.mini--new ul { gap: .25rem; }
+.mini--new li { padding-block: .375rem; }
 .mini--new li::after { width: .9rem; height: .9rem; margin-top: .1rem; align-self: flex-start; }
 .pair.rows3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 62rem) { .pair.rows3 { grid-template-columns: minmax(0, 1fr); } }
