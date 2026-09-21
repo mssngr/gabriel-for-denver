@@ -1,5 +1,5 @@
 <title>Pressable Guide Cards</title>
-<meta name="description" content="Making the platform guide cards read as clickable with an arrow, a labelled footer and resting depth, then links each action and tracks clicks, in three PRs.">
+<meta name="description" content="Making the platform guide cards read as clickable with an arrow, a labelled footer and resting depth, links each action to its policy and tracks clicks, in one PR.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap">
@@ -116,7 +116,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
 <section class="block">
   <h2 class="sec">Summary</h2>
   <p>Each guide card on <code class="inl">/platform</code>, the home page and <code class="inl">/issues</code> (and their Spanish twins) is a single link, but it looks like a finished summary: a faint grey hairline, no arrow, no verb, and every action already listed on the face. The only hint is a 4px lift on hover, which needs a pointer and never appears on a phone. This proposal adds three signifiers to the one shared component: a filled arrow chip beside the title, a full-width footer reading &ldquo;Read the full guide&rdquo;, and a shadow and brand-tinted border at rest, with hover, pressed and focus states to match. The condensed cards on <code class="inl">/why-me</code> get the chip and the depth.</p>
-  <p>Review added two things. Every action row on a card becomes its own link, straight to that policy's sheet, so the list itself is the second cue that the card is clickable and a visitor who came for one policy skips a step. And a dedicated <code class="inl">guide_card_clicked</code> PostHog event records every click with the surface it came from, in place of a before-and-after baseline. Three PRs, in that order: the look, then the links, then the event. No new dependency, no content change, and it covers eight page routes at once.</p>
+  <p>Review added two things. Every action row on a card becomes its own link, straight to that policy's sheet, so the list itself is the second cue that the card is clickable and a visitor who came for one policy skips a step. And a dedicated <code class="inl">guide_card_clicked</code> PostHog event records every click with the surface it came from, in place of a before-and-after baseline. One PR, built as three commits in that order (the look, then the links, then the event) so it can be read in turn. No new dependency, no content change, and it covers eight page routes at once.</p>
 </section>
 
 <section class="block">
@@ -162,10 +162,10 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
   <p><code class="inl">guide_card_clicked</code> carries <code class="inl">surface</code> (<code class="inl">platform</code>, <code class="inl">home</code>, <code class="inl">issues</code> or <code class="inl">why-me</code>), <code class="inl">lang</code>, <code class="inl">guide_slug</code> and <code class="inl">target</code> (<code class="inl">card</code> or <code class="inl">action</code>), plus <code class="inl">plank_slug</code> on an action. Surface and language together separate the six guide-card routes (three surfaces in two languages) from each other, and the two <code class="inl">/why-me</code> routes make eight (Q10). The same component appears on <code class="inl">/</code> and <code class="inl">/issues</code>, so the surface can't be a prop; it comes from the URL through a small pure function. One delegated listener handles every card on a page. The event stays consistent with what the destination already reports: the guide page fires <code class="inl">platform_guide_viewed</code> and, after a row click, <code class="inl">plank_detail_opened</code>, so a click and its arrival can be joined in PostHog.</p>
 
   <h3 class="sub">Why this rather than something smaller or bigger</h3>
-  <p>The footer is the piece doing the work the current card lacks: it says what happens. The chip is there because the footer is off-screen on a phone when the card first appears. Depth is there because the footer alone still leaves a card that looks flat until read to the bottom. Rows that link give the list itself a job, so a card that was a dead-end summary becomes a menu of policies. None of it needs a dependency or a content change, and nothing new runs on the server. The real cost is review effort, which is why it is split into three PRs.</p>
+  <p>The footer is the piece doing the work the current card lacks: it says what happens. The chip is there because the footer is off-screen on a phone when the card first appears. Depth is there because the footer alone still leaves a card that looks flat until read to the bottom. Rows that link give the list itself a job, so a card that was a dead-end summary becomes a menu of policies. None of it needs a dependency or a content change, and nothing new runs on the server. The real cost is review effort, which is why the single PR is built as three commits, one idea each.</p>
 
   <h3 class="sub">Shared styling and where the logic goes</h3>
-  <p>The raised-card class string is currently duplicated in <code class="inl">guide-card.astro</code> and <code class="inl">topic-actions.astro</code> with a comment saying they match. PR 1 moves it to one <code class="inl">@utility card-link</code> in <code class="inl">global.css</code>, following the existing <code class="inl">@utility btn</code>, so the two can't drift again. Astro components can't be tested here (see <code class="inl">AGENTS.md</code>), so copy and logic go into pure functions with tests beside them: <code class="inl">guideCardCta(lang)</code> and <code class="inl">guideCardLabel(title, lang)</code> in <code class="inl">src/lib/platform.ts</code> next to <code class="inl">actionCount</code>; <code class="inl">cardSurface(pathname)</code> and <code class="inl">cardClickProps(link, lang)</code> in a new <code class="inl">src/lib/card-tracking.ts</code>, tested under jsdom the way <code class="inl">sheet.ts</code> is. <code class="inl">global.test.ts</code> already compiles the stylesheet to check one utility; it gets cases checking that the card's hover styles sit inside <code class="inl">@media (hover:hover)</code>, so a touch device can never be left with a stuck raised card.</p>
+  <p>The raised-card class string is currently duplicated in <code class="inl">guide-card.astro</code> and <code class="inl">topic-actions.astro</code> with a comment saying they match. The PR moves it to one <code class="inl">@utility card-link</code> in <code class="inl">global.css</code>, following the existing <code class="inl">@utility btn</code>, so the two can't drift again. Astro components can't be tested here (see <code class="inl">AGENTS.md</code>), so copy and logic go into pure functions with tests beside them: <code class="inl">guideCardCta(lang)</code> and <code class="inl">guideCardLabel(title, lang)</code> in <code class="inl">src/lib/platform.ts</code> next to <code class="inl">actionCount</code>; <code class="inl">cardSurface(pathname)</code> and <code class="inl">cardClickProps(link, lang)</code> in a new <code class="inl">src/lib/card-tracking.ts</code>, tested under jsdom the way <code class="inl">sheet.ts</code> is. <code class="inl">global.test.ts</code> already compiles the stylesheet to check one utility; it gets cases checking that the card's hover styles sit inside <code class="inl">@media (hover:hover)</code>, so a touch device can never be left with a stuck raised card.</p>
 </section>
 
 <section class="block">
@@ -215,38 +215,16 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
 
 <section class="block">
   <h2 class="sec">Phases, PRs, and Spikes</h2>
-  <p class="lede">Three PRs, no phases and no Spike. Each is one idea, and the app is coherent at every boundary: after PR 1 the cards are single links with the new look; after PR 2 they have the same look and more targets; after PR 3 they also report clicks. PR 1 goes first because it is what was asked for and the lowest-risk change, and it shouldn't wait on a markup restructure. PR 3 goes last so the event describes the final link structure and doesn't have to change when PR 2 lands. PR 2 and PR 3 could be reviewed together if that is easier; separate, each stays small enough to read in one sitting.</p>
+  <p class="lede">One PR, no phases and no Spike, by decision in review: earlier drafts split it in three (the look, the row links, the event). It is bigger than most, because it bundles a visual change, a change to the cards' link structure and new instrumentation. To keep it readable it is built as three commits in that order, each coherent on its own, so a reviewer can go commit by commit. The link restructure is the one part with real behavioural risk (tab order, screen-reader names, which sheet opens), so it is the commit to spend review time on. There is no schema, no migration and no real unknown that reasoning can't settle, so no Spike.</p>
 
   <div class="item">
-    <span class="item__no">PR 1 of 3</span>
-    <h3>Make the guide cards look clickable</h3>
+    <span class="item__no">PR 1 of 1</span>
+    <h3>Make the guide cards look clickable, link each action to its policy, and track clicks</h3>
     <dl>
-      <dt>Goal</dt><dd>Add the arrow chip, the &ldquo;Read the full guide&rdquo; footer and resting depth to <code>GuideCard</code>, and the chip and depth to the <code>/why-me</code> mini cards, in both languages, with one shared style. The cards are still one link each. Lands with before and after screenshots at 320, 375, 768 and 1024px.</dd>
-      <dt>Touches</dt><dd><code>src/components/platform/guide-card.astro</code> (link becomes <code>flex flex-col overflow-hidden</code>, body padding moves inward, footer added, <code>aria-label</code> from the new helper); <code>src/components/platform/topic-actions.astro</code> (chip, shared utility); <code>src/styles/global.css</code> (<code>@utility card-link</code>); <code>src/lib/platform.ts</code> (<code>guideCardCta</code>, <code>guideCardLabel</code>).</dd>
-      <dt>Tests</dt><dd><code>src/lib/platform.test.ts</code>: the English and Spanish footer text; the label contains both the title and the footer text, in that order (WCAG 2.5.3, Label in Name). <code>src/styles/global.test.ts</code>: <code>card-link</code>'s lift is inside <code>@media (hover:hover)</code>; its reduced-motion rule removes the movement. Then <code>bun run build</code>, and a manual pass through the states on a phone-width viewport.</dd>
+      <dt>Goal</dt><dd>Give <code>GuideCard</code> the arrow chip, the &ldquo;Read the full guide&rdquo; footer and resting depth; make each action row its own link to <code>#plank-&lt;slug&gt;</code> on the stretched-link pattern; and send <code>guide_card_clicked</code> from every route that shows cards. The <code>/why-me</code> mini cards get the chip, the depth, linked rows and the event, but no footer. Both languages, one shared style. Lands with before and after screenshots at 320, 375, 768 and 1024px. Commits, in order: (1) the look, (2) rows as links, (3) the event.</dd>
+      <dt>Touches</dt><dd><code>src/components/platform/guide-card.astro</code> (article with a heading link and <code>::after</code> overlay, chip, <code>aria-hidden</code> footer, row links via <code>plankUrl</code>, <code>aria-label</code> from the new helper, data attributes, the tracking script); <code>src/components/platform/topic-actions.astro</code> (chip, linked rows with about 6px more padding, shared utility, data attributes); <code>src/styles/global.css</code> (<code>@utility card-link</code>, with the <code>:has()</code> step-aside and row styles); <code>src/lib/platform.ts</code> (<code>guideCardCta</code>, <code>guideCardLabel</code>); new <code>src/lib/card-tracking.ts</code> and <code>card-tracking.test.ts</code>; new <code>src/components/platform/card-tracking.astro</code> (a bundled script, like <code>sheet-behavior.astro</code>); <code>.posthog-events.json</code> (register the event).</dd>
+      <dt>Tests</dt><dd><code>src/lib/platform.test.ts</code>: the English and Spanish footer text; the label contains both the title and the footer text, in that order (WCAG 2.5.3, Label in Name); <code>plankUrl</code> with a relative English and Spanish guide path (<code>/es/platform/...#plank-...</code>). <code>src/styles/global.test.ts</code>: <code>card-link</code>'s lift is inside <code>@media (hover:hover)</code>, its reduced-motion rule removes the movement, and the lift is excluded while a row is hovered. <code>src/lib/card-tracking.test.ts</code> under jsdom: <code>cardSurface</code> for <code>/</code>, <code>/es</code>, <code>/issues</code>, <code>/es/issues</code>, <code>/platform</code>, <code>/es/platform</code>, <code>/why-me</code>, <code>/es/why-me</code>, a trailing slash, and an unrelated path (no event); <code>cardClickProps</code> for a card link and a row link (only the row carries <code>plank_slug</code>); a click outside any card sends nothing; a middle-click on a card is counted. Manual: the states on a phone-width viewport; tab order is title then rows; a row opens the right sheet in both languages; the event arrives with the right properties. Then <code>bun run build</code>.</dd>
       <dt>Depends on</dt><dd>none. The Spanish footer wording is confirmed by a Spanish speaker on the campaign before merge (Q2).</dd>
-    </dl>
-  </div>
-
-  <div class="item">
-    <span class="item__no">PR 2 of 3</span>
-    <h3>Make each action row its own link into that policy</h3>
-    <dl>
-      <dt>Goal</dt><dd>Restructure both card components to the stretched-link pattern: a heading link to the guide, covering the card, and each action row a real link to <code>#plank-&lt;slug&gt;</code> above it. Row chevron, tint and underline, card-level hover stepping aside while a row is hovered, separate focus rings. Lands with a keyboard and screen-reader pass and a check that a row opens the right sheet in both languages.</dd>
-      <dt>Touches</dt><dd><code>src/components/platform/guide-card.astro</code> and <code>topic-actions.astro</code> (article, heading link with <code>::after</code>, row links via <code>plankUrl</code>, footer <code>aria-hidden</code>); <code>src/styles/global.css</code> (<code>card-link</code> gains the <code>:has()</code> step-aside and row styles, and the mini-card rows about 6px more vertical padding, Q9).</dd>
-      <dt>Tests</dt><dd><code>src/lib/platform.test.ts</code>: <code>plankUrl</code> with a relative English and Spanish guide path (<code>/es/platform/...#plank-...</code>). <code>src/styles/global.test.ts</code>: the card's lift is excluded while a row is hovered. Manual: tab order is title then rows; <code>bun run build</code>.</dd>
-      <dt>Depends on</dt><dd>PR 1 of 3</dd>
-    </dl>
-  </div>
-
-  <div class="item">
-    <span class="item__no">PR 3 of 3</span>
-    <h3>Record a <code>guide_card_clicked</code> event with its surface</h3>
-    <dl>
-      <dt>Goal</dt><dd>One delegated click listener on every card, sending <code>surface</code>, <code>lang</code>, <code>guide_slug</code>, <code>target</code> and, for a row, <code>plank_slug</code>, from all eight routes that show cards (Q10).</dd>
-      <dt>Touches</dt><dd>new <code>src/lib/card-tracking.ts</code> and <code>card-tracking.test.ts</code>; new <code>src/components/platform/card-tracking.astro</code> (a bundled script, like <code>sheet-behavior.astro</code>); <code>guide-card.astro</code> and <code>topic-actions.astro</code> (data attributes, include the script); <code>.posthog-events.json</code> (register the event, as the repo does for the others).</dd>
-      <dt>Tests</dt><dd><code>card-tracking.test.ts</code> under jsdom: <code>cardSurface</code> for <code>/</code>, <code>/es</code>, <code>/issues</code>, <code>/es/issues</code>, <code>/platform</code>, <code>/es/platform</code>, <code>/why-me</code>, <code>/es/why-me</code>, a trailing slash, and an unrelated path (no event); <code>cardClickProps</code> for a card link and for a row link (only the row carries <code>plank_slug</code>); a click outside any card sends nothing; a middle-click on a card is counted.</dd>
-      <dt>Depends on</dt><dd>PR 2 of 3</dd>
     </dl>
   </div>
 </section>
@@ -270,7 +248,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd>&ldquo;Read the full guide&rdquo; and &ldquo;Leer la gu&iacute;a completa&rdquo;. It matches the intro's word, tells a reader there is more than the card shows, and fits at that width (see the last mockup). Have a Spanish speaker on the campaign confirm the wording before merge.</dd>
       <dt>Alternatives to Consider</dt><dd>&ldquo;See the reasoning&rdquo; (says what the guide adds, but is vaguer about what happens on tap). &ldquo;See the full plan&rdquo; (friendlier, but &ldquo;plan&rdquo; blurs with the site's use of &ldquo;actions&rdquo;). A generic &ldquo;Learn more&rdquo; is what this label is meant to improve on.</dd>
-      <dt>Answer</dt><dd class="answer">&ldquo;Read the full guide&rdquo; and &ldquo;Leer la gu&iacute;a completa&rdquo;, per the recommendation. Confirmed in chat, 21 Sept 2026. The Spanish speaker check is now a dependency of PR 1 of 3.</dd>
+      <dt>Answer</dt><dd class="answer">&ldquo;Read the full guide&rdquo; and &ldquo;Leer la gu&iacute;a completa&rdquo;, per the recommendation. Confirmed in chat, 21 Sept 2026. The Spanish speaker check is now a dependency of the PR.</dd>
     </dl>
   </div>
 
@@ -280,7 +258,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd><code class="inl">${title}, ${cta}</code>, built by <code class="inl">guideCardLabel</code>. It matches the mini card's existing <code class="inl">${title}, ${count}</code> shape and keeps the announcement short. The mini card's label stays as it is, since it gets no footer.</dd>
       <dt>Alternatives to Consider</dt><dd>Drop <code class="inl">aria-label</code> and let the full content name the link. It satisfies 2.5.3 trivially but reads the stance and every action aloud on each card, and is the verbosity the label was added to avoid.</dd>
-      <dt>Answer</dt><dd class="answer"><code class="inl">${title}, ${cta}</code>, per the recommendation. Confirmed in chat, 21 Sept 2026. With rows now links (PR 2), the label sits on the heading link rather than on the whole card.</dd>
+      <dt>Answer</dt><dd class="answer"><code class="inl">${title}, ${cta}</code>, per the recommendation. Confirmed in chat, 21 Sept 2026. With rows now links, the label sits on the heading link rather than on the whole card.</dd>
     </dl>
   </div>
 
@@ -290,7 +268,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd>Chip and depth only. The compact card keeps its density, and the chip plus tinted edge is enough to break the &ldquo;finished summary&rdquo; look there.</dd>
       <dt>Alternatives to Consider</dt><dd>Same footer as the big card, for strict consistency. Reasonable if the two are ever seen side by side; today they sit on different pages.</dd>
-      <dt>Answer</dt><dd class="answer">Chip and depth only, per the recommendation. Confirmed in chat, 21 Sept 2026. Their action rows still become links in PR 2 (Q9).</dd>
+      <dt>Answer</dt><dd class="answer">Chip and depth only, per the recommendation. Confirmed in chat, 21 Sept 2026. Their action rows still become links in the same PR (Q9).</dd>
     </dl>
   </div>
 
@@ -300,7 +278,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd>Take the last 30 days of index-to-guide rate for <code class="inl">/platform</code> and the home page section now (about ten minutes in PostHog), merge the PR, and compare after two to four weeks. No A/B split.</dd>
       <dt>Alternatives to Consider</dt><dd>Skip the baseline and judge by feedback alone. Or add a dedicated click event first (F3) so each of the six surfaces can be told apart.</dd>
-      <dt>Answer</dt><dd class="answer">Skip the baseline, and add a dedicated click event for the surfaces instead. Chosen in chat, 21 Sept 2026. That event is F3, now PR 3 of 3. Q10 covers what it counts.</dd>
+      <dt>Answer</dt><dd class="answer">Skip the baseline, and add a dedicated click event for the surfaces instead. Chosen in chat, 21 Sept 2026. That event is F3, now part of the PR. Q10 covers what it counts.</dd>
     </dl>
   </div>
 
@@ -320,7 +298,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd>Open the sheet. The card row already showed the commitment as a headline, so the sheet's reasoning and sources are the natural next step, and it needs no new code or anchors.</dd>
       <dt>Alternatives to Consider</dt><dd>Scroll to the band with the sheet closed, so the reader sees the statistic first and chooses to read on. That needs a second anchor scheme on the bands and gives up the <code class="inl">plank_detail_opened</code> signal for these arrivals.</dd>
-      <dt>Answer</dt><dd class="answer">Open the sheet on arrival, per the recommendation. Confirmed in chat, 21 Sept 2026. It uses the existing <code class="inl">#plank-&lt;slug&gt;</code> handling, so PR 2 of 3 needs no new anchors.</dd>
+      <dt>Answer</dt><dd class="answer">Open the sheet on arrival, per the recommendation. Confirmed in chat, 21 Sept 2026. It uses the existing <code class="inl">#plank-&lt;slug&gt;</code> handling, so the PR needs no new anchors.</dd>
     </dl>
   </div>
 
@@ -340,7 +318,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd>Yes, the same structure and behaviour as the big card, with about 6px of extra vertical padding per row. One behaviour to learn across the site is worth a slightly taller card.</dd>
       <dt>Alternatives to Consider</dt><dd>Leave mini-card rows as plain text and link only the card. It keeps the compact card compact, at the cost of the two cards behaving differently.</dd>
-      <dt>Answer</dt><dd class="answer">Yes: the mini-card rows are links, with the same structure and about 6px of extra vertical padding per row, per the recommendation. Confirmed in chat, 21 Sept 2026. PR 2 of 3 covers both card components.</dd>
+      <dt>Answer</dt><dd class="answer">Yes: the mini-card rows are links, with the same structure and about 6px of extra vertical padding per row, per the recommendation. Confirmed in chat, 21 Sept 2026. The PR covers both card components.</dd>
     </dl>
   </div>
 
@@ -350,7 +328,7 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
     <dl>
       <dt>My Recommendation</dt><dd>Include why-me (its <code class="inl">surface</code> value is <code class="inl">why-me</code>, so it can be filtered out in PostHog at no cost) and count <code class="inl">auxclick</code> as well as <code class="inl">click</code>. A card opened in a new tab is still a card that worked.</dd>
       <dt>Alternatives to Consider</dt><dd>Exclude why-me if the six are all that matter, or count plain clicks only for simplicity. The latter under-counts people who open guides in tabs.</dd>
-      <dt>Answer</dt><dd class="answer">Include <code class="inl">/why-me</code> and count <code class="inl">auxclick</code> as well as <code class="inl">click</code>, per the recommendation. Confirmed in chat, 21 Sept 2026. So <code class="inl">/why-me</code> stays in: eight routes in all, and PR 3 of 3 sends the event from each.</dd>
+      <dt>Answer</dt><dd class="answer">Include <code class="inl">/why-me</code> and count <code class="inl">auxclick</code> as well as <code class="inl">click</code>, per the recommendation. Confirmed in chat, 21 Sept 2026. So <code class="inl">/why-me</code> stays in: eight routes in all, and the PR sends the event from each.</dd>
     </dl>
   </div>
 
@@ -363,27 +341,27 @@ code.inl { font-family: var(--f-mono); font-size: .85em; background: var(--rule-
       <dt>What is this?</dt><dd>Read the same PostHog numbers as Q5's baseline and note the change.</dd>
       <dt>Why do this?</dt><dd>The premise, that visitors miss the click, is only inferred. If the number doesn't move, the next options in the list above (a stronger title cue, or the per-action links in F2) should be tried instead of assuming the job is done.</dd>
       <dt>Why isn't this in the plan?</dt><dd>It needs weeks of traffic on the shipped change. There is nothing to compare against until then.</dd>
-      <dt>Decision</dt><dd class="answer">Declined in chat, 21 Sept 2026, together with the baseline in Q5. It stays in the list as a record so the number isn't reused. F2 is in scope anyway, and PR 3's event gives a measure going forward.</dd>
+      <dt>Decision</dt><dd class="answer">Declined in chat, 21 Sept 2026, together with the baseline in Q5. It stays in the list as a record so the number isn't reused. F2 is in scope anyway, and the click event gives a measure going forward.</dd>
     </dl>
   </div>
 
   <p class="grouplabel opt">Optional</p>
   <div class="f">
-    <h3><span class="fn">F2:</span> Let each action row on a card link straight to its policy.<span class="tag in">Moved into scope: PR 2 of 3</span></h3>
+    <h3><span class="fn">F2:</span> Let each action row on a card link straight to its policy.<span class="tag in">Moved into scope</span></h3>
     <dl>
       <dt>What is this?</dt><dd>Restructure the card to the stretched-link pattern so every listed action is its own target, opening that policy's sheet on the guide page.</dd>
       <dt>Why do this?</dt><dd>It shortens the path for the visitor who came for one specific policy, and it makes the list itself look tappable.</dd>
       <dt>Why to not do this?</dt><dd>It changes the card's link structure and adds 18 tab stops across the index. It adds a second job to a card that has to look clickable first, and nobody has asked for it. Worth revisiting only if F1 says the whole-card fix wasn't enough.</dd>
-      <dt>Decision</dt><dd class="answer">Brought into scope in chat, 21 Sept 2026, as PR 2 of 3. The design questions it raised are Q7 to Q9.</dd>
+      <dt>Decision</dt><dd class="answer">Brought into scope in chat, 21 Sept 2026, in the single PR. The design questions it raised are Q7 to Q9.</dd>
     </dl>
   </div>
   <div class="f">
-    <h3><span class="fn">F3:</span> Add a <code class="inl">guide_card_clicked</code> event with a <code class="inl">surface</code> property.<span class="tag in">Moved into scope: PR 3 of 3</span></h3>
+    <h3><span class="fn">F3:</span> Add a <code class="inl">guide_card_clicked</code> event with a <code class="inl">surface</code> property.<span class="tag in">Moved into scope</span></h3>
     <dl>
       <dt>What is this?</dt><dd>A small inline capture, like the one in <code class="inl">sheet-behavior.astro</code>, recording which surface (index, home, issues, why-me) a card was clicked on.</dd>
       <dt>Why do this?</dt><dd>Autocapture can count clicks but can't tell the six surfaces apart cleanly.</dd>
       <dt>Why to not do this?</dt><dd>Autocapture plus <code class="inl">platform_guide_viewed</code> probably answers the real question already, and every new event has to be kept in <code class="inl">.posthog-events.json</code>. Not worth it unless Q5's numbers turn out too blunt.</dd>
-      <dt>Decision</dt><dd class="answer">Brought into scope in chat, 21 Sept 2026, as PR 3 of 3, in place of the Q5 baseline. What it counts is Q10.</dd>
+      <dt>Decision</dt><dd class="answer">Brought into scope in chat, 21 Sept 2026, in the single PR, in place of the Q5 baseline. What it counts is Q10.</dd>
     </dl>
   </div>
 </section>
