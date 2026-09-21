@@ -103,14 +103,14 @@ section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-t
 }
 .foot svg { transition: transform .2s ease-out; }
 .foot--tint { background: var(--b-neutral); color: var(--b-primary); }
-.gc--new:hover, .gc--new.is-hover {
+.gc--new:hover:not(:has(li:hover)), .gc--new.is-hover {
   transform: translateY(-4px); border-color: var(--b-primary);
   box-shadow: 0 2px 4px rgb(14 0 92 / .16), 0 18px 34px -12px rgb(14 0 92 / .45);
 }
-.gc--new:hover .chip, .gc--new.is-hover .chip { transform: translateX(3px); }
-.gc--new:hover .foot svg, .gc--new.is-hover .foot svg { transform: translateX(4px); }
-.gc--new:hover .foot, .gc--new.is-hover .foot { background: var(--b-tertiary); color: #fff; }
-.gc--new:hover .foot--tint, .gc--new.is-hover .foot--tint { background: var(--b-primary); }
+.gc--new:hover:not(:has(li:hover)) .chip, .gc--new.is-hover .chip { transform: translateX(3px); }
+.gc--new:hover:not(:has(li:hover)) .foot svg, .gc--new.is-hover .foot svg { transform: translateX(4px); }
+.gc--new:hover:not(:has(li:hover)) .foot, .gc--new.is-hover .foot { background: var(--b-tertiary); color: #fff; }
+.gc--new:hover:not(:has(li:hover)) .foot--tint, .gc--new.is-hover .foot--tint { background: var(--b-primary); }
 .gc--new.is-press {
   transform: translateY(-1px); border-color: var(--b-primary);
   box-shadow: 0 1px 2px rgb(14 0 92 / .16), 0 6px 14px -8px rgb(14 0 92 / .4);
@@ -119,9 +119,49 @@ section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-t
 .gc--new.is-press .foot--tint { background: var(--b-primary); }
 @media (prefers-reduced-motion: reduce) {
   .gc, .chip, .foot, .foot svg { transition: none; }
-  .gc--new:hover, .gc--new.is-hover, .gc--old:hover { transform: none; }
-  .gc--new:hover .chip, .gc--new:hover .foot svg { transform: none; }
+  .gc--new:hover:not(:has(li:hover)), .gc--new.is-hover, .gc--old:hover { transform: none; }
+  .gc--new:hover:not(:has(li:hover)) .chip, .gc--new:hover:not(:has(li:hover)) .foot svg { transform: none; }
 }
+
+
+/* rows are their own links (F2): chevron at rest, tint and underline on hover.
+   The card-level hover above steps aside while a row is hovered, so two
+   things never answer the same pointer. */
+.gc--new li, .mini--new li { cursor: pointer; border-radius: .5rem; margin-inline: -.5rem; padding-inline: .5rem; transition: background-color .15s ease-out; }
+.gc--new li::after, .mini--new li::after {
+  content: ""; flex: none; align-self: center; margin-left: auto; width: 1rem; height: 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231900a8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 6 6 6-6 6'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform .15s ease-out;
+}
+.gc--new li:hover, .gc--new li.is-hover, .mini--new li:hover { background: rgb(25 0 168 / .07); }
+.gc--new li:hover span, .gc--new li.is-hover span, .mini--new li:hover span { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.gc--new li:hover::after, .gc--new li.is-hover::after, .mini--new li:hover::after { transform: translateX(3px); }
+.gc--new li:focus-visible, .gc--new li.is-focus { outline: 2px solid var(--b-primary); outline-offset: -2px; }
+.mini--new li::after { width: .9rem; height: .9rem; margin-top: .1rem; align-self: flex-start; }
+.pair.rows3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 62rem) { .pair.rows3 { grid-template-columns: minmax(0, 1fr); } }
+
+/* hit map */
+.mapped .gc__body, .mapped .foot { background-image: linear-gradient(rgb(25 0 168 / .09), rgb(25 0 168 / .09)); }
+.mapped li { background: rgb(255 200 0 / .35); outline: 2px dashed #b38900; outline-offset: -2px; }
+.key { display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: .9rem; color: rgb(0 0 0 / .7); margin: 0 0 1rem; }
+.key i { display: inline-block; width: 1rem; height: 1rem; border-radius: 3px; vertical-align: -.2rem; margin-right: .4rem; }
+.key .k1 { background: rgb(25 0 168 / .25); }
+.key .k2 { background: rgb(255 200 0 / .6); outline: 2px dashed #b38900; outline-offset: -2px; }
+.flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.25fr); gap: 1rem; align-items: center; }
+@media (max-width: 46rem) { .flow { grid-template-columns: minmax(0, 1fr); } .flow .arrow { transform: rotate(90deg); justify-self: center; } }
+.flow .arrow { font-size: 1.6rem; color: rgb(0 0 0 / .5); }
+.dest { border: 1px solid var(--rule); border-radius: .7rem; overflow: hidden; background: #fff; position: relative; height: 15rem; }
+.dest .hero { height: 3.2rem; background: linear-gradient(135deg, #1900a8, #0e005c); }
+.dest .band { height: 3.4rem; margin: .6rem .8rem; background: #d5e0ff; border-radius: .3rem; }
+.dest .band + .band { background: #ffc800; height: 2.6rem; }
+.dest .scrim { position: absolute; inset: 0; background: rgb(8 10 20 / .5); }
+.dest .sheet { position: absolute; top: 0; right: 0; bottom: 0; width: 58%; background: #fff; box-shadow: -14px 0 30px -14px rgb(8 10 20 / .6); padding: .9rem; font-family: "League Spartan", sans-serif; color: #000; }
+.dest .sheet b { display: block; font-size: 1.05rem; line-height: 1.1; margin-bottom: .5rem; }
+.dest .sheet span { display: block; height: .45rem; background: rgb(0 0 0 / .12); border-radius: 3px; margin-bottom: .4rem; }
+.dest .sheet span:nth-child(3) { width: 82%; }
+.dest .sheet span:nth-child(4) { width: 66%; }
+.url { font-family: var(--f-mono); font-size: .72rem; color: rgb(0 0 0 / .6); margin: .6rem 0 0; overflow-wrap: anywhere; max-width: none; }
 
 /* short card, for the state grids */
 .gc--short .gc__body { padding: 1.25rem 1.5rem; }
@@ -132,8 +172,8 @@ section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-t
 .mini--old { border: 1px solid rgb(0 0 0 / .15); }
 .mini--old:hover { transform: translateY(-4px); }
 .mini--new { border: 1px solid rgb(25 0 168 / .5); box-shadow: 0 1px 2px rgb(14 0 92 / .14), 0 10px 22px -10px rgb(14 0 92 / .32); }
-.mini--new:hover { transform: translateY(-4px); border-color: var(--b-primary); box-shadow: 0 2px 4px rgb(14 0 92 / .16), 0 18px 34px -12px rgb(14 0 92 / .45); }
-.mini--new:hover .chip { transform: translateX(3px); }
+.mini--new:hover:not(:has(li:hover)) { transform: translateY(-4px); border-color: var(--b-primary); box-shadow: 0 2px 4px rgb(14 0 92 / .16), 0 18px 34px -12px rgb(14 0 92 / .45); }
+.mini--new:hover:not(:has(li:hover)) .chip { transform: translateX(3px); }
 .mini .mh { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
 .mini h3 { display: inline-flex; align-items: center; gap: .5rem; font-size: 1.125rem; font-weight: 600; line-height: 1.1; margin: 0; }
 .mini h3 svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: var(--b-primary); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
@@ -260,10 +300,51 @@ section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-t
     </div>
     <ol class="legend">
       <li><b class="n">1</b><div><strong>Arrow chip beside the title</strong>The one cue that is on screen the moment a card appears, including on a phone where the footer is a screen away. A filled primary circle, so it reads as a control rather than an icon. It is decorative to a screen reader, so the link's name doesn't change for it.</div></li>
-      <li><b class="n">2</b><div><strong>A footer that says what happens</strong>A full-width strip pinned to the bottom of the card, saying "Read the full guide" with an arrow. This is the cue that names the action. It is a <code class="inl">&lt;span&gt;</code> inside the existing single link, not a second link, so the markup stays valid and there is still one tab stop per card.</div></li>
+      <li><b class="n">2</b><div><strong>A footer that says what happens</strong>A full-width strip pinned to the bottom of the card, saying "Read the full guide" with an arrow. This is the cue that names the action. It is plain text that sits under the card's link, not a second link, so a tap on it is a tap on the card and the markup stays valid.</div></li>
       <li><b class="n">3</b><div><strong>Resting depth and a primary-tinted edge</strong>A soft shadow and a border that is the brand blue at 50%, about 3.4:1 against white instead of today's 1.4:1. Hover deepens the shadow, firms the border to solid primary, nudges both arrows right and darkens the footer.</div></li>
     </ol>
   </div>
+</section>
+
+<!-- 2b -->
+<section class="block">
+  <h2 class="sec">Every action is its own link</h2>
+  <p class="lede">Each row on a card leads straight to that policy, and the rest of the card still leads to the guide. Rows carry a small chevron at rest because a touch screen has no hover to reveal one. It is the same behaviour as the <code class="inl">#plank-&lt;slug&gt;</code> permalinks, which already open the policy sheet on arrival.</p>
+  <div class="stage">
+    <div class="key"><span><i class="k1"></i>Anywhere else on the card &rarr; the guide page</span><span><i class="k2"></i>An action row &rarr; that policy's sheet, already open</span></div>
+    <div class="flow">
+      <a class="gc gc--new gc--short mapped" role="link" tabindex="0" style="height:auto">
+        <div class="gc__body">
+          <div class="head"><h3>Affordable Housing</h3><span class="chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+          <div class="acts"><p class="count">3 actions</p>
+            <ul>
+              <li><b>01</b><span>Amend Blueprint Denver to allow for rezoning of exclusionary residential zones.</span></li>
+              <li><b>02</b><span>Legalize congregational housing in Denver.</span></li>
+              <li><b>03</b><span>Fine owners leaving rental units vacant for 6 months, or longer.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="foot"><span>Read the full guide</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+      </a>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div>
+        <div class="dest" role="img" aria-label="The Affordable Housing guide page with the policy sheet for action 02 open over it">
+          <div class="hero"></div><div class="band"></div><div class="band"></div>
+          <div class="scrim"></div>
+          <div class="sheet"><b>Legalize congregational housing in Denver.</b><span></span><span></span><span></span><span></span></div>
+        </div>
+        <p class="url">Tap row 02 &rarr; /platform/affordable-housing#plank-co-living</p>
+      </div>
+    </div>
+  </div>
+  <div class="stage" style="margin-top:1.25rem">
+    <div class="pair rows3">
+      <div><p class="cap">Row at rest</p><a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto"><div class="gc__body" style="padding:1rem 1.25rem"><div class="acts" style="margin-top:0;border-top:0;padding-top:0"><ul><li><b>02</b><span>Legalize congregational housing in Denver.</span></li></ul></div></div></a></div>
+      <div><p class="cap">Row hover</p><a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto"><div class="gc__body" style="padding:1rem 1.25rem"><div class="acts" style="margin-top:0;border-top:0;padding-top:0"><ul><li class="is-hover"><b>02</b><span>Legalize congregational housing in Denver.</span></li></ul></div></div></a></div>
+      <div><p class="cap">Row keyboard focus</p><a class="gc gc--new gc--short" role="link" tabindex="0" style="height:auto"><div class="gc__body" style="padding:1rem 1.25rem"><div class="acts" style="margin-top:0;border-top:0;padding-top:0"><ul><li class="is-focus" tabindex="0"><b>02</b><span>Legalize congregational housing in Denver.</span></li></ul></div></div></a></div>
+    </div>
+  </div>
+  <p class="note"><strong>One pointer, one answer.</strong> While a row is hovered, the card behind it does not lift or darken its footer: two things responding to the same pointer reads as noise. Keyboard focus is separate too. Tabbing lands first on the title (a ring around the whole card, as today), then on each row (a ring around that row only). That makes four tab stops per card, 24 across the six guides.</p>
 </section>
 
 <!-- 3 -->
@@ -333,7 +414,7 @@ section.block { border-top: 1px solid var(--rule); padding-top: 2.5rem; margin-t
 <!-- 6 -->
 <section class="block">
   <h2 class="sec">The mini card on /why-me</h2>
-  <p class="lede">The condensed topic cards on the "Why me?" page link to the same guides with the same hairline treatment, so they have the same problem. They get the resting depth and a small arrow chip. They do not get a footer: their content is already the action list, and a strip would double the height of a compact card.</p>
+  <p class="lede">The condensed topic cards on the "Why me?" page link to the same guides with the same hairline treatment, so they have the same problem. They get the resting depth and a small arrow chip, and their action rows become links like the big card's (Q9). They do not get a footer: their content is already the action list, and a strip would double the height of a compact card.</p>
   <div class="stage">
     <div class="pair">
       <div><p class="cap old">Today</p>
