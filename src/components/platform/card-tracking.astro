@@ -1,0 +1,21 @@
+---
+// Wires up guide_card_clicked for every card on the page. A bundled <script>
+// rather than an `is:inline` one, like sheet-behavior.astro, specifically so
+// it can import from src/lib/card-tracking.ts and that logic stays covered
+// by unit tests — an inline script can't do that. Rendered inside
+// guide-card.astro and topic-actions.astro rather than once per page: Astro
+// dedupes identical component scripts, so it still only loads once however
+// many cards are on the page.
+---
+
+<script>
+  import { attachCardTracking } from '../../lib/card-tracking'
+  import type { Lang } from '../../lib/platform'
+
+  attachCardTracking(
+    document,
+    location.pathname,
+    document.documentElement.lang as Lang,
+    (props) => window.posthog?.capture('guide_card_clicked', props),
+  )
+</script>

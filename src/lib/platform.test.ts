@@ -10,6 +10,8 @@ import {
   type Entry,
   GUIDE_TRANSLATABLE_FIELDS,
   type Guide,
+  guideCardCta,
+  guideCardLabel,
   guideMetaDescription,
   guideSchema,
   idFromFilename,
@@ -559,6 +561,45 @@ describe('plankUrl', () => {
     expect(
       plankUrl('https://gabrielfordenver.com/platform/housing', 'Co Living!'),
     ).toBe('https://gabrielfordenver.com/platform/housing#plank-co-living')
+  })
+
+  // A guide card links to a plank with the guide's own relative href, not an
+  // absolute URL built from Astro.site — plain string concatenation, so a
+  // relative path works exactly the same way.
+  it('works with a relative guide path, same as a card row link builds it', () => {
+    expect(plankUrl('/platform/affordable-housing', 'co-living')).toBe(
+      '/platform/affordable-housing#plank-co-living',
+    )
+    expect(plankUrl('/es/platform/affordable-housing', 'co-living')).toBe(
+      '/es/platform/affordable-housing#plank-co-living',
+    )
+  })
+})
+
+describe('guideCardCta', () => {
+  it('names the action in English', () => {
+    expect(guideCardCta('en')).toBe('Read the full guide')
+  })
+
+  it('names the action in Spanish', () => {
+    expect(guideCardCta('es')).toBe('Leer la guía completa')
+  })
+})
+
+describe('guideCardLabel', () => {
+  // WCAG 2.5.3 (Label in Name): the accessible name has to contain the
+  // visible label text, so a voice-control command naming what's on screen
+  // still lands on the right card.
+  it('puts the title before the footer text, in that order', () => {
+    expect(guideCardLabel('Affordable Housing', 'en')).toBe(
+      'Affordable Housing, Read the full guide',
+    )
+  })
+
+  it('uses the Spanish footer text on the Spanish page', () => {
+    expect(guideCardLabel('Vivienda Asequible', 'es')).toBe(
+      'Vivienda Asequible, Leer la guía completa',
+    )
   })
 })
 

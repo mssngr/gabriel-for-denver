@@ -38,5 +38,10 @@
     "event_name": "plank_detail_opened",
     "event_description": "User opens the policy detail for a single plank, indicating which specific promise they care enough about to read. Includes a lang property ('en' or 'es').",
     "file": "src/components/platform/sheet-behavior.astro"
+  },
+  {
+    "event_name": "guide_card_clicked",
+    "event_description": "User clicks a guide card, or one of its individual action rows, on any of the eight routes a card renders on. Includes surface ('home', 'issues', 'platform' or 'why-me'), lang ('en' or 'es'), guide_slug, target ('card' or 'action'), and plank_slug when target is 'action'.",
+    "file": "src/components/platform/card-tracking.astro"
   }
 ]
