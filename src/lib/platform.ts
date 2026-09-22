@@ -637,6 +637,25 @@ export function leadSource(
 }
 
 /**
+ * What a guide card's footer says, e.g. "Read the full guide" — the one line
+ * on the card that names what tapping it does, since nothing else on a card
+ * that already lists every action otherwise says so.
+ */
+export function guideCardCta(lang: Lang): string {
+  return lang === 'es' ? 'Leer la guía completa' : 'Read the full guide'
+}
+
+/**
+ * A guide card's accessible name: the title plus the footer's own words, so a
+ * voice-control user who says "click read the full guide" — the label they can
+ * actually see — lands on the card that shows it (WCAG 2.5.3, Label in Name).
+ * The bare title alone no longer contains everything the visible label says.
+ */
+export function guideCardLabel(title: string, lang: Lang): string {
+  return `${title}, ${guideCardCta(lang)}`
+}
+
+/**
  * A guide's meta description, per language: the explicit override if there is
  * one, otherwise the stance with its markdown stripped.
  *

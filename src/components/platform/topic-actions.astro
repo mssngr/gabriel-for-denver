@@ -1,5 +1,5 @@
 ---
-import { CircleCheck } from '@lucide/astro'
+import { ArrowRight, CircleCheck } from '@lucide/astro'
 import type { Lang } from '../../lib/platform'
 import {
   actionCount,
@@ -44,43 +44,45 @@ const summary = platformSummary(planks.length, topics.length, lang)
           : `/platform/${guide.data.slug}`
       // The card's accessible name names the action count too, not just the
       // topic — unlike guide-card.astro's full card, this one's main content
-      // *is* the action list, which a bare topic name wouldn't hint at.
+      // *is* the action list, which a bare topic name wouldn't hint at, and
+      // it carries no footer of its own to draw that link from (Q4).
       const cardLabel = `${title}, ${actionCount(guidePlanks.length, lang)}`
       return (
-        <article>
-          {/* Same raised, whole-card link treatment as guide-card.astro,
-              scaled down — a "mini card" of the same pattern rather than a
-              new one. */}
-          <a
-            href={href}
-            aria-label={cardLabel}
-            class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-white no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-          >
+        <article class="card-link relative flex h-full flex-col rounded-2xl p-6 text-black bg-white">
+          <div class="flex items-center justify-between gap-3">
             <h2 class="inline-flex items-center gap-2 text-lg leading-tight">
               <Icon
                 name={guide.data.lucideIcon}
                 class="size-5 shrink-0 text-primary"
               />
-              {title}
+              <a href={href} aria-label={cardLabel} class="card-link__title">
+                {title}
+              </a>
             </h2>
-            <p class="text-xs tracking-[0.16em] uppercase font-semibold text-primary/70 mt-1 mb-3">
-              {actionCount(guidePlanks.length, lang)}
-            </p>
-            <ul class="list-none pl-0 m-0 space-y-2.5">
-              {guidePlanks.map((plank) => (
-                <li class="flex gap-2.5 items-start text-sm leading-snug">
-                  <CircleCheck
-                    class="size-4 shrink-0 mt-0.5 text-primary"
-                    aria-hidden="true"
-                  />
-                  <span>
-                    {localized(plank.data, 'commitment', lang) ??
-                      plank.data.commitment}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </a>
+            <span
+              class="card-link__chip card-link__chip--sm text-white"
+              aria-hidden="true"
+            >
+              <ArrowRight class="size-3.5" />
+            </span>
+          </div>
+          <p class="text-xs tracking-[0.16em] uppercase font-semibold text-primary/70 mt-1 mb-3">
+            {actionCount(guidePlanks.length, lang)}
+          </p>
+          <ul class="list-none pl-0 m-0 space-y-2.5">
+            {guidePlanks.map((plank) => (
+              <li class="flex gap-2.5 items-start text-sm leading-snug">
+                <CircleCheck
+                  class="size-4 shrink-0 mt-0.5 text-primary"
+                  aria-hidden="true"
+                />
+                <span>
+                  {localized(plank.data, 'commitment', lang) ??
+                    plank.data.commitment}
+                </span>
+              </li>
+            ))}
+          </ul>
         </article>
       )
     })

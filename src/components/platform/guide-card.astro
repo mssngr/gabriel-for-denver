@@ -1,8 +1,14 @@
 ---
+import { ArrowRight } from '@lucide/astro'
 import { Image } from 'astro:assets'
 import { Marked } from 'marked'
 import type { Lang } from '../../lib/platform'
-import { actionCount, localized } from '../../lib/platform'
+import {
+  actionCount,
+  guideCardCta,
+  guideCardLabel,
+  localized,
+} from '../../lib/platform'
 import type { GuideEntry, PlankEntry } from '../../lib/platform-content'
 import Icon from '../icon.astro'
 
@@ -16,9 +22,10 @@ const { guide, planks, lang } = Astro.props
 
 const title = localized(guide.data, 'title', lang) ?? guide.data.title
 const stance = localized(guide.data, 'stance', lang) ?? guide.data.stance
-// The card's whole content sits inside one link (see the <a> below), so a
-// markdown link in `stance` would render as an invalid nested <a> and break
-// click-through for that card. Render links as plain text instead.
+// The card's whole content sits inside one link (the title's stretched
+// ::after, below), so a markdown link in `stance` would render as an
+// invalid nested <a> and break click-through for that card. Render links
+// as plain text instead.
 const stanceHtml = new Marked({
   renderer: { link: ({ text }) => text },
 }).parse(stance)
@@ -29,23 +36,38 @@ const href =
   lang === 'es'
     ? `/es/platform/${guide.data.slug}`
     : `/platform/${guide.data.slug}`
+const cta = guideCardCta(lang)
 ---
 
-<article>
-  <a
-    href={href}
-    aria-label={title}
-    class="block h-full border border-black/15 rounded-2xl p-6 text-black bg-white no-underline transition-transform duration-200 ease-out hover:-translate-y-1 active:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-  >
+<article
+  class="card-link relative flex h-full flex-col overflow-hidden rounded-2xl bg-white text-black"
+>
+  <div class="flex-1 p-6">
     {
       /* Words first, illustration second. Leading with the art made the index
          read as a gallery: on a phone the first card filled the screen with a
          drawing, and on a laptop every card's title sat below the fold. */
     }
-    <h2 class="inline-flex items-center gap-2 text-2xl">
-      {!artwork && <Icon name={guide.data.lucideIcon} class="size-7" />}
-      {title}
-    </h2>
+    <div class="flex items-start justify-between gap-3">
+      <h2 class="inline-flex items-center gap-2 text-2xl">
+        {!artwork && <Icon name={guide.data.lucideIcon} class="size-7" />}
+        <a
+          href={href}
+          aria-label={guideCardLabel(title, lang)}
+          class="card-link__title"
+        >
+          {title}
+        </a>
+      </h2>
+      {
+        /* The card's one on-screen cue that doesn't need a pointer to
+           reveal it — the footer below says the same thing in words, but
+           it can be a whole screen away on a phone (see design.html). */
+      }
+      <span class="card-link__chip text-white" aria-hidden="true">
+        <ArrowRight class="size-5" />
+      </span>
+    </div>
     <div
       class="mt-1 font-light text-black/70 [&_strong]:font-bold [&_p]:text-base"
       set:html={stanceHtml}
@@ -86,5 +108,17 @@ const href =
         </div>
       )
     }
-  </a>
+  </div>
+  {
+    /* Decorative: the link it sits on top of already carries this same
+       text in its aria-label (guideCardLabel), so a screen reader would
+       otherwise announce it twice. */
+  }
+  <p
+    class="card-link__footer text-white text-lg font-semibold"
+    aria-hidden="true"
+  >
+    <span>{cta}</span>
+    <ArrowRight class="size-4" />
+  </p>
 </article>

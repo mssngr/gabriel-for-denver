@@ -247,3 +247,122 @@
     }
   }
 }
+
+/* ---------------------------------------------------------------
+   Guide cards. Shared by the full card (guide-card.astro) and the
+   condensed "mini card" (topic-actions.astro on /why-me), so the two
+   can't drift the way their duplicated Tailwind class strings once did.
+
+   The card's whole surface leads to its guide: `.card-link__title`
+   uses the stretched-link trick (an empty `::after` covering
+   `.card-link`, its positioned ancestor), so anywhere on the card
+   short of an actual button or a future nested link activates it.
+
+   The hover lift is the same 4px added in #17, gated the same way
+   Tailwind's own `hover:` variant already was (`@media (hover: hover)`,
+   confirmed in the built CSS) — a touch device, which never fires a
+   real `:hover`, can't get stuck mid-lift. See global.test.ts.
+   --------------------------------------------------------------- */
+@layer components {
+  .card-link {
+    position: relative;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 50%, transparent);
+    box-shadow:
+      0 1px 2px color-mix(in srgb, var(--color-tertiary) 14%, transparent),
+      0 10px 22px -10px
+      color-mix(in srgb, var(--color-tertiary) 32%, transparent);
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out,
+      border-color 0.2s ease-out;
+  }
+
+  @media (hover: hover) {
+    .card-link:hover {
+      transform: translateY(-0.25rem);
+      border-color: var(--color-primary);
+      box-shadow:
+        0 2px 4px color-mix(in srgb, var(--color-tertiary) 16%, transparent),
+        0 18px 34px -12px
+        color-mix(in srgb, var(--color-tertiary) 45%, transparent);
+    }
+    .card-link:hover .card-link__chip {
+      transform: translateX(3px);
+    }
+    .card-link:hover .card-link__footer {
+      background: var(--color-tertiary);
+    }
+    .card-link:hover .card-link__footer svg {
+      transform: translateX(4px);
+    }
+  }
+
+  .card-link:active {
+    transform: translateY(-0.0625rem);
+    border-color: var(--color-primary);
+  }
+  .card-link:active .card-link__footer {
+    background: var(--color-tertiary);
+  }
+
+  /* The stretched title link: its ::after covers the whole card, so most
+     of the card's surface activates it. The link itself is left
+     `position: static` on purpose: an absolutely positioned element's
+     containing block is the nearest *positioned* ancestor, so giving the
+     link its own `position` here would make it its own containing block
+     and shrink the pseudo down to the size of the title text instead of
+     stretching it to `.card-link` (the article). */
+  .card-link__title::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .card-link__title:focus-visible {
+    outline: none;
+  }
+  .card-link__title:focus-visible::after {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .card-link__chip {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    background: var(--color-primary);
+    transition: transform 0.2s ease-out;
+  }
+  .card-link__chip--sm {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .card-link__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.5rem 0.9rem;
+    background: var(--color-primary);
+    transition: background-color 0.2s ease-out;
+  }
+  .card-link__footer svg {
+    transition: transform 0.2s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-link,
+    .card-link__chip,
+    .card-link__footer,
+    .card-link__footer svg {
+      transition: none !important;
+    }
+    .card-link:hover,
+    .card-link:active {
+      transform: none !important;
+    }
+  }
+}
