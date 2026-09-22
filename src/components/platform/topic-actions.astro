@@ -1,9 +1,10 @@
 ---
-import { ArrowRight, CircleCheck } from '@lucide/astro'
+import { ArrowRight, ChevronRight, CircleCheck } from '@lucide/astro'
 import type { Lang } from '../../lib/platform'
 import {
   actionCount,
   localized,
+  plankUrl,
   platformSummary,
   topicsWithActions,
 } from '../../lib/platform'
@@ -71,15 +72,22 @@ const summary = platformSummary(planks.length, topics.length, lang)
           </p>
           <ul class="list-none pl-0 m-0 space-y-2.5">
             {guidePlanks.map((plank) => (
-              <li class="flex gap-2.5 items-start text-sm leading-snug">
+              <li class="card-link__row flex gap-2.5 items-start text-sm leading-snug py-1.5">
                 <CircleCheck
                   class="size-4 shrink-0 mt-0.5 text-primary"
                   aria-hidden="true"
                 />
-                <span>
+                <a
+                  href={plankUrl(href, plank.data.slug)}
+                  class="card-link__row-link"
+                >
                   {localized(plank.data, 'commitment', lang) ??
                     plank.data.commitment}
-                </span>
+                </a>
+                <ChevronRight
+                  class="card-link__chevron ml-auto size-3.5 shrink-0 self-center text-primary"
+                  aria-hidden="true"
+                />
               </li>
             ))}
           </ul>

@@ -562,6 +562,18 @@ describe('plankUrl', () => {
       plankUrl('https://gabrielfordenver.com/platform/housing', 'Co Living!'),
     ).toBe('https://gabrielfordenver.com/platform/housing#plank-co-living')
   })
+
+  // A guide card links to a plank with the guide's own relative href, not an
+  // absolute URL built from Astro.site — plain string concatenation, so a
+  // relative path works exactly the same way.
+  it('works with a relative guide path, same as a card row link builds it', () => {
+    expect(plankUrl('/platform/affordable-housing', 'co-living')).toBe(
+      '/platform/affordable-housing#plank-co-living',
+    )
+    expect(plankUrl('/es/platform/affordable-housing', 'co-living')).toBe(
+      '/es/platform/affordable-housing#plank-co-living',
+    )
+  })
 })
 
 describe('guideCardCta', () => {

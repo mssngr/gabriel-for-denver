@@ -53,10 +53,11 @@ describe('.card-link hover and motion', () => {
     throw new Error(`unbalanced braces from index ${openerIndex}`)
   }
 
-  // A touch device never fires a real `:hover`, so the lift has to live
-  // inside the same `@media (hover: hover)` gate Tailwind's own `hover:`
-  // variant already used, or a touch device could get stuck mid-lift with
-  // no pointer leaving to undo it.
+  // A touch device never fires a real `:hover`, so the lift — and every
+  // state that follows from it — has to live inside the same
+  // `@media (hover: hover)` gate Tailwind's own `hover:` variant already
+  // used, or a touch device could get stuck mid-lift with no pointer
+  // leaving to undo it.
   it('gates the card lift behind @media (hover: hover)', async () => {
     const css = await readFile(GLOBAL_CSS_PATH, 'utf8')
     const mediaIndex = css.indexOf('@media (hover: hover)')
@@ -64,6 +65,13 @@ describe('.card-link hover and motion', () => {
     const block = extractBlock(css, mediaIndex)
     expect(block).toContain('.card-link:hover')
     expect(block).toMatch(/transform:\s*translateY\(-0\.25rem\)/)
+  })
+
+  // Two things responding to the same pointer reads as noise: hovering an
+  // action row must not also lift the card it sits inside.
+  it('excludes the lift while an action row is hovered', async () => {
+    const css = await readFile(GLOBAL_CSS_PATH, 'utf8')
+    expect(css).toContain('.card-link:hover:not(:has(.card-link__row:hover))')
   })
 
   // Reduced-motion users still get the colour and shadow changes — only the

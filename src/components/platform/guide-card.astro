@@ -1,5 +1,5 @@
 ---
-import { ArrowRight } from '@lucide/astro'
+import { ArrowRight, ChevronRight } from '@lucide/astro'
 import { Image } from 'astro:assets'
 import { Marked } from 'marked'
 import type { Lang } from '../../lib/platform'
@@ -8,6 +8,7 @@ import {
   guideCardCta,
   guideCardLabel,
   localized,
+  plankUrl,
 } from '../../lib/platform'
 import type { GuideEntry, PlankEntry } from '../../lib/platform-content'
 import Icon from '../icon.astro'
@@ -22,10 +23,11 @@ const { guide, planks, lang } = Astro.props
 
 const title = localized(guide.data, 'title', lang) ?? guide.data.title
 const stance = localized(guide.data, 'stance', lang) ?? guide.data.stance
-// The card's whole content sits inside one link (the title's stretched
-// ::after, below), so a markdown link in `stance` would render as an
-// invalid nested <a> and break click-through for that card. Render links
-// as plain text instead.
+// The card's whole content used to sit inside one link, which is why a
+// markdown link in `stance` renders as plain text rather than a nested <a>
+// — now that the title and each action are their own links (see the
+// stretched-link markup below), a stance link would just be a third,
+// smaller target squeezed between them, no easier to read or to hit.
 const stanceHtml = new Marked({
   renderer: { link: ({ text }) => text },
 }).parse(stance)
@@ -94,14 +96,21 @@ const cta = guideCardCta(lang)
           </p>
           <ul class="list-none pl-0 m-0">
             {planks.map((plank, index) => (
-              <li class="flex gap-3 items-baseline py-2.5 border-b border-black/5 last:border-b-0">
+              <li class="card-link__row flex gap-3 items-baseline py-2.5 border-b border-black/5 last:border-b-0">
                 <b class="text-primary text-xs tracking-wider shrink-0">
                   {String(index + 1).padStart(2, '0')}
                 </b>
-                <span class="text-base leading-snug">
+                <a
+                  href={plankUrl(href, plank.data.slug)}
+                  class="card-link__row-link text-base leading-snug"
+                >
                   {localized(plank.data, 'commitment', lang) ??
                     plank.data.commitment}
-                </span>
+                </a>
+                <ChevronRight
+                  class="card-link__chevron ml-auto size-4 shrink-0 self-center text-primary"
+                  aria-hidden="true"
+                />
               </li>
             ))}
           </ul>
