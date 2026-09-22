@@ -10,6 +10,7 @@ import {
 } from '../../lib/platform'
 import { getPublishedPlatform } from '../../lib/platform-content'
 import Icon from '../icon.astro'
+import CardTracking from './card-tracking.astro'
 
 interface Props {
   lang: Lang
@@ -49,14 +50,23 @@ const summary = platformSummary(planks.length, topics.length, lang)
       // it carries no footer of its own to draw that link from (Q4).
       const cardLabel = `${title}, ${actionCount(guidePlanks.length, lang)}`
       return (
-        <article class="card-link relative flex h-full flex-col rounded-2xl p-6 text-black bg-white">
+        <article
+          class="card-link relative flex h-full flex-col rounded-2xl p-6 text-black bg-white"
+          data-card-tracking
+          data-guide-slug={guide.data.slug}
+        >
           <div class="flex items-center justify-between gap-3">
             <h2 class="inline-flex items-center gap-2 text-lg leading-tight">
               <Icon
                 name={guide.data.lucideIcon}
                 class="size-5 shrink-0 text-primary"
               />
-              <a href={href} aria-label={cardLabel} class="card-link__title">
+              <a
+                href={href}
+                aria-label={cardLabel}
+                class="card-link__title"
+                data-card-target="card"
+              >
                 {title}
               </a>
             </h2>
@@ -80,6 +90,8 @@ const summary = platformSummary(planks.length, topics.length, lang)
                 <a
                   href={plankUrl(href, plank.data.slug)}
                   class="card-link__row-link"
+                  data-card-target="action"
+                  data-plank-slug={plank.data.slug}
                 >
                   {localized(plank.data, 'commitment', lang) ??
                     plank.data.commitment}
@@ -96,3 +108,4 @@ const summary = platformSummary(planks.length, topics.length, lang)
     })
   }
 </div>
+<CardTracking />

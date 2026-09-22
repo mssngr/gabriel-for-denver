@@ -12,6 +12,7 @@ import {
 } from '../../lib/platform'
 import type { GuideEntry, PlankEntry } from '../../lib/platform-content'
 import Icon from '../icon.astro'
+import CardTracking from './card-tracking.astro'
 
 interface Props {
   guide: GuideEntry
@@ -43,6 +44,8 @@ const cta = guideCardCta(lang)
 
 <article
   class="card-link relative flex h-full flex-col overflow-hidden rounded-2xl bg-white text-black"
+  data-card-tracking
+  data-guide-slug={guide.data.slug}
 >
   <div class="flex-1 p-6">
     {
@@ -57,6 +60,7 @@ const cta = guideCardCta(lang)
           href={href}
           aria-label={guideCardLabel(title, lang)}
           class="card-link__title"
+          data-card-target="card"
         >
           {title}
         </a>
@@ -103,6 +107,8 @@ const cta = guideCardCta(lang)
                 <a
                   href={plankUrl(href, plank.data.slug)}
                   class="card-link__row-link text-base leading-snug"
+                  data-card-target="action"
+                  data-plank-slug={plank.data.slug}
                 >
                   {localized(plank.data, 'commitment', lang) ??
                     plank.data.commitment}
@@ -131,3 +137,4 @@ const cta = guideCardCta(lang)
     <ArrowRight class="size-4" />
   </p>
 </article>
+<CardTracking />
