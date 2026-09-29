@@ -79,5 +79,15 @@ export default defineConfig({
     '/es/get-involved/donate': '/es/donate',
     '/es/get-involved/donate/thank-you': '/es/donate/thank-you',
   },
-  adapter: netlify(),
+  adapter: netlify({
+    // The site defines no edge functions, so there is nothing to emulate, and
+    // the emulator shells out to a Deno that has to accept `--allow-scripts`.
+    // On a machine whose Deno doesn't, `astro dev` dies with an unhandled
+    // rejection. Dev-only: production builds are unaffected.
+    devFeatures: {
+      images: true,
+      environmentVariables: false,
+      edgeFunctions: false,
+    },
+  }),
 })
