@@ -83,7 +83,8 @@ export default defineConfig({
     // The site defines no edge functions, so there is nothing to emulate, and
     // the emulator shells out to a Deno that has to accept `--allow-scripts`.
     // On a machine whose Deno doesn't, `astro dev` dies with an unhandled
-    // rejection. Dev-only: production builds are unaffected.
+    // rejection. Dev-only: production builds are unaffected. The type requires
+    // all three keys; the other two restate the adapter's defaults.
     devFeatures: {
       images: true,
       environmentVariables: false,
