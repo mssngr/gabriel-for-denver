@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets'
 import { getEntry } from 'astro:content'
 import { marked } from 'marked'
+import HomePhoto from '../components/home-photo.astro'
 import InstagramFeed from '../components/instagram-feed.astro'
 import MyBackground from '../components/my-background/index.astro'
 import WhatWillITackle from '../components/what-will-i-tackle/index.astro'
@@ -21,21 +21,7 @@ const content = page?.data && marked.parse(page.data.content)
     slot="hero"
     class="w-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
   >
-    {
-      page?.data.photo && (
-        <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
-          <Image
-            src={page.data.photo}
-            alt={page.data.photoAltText || null}
-            widths={[448, 896]}
-            sizes="(min-width: 28rem) 28rem, 100vw"
-            loading="eager"
-            fetchpriority="high"
-            class="w-full h-full object-cover object-[55%_center]"
-          />
-        </div>
-      )
-    }
+    <HomePhoto />
     <div class="w-md hero-highlight">
       <h1 set:html={heading} />
       <Fragment set:html={content} />
