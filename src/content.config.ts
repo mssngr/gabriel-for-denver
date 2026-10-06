@@ -5,12 +5,15 @@ import { guideSchema, idFromFilename, plankSchema } from './lib/platform'
 
 const pages = defineCollection({
   loader: glob({ pattern: '**/*.yml', base: './src/content/pages' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       heading: z.string(),
       heading_es: z.string(),
       content: z.string(),
       content_es: z.string(),
+      // Only the home page sets this so far; optional so the other pages, and
+      // an editor who hasn't uploaded one yet, can't fail the build.
+      photo: image().optional(),
       // Optional because not every page has a photo to describe: the platform
       // index is all cards. The pages that do have one still set it, and each
       // reads it with a `|| null` fallback already.
