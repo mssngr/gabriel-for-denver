@@ -12,7 +12,7 @@ const pages = defineCollection({
       content: z.string(),
       content_es: z.string(),
       // Only the home page sets this so far; optional so the other pages, and
-      // an editor who hasn't uploaded one yet, can't fail the build.
+      // a Home entry with no photo yet, still validate.
       photo: image().optional(),
       // Optional because not every page has a photo to describe: the platform
       // index is all cards. The pages that do have one still set it, and each
