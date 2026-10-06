@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets'
+import { getEntry } from 'astro:content'
+
+interface Props {
+  lang?: 'en' | 'es'
+}
+
+const { lang = 'en' } = Astro.props
+const page = await getEntry('pages', 'home')
+const photo = page?.data.photo
+const alt =
+  (lang === 'es' ? page?.data.photoAltText_es : page?.data.photoAltText) || null
+---
+
+{
+  photo && (
+    <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
+      <Image
+        src={photo}
+        alt={alt}
+        widths={[448, 896]}
+        sizes="(min-width: 28rem) 28rem, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="w-full h-full object-cover object-[55%_center]"
+      />
+    </div>
+  )
+}

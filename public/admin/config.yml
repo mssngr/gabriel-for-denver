@@ -45,11 +45,19 @@ collections:
           - { label: Content, name: content, widget: richtext }
           - { label: Content (Spanish), name: content_es, widget: richtext }
           - { label: Photo, name: photo, widget: image, required: false }
-          - { label: Photo Alt Text, name: photoAltText, widget: string }
+          - {
+              label: Photo Alt Text,
+              name: photoAltText,
+              widget: string,
+              required: false,
+              hint: "Describe the photo above. Update this when you change it.",
+            }
           - {
               label: Photo Alt Text (Spanish),
               name: photoAltText_es,
               widget: string,
+              required: false,
+              hint: "Describe la foto de arriba. Actualízalo al cambiarla.",
             }
       - label: Issues
         name: issues
