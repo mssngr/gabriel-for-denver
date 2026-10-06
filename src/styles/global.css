@@ -343,7 +343,11 @@
     outline-offset: 2px;
   }
 
+  /* `pointer-events: none` because the chip is decorative but sits after the
+     title link in the DOM: its hover `transform` makes it paint above the
+     title's stretched ::after, so it would otherwise eat clicks on the arrow. */
   .card-link__chip {
+    pointer-events: none;
     flex-shrink: 0;
     display: grid;
     place-items: center;

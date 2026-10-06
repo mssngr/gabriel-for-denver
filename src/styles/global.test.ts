@@ -74,6 +74,17 @@ describe('.card-link hover and motion', () => {
     expect(css).toContain('.card-link:hover:not(:has(.card-link__row:hover))')
   })
 
+  // The chip is decorative and comes after the title link in the DOM. On hover
+  // it gets a `transform`, which makes it paint above the title's stretched
+  // `::after` overlay, so without this a click on the arrow lands on the chip
+  // instead of the link and does nothing.
+  it('lets clicks pass through the decorative chip to the stretched link', async () => {
+    const css = await readFile(GLOBAL_CSS_PATH, 'utf8')
+    const ruleIndex = css.search(/^\s*\.card-link__chip\s*\{/m)
+    expect(ruleIndex).toBeGreaterThan(-1)
+    expect(extractBlock(css, ruleIndex)).toMatch(/pointer-events:\s*none/)
+  })
+
   // Reduced-motion users still get the colour and shadow changes — only the
   // movement itself is switched off.
   it('removes the card-link transform under prefers-reduced-motion', async () => {
