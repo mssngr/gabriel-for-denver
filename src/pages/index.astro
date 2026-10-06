@@ -21,17 +21,21 @@ const content = page?.data && marked.parse(page.data.content)
     slot="hero"
     class="w-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
   >
-    <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
-      {
-        page?.data.photo && (
+    {
+      page?.data.photo && (
+        <div class="w-full max-w-md aspect-square rounded-full overflow-hidden">
           <Image
             src={page.data.photo}
             alt={page.data.photoAltText || null}
-            class="w-full h-full object-cover object-top scale-[1.33] translate-x-[10%] translate-y-[-15%] origin-top"
+            widths={[448, 896]}
+            sizes="(min-width: 28rem) 28rem, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="w-full h-full object-cover object-[55%_center]"
           />
-        )
-      }
-    </div>
+        </div>
+      )
+    }
     <div class="w-md hero-highlight">
       <h1 set:html={heading} />
       <Fragment set:html={content} />

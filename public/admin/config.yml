@@ -49,12 +49,14 @@ collections:
               label: Photo Alt Text,
               name: photoAltText,
               widget: string,
+              required: false,
               hint: "Describe the photo above. Update this when you change it.",
             }
           - {
               label: Photo Alt Text (Spanish),
               name: photoAltText_es,
               widget: string,
+              required: false,
               hint: "Describe la foto de arriba. Actualízalo al cambiarla.",
             }
       - label: Issues
