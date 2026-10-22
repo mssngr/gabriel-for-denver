@@ -1,0 +1,82 @@
+---
+import {
+  BALLOT_COPY,
+  type Lang,
+  type SlateGroup,
+  sectionAnchor,
+  sectionShortLabel,
+} from '../../lib/ballot'
+import type { BallotItemEntry } from '../../lib/ballot-content'
+
+interface Props {
+  groups: SlateGroup<BallotItemEntry>[]
+  lang: Lang
+}
+
+const { groups, lang } = Astro.props
+---
+
+{
+  /* Sticky, and highlighted by ballot-behavior.astro as each section scrolls into view. */
+}
+<nav class="jump" aria-label={BALLOT_COPY[lang].jumpNav} data-ballot-jump>
+  {
+    groups.map(({ section, items }) => (
+      <a
+        href={`#${sectionAnchor(section)}`}
+        data-section={sectionAnchor(section)}
+      >
+        {sectionShortLabel(section, lang)}
+        <span>{items.length}</span>
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .jump {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    gap: 0.375rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0.5rem 0.75rem;
+    background: rgb(255 255 255 / 0.96);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid #dfe5fb;
+  }
+  @media (min-width: 768px) {
+    .jump {
+      padding: 0.625rem 3rem;
+    }
+  }
+  .jump::-webkit-scrollbar {
+    display: none;
+  }
+  .jump a {
+    flex: none;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 0.45rem 0.8rem 0.3rem;
+    border: 1.5px solid #c9d4f7;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--color-tertiary);
+  }
+  .jump a span {
+    margin-left: 0.25rem;
+    font-weight: 600;
+    opacity: 0.6;
+  }
+  .jump a[aria-current] {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+  .jump a[aria-current] span {
+    opacity: 0.8;
+  }
+</style>

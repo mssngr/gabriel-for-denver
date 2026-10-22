@@ -1,0 +1,47 @@
+---
+import BallotGuide from '../../components/ballot/guide.astro'
+import BallotHero from '../../components/ballot/hero.astro'
+import { ballotPageMeta, slateGroups } from '../../lib/ballot'
+import { voteState } from '../../lib/ballot-calendar'
+import { getBallotGuide, getBallotItems } from '../../lib/ballot-content'
+import { currentPageUrl } from '../../lib/platform'
+import Layout from '../../layouts/default.astro'
+
+const lang = 'en' as const
+const guide = await getBallotGuide()
+const items = await getBallotItems()
+const groups = slateGroups(items)
+const meta = ballotPageMeta(guide, lang)
+const pageUrl = currentPageUrl(Astro.url.pathname, Astro.site)
+// Right for the day this was built; ballot-behavior.astro corrects it on load.
+const current = voteState(new Date(), guide)
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  heroGradient
+  tightHero
+>
+  <script is:inline>
+    window.posthog?.capture('ballot_guide_viewed', { lang: 'en' })
+  </script>
+
+  <BallotHero
+    slot="hero"
+    guide={guide}
+    lang={lang}
+    itemCount={items.length}
+    sectionCount={groups.length}
+    current={current}
+  />
+
+  <BallotGuide
+    guide={guide}
+    groups={groups}
+    lang={lang}
+    pageUrl={pageUrl}
+    shareTitle={meta.title}
+    current={current}
+  />
+</Layout>

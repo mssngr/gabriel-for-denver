@@ -1,0 +1,121 @@
+---
+import { marked } from 'marked'
+import { BALLOT_COPY, type BallotDates, type Lang } from '../../lib/ballot'
+import {
+  howToVote,
+  VOTE_STATES,
+  type VoteState,
+} from '../../lib/ballot-calendar'
+
+interface Props {
+  dates: BallotDates
+  lang: Lang
+  /** The state at build time; ballot-behavior.astro corrects it on load. */
+  current: VoteState
+}
+
+const { dates, lang, current } = Astro.props
+const copy = BALLOT_COPY[lang]
+
+// Every state is rendered and all but one hidden, so the page is right with
+// JS off on the day it was built, and right on any day with JS on. A content
+// publish happens at most daily, so the build date alone would go stale.
+const strips = VOTE_STATES.map((state) => ({
+  state,
+  steps: howToVote(state, dates, lang).steps,
+})).filter((strip) => strip.steps.length > 0)
+---
+
+{
+  strips.map(({ state, steps }) => (
+    <ol
+      class="vote-steps"
+      data-vote-states={state}
+      hidden={state !== current}
+      aria-label={copy.howToVote}
+    >
+      {steps.map((step, index) => (
+        <li
+          class:list={[
+            'vote-step',
+            step.changed && 'vote-step--changed',
+            step.done && 'vote-step--done',
+          ]}
+        >
+          <span class="vote-step__n" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <span class="vote-step__t">
+            {step.title}
+            {step.done && <span class="vote-step__badge">{copy.closed}</span>}
+          </span>
+          <span class="vote-step__d" set:html={marked.parseInline(step.body)} />
+        </li>
+      ))}
+    </ol>
+  ))
+}
+
+<style>
+  .vote-steps {
+    display: grid;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.75rem 0 0;
+  }
+  @media (min-width: 768px) {
+    .vote-steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+  }
+  .vote-step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.125rem 0.75rem;
+    align-items: start;
+    background: #fff;
+    color: #0b0d15;
+    border-radius: 1rem;
+    padding: 0.85rem 1rem;
+    font-size: 1rem;
+  }
+  .vote-step--changed {
+    box-shadow: inset 0 0 0 3px var(--color-accent);
+  }
+  .vote-step--done {
+    opacity: 0.6;
+  }
+  .vote-step__n {
+    grid-row: span 2;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-secondary);
+  }
+  .vote-step__t {
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .vote-step__badge {
+    margin-left: 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #4a4f66;
+  }
+  .vote-step__d {
+    color: #4a4f66;
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+  .vote-step__d :global(a) {
+    color: var(--color-secondary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .vote-step__d :global(strong) {
+    color: #0b0d15;
+  }
+</style>

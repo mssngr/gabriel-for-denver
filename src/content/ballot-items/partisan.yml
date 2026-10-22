@@ -1,0 +1,19 @@
+slug: partisan
+code: Partisan
+code_es: Partidista
+codeLabel: State & federal
+codeLabel_es: Estatal y federal
+title: State & Federal Positions
+title_es: Cargos estatales y federales
+section: candidates
+order: 1
+stance: pick
+stanceLabel: The Democrats
+stanceLabel_es: Los demócratas
+chip: 'State & federal: Democrats'
+chip_es: 'Estatal y federal: demócratas'
+what: Denver will decide multiple legislative districts and vote on multiple executive positions. There are dozens upon dozens of candidates that will be on your ballot.
+what_es: Denver decidirá varios distritos legislativos y votará por varios cargos ejecutivos. Habrá docenas y docenas de candidatos en tu boleta.
+why: The Democratic Party has plenty of room for improvement, but **the place to do that is in the primary.** We don’t need Libertarians or Republicans in state or federal office.
+why_es: El Partido Demócrata tiene mucho margen para mejorar, pero **el lugar para hacerlo es en las primarias.** No necesitamos libertarios ni republicanos en cargos estatales o federales.
+status: published

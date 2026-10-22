@@ -1,0 +1,20 @@
+slug: rtd-b
+code: RTD B
+codeLabel: RTD Board
+codeLabel_es: Junta de RTD
+title: RTD Board, District B (some ballots only)
+title_es: Junta de RTD, Distrito B (solo en algunas boletas)
+section: candidates
+order: 2
+stance: none
+chip: 'RTD B: undecided'
+chip_es: 'RTD B: indeciso'
+what: 2 Candidates. Hard choice.
+what_es: 2 candidatos. Decisión difícil.
+why: |-
+  - **John Glenn:** Architect, transit-oriented development, urban infill, nonprofit projects.
+  - **Bianka Emerson:** Immigration lawyer, political strategist, masters in social science, studied gentrification.
+why_es: |-
+  - **John Glenn:** Arquitecto, desarrollo orientado al transporte público, relleno urbano, proyectos sin fines de lucro.
+  - **Bianka Emerson:** Abogada de inmigración, estratega política, maestría en ciencias sociales, estudió la gentrificación.
+status: published

@@ -159,13 +159,19 @@ const SELF_FALLBACK_FIELDS: readonly string[] = ['metaDescription']
  * Only top level, so a source's `label_es` is never gated — deliberately: a
  * source label is usually a document title ("Denver zoning analysis, 2024"),
  * and those are often correct untranslated. There's a test pinning this.
+ *
+ * Exported for the ballot guide's items, which have self-falling-back fields
+ * of their own; everything here passes the default.
  */
-function translatableFields(shape: z.ZodRawShape): readonly string[] {
+export function translatableFields(
+  shape: z.ZodRawShape,
+  selfFallbackFields: readonly string[] = SELF_FALLBACK_FIELDS,
+): readonly string[] {
   return Object.keys(shape).filter(
     key =>
       !key.endsWith('_es') &&
       `${key}_es` in shape &&
-      !SELF_FALLBACK_FIELDS.includes(key),
+      !selfFallbackFields.includes(key),
   )
 }
 

@@ -1,0 +1,133 @@
+---
+// The guide's client side: shows the how-to-vote strip for today, highlights
+// the jump-nav, and runs the Share and Print buttons.
+//
+// A bundled <script> rather than `is:inline`, on sheet-behavior.astro's
+// precedent: the phase logic is the part of this page most likely to be wrong
+// on the day it matters, so it has to come from the unit-tested
+// src/lib/ballot-calendar.ts rather than a hand copy inside an inline script.
+---
+
+<script>
+  import { voteState } from '../../lib/ballot-calendar'
+  import { sharePage } from '../../lib/share'
+
+  const root = document.querySelector<HTMLElement>('[data-ballot]')
+  const lang = document.documentElement.lang
+
+  // The page was built on some earlier day; today decides which strip shows.
+  function showTodaysSteps(guide: HTMLElement) {
+    const { electionDate, mailByDate, registerOnlineByDate } = guide.dataset
+    if (!electionDate || !mailByDate || !registerOnlineByDate) return
+    const state = voteState(new Date(), {
+      electionDate: new Date(electionDate),
+      mailByDate: new Date(mailByDate),
+      registerOnlineByDate: new Date(registerOnlineByDate),
+    })
+    for (const element of document.querySelectorAll<HTMLElement>(
+      '[data-vote-states]',
+    )) {
+      element.hidden = !element.dataset.voteStates?.split(' ').includes(state)
+    }
+  }
+
+  // Marks the pill for whichever section is nearest the top of the screen,
+  // and keeps it in view in the nav's own horizontal scroll on a phone.
+  function spyOnSections() {
+    const nav = document.querySelector<HTMLElement>('[data-ballot-jump]')
+    if (!nav) return
+    const links = [...nav.querySelectorAll<HTMLAnchorElement>('a')]
+    const visible = new Set<string>()
+
+    const update = () => {
+      const current = links.find((link) =>
+        visible.has(link.dataset.section ?? ''),
+      )
+      for (const link of links) {
+        if (link === current) link.setAttribute('aria-current', 'true')
+        else link.removeAttribute('aria-current')
+      }
+      if (!current) return
+      const left = current.offsetLeft - nav.offsetLeft
+      const right = left + current.offsetWidth
+      if (left < nav.scrollLeft || right > nav.scrollLeft + nav.clientWidth) {
+        nav.scrollTo({ left: left - 12 })
+      }
+    }
+
+    // A band across the upper part of the screen, below the sticky nav: a
+    // section counts as current while any of it sits inside that band.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target.id)
+          else visible.delete(entry.target.id)
+        }
+        update()
+      },
+      { rootMargin: '-80px 0px -60% 0px' },
+    )
+    for (const link of links) {
+      const section = document.getElementById(link.dataset.section ?? '')
+      if (section) observer.observe(section)
+    }
+  }
+
+  const clearTimer = { id: 0 }
+
+  // The same toast the rest of the site uses for copied links.
+  function toast(message: string) {
+    const container = document.getElementById('copy-link-toast')
+    if (!container) return
+    const alert = document.createElement('div')
+    alert.className = 'alert alert-success'
+    const text = document.createElement('span')
+    text.textContent = message
+    alert.append(text)
+    container.replaceChildren(alert)
+    window.clearTimeout(clearTimer.id)
+    clearTimer.id = window.setTimeout(() => container.replaceChildren(), 3000)
+  }
+
+  async function share(button: HTMLElement) {
+    const outcome = await sharePage(
+      {
+        title: button.dataset.shareTitle ?? document.title,
+        url: button.dataset.shareUrl ?? location.href,
+      },
+      {
+        share: navigator.share ? navigator.share.bind(navigator) : undefined,
+        clipboard: navigator.clipboard,
+      },
+    )
+    window.posthog?.capture('ballot_link_shared', {
+      target: button.dataset.ballotShare,
+      item_slug: button.dataset.itemSlug,
+      outcome,
+      lang,
+    })
+    // The native sheet is its own feedback, and a cancel needs none.
+    const message =
+      outcome === 'copied'
+        ? root?.dataset.copied
+        : outcome === 'unavailable'
+          ? root?.dataset.unavailable
+          : undefined
+    if (message) toast(message)
+  }
+
+  if (root) {
+    showTodaysSteps(root)
+    spyOnSections()
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as Element | null
+    const shareButton = target?.closest<HTMLElement>('[data-ballot-share]')
+    if (shareButton) {
+      share(shareButton)
+      return
+    }
+    if (target?.closest('[data-ballot-print]')) window.print()
+  })
+</script>

@@ -1,0 +1,149 @@
+---
+import {
+  BALLOT_COPY,
+  itemCode,
+  type Lang,
+  printLine,
+  reasonLabel,
+  type SlateGroup,
+  sectionLabel,
+  stanceLabel,
+  verdictHeading,
+} from '../../lib/ballot'
+import { formatBallotDate } from '../../lib/ballot-calendar'
+import type { BallotItemEntry } from '../../lib/ballot-content'
+import { localized } from '../../lib/platform'
+import { stripMarkdown } from '../../lib/seo'
+
+interface Props {
+  groups: SlateGroup<BallotItemEntry>[]
+  heading: string
+  electionDate: Date
+  lang: Lang
+}
+
+const { groups, heading, electionDate, lang } = Astro.props
+const copy = BALLOT_COPY[lang]
+const es = lang === 'es'
+const date = `${formatBallotDate(electionDate, lang)}${es ? ' de ' : ', '}${electionDate.getUTCFullYear()}`
+const deadline = es
+  ? `Entrégala antes de las 7 p. m. del ${formatBallotDate(electionDate, lang)} en cualquier buzón de 24 horas o Centro de Votación.`
+  : `Return by 7pm ${formatBallotDate(electionDate, lang)} at any 24-hour drop box or Vote Center.`
+---
+
+{
+  /* Hidden on screen. The page's print stylesheet shows this and nothing else,
+    so a printed guide is a plain table with every word the cards carry. */
+}
+<section class="ballot-print">
+  <h2>{`${stripMarkdown(heading)} · ${date}`}</h2>
+  <p class="sub">{copy.printIntro}</p>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">{copy.printItem}</th>
+        <th scope="col">{verdictHeading(lang)}</th>
+        <th scope="col">{reasonLabel('yes', lang)}</th>
+      </tr>
+    </thead>
+    {
+      groups.map(({ section, items }) => (
+        <tbody>
+          <tr class="grp">
+            <th scope="colgroup" colspan="4">
+              {sectionLabel(section, lang)}
+            </th>
+          </tr>
+          {items.map(({ data }) => (
+            <tr>
+              <td class="c">{itemCode(data, lang)}</td>
+              <td>{localized(data, 'title', lang) ?? data.title}</td>
+              <td class="v">{stanceLabel(data, lang)}</td>
+              <td>{printLine(data, lang)}</td>
+            </tr>
+          ))}
+        </tbody>
+      ))
+    }
+  </table>
+  <div class="foot">
+    <span>{deadline}</span>
+    <span>{copy.printFoot}</span>
+  </div>
+</section>
+
+<style>
+  .ballot-print {
+    display: none;
+    color: #000;
+    font-size: 9.5pt;
+  }
+  h2 {
+    margin: 0;
+    font-size: 16pt;
+    font-weight: 700;
+  }
+  .sub {
+    margin: 2pt 0 10pt;
+    font-size: 9pt;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: 3pt 5pt;
+    line-height: 1.25;
+  }
+  thead th {
+    font-size: 7pt;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border-bottom: 1.5pt solid #000;
+  }
+  td {
+    border-bottom: 0.5pt solid #999;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  .grp th {
+    padding-top: 8pt;
+    font-size: 7pt;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    border-bottom: 0.75pt solid #000;
+  }
+  .c,
+  .v {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 12pt;
+    margin-top: 10pt;
+    font-size: 8pt;
+  }
+
+  @media print {
+    @page {
+      margin: 0.5in;
+    }
+    /* Everything on the page except this sheet: the layout's header and
+       hero, the cards, the footer. Scoped by :has() so it can only ever
+       apply to a page carrying a print sheet. */
+    :global(body:has(.ballot-print) > :not(main)),
+    :global(main:has(> .ballot-print) > :not(.ballot-print)) {
+      display: none !important;
+    }
+    .ballot-print {
+      display: block;
+    }
+  }
+</style>

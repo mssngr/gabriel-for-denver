@@ -544,6 +544,239 @@ collections:
           hint: Leave blank to use the automatic rotation. Only set this to fix
             a specific band that clashes with its neighbour.,
         }
+  # The ballot guide at /ballot. Ballot Items are the races and measures, one
+  # file each; Ballot Guide is the page around them. Field definitions live in
+  # src/lib/ballot.ts, and this form has to change with them.
+  - { divider: true, name: ballot-divider }
+  - label: Ballot Guide
+    name: ballotGuide
+    icon: how_to_vote
+    files:
+      - label: Ballot Guide
+        name: current
+        file: src/content/ballot-guide/current.yml
+        fields:
+          - {
+              label: Heading,
+              name: heading,
+              widget: string,
+              hint: Wrap a word in **double asterisks** to colour it gold.,
+            }
+          - { label: Heading (Spanish), name: heading_es, widget: string }
+          - { label: Intro, name: intro, widget: text }
+          - { label: Intro (Spanish), name: intro_es, widget: text }
+          - {
+              label: Election Date,
+              name: electionDate,
+              widget: datetime,
+              format: "YYYY-MM-DD",
+              date_format: "YYYY-MM-DD",
+              time_format: false,
+              hint: Read as a Denver date. From 7pm that day the page says the
+                election is over.,
+            }
+          - {
+              label: Mail-By Date,
+              name: mailByDate,
+              widget: datetime,
+              format: "YYYY-MM-DD",
+              date_format: "YYYY-MM-DD",
+              time_format: false,
+              hint: The last day to mail a ballot back. From the next day the page
+                says it's too late to mail and points to drop boxes. Use the
+                earlier date if Denver Elections and other sources disagree.,
+            }
+          - {
+              label: Register Online By,
+              name: registerOnlineByDate,
+              widget: datetime,
+              format: "YYYY-MM-DD",
+              date_format: "YYYY-MM-DD",
+              time_format: false,
+              hint: The last day to register on GoVoteColorado.gov and still get a
+                ballot in the mail.,
+            }
+          - {
+              label: Credit,
+              name: credit,
+              widget: richtext,
+              required: false,
+              hint: The closing quote and credit line at the foot of the page.,
+            }
+          - {
+              label: Credit (Spanish),
+              name: credit_es,
+              widget: richtext,
+              required: false,
+            }
+  - label: Ballot Items
+    label_singular: Ballot Item
+    name: ballotItems
+    folder: src/content/ballot-items
+    extension: yml
+    create: true
+    icon: ballot
+    identifier_field: slug
+    # A generated filename, not the Slug field, the same as Planks.
+    slug: "{{uuid_short}}"
+    summary: "{{code}}: {{title}} — {{stance}}"
+    sortable_fields: [section, order, code, status]
+    view_groups:
+      - { label: Section, field: section }
+      - { label: Status, field: status }
+    description: One race or measure = one card on /ballot.
+    fields:
+      - {
+          label: Slug,
+          name: slug,
+          widget: string,
+          pattern:
+            [
+              "^(?!og$)[a-z0-9-]+$",
+              "Lowercase letters, numbers and dashes only, and not “og”.",
+            ],
+          hint: "The card's link: /ballot#your-slug. Short and stable, e.g. 2k.",
+        }
+      - {
+          label: Code,
+          name: code,
+          widget: string,
+          hint: "As printed on the ballot: 2K, 81, NN. The biggest thing on the
+            card.",
+        }
+      - {
+          label: Code (Spanish),
+          name: code_es,
+          widget: string,
+          required: false,
+          hint: 'Only when the code is a word, e.g. "25 jueces". Leave blank to
+            use the code above.',
+        }
+      - {
+          label: Code Label,
+          name: codeLabel,
+          widget: string,
+          required: false,
+          hint: 'Small line above the code for races, e.g. "City Council".',
+        }
+      - {
+          label: Code Label (Spanish),
+          name: codeLabel_es,
+          widget: string,
+          required: false,
+        }
+      - { label: Title, name: title, widget: string }
+      - {
+          label: Title (Spanish),
+          name: title_es,
+          widget: string,
+          required: false,
+        }
+      - {
+          label: Section,
+          name: section,
+          widget: select,
+          options: [candidates, judges, amendments, propositions, local],
+          hint: Sections show in printed-ballot order.,
+        }
+      - {
+          label: Order,
+          name: order,
+          widget: number,
+          hint: Position within its section.,
+        }
+      - {
+          label: Stance,
+          name: stance,
+          widget: select,
+          options: ["yes", "no", pick, none],
+          hint: '"pick" is a named candidate or slate; "none" is undecided.',
+        }
+      - {
+          label: Stance Label,
+          name: stanceLabel,
+          widget: string,
+          required: false,
+          hint: 'Replaces "Yes", "No" or "Undecided" on the card, e.g. "Retain
+            them." Needs one for a pick.',
+        }
+      - {
+          label: Stance Label (Spanish),
+          name: stanceLabel_es,
+          widget: string,
+          required: false,
+          hint: 'Left blank, the Spanish page shows "Sí", "No" or "Indeciso".',
+        }
+      - {
+          label: Chip,
+          name: chip,
+          widget: string,
+          required: false,
+          hint: The item's text on the slate card. Defaults to the code.,
+        }
+      - {
+          label: Chip (Spanish),
+          name: chip_es,
+          widget: string,
+          required: false,
+        }
+      - {
+          label: What,
+          name: what,
+          widget: text,
+          hint: What it does. Wrap a phrase in **double asterisks** to bold it.,
+        }
+      - {
+          label: What (Spanish),
+          name: what_es,
+          widget: text,
+          required: false,
+        }
+      - {
+          label: Why,
+          name: why,
+          widget: text,
+          hint: 'Why you are voting this way. For an undecided race, list the
+            candidates instead, one per line starting with "- ".',
+        }
+      - { label: Why (Spanish), name: why_es, widget: text, required: false }
+      - {
+          label: Sources,
+          name: sources,
+          widget: list,
+          required: false,
+          summary: "{{fields.label}}",
+          hint: "Links shown under the reason, e.g. the official ballot text.",
+          fields:
+            [
+              { label: Label, name: label, widget: string },
+              {
+                label: Label (Spanish),
+                name: label_es,
+                widget: string,
+                required: false,
+              },
+              {
+                label: URL,
+                name: url,
+                widget: string,
+                pattern:
+                  [
+                    "^(https?://|/)",
+                    "Include the https:// at the front, or start a page on
+                    this site with /.",
+                  ],
+              },
+            ],
+        }
+      - {
+          label: Status,
+          name: status,
+          widget: select,
+          options: [draft, published],
+          default: draft,
+          hint: Every Spanish field must be filled before this can be published.,
+        }
   - label: Posts
     name: posts
     folder: src/content/posts

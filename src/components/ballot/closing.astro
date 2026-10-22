@@ -1,0 +1,84 @@
+---
+import { marked } from 'marked'
+import { BALLOT_COPY, closingLinks, type Lang } from '../../lib/ballot'
+
+interface Props {
+  credit?: string
+  lang: Lang
+}
+
+const { credit, lang } = Astro.props
+const copy = BALLOT_COPY[lang]
+const links = closingLinks(lang)
+---
+
+<section class="closing">
+  {credit && <div class="closing__credit" set:html={marked.parse(credit)} />}
+  <div class="closing__cta">
+    <h2>{copy.ctaHeading}</h2>
+    <p>{copy.ctaBody}</p>
+    <div class="flex flex-wrap gap-3">
+      <a class="btn btn-accent text-lg!" href={links.donate}>{copy.donate}</a>
+      <a
+        class="btn border-[1.5px] border-white/60 bg-transparent text-white text-lg!"
+        href={links.volunteer}>{copy.volunteer}</a
+      >
+    </div>
+  </div>
+</section>
+
+<style>
+  .closing {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding: 2.5rem 1.5rem;
+    background: linear-gradient(
+      to bottom right,
+      var(--color-primary),
+      var(--color-tertiary)
+    );
+    color: #fff;
+  }
+  @media (min-width: 768px) {
+    .closing {
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      padding: 3rem;
+    }
+  }
+  .closing__credit :global(blockquote) {
+    margin: 0;
+  }
+  .closing__credit :global(blockquote p) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .closing__credit :global(blockquote p + p) {
+    margin-top: 0.625rem;
+    font-family: var(--font-edu-sa-hand);
+    font-weight: 400;
+    font-size: 1.05rem;
+    color: var(--color-accent);
+  }
+  .closing__credit > :global(p) {
+    margin-top: 0.875rem;
+    font-size: 0.9rem;
+    font-weight: 300;
+    opacity: 0.85;
+  }
+  .closing__cta {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .closing__cta h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+  .closing__cta p {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 300;
+  }
+</style>

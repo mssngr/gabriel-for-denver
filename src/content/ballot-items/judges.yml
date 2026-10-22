@@ -1,0 +1,19 @@
+slug: judges
+code: 25 judges
+code_es: 25 jueces
+codeLabel: Retention
+codeLabel_es: Retención
+title: Supreme, Appeals, District, and County Courts
+title_es: Tribunal Supremo, de Apelaciones, de Distrito y de Condado
+section: judges
+order: 1
+stance: 'yes'
+stanceLabel: Retain them.
+stanceLabel_es: Retenerlos.
+chip: Retain them
+chip_es: Retenerlos
+what: Denver will decide whether 25 judges should be retained.
+what_es: Denver decidirá si 25 jueces deben mantenerse en el cargo.
+why: The State Commission on Judicial Performance, a mix of attorneys and non-attorneys, found **every judge met their standards** through observations, surveys, and reviews.
+why_es: La Comisión Estatal de Desempeño Judicial, formada por abogados y no abogados, determinó que **todos los jueces cumplieron sus estándares** mediante observaciones, encuestas y evaluaciones.
+status: published

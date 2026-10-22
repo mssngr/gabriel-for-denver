@@ -1,0 +1,304 @@
+---
+import { ArrowRight, Check, Link2, X } from '@lucide/astro'
+import { marked } from 'marked'
+import {
+  BALLOT_COPY,
+  ballotItemUrl,
+  itemCode,
+  type Lang,
+  reasonLabel,
+  stanceLabel,
+  verdictHeading,
+} from '../../lib/ballot'
+import type { BallotItemEntry } from '../../lib/ballot-content'
+import { localized, sourceLabel } from '../../lib/platform'
+import { alternatePath } from '../../lib/seo'
+
+interface Props {
+  item: BallotItemEntry
+  lang: Lang
+  pageUrl: string
+}
+
+const { item, lang, pageUrl } = Astro.props
+const { data } = item
+const copy = BALLOT_COPY[lang]
+
+const code = itemCode(data, lang)
+const codeLabel = localized(data, 'codeLabel', lang)
+const title = localized(data, 'title', lang) ?? data.title
+const what = marked.parse(localized(data, 'what', lang) ?? data.what)
+const why = marked.parse(localized(data, 'why', lang) ?? data.why)
+const verdict = stanceLabel(data, lang)
+// A link into this site, like /why-me, goes to the same page in the reader's
+// language; anything else is an outside document and goes as written.
+const sources = (data.sources ?? []).map((source) => ({
+  label: sourceLabel(source, lang),
+  url: source.url.startsWith('/')
+    ? alternatePath(source.url, lang)
+    : source.url,
+}))
+---
+
+<article class="item" id={data.slug} aria-labelledby={`${data.slug}-title`}>
+  <div class={`item__verdict item__verdict--${data.stance}`}>
+    <span class="item__code">
+      {codeLabel && <small>{codeLabel}</small>}
+      {code}
+    </span>
+    <span class="item__vwrap">
+      <span class="item__vlabel">{verdictHeading(lang)}</span>
+      <span class="item__vtext">
+        {data.stance === 'yes' && <Check aria-hidden="true" />}
+        {data.stance === 'no' && <X aria-hidden="true" />}
+        {verdict}
+      </span>
+    </span>
+  </div>
+  <div class="item__title">
+    <h3 id={`${data.slug}-title`}>{title}</h3>
+    <button
+      type="button"
+      class="item__share"
+      aria-label={`${copy.share} ${code}: ${title}`}
+      data-ballot-share="item"
+      data-item-slug={data.slug}
+      data-share-url={ballotItemUrl(pageUrl, data.slug)}
+      data-share-title={`${code}: ${title}`}
+      ><Link2 aria-hidden="true" />{copy.share}</button
+    >
+  </div>
+  <div class="item__body">
+    <span class="item__lbl">{copy.what}</span>
+    <div class="item__md" set:html={what} />
+  </div>
+  <div class="item__body item__why">
+    <span class="item__lbl">{reasonLabel(data.stance, lang)}</span>
+    <div class="item__md" set:html={why} />
+    {
+      sources.map((source) => (
+        <a class="item__more" href={source.url}>
+          {source.label}
+          <ArrowRight aria-hidden="true" />
+        </a>
+      ))
+    }
+  </div>
+</article>
+
+<style>
+  .item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: hidden;
+    background: #fff;
+    border: 1.5px solid #dfe5fb;
+    border-radius: 1rem;
+    /* Clears the sticky jump-nav when a chip or shared link lands here. */
+    scroll-margin-top: 4.5rem;
+  }
+  .item:target {
+    box-shadow: 0 0 0 3px var(--color-accent);
+  }
+  .item__verdict {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem 0.875rem;
+  }
+  .item__verdict--yes {
+    background: var(--color-accent);
+    color: var(--color-tertiary);
+  }
+  .item__verdict--no {
+    background: var(--color-tertiary);
+    color: #fff;
+  }
+  .item__verdict--pick {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .item__verdict--none {
+    background: #eef1fb;
+    color: var(--color-tertiary);
+  }
+  .item__code {
+    font-weight: 700;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+  .item__code small,
+  .item__vlabel,
+  .item__lbl {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .item__code small {
+    margin-bottom: 0.25rem;
+    opacity: 0.75;
+  }
+  .item__vwrap {
+    display: grid;
+    justify-items: end;
+    text-align: right;
+  }
+  .item__vlabel {
+    margin-bottom: 0.2rem;
+    opacity: 0.75;
+  }
+  .item__vtext {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+  .item__vtext :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: -0.15rem;
+    flex: none;
+    stroke-width: 3.5;
+  }
+  .item__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 0.625rem;
+    padding: 0.875rem 0.875rem 0;
+  }
+  .item__title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .item__share {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex: none;
+    border: 1.5px solid #c9d4f7;
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--color-primary);
+    padding: 0.3rem 0.5rem 0.2rem;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .item__share:hover {
+    background: var(--color-neutral);
+  }
+  .item__share :global(svg) {
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-top: -0.1rem;
+  }
+  .item__body {
+    display: grid;
+    align-content: start;
+    gap: 0.375rem;
+    min-width: 0;
+    padding: 0.625rem 0.875rem 0.875rem;
+  }
+  .item__why {
+    margin: 0 0.625rem 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    background: #f6f8ff;
+  }
+  .item__lbl {
+    color: var(--color-secondary);
+  }
+  .item__md :global(p),
+  .item__md :global(li) {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.45;
+    color: #23263a;
+  }
+  .item__md :global(p + p) {
+    margin-top: 0.5rem;
+  }
+  .item__md :global(strong) {
+    font-weight: 700;
+  }
+  .item__md :global(ul) {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0;
+    padding-inline-start: 1.1em;
+  }
+  .item__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+    color: var(--color-secondary);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .item__more :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    margin-top: -0.15rem;
+  }
+
+  /* Desktop: the verdict becomes a column of its own, beside the title and
+     the two text columns, so it reads at arm's length. */
+  @media (min-width: 768px) {
+    .item {
+      grid-template-columns: 11.875rem minmax(0, 1fr) minmax(0, 1fr);
+      border-radius: 1.125rem;
+    }
+    .item__verdict {
+      grid-row: span 2;
+      flex-direction: column;
+      align-items: start;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 1.125rem;
+    }
+    .item__code {
+      font-size: 1.9rem;
+    }
+    .item__vwrap {
+      justify-items: start;
+      text-align: left;
+    }
+    .item__vtext {
+      font-size: 1.6rem;
+    }
+    .item__vtext :global(svg) {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    .item__title {
+      grid-column: 2 / -1;
+      padding: 1.125rem 1.25rem 0;
+    }
+    .item__title h3 {
+      font-size: 1.35rem;
+    }
+    .item__body {
+      padding: 1.125rem 1.25rem;
+    }
+    .item__why {
+      margin: 0;
+      border-radius: 0;
+      background: none;
+      border-left: 1.5px solid #eef1fb;
+    }
+  }
+</style>
