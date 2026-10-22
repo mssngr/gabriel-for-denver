@@ -11,6 +11,7 @@ import {
   ballotPageMeta,
   ballotSummary,
   closingLinks,
+  homeCallout,
   reasonLabel,
   sectionLabel,
   sectionNote,
@@ -173,15 +174,41 @@ describe('closingLinks', () => {
   })
 })
 
+describe('homeCallout', () => {
+  it('links each language to its own guide', () => {
+    expect(homeCallout('en').href).toBe('/ballot')
+    expect(homeCallout('es').href).toBe('/es/ballot')
+  })
+
+  // Q5 carries over to the home page: the callout says how Gabriel is voting.
+  it('frames the guide as how Gabriel is voting', () => {
+    expect(homeCallout('en').heading).toBe('How I’m voting, race by race')
+    expect(homeCallout('es').heading).toBe(
+      'Cómo voy a votar, contienda por contienda',
+    )
+  })
+
+  it('words every line in both languages', () => {
+    for (const lang of ['en', 'es'] as const) {
+      const { eyebrow, heading, body, cta } = homeCallout(lang)
+      for (const line of [eyebrow, heading, body, cta]) {
+        expect(line).toBeTruthy()
+      }
+    }
+  })
+})
+
 describe('no "recommend" anywhere on the page', () => {
   // Q5: the page says how Gabriel is voting, never what anyone should do.
-  // Covers every label this module can hand a page, in both languages.
+  // Covers every label this module can hand a page, in both languages,
+  // including the home page's callout pointing at the guide.
   it('keeps every label free of recommend and recomendar', () => {
     const labels: string[] = []
     for (const lang of ['en', 'es'] as const) {
       labels.push(
         ...Object.values(BALLOT_COPY[lang]),
         verdictHeading(lang),
+        ...Object.values(homeCallout(lang)),
         ballotPageMeta({ heading: '', heading_es: '' }, lang).description,
       )
       for (const section of BALLOT_SECTIONS) {

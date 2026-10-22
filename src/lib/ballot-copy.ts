@@ -207,6 +207,39 @@ export function closingLinks(lang: Lang): {
   }
 }
 
+const HOME_CALLOUT = {
+  en: {
+    eyebrow: 'Ballots are out',
+    heading: 'How I’m voting, race by race',
+    body: 'Every race and measure on a Denver ballot, in ballot order, with my reasons. Keep it open next to yours.',
+    cta: 'See how I’m voting',
+  },
+  es: {
+    eyebrow: 'Ya llegaron las boletas',
+    heading: 'Cómo voy a votar, contienda por contienda',
+    body: 'Cada contienda y medida de una boleta de Denver, en el orden de la boleta, con mis razones. Tenla abierta junto a la tuya.',
+    cta: 'Ver cómo voy a votar',
+  },
+} as const satisfies Record<Lang, Record<string, string>>
+
+/**
+ * The home page's callout pointing at the guide while ballots are out. It
+ * comes down after the election (follow-up F1), so it lives apart from the
+ * guide's own wording.
+ */
+export function homeCallout(lang: Lang): {
+  eyebrow: string
+  heading: string
+  body: string
+  cta: string
+  href: string
+} {
+  return {
+    ...HOME_CALLOUT[lang],
+    href: lang === 'es' ? '/es/ballot' : '/ballot',
+  }
+}
+
 /** The page's `<title>` and meta description. */
 export function ballotPageMeta(
   guide: Pick<BallotGuide, 'heading' | 'heading_es'>,

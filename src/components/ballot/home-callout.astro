@@ -1,0 +1,91 @@
+---
+import { Vote } from '@lucide/astro'
+import type { Lang } from '../../lib/ballot'
+import { homeCallout } from '../../lib/ballot-copy'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const callout = homeCallout(lang)
+---
+
+<aside class="home-callout" aria-labelledby="home-callout-heading">
+  <Vote class="home-callout__icon" aria-hidden="true" />
+  <div class="home-callout__text">
+    <p class="home-callout__eyebrow">{callout.eyebrow}</p>
+    <p class="home-callout__heading" id="home-callout-heading">
+      {callout.heading}
+    </p>
+    <p class="home-callout__body">{callout.body}</p>
+  </div>
+  <a
+    class="btn bg-tertiary text-white border-tertiary text-xl! shrink-0"
+    href={callout.href}
+    data-lang={lang}
+    id="home-callout-link">{callout.cta} →</a
+  >
+</aside>
+
+<script is:inline>
+  document
+    .getElementById('home-callout-link')
+    ?.addEventListener('click', function () {
+      window.posthog?.capture('ballot_callout_clicked', {
+        lang: this.dataset.lang,
+      })
+    })
+</script>
+
+<style>
+  .home-callout {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem 1.25rem;
+    width: 100%;
+    max-width: 64rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 1.5rem;
+    background: var(--color-accent);
+    color: var(--color-tertiary);
+    box-shadow: 0 18px 40px -20px rgb(14 0 92 / 0.6);
+  }
+  .home-callout > a {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+  @media (min-width: 768px) {
+    .home-callout {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      padding: 1.5rem 2rem;
+    }
+    .home-callout > a {
+      grid-column: auto;
+    }
+  }
+  .home-callout :global(.home-callout__icon) {
+    width: 2.75rem;
+    height: 2.75rem;
+    align-self: start;
+  }
+  .home-callout__eyebrow {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.25rem;
+  }
+  /* Not a heading element: the callout sits above the page's h1. */
+  .home-callout__heading {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    font-weight: 800;
+    margin: 0 0 0.35rem;
+  }
+  .home-callout__body {
+    font-size: 1.125rem;
+    margin: 0;
+  }
+</style>

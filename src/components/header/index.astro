@@ -6,6 +6,7 @@ import {
   Menu,
   MessageCircle,
   Users,
+  Vote,
   X,
 } from '@lucide/astro'
 import logoDesktop from '../../assets/gfd-logo.svg'
@@ -14,7 +15,11 @@ import NavMarker from './nav-marker.astro'
 const currentPath = Astro.url.pathname
 const isPlatformActive = currentPath.includes('/platform')
 const isWhyMeActive = currentPath.includes('/why-me')
-const isGetInvolvedActive = currentPath.includes('/get-involved')
+const isBallotActive = currentPath.includes('/ballot')
+// The ballot guide sits under Get involved while ballots are out, so it
+// marks Get involved as current too.
+const isGetInvolvedActive =
+  currentPath.includes('/get-involved') || isBallotActive
 
 // A current nav item is marked with an underline (NavMarker), a separate
 // element from the link/summary rather than a border on it — both so it
@@ -70,6 +75,13 @@ const navItemClasses = (active: boolean) =>
           <ul
             class="bg-base-100 text-base-content p-2 z-10 lg:w-max lg:whitespace-nowrap"
           >
+            <li>
+              <a
+                href="/ballot"
+                class={`${isBallotActive ? 'text-primary font-black' : ''}`}
+                ><Vote />Your ballot</a
+              >
+            </li>
             <li>
               <a
                 href="/get-involved/events"
