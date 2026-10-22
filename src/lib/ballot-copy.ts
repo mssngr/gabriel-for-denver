@@ -8,9 +8,9 @@ import type { Lang } from './platform'
 import { stripMarkdown } from './seo'
 
 /**
- * Every fixed label the ballot guide shows, in both languages. Kept together,
- * with the how-to-vote steps in ballot-calendar.ts, so one test can sweep all
- * of them for "recommend" (questions.html Q5): the page says how Gabriel is
+ * Every fixed label the ballot guide shows, in both languages, apart from the
+ * how-to-vote steps in ballot-steps.ts. One test in ballot-copy.test.ts sweeps
+ * both for "recommend" (questions.html Q5): the page says how Gabriel is
  * voting, never what anyone else should do.
  */
 
