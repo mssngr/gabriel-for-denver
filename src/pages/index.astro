@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content'
 import { marked } from 'marked'
+import HomeCallout from '../components/ballot/home-callout.astro'
 import HomePhoto from '../components/home-photo.astro'
 import InstagramFeed from '../components/instagram-feed.astro'
 import MyBackground from '../components/my-background/index.astro'
@@ -21,6 +22,7 @@ const content = page?.data && marked.parse(page.data.content)
     slot="hero"
     class="w-full flex flex-wrap justify-center items-center gap-8 p-8 md:p-16 pb-0"
   >
+    <HomeCallout lang="en" />
     <HomePhoto />
     <div class="w-md hero-highlight">
       <h1 set:html={heading} />

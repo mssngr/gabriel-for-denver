@@ -53,5 +53,10 @@
     "event_name": "ballot_link_shared",
     "event_description": "User taps Share on the ballot guide, either for the whole guide or for one race or measure's card. Includes target ('guide' or 'item'), item_slug when target is 'item', outcome ('shared', 'copied', 'cancelled' or 'unavailable'), and lang ('en' or 'es').",
     "file": "src/components/ballot/ballot-behavior.astro"
+  },
+  {
+    "event_name": "ballot_callout_clicked",
+    "event_description": "User clicks the home page's callout pointing at the ballot guide. Includes a lang property ('en' or 'es').",
+    "file": "src/components/ballot/home-callout.astro"
   }
 ]
