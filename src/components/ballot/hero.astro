@@ -1,0 +1,66 @@
+---
+import { marked } from 'marked'
+import type { BallotGuide, Lang } from '../../lib/ballot'
+import {
+  electionDayLabel,
+  VOTE_STATES,
+  type VoteState,
+} from '../../lib/ballot-calendar'
+import { BALLOT_COPY, ballotSummary } from '../../lib/ballot-copy'
+import Steps from './steps.astro'
+
+interface Props {
+  guide: BallotGuide
+  lang: Lang
+  itemCount: number
+  sectionCount: number
+  current: VoteState
+}
+
+const { guide, lang, itemCount, sectionCount, current } = Astro.props
+const copy = BALLOT_COPY[lang]
+
+const heading = marked.parseInline(
+  lang === 'es' ? guide.heading_es : guide.heading,
+)
+const intro = lang === 'es' ? guide.intro_es : guide.intro
+const before = VOTE_STATES.filter((state) => state !== 'over').join(' ')
+---
+
+<section class="px-6 pt-2 pb-10 md:px-12 md:pb-14">
+  <h1
+    class="hero-highlight font-bold md:text-[4.25rem] md:leading-[0.95]"
+    set:html={heading}
+  />
+  <p class="font-light max-w-[46ch] text-2xl leading-tight">{intro}</p>
+  <div class="flex flex-wrap gap-2 mt-5">
+    <span class="pill">
+      <span data-vote-states={before} hidden={current === 'over'}
+        >{copy.electionDay}</span
+      >
+      <span data-vote-states="over" hidden={current !== 'over'}
+        >{copy.electionHeld}</span
+      >
+      <b>{electionDayLabel(guide.electionDate, lang)}</b>
+    </span>
+    <span class="pill">{ballotSummary(itemCount, sectionCount, lang)}</span>
+  </div>
+  <Steps dates={guide} lang={lang} current={current} />
+</section>
+
+<style>
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgb(255 255 255 / 0.14);
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem 0.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .pill b {
+    color: var(--color-accent);
+  }
+</style>

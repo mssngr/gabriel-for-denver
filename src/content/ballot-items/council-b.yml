@@ -1,0 +1,23 @@
+slug: council-b
+code: At-large B
+code_es: Escaño B
+codeLabel: City Council
+codeLabel_es: Concejo Municipal
+title: Denver City Council, At-Large Seat B
+title_es: Concejo Municipal de Denver, Miembro General Escaño B
+section: candidates
+order: 3
+stance: pick
+stanceLabel: Gabriel Konkle
+stanceLabel_es: Gabriel Konkle
+chip: 'City Council: Konkle'
+chip_es: 'Concejo: Konkle'
+what: 10 Candidates. Simple majority wins.
+what_es: 10 candidatos. Gana la mayoría simple.
+why: Democratic Socialist. Mutual aid organizer, finance, tech, non-profit, lay leader.
+why_es: Socialista democrático. Organizador de ayuda mutua, finanzas, tecnología, sector sin fines de lucro, líder laico.
+sources:
+- label: Read my platform
+  label_es: Lee mi plataforma
+  url: /why-me
+status: published

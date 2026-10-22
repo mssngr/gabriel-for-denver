@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
+import { ballotGuideSchema, ballotItemSchema } from './lib/ballot'
 import { guideSchema, idFromFilename, plankSchema } from './lib/platform'
 
 const pages = defineCollection({
@@ -133,4 +134,32 @@ const posts = defineCollection({
     }),
 })
 
-export const collections = { pages, issues, guides, planks, events, posts }
+// The ballot guide at /ballot: one entry per race or measure, in the same
+// shape as planks (filename ids, a draft/published gate), plus one entry for
+// the page around them. Field definitions live in src/lib/ballot.ts.
+const ballotItems = defineCollection({
+  loader: glob({
+    pattern: '**/*.yml',
+    base: './src/content/ballot-items',
+    generateId: ({ entry }) => idFromFilename(entry),
+  }),
+  schema: () => ballotItemSchema,
+})
+
+// Its own collection rather than another file in `pages`, whose one shared
+// schema has no use for the election dates this page's calendar reads.
+const ballotGuide = defineCollection({
+  loader: glob({ pattern: '**/*.yml', base: './src/content/ballot-guide' }),
+  schema: () => ballotGuideSchema,
+})
+
+export const collections = {
+  pages,
+  issues,
+  guides,
+  planks,
+  events,
+  posts,
+  ballotItems,
+  ballotGuide,
+}

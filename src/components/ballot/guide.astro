@@ -1,0 +1,156 @@
+---
+import {
+  type BallotGuide,
+  type Lang,
+  sectionAnchor,
+  type SlateGroup,
+} from '../../lib/ballot'
+import type { VoteState } from '../../lib/ballot-calendar'
+import { BALLOT_COPY, sectionLabel, sectionNote } from '../../lib/ballot-copy'
+import { howToVote } from '../../lib/ballot-steps'
+import type { BallotItemEntry } from '../../lib/ballot-content'
+import CopyLinkToast from '../copy-link-toast.astro'
+import BallotBehavior from './ballot-behavior.astro'
+import Closing from './closing.astro'
+import ItemCard from './item-card.astro'
+import JumpNav from './jump-nav.astro'
+import PrintSheet from './print-sheet.astro'
+import SlateCard from './slate-card.astro'
+
+interface Props {
+  guide: BallotGuide
+  groups: SlateGroup<BallotItemEntry>[]
+  lang: Lang
+  pageUrl: string
+  shareTitle: string
+  current: VoteState
+}
+
+const { guide, groups, lang, pageUrl, shareTitle, current } = Astro.props
+const copy = BALLOT_COPY[lang]
+
+const banners = (['eday', 'over'] as const).map((state) => ({
+  state,
+  text: howToVote(state, guide, lang).banner,
+}))
+const heading = lang === 'es' ? guide.heading_es : guide.heading
+const credit = lang === 'es' ? guide.credit_es : guide.credit
+---
+
+{
+  /* The dates ride along as data so ballot-behavior.astro can recompute
+    today's state; the strings are its toast messages. */
+}
+<main
+  class="ballot"
+  data-ballot
+  data-election-date={guide.electionDate.toISOString()}
+  data-mail-by-date={guide.mailByDate.toISOString()}
+  data-register-online-by-date={guide.registerOnlineByDate.toISOString()}
+  data-copied={copy.copied}
+  data-unavailable={copy.unavailable}
+>
+  {
+    banners.map(({ state, text }) => (
+      <p class="banner" data-vote-states={state} hidden={state !== current}>
+        {text}
+      </p>
+    ))
+  }
+  <SlateCard
+    groups={groups}
+    electionDate={guide.electionDate}
+    lang={lang}
+    pageUrl={pageUrl}
+    shareTitle={shareTitle}
+  />
+  <JumpNav groups={groups} lang={lang} />
+  {
+    groups.map(({ section, items }) => (
+      <section
+        class="sec"
+        id={sectionAnchor(section)}
+        aria-labelledby={`${sectionAnchor(section)}-heading`}
+      >
+        <div class="sec__head">
+          <h2 id={`${sectionAnchor(section)}-heading`}>
+            {sectionLabel(section, lang)}
+          </h2>
+          <p>{sectionNote(section, lang)}</p>
+        </div>
+        <div class="sec__items">
+          {items.map((item) => (
+            <ItemCard item={item} lang={lang} pageUrl={pageUrl} />
+          ))}
+        </div>
+      </section>
+    ))
+  }
+  <Closing credit={credit} lang={lang} />
+  <PrintSheet
+    groups={groups}
+    heading={heading}
+    electionDate={guide.electionDate}
+    lang={lang}
+  />
+  <CopyLinkToast message={copy.copied} />
+</main>
+<BallotBehavior />
+
+<style>
+  .banner {
+    margin: 0;
+    padding: 0.75rem 1.5rem 0.6rem;
+    background: var(--color-accent);
+    color: var(--color-tertiary);
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+  @media (min-width: 768px) {
+    .banner {
+      padding-inline: 3rem;
+    }
+  }
+  .sec {
+    padding: 1.625rem 0.875rem 1.75rem;
+    /* Clears the sticky jump-nav when a pill jumps here. */
+    scroll-margin-top: 3.5rem;
+  }
+  .sec:nth-of-type(even) {
+    background: #f6f8ff;
+  }
+  @media (min-width: 768px) {
+    .sec {
+      padding: 2.25rem 3rem 2.25rem;
+    }
+  }
+  .sec__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.875rem;
+    margin-bottom: 1.125rem;
+  }
+  .sec__head h2 {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-primary);
+  }
+  @media (min-width: 768px) {
+    .sec__head h2 {
+      font-size: 2.2rem;
+    }
+  }
+  .sec__head p {
+    margin: 0;
+    font-size: 1rem;
+    color: #4a4f66;
+  }
+  .sec__items {
+    display: grid;
+    gap: 1rem;
+  }
+</style>

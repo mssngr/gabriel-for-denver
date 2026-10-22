@@ -43,5 +43,15 @@
     "event_name": "guide_card_clicked",
     "event_description": "User clicks a guide card, or one of its individual action rows, on any of the eight routes a card renders on. Includes surface ('home', 'issues', 'platform' or 'why-me'), lang ('en' or 'es'), guide_slug, target ('card' or 'action'), and plank_slug when target is 'action'.",
     "file": "src/components/platform/card-tracking.astro"
+  },
+  {
+    "event_name": "ballot_guide_viewed",
+    "event_description": "User views the ballot guide at /ballot or /es/ballot. Includes a lang property ('en' or 'es').",
+    "file": "src/pages/ballot/index.astro"
+  },
+  {
+    "event_name": "ballot_link_shared",
+    "event_description": "User taps Share on the ballot guide, either for the whole guide or for one race or measure's card. Includes target ('guide' or 'item'), item_slug when target is 'item', outcome ('shared', 'copied', 'cancelled' or 'unavailable'), and lang ('en' or 'es').",
+    "file": "src/components/ballot/ballot-behavior.astro"
   }
 ]
