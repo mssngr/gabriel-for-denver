@@ -1,11 +1,9 @@
 ---
 import { marked } from 'marked'
-import { BALLOT_COPY, type BallotDates, type Lang } from '../../lib/ballot'
-import {
-  howToVote,
-  VOTE_STATES,
-  type VoteState,
-} from '../../lib/ballot-calendar'
+import type { BallotDates, Lang } from '../../lib/ballot'
+import { VOTE_STATES, type VoteState } from '../../lib/ballot-calendar'
+import { BALLOT_COPY } from '../../lib/ballot-copy'
+import { howToVote } from '../../lib/ballot-steps'
 
 interface Props {
   dates: BallotDates
@@ -84,8 +82,13 @@ const strips = VOTE_STATES.map((state) => ({
   .vote-step--changed {
     box-shadow: inset 0 0 0 3px var(--color-accent);
   }
+  /* Greyed by its ground and number, not by opacity: its text still says
+     how to register in person, so it keeps full contrast. */
   .vote-step--done {
-    opacity: 0.6;
+    background: #e3e8f8;
+  }
+  .vote-step--done .vote-step__n {
+    color: #6b7194;
   }
   .vote-step__n {
     grid-row: span 2;

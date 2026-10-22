@@ -8,6 +8,8 @@ const { message } = Astro.props
 <div
   id="copy-link-toast"
   class="toast toast-top toast-center z-50"
+  role="status"
+  aria-live="polite"
   data-message={message}
 >
 </div>

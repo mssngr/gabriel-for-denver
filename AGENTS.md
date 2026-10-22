@@ -120,7 +120,10 @@ its `file` paths are already stale in places; don't trust them as a map.
 
 (`src/components/platform/sheet-behavior.astro` is a deliberate exception to
 the `is:inline` rule: it needs to import from `src/lib/sheet.ts` so that logic
-is covered by unit tests, which an inline script can't do.)
+is covered by unit tests, which an inline script can't do.
+`src/components/ballot/ballot-behavior.astro` is the same exception, for the
+same reason: it imports the ballot guide's phase logic from
+`src/lib/ballot-calendar.ts`.)
 
 ## Documentation
 

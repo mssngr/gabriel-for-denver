@@ -4,7 +4,6 @@ import {
   ballotPhase,
   electionDayLabel,
   formatBallotDate,
-  howToVote,
   onlineRegistrationOpen,
   VOTE_STATES,
   voteState,
@@ -98,69 +97,34 @@ describe('voteState', () => {
     expect(voteState(at('2026-11-05T18:00:00Z'), DATES)).toBe('over')
   })
 
-  it('lists every state it can return, so the page can render each one', () => {
-    const seen = [
-      '2026-10-22T18:00:00Z',
-      '2026-10-25T18:00:00Z',
-      '2026-10-28T18:00:00Z',
-      '2026-11-03T18:00:00Z',
-      '2026-11-05T18:00:00Z',
-    ].map(iso => voteState(at(iso), DATES))
-    for (const state of seen) expect(VOTE_STATES).toContain(state)
-  })
-})
-
-describe('howToVote', () => {
-  it('tells people to mail by the mail-by date before the cutoff', () => {
-    const { banner, steps } = howToVote('early:open', DATES, 'en')
-    expect(banner).toBeNull()
-    expect(steps.map(step => step.title)).toEqual([
-      'Register to vote',
-      'Get your ballot',
-      'Turn it in',
-    ])
-    expect(steps[0].body).toContain('through Oct 26')
-    expect(steps[2].body).toContain('Mail it by **Oct 24**')
+  // An editor could set the registration date before the mail-by date. Then
+  // there are days still early for mailing with registration already closed.
+  it('reads early:closed when registration closes before the mail cutoff', () => {
+    const dates = {
+      ...DATES,
+      registerOnlineByDate: new Date('2026-10-20T00:00:00Z'),
+    }
+    expect(voteState(at('2026-10-22T18:00:00Z'), dates)).toBe('early:closed')
   })
 
-  it('flips the last step to a drop box once it is too late to mail', () => {
-    const { steps } = howToVote('late:open', DATES, 'en')
-    expect(steps[2]).toMatchObject({ title: 'Too late to mail', changed: true })
-    expect(steps[2].body).toContain('by 7pm Nov 3')
-    expect(steps[0].done).toBe(false)
-  })
-
-  it('marks online registration done once it has closed', () => {
-    const { steps } = howToVote('late:closed', DATES, 'en')
-    expect(steps[0].done).toBe(true)
-    expect(steps[0].body).toContain('Online registration has closed')
-  })
-
-  it('leads with a banner on Election Day', () => {
-    const { banner, steps } = howToVote('eday', DATES, 'en')
-    expect(banner).toContain('Today is Election Day')
-    expect(steps).toHaveLength(3)
-  })
-
-  it('drops the steps once the election is over', () => {
-    const { banner, steps } = howToVote('over', DATES, 'en')
-    expect(banner).toBe(
-      'The Nov 3 election is over. Thank you for voting. This guide stays up as a record.',
-    )
-    expect(steps).toEqual([])
-  })
-
-  it('fills the dates in Spanish', () => {
-    const { steps } = howToVote('early:open', DATES, 'es')
-    expect(steps[0].body).toContain('hasta el 26 de octubre')
-    expect(steps[2].body).toContain('**24 de octubre**')
-  })
-
-  // Q6: the state's site is .gov; the deck linked a .com.
-  it('links GoVoteColorado on its .gov domain', () => {
-    const { steps } = howToVote('early:open', DATES, 'en')
-    expect(steps[0].body).toContain('https://www.govotecolorado.gov')
-    expect(steps[0].body).not.toContain('.com')
+  // The page renders one strip per entry in VOTE_STATES and hides the rest,
+  // so a state listed there that can't happen is dead markup, and one that
+  // can happen but isn't listed would leave the strip blank on that day.
+  it('reaches exactly the states VOTE_STATES lists, over a sweep of days', () => {
+    const earlyClose = {
+      ...DATES,
+      registerOnlineByDate: new Date('2026-10-20T00:00:00Z'),
+    }
+    const reached = new Set<string>()
+    for (const dates of [DATES, earlyClose]) {
+      for (let day = 1; day <= 30; day++) {
+        for (const hour of [0, 12, 23]) {
+          const now = new Date(Date.UTC(2026, 9, 15 + day, hour))
+          reached.add(voteState(now, dates))
+        }
+      }
+    }
+    expect([...reached].sort()).toEqual([...VOTE_STATES].sort())
   })
 })
 

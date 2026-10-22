@@ -1,30 +1,16 @@
 import { describe, expect, it } from 'vitest'
 import {
-  BALLOT_COPY,
   BALLOT_ITEM_TRANSLATABLE_FIELDS,
-  BALLOT_SECTIONS,
-  BALLOT_STANCES,
-  type BallotDates,
   type BallotItem,
   ballotItemUrl,
-  ballotPageMeta,
-  ballotSummary,
   chipText,
-  closingLinks,
   type Entry,
   itemCode,
   printLine,
-  reasonLabel,
   sectionAnchor,
-  sectionLabel,
-  sectionNote,
-  sectionShortLabel,
   slateGroups,
   sortBallot,
-  stanceLabel,
-  verdictHeading,
 } from './ballot'
-import { howToVote, VOTE_STATES } from './ballot-calendar'
 
 function makeItem({
   id,
@@ -48,15 +34,6 @@ function makeItem({
     ...overrides,
   }
   return { id: id ?? data.slug, data }
-}
-
-// The real 2026 calendar: mail by Sat Oct 24, register online by Mon Oct 26,
-// Election Day Tue Nov 3. The content collection hands these over the way
-// `z.coerce.date()` parses a bare YAML date — midnight UTC.
-const DATES: BallotDates = {
-  mailByDate: new Date('2026-10-24T00:00:00Z'),
-  registerOnlineByDate: new Date('2026-10-26T00:00:00Z'),
-  electionDate: new Date('2026-11-03T00:00:00Z'),
 }
 
 describe('sortBallot', () => {
@@ -122,96 +99,10 @@ describe('slateGroups', () => {
   })
 })
 
-describe('section labels', () => {
-  it('names every section in both languages', () => {
-    for (const section of BALLOT_SECTIONS) {
-      for (const lang of ['en', 'es'] as const) {
-        expect(sectionLabel(section, lang)).toBeTruthy()
-        expect(sectionShortLabel(section, lang)).toBeTruthy()
-        expect(sectionNote(section, lang)).toBeTruthy()
-      }
-    }
-  })
-
-  // Q5: the deck's "25 judges, 1 recommendation." is the one label changed.
-  it('words the judges subtitle as how I am voting', () => {
-    expect(sectionNote('judges', 'en')).toBe(
-      '25 judges. Here’s how I’m voting.',
-    )
-    expect(sectionNote('judges', 'es')).toBe('25 jueces. Así voy a votar.')
-  })
-
-  it('names the local section the way the ballot does', () => {
-    expect(sectionLabel('local', 'en')).toBe('Denver City & County')
-  })
-
+describe('sectionAnchor', () => {
   // The judges item's slug is `judges` too, and both are anchors on one page.
   it('namespaces section anchors so they cannot collide with an item slug', () => {
     expect(sectionAnchor('judges')).toBe('section-judges')
-  })
-})
-
-describe('stanceLabel', () => {
-  it('defaults to Yes, No and Undecided in English', () => {
-    expect(stanceLabel(makeItem({ stance: 'yes' }).data, 'en')).toBe('Yes')
-    expect(stanceLabel(makeItem({ stance: 'no' }).data, 'en')).toBe('No')
-    expect(stanceLabel(makeItem({ stance: 'none' }).data, 'en')).toBe(
-      'Undecided',
-    )
-  })
-
-  it('defaults to Sí, No and Indeciso in Spanish', () => {
-    expect(stanceLabel(makeItem({ stance: 'yes' }).data, 'es')).toBe('Sí')
-    expect(stanceLabel(makeItem({ stance: 'no' }).data, 'es')).toBe('No')
-    expect(stanceLabel(makeItem({ stance: 'none' }).data, 'es')).toBe(
-      'Indeciso',
-    )
-  })
-
-  it('lets an override win when present', () => {
-    const item = makeItem({
-      stance: 'yes',
-      stanceLabel: 'Retain them.',
-      stanceLabel_es: 'Retenerlos.',
-    }).data
-    expect(stanceLabel(item, 'en')).toBe('Retain them.')
-    expect(stanceLabel(item, 'es')).toBe('Retenerlos.')
-  })
-
-  // Self-falling-back, like a guide's metaDescription: an English override
-  // never shows on the Spanish page, where the Spanish default is better.
-  it('falls back to the Spanish default, not the English override', () => {
-    const item = makeItem({ stance: 'yes', stanceLabel: 'Retain them.' }).data
-    expect(stanceLabel(item, 'es')).toBe('Sí')
-  })
-
-  it('gives a named pick a default of its own', () => {
-    expect(stanceLabel(makeItem({ stance: 'pick' }).data, 'en')).toBe('My pick')
-    expect(stanceLabel(makeItem({ stance: 'pick' }).data, 'es')).toBe(
-      'Mi elección',
-    )
-  })
-})
-
-describe('verdictHeading', () => {
-  it('reads "How I\'m voting" in English and "Así voy a votar" in Spanish', () => {
-    expect(verdictHeading('en')).toBe('How I’m voting')
-    expect(verdictHeading('es')).toBe('Así voy a votar')
-  })
-})
-
-describe('reasonLabel', () => {
-  it('heads a decided item "Why"', () => {
-    expect(reasonLabel('yes', 'en')).toBe('Why')
-    expect(reasonLabel('no', 'en')).toBe('Why')
-    expect(reasonLabel('pick', 'en')).toBe('Why')
-    expect(reasonLabel('yes', 'es')).toBe('Por qué')
-  })
-
-  // An undecided race has no reason to give, just the candidates.
-  it('heads an undecided item "On the ballot"', () => {
-    expect(reasonLabel('none', 'en')).toBe('On the ballot')
-    expect(reasonLabel('none', 'es')).toBe('En la boleta')
   })
 })
 
@@ -284,52 +175,6 @@ describe('ballotItemUrl', () => {
   })
 })
 
-describe('ballotSummary', () => {
-  it('counts decisions and sections', () => {
-    expect(ballotSummary(25, 5, 'en')).toBe('25 decisions · 5 sections')
-    expect(ballotSummary(25, 5, 'es')).toBe('25 decisiones · 5 secciones')
-  })
-
-  it('uses the singular for one of each', () => {
-    expect(ballotSummary(1, 1, 'en')).toBe('1 decision · 1 section')
-    expect(ballotSummary(1, 1, 'es')).toBe('1 decisión · 1 sección')
-  })
-})
-
-describe('ballotPageMeta', () => {
-  const guide = {
-    heading: 'Know your **ballot**',
-    heading_es: 'Conoce tu **boleta**',
-  }
-
-  it('titles the page from the heading, with its markdown stripped', () => {
-    expect(ballotPageMeta(guide, 'en').title).toBe(
-      'Know your ballot | Gabriel for Denver',
-    )
-    expect(ballotPageMeta(guide, 'es').title).toBe(
-      'Conoce tu boleta | Gabriel por Denver',
-    )
-  })
-
-  it('describes the page in each language', () => {
-    expect(ballotPageMeta(guide, 'en').description).toMatch(/^How Gabriel/)
-    expect(ballotPageMeta(guide, 'es').description).toMatch(/^Cómo va a votar/)
-  })
-})
-
-describe('closingLinks', () => {
-  it('points each language at its own donate and volunteer pages', () => {
-    expect(closingLinks('en')).toEqual({
-      donate: '/donate',
-      volunteer: '/get-involved/volunteer',
-    })
-    expect(closingLinks('es')).toEqual({
-      donate: '/es/donate',
-      volunteer: '/es/get-involved/volunteer',
-    })
-  })
-})
-
 describe('BALLOT_ITEM_TRANSLATABLE_FIELDS', () => {
   it('gates the fields a reader sees as running text', () => {
     expect([...BALLOT_ITEM_TRANSLATABLE_FIELDS].sort()).toEqual([
@@ -345,40 +190,5 @@ describe('BALLOT_ITEM_TRANSLATABLE_FIELDS', () => {
     for (const field of ['code', 'stanceLabel', 'chip']) {
       expect(BALLOT_ITEM_TRANSLATABLE_FIELDS).not.toContain(field)
     }
-  })
-})
-
-describe('no "recommend" anywhere on the page', () => {
-  // Q5: the page says how Gabriel is voting, never what anyone should do.
-  // Covers every label this module can hand a page, in both languages.
-  it('keeps every label free of recommend and recomendar', () => {
-    const labels: string[] = []
-    for (const lang of ['en', 'es'] as const) {
-      labels.push(
-        ...Object.values(BALLOT_COPY[lang]),
-        verdictHeading(lang),
-        ballotPageMeta({ heading: '', heading_es: '' }, lang).description,
-      )
-      for (const section of BALLOT_SECTIONS) {
-        labels.push(
-          sectionLabel(section, lang),
-          sectionShortLabel(section, lang),
-          sectionNote(section, lang),
-        )
-      }
-      for (const stance of BALLOT_STANCES) {
-        labels.push(
-          reasonLabel(stance, lang),
-          stanceLabel(makeItem({ stance }).data, lang),
-        )
-      }
-      for (const state of VOTE_STATES) {
-        const { banner, steps } = howToVote(state, DATES, lang)
-        if (banner) labels.push(banner)
-        for (const step of steps) labels.push(step.title, step.body)
-      }
-    }
-    expect(labels.length).toBeGreaterThan(100)
-    expect(labels.filter(label => /recom/i.test(label))).toEqual([])
   })
 })

@@ -1,16 +1,12 @@
 ---
 import { marked } from 'marked'
-import {
-  BALLOT_COPY,
-  type BallotGuide,
-  ballotSummary,
-  type Lang,
-} from '../../lib/ballot'
+import type { BallotGuide, Lang } from '../../lib/ballot'
 import {
   electionDayLabel,
   VOTE_STATES,
   type VoteState,
 } from '../../lib/ballot-calendar'
+import { BALLOT_COPY, ballotSummary } from '../../lib/ballot-copy'
 import Steps from './steps.astro'
 
 interface Props {

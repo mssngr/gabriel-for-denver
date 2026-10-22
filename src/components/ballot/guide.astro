@@ -1,14 +1,13 @@
 ---
 import {
-  BALLOT_COPY,
   type BallotGuide,
   type Lang,
-  type SlateGroup,
   sectionAnchor,
-  sectionLabel,
-  sectionNote,
+  type SlateGroup,
 } from '../../lib/ballot'
-import { howToVote, type VoteState } from '../../lib/ballot-calendar'
+import type { VoteState } from '../../lib/ballot-calendar'
+import { BALLOT_COPY, sectionLabel, sectionNote } from '../../lib/ballot-copy'
+import { howToVote } from '../../lib/ballot-steps'
 import type { BallotItemEntry } from '../../lib/ballot-content'
 import CopyLinkToast from '../copy-link-toast.astro'
 import BallotBehavior from './ballot-behavior.astro'

@@ -775,7 +775,9 @@ collections:
           widget: select,
           options: [draft, published],
           default: draft,
-          hint: Every Spanish field must be filled before this can be published.,
+          hint: "Title, What and Why (and Code Label, if set) must be filled in
+            Spanish before this can be published. The other Spanish fields fall
+            back on their own.",
         }
   - label: Posts
     name: posts

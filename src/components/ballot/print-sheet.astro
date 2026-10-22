@@ -1,16 +1,18 @@
 ---
 import {
-  BALLOT_COPY,
   itemCode,
   type Lang,
   printLine,
-  reasonLabel,
   type SlateGroup,
+} from '../../lib/ballot'
+import { formatBallotDate } from '../../lib/ballot-calendar'
+import {
+  BALLOT_COPY,
+  reasonLabel,
   sectionLabel,
   stanceLabel,
   verdictHeading,
-} from '../../lib/ballot'
-import { formatBallotDate } from '../../lib/ballot-calendar'
+} from '../../lib/ballot-copy'
 import type { BallotItemEntry } from '../../lib/ballot-content'
 import { localized } from '../../lib/platform'
 import { stripMarkdown } from '../../lib/seo'

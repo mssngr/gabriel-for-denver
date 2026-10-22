@@ -1,15 +1,13 @@
 ---
 import { ArrowRight, Check, Link2, X } from '@lucide/astro'
 import { marked } from 'marked'
+import { ballotItemUrl, itemCode, type Lang } from '../../lib/ballot'
 import {
   BALLOT_COPY,
-  ballotItemUrl,
-  itemCode,
-  type Lang,
   reasonLabel,
   stanceLabel,
   verdictHeading,
-} from '../../lib/ballot'
+} from '../../lib/ballot-copy'
 import type { BallotItemEntry } from '../../lib/ballot-content'
 import { localized, sourceLabel } from '../../lib/platform'
 import { alternatePath } from '../../lib/seo'
