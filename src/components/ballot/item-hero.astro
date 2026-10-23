@@ -1,0 +1,67 @@
+---
+import { ArrowLeft } from '@lucide/astro'
+import { type BallotGuide, guidePath, type Lang } from '../../lib/ballot'
+import { BALLOT_COPY, positionLabel } from '../../lib/ballot-copy'
+import { stripMarkdown } from '../../lib/seo'
+
+interface Props {
+  guide: BallotGuide
+  lang: Lang
+  /** 1-based place on the ballot, and how many items it has. */
+  position: number
+  total: number
+}
+
+const { guide, lang, position, total } = Astro.props
+const copy = BALLOT_COPY[lang]
+const heading = stripMarkdown(lang === 'es' ? guide.heading_es : guide.heading)
+---
+
+<div class="hero">
+  <a class="hero__back" href={guidePath(lang)}>
+    <ArrowLeft aria-hidden="true" />
+    {copy.wholeBallot}
+  </a>
+  <span class="hero__where">
+    {heading} · {positionLabel(position, total, lang)}
+  </span>
+</div>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    padding: 0.25rem 1.5rem 0.5rem;
+    font-size: 0.95rem;
+  }
+  @media (min-width: 768px) {
+    .hero {
+      padding-inline: 3rem;
+    }
+  }
+  .hero__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1.5px solid rgb(255 255 255 / 0.6);
+    border-radius: 999px;
+    padding: 0.3rem 0.8rem 0.2rem;
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hero__back:hover {
+    background: rgb(255 255 255 / 0.14);
+  }
+  .hero__back :global(svg) {
+    width: 1rem;
+    height: 1rem;
+    margin-top: -0.15rem;
+  }
+  .hero__where {
+    opacity: 0.8;
+  }
+</style>

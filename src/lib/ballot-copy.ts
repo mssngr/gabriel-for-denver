@@ -1,10 +1,13 @@
-import type {
-  BallotGuide,
-  BallotItem,
-  BallotSection,
-  BallotStance,
+import {
+  type BallotGuide,
+  type BallotItem,
+  type BallotSection,
+  type BallotStance,
+  itemCode,
+  type OgGuide,
 } from './ballot'
-import type { Lang } from './platform'
+import { formatBallotDate } from './ballot-calendar'
+import { type Lang, localized } from './platform'
 import { stripMarkdown } from './seo'
 
 /**
@@ -26,6 +29,8 @@ export const BALLOT_COPY = {
     slateTitle: 'My Denver ballot',
     slateKey: 'gold = yes · outline = no',
     slateFoot: 'Gabriel Konkle · Denver City Council At-Large B',
+    wholeBallot: 'The whole ballot',
+    nextHeading: 'Next on your ballot',
     shareGuide: 'Share this guide',
     print: 'Print this guide',
     jumpNav: 'Ballot sections',
@@ -54,6 +59,8 @@ export const BALLOT_COPY = {
     slateKey: 'dorado = sí · contorno = no',
     slateFoot:
       'Gabriel Konkle · Concejo Municipal de Denver, Miembro General Escaño B',
+    wholeBallot: 'Toda la boleta',
+    nextHeading: 'Siguiente en tu boleta',
     shareGuide: 'Compartir esta guía',
     print: 'Imprimir esta guía',
     jumpNav: 'Secciones de la boleta',
@@ -257,4 +264,67 @@ export function ballotPageMeta(
     description:
       'How Gabriel Konkle is voting on every race and measure on a Denver ballot, and why.',
   }
+}
+
+// What an item's page says it is when a link to it is shared: the verdict as
+// a sentence, so a yes or no reads "I'm voting No" rather than a bare "No".
+const VOTING: Record<'yes' | 'no', Record<Lang, string>> = {
+  yes: { en: 'I’m voting Yes', es: 'Voto Sí' },
+  no: { en: 'I’m voting No', es: 'Voto No' },
+}
+
+/**
+ * The verdict as words in a sentence or title: its label, without a final
+ * period ("Retain them." is a label, not the end of a sentence).
+ */
+function verdictWords(item: BallotItem, lang: Lang): string {
+  return stanceLabel(item, lang).replace(/\.$/, '')
+}
+
+/**
+ * The title of an item's own page, e.g. "2K: I'm voting No" or "RTD B:
+ * Undecided". Only a plain yes or no becomes a sentence; a custom label
+ * ("Retain them.") or a pick stands as the verdict, and its final period is
+ * dropped so it doesn't end a title.
+ */
+export function itemPageTitle(item: BallotItem, lang: Lang): string {
+  const code = itemCode(item, lang)
+  const override = lang === 'es' ? item.stanceLabel_es : item.stanceLabel
+  if (!override && (item.stance === 'yes' || item.stance === 'no')) {
+    return `${code}: ${VOTING[item.stance][lang]}`
+  }
+  return `${code}: ${verdictWords(item, lang)}`
+}
+
+/** An item page's `<title>` and meta description. */
+export function itemPageMeta(
+  item: BallotItem,
+  lang: Lang,
+): { title: string; description: string } {
+  const site = lang === 'es' ? 'Gabriel por Denver' : 'Gabriel for Denver'
+  const title = localized(item, 'title', lang) ?? item.title
+  return {
+    title: `${itemPageTitle(item, lang)} | ${site}`,
+    description: `${title}. ${verdictHeading(lang)}: ${verdictWords(item, lang)}.`,
+  }
+}
+
+/** Where an item sits on the ballot, e.g. "7 of 25". */
+export function positionLabel(
+  position: number,
+  total: number,
+  lang: Lang,
+): string {
+  return lang === 'es' ? `${position} de ${total}` : `${position} of ${total}`
+}
+
+/** The hand-lettered line on an item's preview image: the guide and the day. */
+export function ogCaption(guide: OgGuide, lang: Lang): string {
+  const heading = lang === 'es' ? guide.heading_es : guide.heading
+  return `${stripMarkdown(heading)} · ${formatBallotDate(guide.electionDate, lang)}`
+}
+
+/** The same line on the guide's own preview image. */
+export function ogGuideCaption(guide: OgGuide, lang: Lang): string {
+  return `${verdictHeading(lang)} · ${formatBallotDate(guide.electionDate, lang)}`
 }

@@ -1,0 +1,49 @@
+---
+import ItemHero from '../../../components/ballot/item-hero.astro'
+import ItemPage from '../../../components/ballot/item-page.astro'
+import { ogImagePath } from '../../../lib/ballot'
+import { getBallotGuide, getBallotItems } from '../../../lib/ballot-content'
+import { itemPageMeta } from '../../../lib/ballot-copy'
+import Espanol from '../../../layouts/espanol.astro'
+
+export async function getStaticPaths() {
+  const items = await getBallotItems()
+  return items.map((item) => ({
+    params: { slug: item.data.slug },
+    props: { slug: item.data.slug },
+  }))
+}
+
+const lang = 'es' as const
+const { slug } = Astro.props
+const guide = await getBallotGuide()
+const items = await getBallotItems()
+const index = items.findIndex((entry) => entry.data.slug === slug)
+const item = items[index]
+const meta = itemPageMeta(item.data, lang)
+---
+
+<Espanol
+  title={meta.title}
+  description={meta.description}
+  image={ogImagePath(lang, slug)}
+  heroGradient
+  tightHero
+>
+  <script is:inline define:vars={{ itemSlug: slug }}>
+    window.posthog?.capture('ballot_item_viewed', {
+      item_slug: itemSlug,
+      lang: 'es',
+    })
+  </script>
+
+  <ItemHero
+    slot="hero"
+    guide={guide}
+    lang={lang}
+    position={index + 1}
+    total={items.length}
+  />
+
+  <ItemPage item={item} items={items} guide={guide} lang={lang} />
+</Espanol>

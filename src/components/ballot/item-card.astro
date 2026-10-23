@@ -1,7 +1,7 @@
 ---
 import { ArrowRight, Check, Link2, X } from '@lucide/astro'
 import { marked } from 'marked'
-import { ballotItemUrl, itemCode, type Lang } from '../../lib/ballot'
+import { itemCode, itemPath, type Lang } from '../../lib/ballot'
 import {
   BALLOT_COPY,
   reasonLabel,
@@ -15,10 +15,13 @@ import { alternatePath } from '../../lib/seo'
 interface Props {
   item: BallotItemEntry
   lang: Lang
+  /** The page this card sits on; the Share button resolves its link from it. */
   pageUrl: string
+  /** The page's own heading when the card is all it is (an item's page). */
+  titleTag?: 'h1' | 'h3'
 }
 
-const { item, lang, pageUrl } = Astro.props
+const { item, lang, pageUrl, titleTag: Title = 'h3' } = Astro.props
 const { data } = item
 const copy = BALLOT_COPY[lang]
 
@@ -54,14 +57,14 @@ const sources = (data.sources ?? []).map((source) => ({
     </span>
   </div>
   <div class="item__title">
-    <h3 id={`${data.slug}-title`}>{title}</h3>
+    <Title id={`${data.slug}-title`} class="item__h">{title}</Title>
     <button
       type="button"
       class="item__share"
       aria-label={`${copy.share} ${code}: ${title}`}
       data-ballot-share="item"
       data-item-slug={data.slug}
-      data-share-url={ballotItemUrl(pageUrl, data.slug)}
+      data-share-url={new URL(itemPath(data.slug, lang), pageUrl).href}
       data-share-title={`${code}: ${title}`}
       ><Link2 aria-hidden="true" />{copy.share}</button
     >
@@ -173,7 +176,7 @@ const sources = (data.sources ?? []).map((source) => ({
     gap: 0.625rem;
     padding: 0.875rem 0.875rem 0;
   }
-  .item__title h3 {
+  .item__h {
     margin: 0;
     font-size: 1.2rem;
     font-weight: 700;
@@ -286,7 +289,7 @@ const sources = (data.sources ?? []).map((source) => ({
       grid-column: 2 / -1;
       padding: 1.125rem 1.25rem 0;
     }
-    .item__title h3 {
+    .item__h {
       font-size: 1.35rem;
     }
     .item__body {

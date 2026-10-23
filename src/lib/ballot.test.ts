@@ -2,10 +2,13 @@ import { describe, expect, it } from 'vitest'
 import {
   BALLOT_ITEM_TRANSLATABLE_FIELDS,
   type BallotItem,
-  ballotItemUrl,
   chipText,
   type Entry,
+  guidePath,
   itemCode,
+  itemPath,
+  nextItem,
+  ogImagePath,
   printLine,
   sectionAnchor,
   slateGroups,
@@ -167,11 +170,59 @@ describe('printLine', () => {
   })
 })
 
-describe('ballotItemUrl', () => {
-  it('links to the card on the guide page by its slug', () => {
-    expect(ballotItemUrl('https://gabrielfordenver.com/ballot', '2k')).toBe(
-      'https://gabrielfordenver.com/ballot#2k',
-    )
+describe('guidePath and itemPath', () => {
+  it('puts the guide at /ballot and /es/ballot', () => {
+    expect(guidePath('en')).toBe('/ballot')
+    expect(guidePath('es')).toBe('/es/ballot')
+  })
+
+  // Q9: the Share button sends this path, not an anchor on the guide.
+  it('gives each item its own page under its guide', () => {
+    expect(itemPath('2k', 'en')).toBe('/ballot/2k')
+    expect(itemPath('2k', 'es')).toBe('/es/ballot/2k')
+  })
+})
+
+describe('ogImagePath', () => {
+  // The images live in /ballot/og/, which is why `og` can't be a slug.
+  it('puts an item image in the og folder beside its guide', () => {
+    expect(ogImagePath('en', '2k')).toBe('/ballot/og/2k.png')
+    expect(ogImagePath('es', '2k')).toBe('/es/ballot/og/2k.png')
+  })
+
+  it('gives the guide itself an image next to the og folder', () => {
+    expect(ogImagePath('en')).toBe('/ballot/og.png')
+    expect(ogImagePath('es')).toBe('/es/ballot/og.png')
+  })
+})
+
+describe('nextItem', () => {
+  const ballot = [
+    makeItem({ slug: '2j', section: 'local', order: 3 }),
+    makeItem({ slug: '2k', section: 'local', order: 4 }),
+    makeItem({ slug: '87', section: 'amendments', order: 9 }),
+    makeItem({ slug: 'nn', section: 'propositions', order: 1 }),
+  ]
+
+  it('returns the item after this one within a section', () => {
+    expect(nextItem(ballot, '2j')?.data.slug).toBe('2k')
+  })
+
+  // 87 is the last amendment and NN the first statutory measure.
+  it('crosses into the next section at a boundary', () => {
+    expect(nextItem(ballot, '87')?.data.slug).toBe('nn')
+  })
+
+  it('reads ballot order, not the order it was handed the entries in', () => {
+    expect(nextItem([...ballot].reverse(), '87')?.data.slug).toBe('nn')
+  })
+
+  it('returns nothing after the last item on the ballot', () => {
+    expect(nextItem(ballot, '2k')).toBeUndefined()
+  })
+
+  it('returns nothing for a slug that is not on the ballot', () => {
+    expect(nextItem(ballot, 'missing')).toBeUndefined()
   })
 })
 

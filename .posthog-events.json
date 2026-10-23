@@ -50,6 +50,11 @@
     "file": "src/pages/ballot/index.astro"
   },
   {
+    "event_name": "ballot_item_viewed",
+    "event_description": "User views one race or measure's own page at /ballot/<slug> or /es/ballot/<slug>, usually by a shared link. Includes item_slug and a lang property ('en' or 'es').",
+    "file": "src/pages/ballot/[slug].astro"
+  },
+  {
     "event_name": "ballot_link_shared",
     "event_description": "User taps Share on the ballot guide, either for the whole guide or for one race or measure's card. Includes target ('guide' or 'item'), item_slug when target is 'item', outcome ('shared', 'copied', 'cancelled' or 'unavailable'), and lang ('en' or 'es').",
     "file": "src/components/ballot/ballot-behavior.astro"
