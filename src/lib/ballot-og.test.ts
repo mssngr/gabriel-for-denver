@@ -7,7 +7,7 @@ import {
   type OgNode,
   splitHighlight,
 } from './ballot-og'
-import { GUIDE, HOST, itemInput, makeItem } from './ballot-og-fixtures'
+import { GUIDE, HOST, makeItem } from './ballot-og-fixtures'
 
 function itemTree(item: BallotItem, lang: 'en' | 'es' = 'en') {
   return ballotOgTree({

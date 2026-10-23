@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest'
-import type { BallotItem } from './ballot'
 import { ballotGuideOgTree, ballotOgTree } from './ballot-og'
 import { GUIDE, HOST, itemInput, makeItem } from './ballot-og-fixtures'
 import { ogPng, ogSvg } from './ballot-og-render'
