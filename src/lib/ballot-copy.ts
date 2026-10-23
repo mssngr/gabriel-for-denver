@@ -4,6 +4,7 @@ import {
   type BallotSection,
   type BallotStance,
   itemCode,
+  type OgGuide,
 } from './ballot'
 import { formatBallotDate } from './ballot-calendar'
 import { type Lang, localized } from './platform'
@@ -273,6 +274,14 @@ const VOTING: Record<'yes' | 'no', Record<Lang, string>> = {
 }
 
 /**
+ * The verdict as words in a sentence or title: its label, without a final
+ * period ("Retain them." is a label, not the end of a sentence).
+ */
+function verdictWords(item: BallotItem, lang: Lang): string {
+  return stanceLabel(item, lang).replace(/\.$/, '')
+}
+
+/**
  * The title of an item's own page, e.g. "2K: I'm voting No" or "RTD B:
  * Undecided". Only a plain yes or no becomes a sentence; a custom label
  * ("Retain them.") or a pick stands as the verdict, and its final period is
@@ -284,7 +293,7 @@ export function itemPageTitle(item: BallotItem, lang: Lang): string {
   if (!override && (item.stance === 'yes' || item.stance === 'no')) {
     return `${code}: ${VOTING[item.stance][lang]}`
   }
-  return `${code}: ${stanceLabel(item, lang).replace(/\.$/, '')}`
+  return `${code}: ${verdictWords(item, lang)}`
 }
 
 /** An item page's `<title>` and meta description. */
@@ -296,7 +305,7 @@ export function itemPageMeta(
   const title = localized(item, 'title', lang) ?? item.title
   return {
     title: `${itemPageTitle(item, lang)} | ${site}`,
-    description: `${title}. ${verdictHeading(lang)}: ${stanceLabel(item, lang)}.`,
+    description: `${title}. ${verdictHeading(lang)}: ${verdictWords(item, lang)}.`,
   }
 }
 
@@ -308,8 +317,6 @@ export function positionLabel(
 ): string {
   return lang === 'es' ? `${position} de ${total}` : `${position} of ${total}`
 }
-
-type OgGuide = Pick<BallotGuide, 'heading' | 'heading_es' | 'electionDate'>
 
 /** The hand-lettered line on an item's preview image: the guide and the day. */
 export function ogCaption(guide: OgGuide, lang: Lang): string {

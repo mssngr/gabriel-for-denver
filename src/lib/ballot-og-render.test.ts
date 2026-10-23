@@ -1,34 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { BallotItem } from './ballot'
 import { ballotGuideOgTree, ballotOgTree } from './ballot-og'
+import { GUIDE, HOST, itemInput, makeItem } from './ballot-og-fixtures'
 import { ogPng, ogSvg } from './ballot-og-render'
-
-function makeItem(overrides: Partial<BallotItem> = {}): BallotItem {
-  return {
-    slug: '2k',
-    code: '2K',
-    title: 'Franchise Agreement with Xcel Energy',
-    title_es: 'Acuerdo de franquicia con Xcel Energy',
-    section: 'local',
-    order: 4,
-    stance: 'no',
-    what: '',
-    why: '',
-    status: 'published',
-    ...overrides,
-  }
-}
-
-const GUIDE = {
-  heading: 'Know your **ballot**',
-  heading_es: 'Conoce tu **boleta**',
-  electionDate: new Date('2026-11-03T00:00:00Z'),
-}
-const HOST = 'gabrielfordenver.com'
-
-function itemInput(item: BallotItem, lang: 'en' | 'es') {
-  return { item, lang, guide: GUIDE, host: HOST }
-}
 
 // The widest cases on the real ballot, from src/content/ballot-items. Checked
 // against the image's own layout so a long title is stepped down rather than
@@ -150,21 +124,18 @@ describe('image layout', () => {
     for (const item of LONGEST) {
       const label = `${item.code} in ${lang}`
 
-      it(`keeps ${label} inside its columns`, async () => {
+      it(`fits ${label} in its columns, with a one-line code and at most three title lines`, async () => {
         const svg = await ogSvg(ballotOgTree(itemInput(item, lang)), false)
-        // A space at the end of a wrapped line is allowed to hang past the edge.
-        for (const run of textRuns(svg).filter(run => run.text.trim())) {
+        const runs = textRuns(svg).filter(run => run.text.trim())
+        // A space at the end of a wrapped line is allowed to hang past the
+        // edge, so spaces are left out.
+        for (const run of runs) {
           // Left column text ends by x=670 (730 less its 60px padding), the
           // verdict panel's by x=1140 (1200 less 60).
           const limit = run.x < 730 ? 670 : 1140
           expect(run.x + run.width, run.text).toBeLessThanOrEqual(limit + 1)
         }
-      })
-
-      it(`sets ${label} to a one-line code and a title of at most three lines`, async () => {
-        const svg = await ogSvg(ballotOgTree(itemInput(item, lang)), false)
-        const left = textRuns(svg).filter(run => run.x < 730)
-        const [code, ...rest] = left
+        const [code, ...rest] = runs.filter(run => run.x < 730)
         const title = rest.filter(run => run.size === rest[0].size)
         expect(lines([code])).toBe(1)
         expect(lines(title)).toBeLessThanOrEqual(3)
@@ -180,7 +151,7 @@ describe('image layout', () => {
     const title = textRuns(svg).filter(run => run.x < 730 && run.size < 60)
     expect(
       lines(title.filter(run => run.size === title[0].size)),
-    ).toBeLessThanOrEqual(4)
+    ).toBeLessThanOrEqual(3)
   })
 
   it('keeps every chip of a full guide inside the image', async () => {

@@ -263,6 +263,22 @@ describe('itemPageMeta', () => {
     )
   })
 
+  // The judges' label is "Retain them." and a sentence shouldn't end "..".
+  it('does not double the period after a custom verdict label', () => {
+    const item = makeItem({
+      stance: 'yes',
+      stanceLabel: 'Retain them.',
+      stanceLabel_es: 'Retenerlos.',
+      title_es: 'Tribunales',
+    })
+    expect(itemPageMeta(item, 'en').description).toBe(
+      'Franchise Agreement with Xcel Energy. How I’m voting: Retain them.',
+    )
+    expect(itemPageMeta(item, 'es').description).toBe(
+      'Tribunales. Así voy a votar: Retenerlos.',
+    )
+  })
+
   it('describes the measure and the vote', () => {
     const item = makeItem({
       title_es: 'Acuerdo de franquicia con Xcel Energy',

@@ -91,6 +91,11 @@ export const ballotGuideSchema = z.object({
   credit_es: z.string().optional(),
 })
 export type BallotGuide = z.infer<typeof ballotGuideSchema>
+/** What the preview images' captions read from the guide. */
+export type OgGuide = Pick<
+  BallotGuide,
+  'heading' | 'heading_es' | 'electionDate'
+>
 export type BallotDates = Pick<
   BallotGuide,
   'electionDate' | 'mailByDate' | 'registerOnlineByDate'
