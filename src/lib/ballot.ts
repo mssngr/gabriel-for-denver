@@ -193,7 +193,36 @@ export function printLine(item: BallotItem, lang: Lang): string {
   )
 }
 
-/** The link an item's Share button sends: its card on the guide page. */
-export function ballotItemUrl(pageUrl: string, slug: string): string {
-  return `${pageUrl}#${slug}`
+/** The guide page itself. */
+export function guidePath(lang: Lang): string {
+  return lang === 'es' ? '/es/ballot' : '/ballot'
+}
+
+/**
+ * An item's own page, which the Share button sends (Q9). Slugs are routes
+ * here, so `og` is reserved for the image folder and the CMS rejects it.
+ */
+export function itemPath(slug: string, lang: Lang): string {
+  return `${guidePath(lang)}/${slug}`
+}
+
+/** The 1200×630 preview image for an item, or for the guide without a slug. */
+export function ogImagePath(lang: Lang, slug?: string): string {
+  return slug
+    ? `${guidePath(lang)}/og/${slug}.png`
+    : `${guidePath(lang)}/og.png`
+}
+
+/**
+ * The item after this one in ballot order, crossing into the next section at
+ * a boundary, or nothing after the last. Sorts first, so it can't be thrown
+ * off by the order the entries were handed over in.
+ */
+export function nextItem<E extends Entry<BallotItem>>(
+  items: E[],
+  slug: string,
+): E | undefined {
+  const sorted = sortBallot(items)
+  const index = sorted.findIndex(item => item.data.slug === slug)
+  return index === -1 ? undefined : sorted[index + 1]
 }

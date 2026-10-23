@@ -1,0 +1,122 @@
+---
+import { ArrowRight } from '@lucide/astro'
+import {
+  type BallotGuide,
+  guidePath,
+  itemCode,
+  itemPath,
+  type Lang,
+  nextItem,
+  slateGroups,
+} from '../../lib/ballot'
+import { BALLOT_COPY, ballotPageMeta } from '../../lib/ballot-copy'
+import type { BallotItemEntry } from '../../lib/ballot-content'
+import { currentPageUrl, localized } from '../../lib/platform'
+import CopyLinkToast from '../copy-link-toast.astro'
+import BallotBehavior from './ballot-behavior.astro'
+import Closing from './closing.astro'
+import ItemCard from './item-card.astro'
+import SlateCard from './slate-card.astro'
+
+interface Props {
+  item: BallotItemEntry
+  /** Every published item, in ballot order. */
+  items: BallotItemEntry[]
+  guide: BallotGuide
+  lang: Lang
+}
+
+const { item, items, guide, lang } = Astro.props
+const copy = BALLOT_COPY[lang]
+
+const next = nextItem(items, item.data.slug)
+const nextTitle =
+  next && (localized(next.data, 'title', lang) ?? next.data.title)
+const credit = lang === 'es' ? guide.credit_es : guide.credit
+// The card's own Share button resolves its link from this page; the slate's
+// "Share this guide" and its footer name the guide.
+const pageUrl = currentPageUrl(Astro.url.pathname, Astro.site)
+const guideUrl = currentPageUrl(guidePath(lang), Astro.site)
+---
+
+<main
+  class="ballot"
+  data-ballot
+  data-copied={copy.copied}
+  data-unavailable={copy.unavailable}
+>
+  <section class="card-wrap">
+    <ItemCard item={item} lang={lang} pageUrl={pageUrl} titleTag="h1" />
+  </section>
+  {
+    next && (
+      <a class="next" href={itemPath(next.data.slug, lang)}>
+        <small>{copy.nextHeading}</small>
+        <b>
+          {itemCode(next.data, lang)} · {nextTitle}
+          <ArrowRight aria-hidden="true" />
+        </b>
+      </a>
+    )
+  }
+  <SlateCard
+    groups={slateGroups(items)}
+    electionDate={guide.electionDate}
+    lang={lang}
+    pageUrl={guideUrl}
+    shareTitle={ballotPageMeta(guide, lang).title}
+    chipBase={guidePath(lang)}
+    print={false}
+  />
+  <Closing credit={credit} lang={lang} />
+  <CopyLinkToast message={copy.copied} />
+</main>
+<BallotBehavior />
+
+<style>
+  .card-wrap {
+    padding: 1.125rem 0.875rem 0.5rem;
+  }
+  @media (min-width: 768px) {
+    .card-wrap {
+      padding: 2.25rem 3rem 0.75rem;
+    }
+  }
+  .next {
+    display: grid;
+    gap: 0.125rem;
+    margin: 0.875rem 0.875rem 1.5rem;
+    border: 1.5px solid #c9d4f7;
+    border-radius: 0.875rem;
+    padding: 0.75rem 0.875rem 0.625rem;
+    color: var(--color-tertiary);
+    text-decoration: none;
+  }
+  @media (min-width: 768px) {
+    .next {
+      margin-inline: 3rem;
+    }
+  }
+  .next:hover {
+    background: #f6f8ff;
+  }
+  .next small {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+  }
+  .next b {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 800;
+  }
+  .next :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex: none;
+    margin-top: -0.15rem;
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 import BallotGuide from '../../components/ballot/guide.astro'
 import BallotHero from '../../components/ballot/hero.astro'
-import { slateGroups } from '../../lib/ballot'
+import { ogImagePath, slateGroups } from '../../lib/ballot'
 import { voteState } from '../../lib/ballot-calendar'
 import { ballotPageMeta } from '../../lib/ballot-copy'
 import { getBallotGuide, getBallotItems } from '../../lib/ballot-content'
@@ -21,6 +21,7 @@ const current = voteState(new Date(), guide)
 <Layout
   title={meta.title}
   description={meta.description}
+  image={ogImagePath(lang)}
   heroGradient
   tightHero
 >

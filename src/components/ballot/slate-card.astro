@@ -11,9 +11,24 @@ interface Props {
   lang: Lang
   pageUrl: string
   shareTitle: string
+  /**
+   * Where a chip's `#slug` anchor lives. Empty on the guide itself; on an
+   * item's page, the guide's path, since the reasoning is there.
+   */
+  chipBase?: string
+  /** Off where the page has no print sheet to print. */
+  print?: boolean
 }
 
-const { groups, electionDate, lang, pageUrl, shareTitle } = Astro.props
+const {
+  groups,
+  electionDate,
+  lang,
+  pageUrl,
+  shareTitle,
+  chipBase = '',
+  print = true,
+} = Astro.props
 const copy = BALLOT_COPY[lang]
 
 const year = electionDate.getUTCFullYear()
@@ -48,7 +63,10 @@ const displayUrl = pageUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')
             <ul class="chips">
               {items.map(({ data }) => (
                 <li>
-                  <a class={`chip chip--${data.stance}`} href={`#${data.slug}`}>
+                  <a
+                    class={`chip chip--${data.stance}`}
+                    href={`${chipBase}#${data.slug}`}
+                  >
                     {data.stance === 'yes' && <Check aria-hidden="true" />}
                     {data.stance === 'no' && <X aria-hidden="true" />}
                     {chipText(data, lang)}
@@ -74,9 +92,14 @@ const displayUrl = pageUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')
       data-share-title={shareTitle}
       ><Share2 aria-hidden="true" />{copy.shareGuide}</button
     >
-    <button type="button" class="slate-btn" data-ballot-print
-      ><Printer aria-hidden="true" />{copy.print}</button
-    >
+    {
+      print && (
+        <button type="button" class="slate-btn" data-ballot-print>
+          <Printer aria-hidden="true" />
+          {copy.print}
+        </button>
+      )
+    }
   </div>
 </section>
 
