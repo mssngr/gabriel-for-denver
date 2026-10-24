@@ -14,10 +14,10 @@ chip: 'City Council: Konkle'
 chip_es: 'Concejo: Konkle'
 what: 10 Candidates. Simple majority wins.
 what_es: 10 candidatos. Gana la mayoría simple.
-why: Democratic Socialist. Mutual aid organizer, finance, tech, non-profit, lay leader.
-why_es: Socialista democrático. Organizador de ayuda mutua, finanzas, tecnología, sector sin fines de lucro, líder laico.
+why: I plan to ban data centers, end AI surveillance, grow produce in our parks, open free grocery stores in Denver, fine intentional vacancies, and so much more. Let's build the city of our dreams!
+why_es: Planeo prohibir los centros de datos, poner fin a la vigilancia de la inteligencia artificial, cultivar productos en nuestros parques, abrir tiendas de comestibles gratuitas en Denver, multar los espacios vacíos intencionales y mucho más. ¡Construyamos la ciudad de nuestros sueños!
 sources:
-- label: Read my platform
-  label_es: Lee mi plataforma
-  url: /why-me
+  - label: Read my platform
+    label_es: Lee mi plataforma
+    url: /why-me
 status: published
